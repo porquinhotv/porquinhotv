@@ -1,20 +1,6 @@
 {
  "candidatos": [
   {
-   "bloco": "094a740b2ea0",
-   "fontes": [
-    "motor-rtp3"
-   ],
-   "primeira_ronda": "historico-2026-09-08-1",
-   "prova_url": "https://www.rtp.pt/noticias/politica/andre-ventura-quer-chegar-aos-15-nas-proximas-legislativas_v1367276",
-   "rondas": [
-    "historico-2026-09-08-1",
-    "historico-2026-09-08-3"
-   ],
-   "titulo": "André Ventura quer chegar aos 15% nas próximas legislativas",
-   "ultima_ronda": "historico-2026-09-08-3"
-  },
-  {
    "bloco": "140ec62fb372",
    "fontes": [
     "busca-rtp1"
@@ -37,53 +23,10 @@
    "primeira_ronda": "historico-2026-09-08-1",
    "prova_url": "https://www.rtp.pt/noticias/politica/entrevista-rtp-ventura-garante-que-o-chega-esta-na-corrida-para-vencer-as-eleicoes_v1654290",
    "rondas": [
-    "historico-2026-09-08-1",
-    "historico-2026-09-08-3"
+    "historico-2026-09-08-1"
    ],
    "titulo": "Entrevista RTP. Ventura garante que o Chega está na corrida para vencer as eleições",
-   "ultima_ronda": "historico-2026-09-08-3"
-  },
-  {
-   "bloco": "377ad48245b9",
-   "fontes": [
-    "motor-rtp3"
-   ],
-   "primeira_ronda": "historico-2026-09-08-1",
-   "prova_url": "https://www.rtp.pt/noticias/politica/andre-ventura-centra-se-na-formacao-de-governo-sombra_v1660027",
-   "rondas": [
-    "historico-2026-09-08-1",
-    "historico-2026-09-08-3"
-   ],
-   "titulo": "André Ventura centra-se na formação de governo sombra",
-   "ultima_ronda": "historico-2026-09-08-3"
-  },
-  {
-   "bloco": "3f90a1527311",
-   "fontes": [
-    "motor-rtp3"
-   ],
-   "primeira_ronda": "historico-2026-09-08-1",
-   "prova_url": "https://www.rtp.pt/noticias/politica/andre-ventura-homicidio-de-ucraniano-envergonha-os-portugueses_v1283111",
-   "rondas": [
-    "historico-2026-09-08-1",
-    "historico-2026-09-08-3"
-   ],
-   "titulo": "André Ventura: homicídio de ucraniano envergonha os portugueses",
-   "ultima_ronda": "historico-2026-09-08-3"
-  },
-  {
-   "bloco": "94606ab3019e",
-   "fontes": [
-    "motor-rtp3"
-   ],
-   "primeira_ronda": "historico-2026-09-08-1",
-   "prova_url": "https://www.rtp.pt/noticias/politica/andre-ventura-clama-vitoria-do-chega-nos-acores_a1366360",
-   "rondas": [
-    "historico-2026-09-08-1",
-    "historico-2026-09-08-3"
-   ],
-   "titulo": "André Ventura clama vitória do Chega nos Açores",
-   "ultima_ronda": "historico-2026-09-08-3"
+   "ultima_ronda": "historico-2026-09-08-1"
   },
   {
    "bloco": "a2842ebd3cd9",
@@ -108,25 +51,10 @@
    "primeira_ronda": "historico-2026-09-08-1",
    "prova_url": "https://www.rtp.pt/noticias/politica/entrevista-a-rtp-ventura-assume-que-eleger-menos-de-50-deputados-seria-derrota_v1641804",
    "rondas": [
-    "historico-2026-09-08-1",
-    "historico-2026-09-08-3"
+    "historico-2026-09-08-1"
    ],
    "titulo": "Entrevista à RTP. Ventura assume que eleger menos de 50 deputados seria derrota",
-   "ultima_ronda": "historico-2026-09-08-3"
-  },
-  {
-   "bloco": "c35fbc107499",
-   "fontes": [
-    "motor-rtp3"
-   ],
-   "primeira_ronda": "historico-2026-09-08-1",
-   "prova_url": "https://www.rtp.pt/noticias/mundo/presidenciais-lider-do-chega-nao-concorda-com-extincao-do-sef_v1283167",
-   "rondas": [
-    "historico-2026-09-08-1",
-    "historico-2026-09-08-3"
-   ],
-   "titulo": "Presidenciais. Líder do Chega não concorda com extinção do SEF",
-   "ultima_ronda": "historico-2026-09-08-3"
+   "ultima_ronda": "historico-2026-09-08-1"
   },
   {
    "bloco": "caa909947e86",
@@ -160,5 +88,5 @@
   }
  ],
  "esquema": 1,
- "total": 11
+ "total": 6
 }
