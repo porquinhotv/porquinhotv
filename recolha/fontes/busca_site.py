@@ -40,7 +40,6 @@ from ..modelos import ItemBruto
 from ..rede import ErroDeRede, obter_texto
 from .base import PluginDeFonte, registar
 
-PAUSA_S = 0.5
 
 
 @registar
@@ -88,7 +87,7 @@ class FonteBuscaSite(PluginDeFonte):
                     candidatos.append(alvo)
             if registo is not None:
                 registo.append(f"{self.fonte.id}: {len(achados)} candidatos em {url}")
-            time.sleep(PAUSA_S)
+            time.sleep(self.fonte.pausa_s)
 
         # Um limite existe para uma pesquisa que devolva a pagina inteira
         # do site em vez de resultados. Sem ele, um padrao mal apertado
@@ -121,7 +120,7 @@ class FonteBuscaSite(PluginDeFonte):
                     etiquetas=dados["etiquetas"],
                 )
             )
-            time.sleep(PAUSA_S)
+            time.sleep(self.fonte.pausa_s)
 
         if registo is not None:
             com_duracao = sum(1 for i in itens if i.duracao_s)

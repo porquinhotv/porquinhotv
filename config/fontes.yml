@@ -102,11 +102,13 @@ fontes:
     dominio: tvi.iol.pt
     confianca: media
     # Confirmado na sondagem: pagina 1 e pagina 2 devolvem ligacoes
-    # diferentes, logo a paginacao e real.
+    # diferentes, logo a paginacao e real. O site nao se queixou do
+    # ritmo, por isso a pausa fica na de omissao.
+    termos_busca: ['André Ventura']
     busca:
       - https://tvi.iol.pt/search?pagina={pagina}&pesquisa={termo}+entrevista
     max_candidatos: 400
-    paginas_max: 1
+    paginas_max: 12
 
   # --- Motor de busca externo, para os canais cuja pesquisa nao serve --
   #
@@ -124,6 +126,12 @@ fontes:
   # `termos_busca` reduz cada canal a uma consulta so: tres consultas por
   # canal seriam tres vezes mais pedidos a um servico que nos pode
   # limitar, sem tres vezes mais resultados.
+  #
+  # Sondagem de 2026-09-08: offset=0 e offset=1 devolveram vinte ligacoes
+  # diferentes cada, logo a paginacao e real; o terceiro pedido seguido
+  # levou 429. Dai a pausa de 8 segundos e cinco paginas por canal, o que
+  # da ate cem resultados por canal e cerca de trinta pedidos ao motor
+  # por ronda. A recolha respeita o Retry-After quando ele vem declarado.
 
   - id: motor-sic
     tipo: busca_site
@@ -135,7 +143,8 @@ fontes:
     busca:
       - https://search.brave.com/search?q=site%3Asic.pt+{termo}&offset={pagina0}
     max_candidatos: 200
-    paginas_max: 1
+    paginas_max: 5
+    pausa_s: 8
 
   - id: motor-sic-noticias
     tipo: busca_site
@@ -147,7 +156,8 @@ fontes:
     busca:
       - https://search.brave.com/search?q=site%3Asicnoticias.pt+{termo}&offset={pagina0}
     max_candidatos: 200
-    paginas_max: 1
+    paginas_max: 5
+    pausa_s: 8
 
   - id: motor-cnn-portugal
     tipo: busca_site
@@ -159,7 +169,8 @@ fontes:
     busca:
       - https://search.brave.com/search?q=site%3Acnnportugal.iol.pt+{termo}&offset={pagina0}
     max_candidatos: 200
-    paginas_max: 1
+    paginas_max: 5
+    pausa_s: 8
 
   - id: motor-cmtv
     tipo: busca_site
@@ -172,7 +183,8 @@ fontes:
       - https://search.brave.com/search?q=site%3Acmjornal.pt+{termo}&offset={pagina0}
     padrao_artigo: '/cmtv/'
     max_candidatos: 200
-    paginas_max: 1
+    paginas_max: 5
+    pausa_s: 8
 
   - id: motor-rtp3
     tipo: busca_site
@@ -185,7 +197,8 @@ fontes:
       - https://search.brave.com/search?q=site%3Artp.pt+{termo}&offset={pagina0}
     padrao_artigo: '/noticias/'
     max_candidatos: 200
-    paginas_max: 1
+    paginas_max: 5
+    pausa_s: 8
 
   - id: motor-now
     tipo: busca_site
@@ -197,7 +210,8 @@ fontes:
     busca:
       - https://search.brave.com/search?q=site%3Anow.pt+{termo}&offset={pagina0}
     max_candidatos: 200
-    paginas_max: 1
+    paginas_max: 5
+    pausa_s: 8
 
   # ------------------------------------------------------------------
   # Exemplo de feed de podcast com varios programas. Copiar e adaptar

@@ -136,6 +136,10 @@ class Fonte:
     padrao_artigo: str = ""
     max_candidatos: int = 40
     paginas_max: int = 1
+    # Segundos de espera entre pedidos desta fonte. Um motor de busca
+    # externo responde 429 a um ritmo que o site de um canal aceita sem
+    # se queixar, por isso o valor e por fonte e nao global.
+    pausa_s: float = 0.5
     segmentos: tuple[Segmento, ...] = ()
 
 
@@ -266,6 +270,7 @@ def carregar_config(
             padrao_artigo=f.get("padrao_artigo", ""),
             max_candidatos=int(f.get("max_candidatos", 40)),
             paginas_max=int(f.get("paginas_max", 1)),
+            pausa_s=float(f.get("pausa_s", 0.5)),
             segmentos=tuple(
                 Segmento(
                     se_titulo_tem=tuple(r.get("se_titulo_tem", []) or []),

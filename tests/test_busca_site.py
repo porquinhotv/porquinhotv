@@ -127,3 +127,32 @@ class TestConsultasEPaginacao(unittest.TestCase):
         self.assertTrue(itens)
         for i in itens:
             self.assertTrue(i.prova_url.startswith("https://exemplo.pt/"), i.prova_url)
+
+
+class TestRitmoPorFonte(unittest.TestCase):
+    """O ritmo e por fonte: um motor externo responde 429 a uma cadencia
+    que o site de um canal aceita sem se queixar."""
+
+    def test_pausa_da_fonte_e_a_usada(self):
+        esperas = []
+        mock.patch.object(busca_site, "obter_texto", side_effect=obter_falso).start()
+        mock.patch.object(busca_site.time, "sleep", esperas.append).start()
+        self.addCleanup(mock.patch.stopall)
+        f = Fonte(id="m", tipo="busca_site", canal="rtp1", dominio="exemplo.pt",
+                  busca=("https://exemplo.pt/pesquisa?q={termo}",), pausa_s=8.0)
+        list(busca_site.FonteBuscaSite(f).obter(termos=["Ventura"]))
+        self.assertTrue(esperas)
+        self.assertEqual(set(esperas), {8.0})
+
+    def test_configuracao_real_poupa_o_motor_externo(self):
+        """As fontes que passam por um motor externo tem de esperar mais
+        entre pedidos do que as que falam com o site de um canal."""
+        from recolha.modelos import carregar_config
+
+        for fonte_real in carregar_config().fontes:
+            if fonte_real.tipo != "busca_site" or not fonte_real.busca:
+                continue
+            externo = any("brave" in u for u in fonte_real.busca)
+            if externo:
+                self.assertGreaterEqual(fonte_real.pausa_s, 5.0, fonte_real.id)
+                self.assertEqual(len(fonte_real.termos_busca), 1, f"{fonte_real.id}: uma consulta por canal")

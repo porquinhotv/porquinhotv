@@ -55,9 +55,29 @@ class ErroDeRede(RuntimeError):
     pass
 
 
-def obter_texto(url: str) -> str:
+# Um 429 nao e uma falha de rede: e o servidor a dizer que o ritmo e
+# demasiado. Esperar dois segundos e voltar a pedir, como se fazia com
+# qualquer outro erro, so gasta a paciencia de quem nos responde e volta
+# a levar 429. A espera cresce depressa e respeita Retry-After quando o
+# servidor o declara.
+ESPERA_429 = (20.0, 60.0, 120.0)
+ESPERA_MAXIMA = 180.0
+
+
+def _espera_declarada(excecao) -> float | None:
+    cabecalhos = getattr(excecao, "headers", None)
+    valor = cabecalhos.get("Retry-After") if cabecalhos else None
+    if not valor:
+        return None
+    try:
+        return min(float(valor), ESPERA_MAXIMA)
+    except (TypeError, ValueError):
+        return None
+
+
+def obter_texto(url: str, tentativas: int = TENTATIVAS) -> str:
     ultimo: Exception | None = None
-    for tentativa in range(TENTATIVAS):
+    for tentativa in range(tentativas):
         pedido = urllib.request.Request(url, headers=CABECALHOS)
         try:
             with urllib.request.urlopen(pedido, timeout=TEMPO_LIMITE) as resposta:
@@ -66,8 +86,20 @@ def obter_texto(url: str) -> str:
                 if len(corpo) > MAX_BYTES:
                     raise ErroDeRede(f"resposta demasiado grande: {url}")
                 return corpo.decode(charset, errors="replace")
+        except urllib.error.HTTPError as exc:
+            ultimo = exc
+            if exc.code == 429 and tentativa < tentativas - 1:
+                espera = _espera_declarada(exc) or ESPERA_429[min(tentativa, len(ESPERA_429) - 1)]
+                print(f"    429, a esperar {espera:.0f}s antes de repetir", flush=True)
+                time.sleep(espera)
+                continue
+            # Um 403 ou um 404 nao mudam por se repetir o pedido.
+            if exc.code in (401, 403, 404, 410):
+                break
+            if tentativa < tentativas - 1:
+                time.sleep(2.0 * (tentativa + 1))
         except (urllib.error.URLError, TimeoutError, OSError) as exc:
             ultimo = exc
-            if tentativa < TENTATIVAS - 1:
+            if tentativa < tentativas - 1:
                 time.sleep(2.0 * (tentativa + 1))
     raise ErroDeRede(f"pedido falhou: {url}: {ultimo}")
