@@ -129,6 +129,9 @@ class Fonte:
     # apertar o que conta como URL de artigo; e dois limites que evitam
     # que uma pesquisa mal apertada gere milhares de pedidos.
     busca: tuple[str, ...] = ()
+    # Substitui os termos de deteccao do sujeito na construcao das
+    # consultas desta fonte. Vazio usa os do sujeito.
+    termos_busca: tuple[str, ...] = ()
     dominio: str = ""
     padrao_artigo: str = ""
     max_candidatos: int = 40
@@ -258,6 +261,7 @@ def carregar_config(
             duracao_opcional=bool(f.get("duracao_opcional", False)),
             assumir_parcial=bool(f.get("assumir_parcial", False)),
             busca=tuple(f.get("busca", []) or []),
+            termos_busca=tuple(f.get("termos_busca", []) or []),
             dominio=f.get("dominio", ""),
             padrao_artigo=f.get("padrao_artigo", ""),
             max_candidatos=int(f.get("max_candidatos", 40)),

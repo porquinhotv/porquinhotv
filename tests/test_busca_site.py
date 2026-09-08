@@ -21,7 +21,7 @@ FONTE = Fonte(
 
 
 def obter_falso(url):
-    if "pesquisa" in url:
+    if "pesquisa" in url or "/search" in url:
         return ler("pesquisa_resultados.html")
     if "noticias" in url:
         return ler("artigo_sem_duracao.html")
@@ -88,3 +88,42 @@ class TestBuscaSite(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class TestConsultasEPaginacao(unittest.TestCase):
+    """Duas coisas que a sondagem obrigou a acrescentar."""
+
+    def setUp(self):
+        self.patcher = mock.patch.object(busca_site, "obter_texto", side_effect=obter_falso)
+        self.obter = self.patcher.start()
+        self.addCleanup(self.patcher.stop)
+        mock.patch.object(busca_site.time, "sleep", lambda s: None).start()
+        self.addCleanup(mock.patch.stopall)
+
+    def test_pagina0_conta_a_partir_de_zero(self):
+        """Ha motores que numeram a primeira pagina como zero. Usar
+        {pagina} nesses saltava a primeira pagina de resultados."""
+        f = Fonte(id="m", tipo="busca_site", canal="rtp1", dominio="exemplo.pt",
+                  busca=("https://exemplo.pt/pesquisa?q={termo}&offset={pagina0}",), paginas_max=3)
+        list(busca_site.FonteBuscaSite(f).obter(termos=["Ventura"]))
+        offsets = [c.args[0].split("offset=")[1] for c in self.obter.call_args_list if "offset=" in c.args[0]]
+        self.assertEqual(offsets, ["0", "1", "2"])
+
+    def test_termos_busca_substituem_os_do_sujeito(self):
+        """Num motor externo, tres consultas por canal sao tres vezes mais
+        pedidos sem tres vezes mais resultados."""
+        f = Fonte(id="m", tipo="busca_site", canal="rtp1", dominio="exemplo.pt",
+                  busca=("https://exemplo.pt/pesquisa?q={termo}",), termos_busca=("Nome Completo entrevista",))
+        list(busca_site.FonteBuscaSite(f).obter(termos=["Ventura", "André Ventura", "Andre Ventura"]))
+        pesquisas = [c.args[0] for c in self.obter.call_args_list if "pesquisa" in c.args[0]]
+        self.assertEqual(len(pesquisas), 1)
+        self.assertIn("Nome%20Completo%20entrevista", pesquisas[0])
+
+    def test_ligacoes_sao_do_dominio_alvo_e_nao_do_motor(self):
+        """A prova de cada linha e o endereco do canal, nunca o do motor."""
+        f = Fonte(id="m", tipo="busca_site", canal="rtp1", dominio="exemplo.pt",
+                  busca=("https://motor.externo/search?q={termo}",))
+        itens = list(busca_site.FonteBuscaSite(f).obter(termos=["Ventura"]))
+        self.assertTrue(itens)
+        for i in itens:
+            self.assertTrue(i.prova_url.startswith("https://exemplo.pt/"), i.prova_url)

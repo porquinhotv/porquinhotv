@@ -61,88 +61,141 @@ fontes:
   # corrida de historico corre com --paginas para o subir sem editar
   # isto.
   # ------------------------------------------------------------------
+  # --- Pesquisa do proprio canal, onde ela responde ao servidor -------
+  #
+  # Sondado em 2026-09-08. So a RTP Play e a TVI passam. As restantes
+  # ficam registadas aqui com o motivo, porque saber o que foi tentado e
+  # porque falhou faz parte do metodo e evita voltar a tentar.
+  #
+  #   SIC e SIC Noticias   403 em todos os pedidos, tambem com cabecalho
+  #                        de browser. E a defesa do alojamento a maquinas
+  #                        de datacenter, nao o User-Agent.
+  #   CMTV                 responde 200 e devolve sempre as mesmas 28
+  #                        ligacoes, todas de navegacao, com qualquer
+  #                        parametro de pagina: os resultados sao montados
+  #                        por JavaScript e nao existem no HTML servido.
+  #   CNN Portugal         responde 200 e zero ligacoes de artigo, pela
+  #                        mesma razao. Os termos que aparecem no texto
+  #                        sao o eco da caixa de pesquisa.
+  #   RTP noticias         a pesquisa e Google Custom Search: tudo o que
+  #                        interessa vai depois do # e nunca chega ao
+  #                        servidor.
+  #   NOW                  o site nao tem pesquisa.
+
   - id: busca-rtp1
     tipo: busca_site
     ativa: true
     canal: rtp1
     dominio: rtp.pt
     confianca: media
-    # A RTP Play e servida pelo servidor e responde. Ja produziu emissoes
-    # reais. A pesquisa do site de noticias da RTP nao serve: e Google
-    # Custom Search, tudo o que interessa vai depois do # e nunca chega
-    # ao servidor, por isso um pedido devolve uma pagina vazia.
     busca:
       - https://www.rtp.pt/play/pesquisa?q={termo}
       - https://www.rtp.pt/play/pesquisa?q={termo}%20entrevista
     padrao_artigo: '/play/p[0-9]+/e[0-9]+/'
-    max_candidatos: 200
-    paginas_max: 1
-
-  - id: busca-sic
-    tipo: busca_site
-    ativa: true
-    canal: sic
-    dominio: sic.pt
-    confianca: media
-    busca:
-      - https://sic.pt/pesquisa?q={termo}+entrevista
-    max_candidatos: 200
-    paginas_max: 1
-
-  - id: busca-sic-noticias
-    tipo: busca_site
-    ativa: true
-    canal: sic-noticias
-    dominio: sicnoticias.pt
-    confianca: media
-    busca:
-      - https://sicnoticias.pt/pesquisa?q={termo}+entrevista
-    max_candidatos: 200
+    max_candidatos: 300
     paginas_max: 1
 
   - id: busca-tvi
     tipo: busca_site
     ativa: true
     canal: tvi
-    dominio: iol.pt
+    dominio: tvi.iol.pt
     confianca: media
+    # Confirmado na sondagem: pagina 1 e pagina 2 devolvem ligacoes
+    # diferentes, logo a paginacao e real.
     busca:
       - https://tvi.iol.pt/search?pagina={pagina}&pesquisa={termo}+entrevista
     max_candidatos: 400
     paginas_max: 1
 
-  - id: busca-cnn-portugal
+  # --- Motor de busca externo, para os canais cuja pesquisa nao serve --
+  #
+  # A consulta leva `site:` do dominio do canal, e so entram ligacoes
+  # desse dominio: o motor e um indice para chegar a pagina do canal, e a
+  # prova de cada linha continua a ser o URL do canal, nunca o do motor.
+  #
+  # Sondado em 2026-09-08: de dez motores testados, o Brave foi o unico
+  # que respondeu com resultados utilizaveis a partir da maquina da CI, e
+  # os primeiros que devolveu eram exactamente entrevistas do sujeito na
+  # RTP e na SIC Noticias. Nao exige conta nem chave. O DuckDuckGo
+  # responde mas embrulha os endereços num redireccionamento proprio, por
+  # isso a sondagem nao os contou; fica por esclarecer, nao por excluir.
+  #
+  # `termos_busca` reduz cada canal a uma consulta so: tres consultas por
+  # canal seriam tres vezes mais pedidos a um servico que nos pode
+  # limitar, sem tres vezes mais resultados.
+
+  - id: motor-sic
+    tipo: busca_site
+    ativa: true
+    canal: sic
+    dominio: sic.pt
+    confianca: media
+    termos_busca: ['André Ventura entrevista']
+    busca:
+      - https://search.brave.com/search?q=site%3Asic.pt+{termo}&offset={pagina0}
+    max_candidatos: 200
+    paginas_max: 1
+
+  - id: motor-sic-noticias
+    tipo: busca_site
+    ativa: true
+    canal: sic-noticias
+    dominio: sicnoticias.pt
+    confianca: media
+    termos_busca: ['André Ventura entrevista']
+    busca:
+      - https://search.brave.com/search?q=site%3Asicnoticias.pt+{termo}&offset={pagina0}
+    max_candidatos: 200
+    paginas_max: 1
+
+  - id: motor-cnn-portugal
     tipo: busca_site
     ativa: true
     canal: cnn-portugal
-    dominio: iol.pt
+    dominio: cnnportugal.iol.pt
     confianca: media
+    termos_busca: ['André Ventura entrevista']
     busca:
-      - https://cnnportugal.iol.pt/search?pagina={pagina}&pesquisa={termo}+entrevista
-    max_candidatos: 400
+      - https://search.brave.com/search?q=site%3Acnnportugal.iol.pt+{termo}&offset={pagina0}
+    max_candidatos: 200
     paginas_max: 1
 
-  - id: busca-cmtv
+  - id: motor-cmtv
     tipo: busca_site
     ativa: true
     canal: cmtv
     dominio: cmjornal.pt
     confianca: media
+    termos_busca: ['André Ventura entrevista CMTV']
     busca:
-      - https://www.cmjornal.pt/pesquisa?q={termo}+entrevista
+      - https://search.brave.com/search?q=site%3Acmjornal.pt+{termo}&offset={pagina0}
     padrao_artigo: '/cmtv/'
     max_candidatos: 200
     paginas_max: 1
 
-  # O site do NOW nao tem pesquisa. Fica inativa e registada como tal:
-  # uma fonte que nao existe e um facto do levantamento, nao um esquecimento.
-  - id: busca-now
+  - id: motor-rtp3
     tipo: busca_site
-    ativa: false
+    ativa: true
+    canal: rtp3
+    dominio: rtp.pt
+    confianca: media
+    termos_busca: ['André Ventura entrevista RTP3']
+    busca:
+      - https://search.brave.com/search?q=site%3Artp.pt+{termo}&offset={pagina0}
+    padrao_artigo: '/noticias/'
+    max_candidatos: 200
+    paginas_max: 1
+
+  - id: motor-now
+    tipo: busca_site
+    ativa: true
     canal: now
     dominio: now.pt
     confianca: media
-    busca: []
+    termos_busca: ['André Ventura entrevista']
+    busca:
+      - https://search.brave.com/search?q=site%3Anow.pt+{termo}&offset={pagina0}
     max_candidatos: 200
     paginas_max: 1
 

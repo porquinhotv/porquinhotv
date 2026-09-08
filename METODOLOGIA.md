@@ -76,7 +76,11 @@ As fontes têm uma hierarquia, e ela é deliberada: quando duas cobrem a mesma e
 
 **Uma fonte que foi testada e recusada.** O arquivo da web portuguesa foi ensaiado como fonte para o histórico e devolveu zero resultados para o nome do sujeito no domínio de um canal generalista ao longo de sete anos, o que foi confirmado à mão. Uma fonte que devolve zero onde tem de haver resultados não é uma fonte, e não é usada. Fica registado aqui porque saber o que foi tentado e recusado faz parte do método.
 
-**Motores de busca externos não são usados.** Não por preferência, mas porque respondem a pedidos automáticos com muro de consentimento ou verificação, o que faria da recolha uma coisa que funciona uma vez. A pesquisa do próprio canal é além disso a fonte primária, que é o que esta Metodologia manda procurar primeiro.
+**Motor de busca externo, como índice e nunca como prova.** A pesquisa do próprio canal é a primeira escolha, mas em cinco dos nove canais não serve: dois recusam pedidos automáticos, dois montam os resultados por JavaScript e não os põem na página que o servidor envia, e um não tem pesquisa. Para esses, a consulta passa por um motor de busca externo, restringida ao domínio do canal.
+
+O motor é um índice para chegar à página do canal, e mais nada. A prova de cada linha continua a ser o endereço do canal, que é lido e medido como qualquer outro; nenhum número vem do motor, e uma página que o motor devolva mas que não passe no critério fica na quarentena como todas as outras. Não é exigida conta nem chave.
+
+De dez motores ensaiados em 8 de setembro de 2026, um respondeu com resultados utilizáveis a partir da máquina que corre a recolha. Os outros recusaram o pedido ou devolveram páginas sem resultados. Depender de um serviço que nos pode fechar a porta é uma fragilidade real deste método, e fica dita: se esse motor deixar de responder, os canais que dependem dele deixam de ser cobertos, e isso aparecerá como ausência de emissões novas, não como zero emissões.
 
 A repartição entre o que vem do canal e o que vem da imprensa é publicada, porque é uma medida da qualidade da própria cobertura.
 

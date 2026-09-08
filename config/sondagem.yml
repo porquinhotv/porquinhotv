@@ -63,6 +63,17 @@ grupos:
       - https://cnnportugal.iol.pt/search?pagina=1&pesquisa={termo}
       - https://cnnportugal.iol.pt/search?pagina=2&pesquisa={termo}
 
+  - nome: Paginacao do motor escolhido
+    # A sondagem de 2026-09-08 mostrou que este motor responde. Falta
+    # saber se a paginacao funciona: duas paginas com ligacoes diferentes
+    # sao paginacao, duas paginas iguais nao sao.
+    dominio_alvo: ''
+    hipoteses:
+      - https://search.brave.com/search?q=site%3Asicnoticias.pt+{termo}
+      - https://search.brave.com/search?q=site%3Asicnoticias.pt+{termo}&offset=1
+      - https://search.brave.com/search?q=site%3Asicnoticias.pt+{termo}&offset=2
+      - https://search.brave.com/search?q=site%3Asicnoticias.pt+{termo}&spellcheck=0&offset=1
+
   - nome: Motores de busca alternativos
     # A Google e inutilizavel a partir da CI: responde a maquinas de
     # datacenter com muro de consentimento ou verificacao. A pergunta e

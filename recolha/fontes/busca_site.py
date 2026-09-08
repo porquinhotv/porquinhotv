@@ -52,15 +52,25 @@ class FonteBuscaSite(PluginDeFonte):
         for modelo in self.fonte.busca:
             for termo in termos:
                 for pagina in range(1, max(1, self.fonte.paginas_max) + 1):
-                    url = modelo.replace("{termo}", urllib.parse.quote(termo)).replace("{pagina}", str(pagina))
+                    url = (
+                        modelo.replace("{termo}", urllib.parse.quote(termo))
+                        .replace("{pagina}", str(pagina))
+                        # Alguns motores contam as paginas a partir de zero.
+                        .replace("{pagina0}", str(pagina - 1))
+                    )
                     if url not in urls:
                         urls.append(url)
-                    if "{pagina}" not in modelo:
+                    if "{pagina}" not in modelo and "{pagina0}" not in modelo:
                         break
         return urls
 
     def obter(self, termos: list[str] | None = None, registo: list | None = None) -> Iterable[ItemBruto]:
-        termos = termos or []
+        # `termos_busca` na fonte substitui os termos de deteccao do
+        # sujeito. Serve para as fontes que passam por um motor de busca
+        # externo, onde tres consultas por canal seriam tres vezes mais
+        # pedidos a um servico que nos pode limitar, sem tres vezes mais
+        # resultados: a consulta ja leva o nome completo.
+        termos = list(self.fonte.termos_busca) or termos or []
         if not self.fonte.busca or not self.fonte.dominio:
             return []
 
