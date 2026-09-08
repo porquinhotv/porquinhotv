@@ -1,11 +1,367 @@
 {
  "grupos": [
   {
+   "dominio_alvo": "sic.pt",
+   "hipoteses": [
+    {
+     "erro": "pedido falhou: https://sic.pt/pesquisa?q=ventura+entrevista: HTTP Error 403: HTTP Forbidden",
+     "responde": false,
+     "url": "https://sic.pt/pesquisa?q=ventura+entrevista"
+    },
+    {
+     "erro": "pedido falhou: https://sic.pt/pesquisa?q=ventura+entrevista&pagina=2: HTTP Error 403: HTTP Forbidden",
+     "responde": false,
+     "url": "https://sic.pt/pesquisa?q=ventura+entrevista&pagina=2"
+    },
+    {
+     "erro": "pedido falhou: https://sic.pt/pesquisa?q=ventura+entrevista&page=2: HTTP Error 403: HTTP Forbidden",
+     "responde": false,
+     "url": "https://sic.pt/pesquisa?q=ventura+entrevista&page=2"
+    },
+    {
+     "erro": "pedido falhou: https://sic.pt/pesquisa?q=ventura+entrevista&p=2: HTTP Error 403: HTTP Forbidden",
+     "responde": false,
+     "url": "https://sic.pt/pesquisa?q=ventura+entrevista&p=2"
+    },
+    {
+     "erro": "pedido falhou: https://sic.pt/pesquisa?q=ventura+entrevista&offset=10: HTTP Error 403: HTTP Forbidden",
+     "responde": false,
+     "url": "https://sic.pt/pesquisa?q=ventura+entrevista&offset=10"
+    }
+   ],
+   "nome": "Paginacao dos sites que ja respondem"
+  },
+  {
+   "dominio_alvo": "sicnoticias.pt",
+   "hipoteses": [
+    {
+     "erro": "pedido falhou: https://sicnoticias.pt/pesquisa?q=ventura+entrevista: HTTP Error 403: HTTP Forbidden",
+     "responde": false,
+     "url": "https://sicnoticias.pt/pesquisa?q=ventura+entrevista"
+    },
+    {
+     "erro": "pedido falhou: https://sicnoticias.pt/pesquisa?q=ventura+entrevista&pagina=2: HTTP Error 403: HTTP Forbidden",
+     "responde": false,
+     "url": "https://sicnoticias.pt/pesquisa?q=ventura+entrevista&pagina=2"
+    },
+    {
+     "erro": "pedido falhou: https://sicnoticias.pt/pesquisa?q=ventura+entrevista&page=2: HTTP Error 403: HTTP Forbidden",
+     "responde": false,
+     "url": "https://sicnoticias.pt/pesquisa?q=ventura+entrevista&page=2"
+    },
+    {
+     "erro": "pedido falhou: https://sicnoticias.pt/pesquisa?q=ventura+entrevista&p=2: HTTP Error 403: HTTP Forbidden",
+     "responde": false,
+     "url": "https://sicnoticias.pt/pesquisa?q=ventura+entrevista&p=2"
+    },
+    {
+     "erro": "pedido falhou: https://sicnoticias.pt/pesquisa?q=ventura+entrevista&offset=10: HTTP Error 403: HTTP Forbidden",
+     "responde": false,
+     "url": "https://sicnoticias.pt/pesquisa?q=ventura+entrevista&offset=10"
+    }
+   ],
+   "nome": "Paginacao SIC Noticias"
+  },
+  {
+   "dominio_alvo": "cmjornal.pt",
+   "hipoteses": [
+    {
+     "bytes_html": 91018,
+     "bytes_texto": 4331,
+     "exemplos": [
+      "https://www.cmjornal.pt/mais-cm/especiais/mundial-2026",
+      "https://www.cmjornal.pt/tv-media/boa-onda",
+      "https://www.cmjornal.pt/opiniao/nota-editorial"
+     ],
+     "ligacoes": 28,
+     "responde": true,
+     "termos_presentes": [
+      "Ventura",
+      "André Ventura",
+      "Andre Ventura"
+     ],
+     "url": "https://www.cmjornal.pt/pesquisa?q=ventura+entrevista"
+    },
+    {
+     "bytes_html": 91018,
+     "bytes_texto": 4331,
+     "exemplos": [
+      "https://www.cmjornal.pt/mais-cm/especiais/mundial-2026",
+      "https://www.cmjornal.pt/tv-media/boa-onda",
+      "https://www.cmjornal.pt/opiniao/nota-editorial"
+     ],
+     "ligacoes": 28,
+     "responde": true,
+     "termos_presentes": [
+      "Ventura",
+      "André Ventura",
+      "Andre Ventura"
+     ],
+     "url": "https://www.cmjornal.pt/pesquisa?q=ventura+entrevista&pagina=2"
+    },
+    {
+     "bytes_html": 91018,
+     "bytes_texto": 4331,
+     "exemplos": [
+      "https://www.cmjornal.pt/mais-cm/especiais/mundial-2026",
+      "https://www.cmjornal.pt/tv-media/boa-onda",
+      "https://www.cmjornal.pt/opiniao/nota-editorial"
+     ],
+     "ligacoes": 28,
+     "responde": true,
+     "termos_presentes": [
+      "Ventura",
+      "André Ventura",
+      "Andre Ventura"
+     ],
+     "url": "https://www.cmjornal.pt/pesquisa?q=ventura+entrevista&page=2"
+    },
+    {
+     "bytes_html": 91018,
+     "bytes_texto": 4331,
+     "exemplos": [
+      "https://www.cmjornal.pt/mais-cm/especiais/mundial-2026",
+      "https://www.cmjornal.pt/tv-media/boa-onda",
+      "https://www.cmjornal.pt/opiniao/nota-editorial"
+     ],
+     "ligacoes": 28,
+     "responde": true,
+     "termos_presentes": [
+      "Ventura",
+      "André Ventura",
+      "Andre Ventura"
+     ],
+     "url": "https://www.cmjornal.pt/pesquisa?q=ventura+entrevista&p=2"
+    }
+   ],
+   "nome": "Paginacao CMTV"
+  },
+  {
+   "dominio_alvo": "iol.pt",
+   "hipoteses": [
+    {
+     "bytes_html": 121830,
+     "bytes_texto": 7310,
+     "exemplos": [
+      "https://tvi.iol.pt/doisas10/big-brother/gabriel-sousa/gabriel-sousa-do-big-brother-2024-assume-sentimento-por-david-mauricio-comecou-a-dar-me-os-carinhos-que-precisava",
+      "https://tvi.iol.pt/geral/16-11-2020/miguel-sousa-tavares-entrevista-os-candidatos-as-eleicoes-presidenciais-de-2021",
+      "https://tvi.iol.pt/novo-concurso/inscricoes/a-tvi-vai-estrear-um-novo-concurso-e-as-inscricoes-ja-estao-abertas"
+     ],
+     "ligacoes": 15,
+     "responde": true,
+     "termos_presentes": [
+      "ventura entrevista",
+      "Ventura",
+      "André Ventura",
+      "Andre Ventura"
+     ],
+     "url": "https://tvi.iol.pt/search?pagina=1&pesquisa=ventura+entrevista"
+    },
+    {
+     "bytes_html": 77255,
+     "bytes_texto": 4323,
+     "exemplos": [
+      "https://tvi.iol.pt/novo-concurso/inscricoes/a-tvi-vai-estrear-um-novo-concurso-e-as-inscricoes-ja-estao-abertas",
+      "https://tvi.iol.pt/doisas10/musica/cantor/tragedia-musico-portugues-morre-em-acidente-uma-semana-depois-de-casar",
+      "https://tvi.iol.pt/novelas/coracao-de-mae/joana-solnado/em-dia-de-estreia-joana-solnado-deixa-mensagem-emocionante-a-todas-as-maes-e-a-todas-as-vitimas-e-sobreviventes-de-violencia"
+     ],
+     "ligacoes": 13,
+     "responde": true,
+     "termos_presentes": [
+      "ventura entrevista",
+      "Ventura"
+     ],
+     "url": "https://tvi.iol.pt/search?pagina=2&pesquisa=ventura+entrevista"
+    },
+    {
+     "bytes_html": 108170,
+     "bytes_texto": 5348,
+     "exemplos": [],
+     "ligacoes": 0,
+     "responde": true,
+     "termos_presentes": [
+      "ventura entrevista",
+      "Ventura",
+      "André Ventura",
+      "Andre Ventura"
+     ],
+     "url": "https://cnnportugal.iol.pt/search?pagina=1&pesquisa=ventura+entrevista"
+    },
+    {
+     "bytes_html": 105878,
+     "bytes_texto": 5271,
+     "exemplos": [],
+     "ligacoes": 0,
+     "responde": true,
+     "termos_presentes": [
+      "ventura entrevista",
+      "Ventura",
+      "André Ventura",
+      "Andre Ventura"
+     ],
+     "url": "https://cnnportugal.iol.pt/search?pagina=2&pesquisa=ventura+entrevista"
+    }
+   ],
+   "nome": "Paginacao TVI e CNN (parametro ja conhecido, confirmar que muda)"
+  },
+  {
    "dominio_alvo": "",
    "hipoteses": [
     {
-     "bytes_html": 245307,
-     "bytes_texto": 10303,
+     "erro": "pedido falhou: https://sicnoticias.pt/pais/2023-11-13-A-entrevista-a-Andre-Ventura-947f0b8a: HTTP Error 403: HTTP Forbidden",
+     "responde": false,
+     "url": "https://sicnoticias.pt/pais/2023-11-13-A-entrevista-a-Andre-Ventura-947f0b8a"
+    },
+    {
+     "erro": "pedido falhou: https://sicnoticias.pt/pais/2024-01-13-Andre-Ventura-em-entrevista-a-SIC-Noticias-4b82221c: HTTP Error 403: HTTP Forbidden",
+     "responde": false,
+     "url": "https://sicnoticias.pt/pais/2024-01-13-Andre-Ventura-em-entrevista-a-SIC-Noticias-4b82221c"
+    },
+    {
+     "erro": "pedido falhou: https://sicnoticias.pt/especiais/eleicoes-presidenciais/2025-10-24-andre-ventura-em-entrevista-exclusiva-a-sic-884d8388: HTTP Error 403: HTTP Forbidden",
+     "responde": false,
+     "url": "https://sicnoticias.pt/especiais/eleicoes-presidenciais/2025-10-24-andre-ventura-em-entrevista-exclusiva-a-sic-884d8388"
+    },
+    {
+     "bytes_html": 666,
+     "bytes_texto": 621,
+     "exemplos": [],
+     "ligacoes": 0,
+     "responde": true,
+     "termos_presentes": [],
+     "url": "https://www.cmjornal.pt/robots.txt"
+    },
+    {
+     "bytes_html": 2319,
+     "bytes_texto": 2316,
+     "exemplos": [],
+     "ligacoes": 0,
+     "responde": true,
+     "termos_presentes": [],
+     "url": "https://sic.pt/robots.txt"
+    }
+   ],
+   "nome": "As paginas dos canais respondem, ou nao"
+  },
+  {
+   "dominio_alvo": "",
+   "hipoteses": [
+    {
+     "bytes_html": 2343,
+     "bytes_texto": 2340,
+     "exemplos": [],
+     "ligacoes": 0,
+     "responde": true,
+     "termos_presentes": [],
+     "url": "https://sicnoticias.pt/robots.txt"
+    },
+    {
+     "erro": "pedido falhou: https://sicnoticias.pt/sitemap.xml: HTTP Error 404: Not Found",
+     "responde": false,
+     "url": "https://sicnoticias.pt/sitemap.xml"
+    },
+    {
+     "erro": "pedido falhou: https://sicnoticias.pt/rss: HTTP Error 403: HTTP Forbidden",
+     "responde": false,
+     "url": "https://sicnoticias.pt/rss"
+    },
+    {
+     "erro": "pedido falhou: https://sicnoticias.pt/feed: HTTP Error 403: HTTP Forbidden",
+     "responde": false,
+     "url": "https://sicnoticias.pt/feed"
+    },
+    {
+     "erro": "pedido falhou: https://www.cmjornal.pt/sitemap.xml: HTTP Error 404: Not Found",
+     "responde": false,
+     "url": "https://www.cmjornal.pt/sitemap.xml"
+    },
+    {
+     "bytes_html": 15489,
+     "bytes_texto": 4320,
+     "exemplos": [],
+     "ligacoes": 0,
+     "responde": true,
+     "termos_presentes": [],
+     "url": "https://cnnportugal.iol.pt/sitemap.xml"
+    },
+    {
+     "bytes_html": 593,
+     "bytes_texto": 64,
+     "exemplos": [],
+     "ligacoes": 0,
+     "responde": true,
+     "termos_presentes": [],
+     "url": "https://tvi.iol.pt/sitemap.xml"
+    },
+    {
+     "bytes_html": 364,
+     "bytes_texto": 338,
+     "exemplos": [],
+     "ligacoes": 0,
+     "responde": true,
+     "termos_presentes": [],
+     "url": "https://www.rtp.pt/robots.txt"
+    }
+   ],
+   "nome": "Mapas do site e feeds, que sao servidos para maquinas"
+  },
+  {
+   "dominio_alvo": "",
+   "hipoteses": [
+    {
+     "bytes_html": 26614,
+     "bytes_texto": 5570,
+     "exemplos": [
+      "https://sicnoticias.pt/especiais/eleicoes-presidenciais/2025-10-24-andre-ventura-em-entrevista-exclusiva-a-sic-884d8388",
+      "https://sicnoticias.pt/pais/2025-08-28-video-entrevista-de-andre-ventura-a-sic-noticias-61d623ea",
+      "https://sicnoticias.pt/pais/2025-08-28-andre-ventura-em-entrevista-a-sic-noticias-9e54dfdb"
+     ],
+     "ligacoes": 10,
+     "responde": true,
+     "termos_presentes": [
+      "ventura entrevista",
+      "Ventura",
+      "André Ventura",
+      "Andre Ventura"
+     ],
+     "url": "https://lite.duckduckgo.com/lite/?q=site%3Asicnoticias.pt+ventura+entrevista"
+    },
+    {
+     "bytes_html": 37613,
+     "bytes_texto": 5537,
+     "exemplos": [
+      "https://sicnoticias.pt/especiais/eleicoes-presidenciais/2025-10-24-andre-ventura-em-entrevista-exclusiva-a-sic-884d8388",
+      "https://sicnoticias.pt/pais/2025-08-28-video-entrevista-de-andre-ventura-a-sic-noticias-61d623ea",
+      "https://sicnoticias.pt/pais/2025-08-28-andre-ventura-em-entrevista-a-sic-noticias-9e54dfdb"
+     ],
+     "ligacoes": 10,
+     "responde": true,
+     "termos_presentes": [
+      "ventura entrevista",
+      "Ventura",
+      "André Ventura",
+      "Andre Ventura"
+     ],
+     "url": "https://html.duckduckgo.com/html/?q=site%3Asicnoticias.pt+ventura+entrevista"
+    },
+    {
+     "bytes_html": 14189,
+     "bytes_texto": 305,
+     "exemplos": [],
+     "ligacoes": 0,
+     "responde": true,
+     "termos_presentes": [],
+     "url": "https://lite.duckduckgo.com/lite/?q=site%3Asic.pt+ventura+entrevista"
+    }
+   ],
+   "nome": "Motor que embrulha os enderecos, agora desembrulhados"
+  },
+  {
+   "dominio_alvo": "",
+   "hipoteses": [
+    {
+     "bytes_html": 245362,
+     "bytes_texto": 10334,
      "exemplos": [
       "https://sicnoticias.pt/especiais/eleicoes-presidenciais/2026/2026-02-04-presidenciais-a-entrevista-ao-candidato-andre-ventura-6de21045",
       "https://sicnoticias.pt/especiais/eleicoes-presidenciais/2026/2026-02-04-video-presidenciais-2026-entrevista-completa-de-andre-ventura-na-sic-ca647d3e",
@@ -22,12 +378,12 @@
      "url": "https://search.brave.com/search?q=site%3Asicnoticias.pt+ventura+entrevista"
     },
     {
-     "bytes_html": 249229,
-     "bytes_texto": 11227,
+     "bytes_html": 248988,
+     "bytes_texto": 11150,
      "exemplos": [
       "https://sicnoticias.pt/video/2024-03-21-Quero-ser-primeiro-ministro-o-objetivo-de-Andre-Ventura-que-no-presente-nao-aceita-viabilizar-o-OE-sem-acordo-74ed180d",
       "https://sicnoticias.pt/especiais/eleicoes-presidenciais/2026/2026-01-27-video-o-debate-na-integra-entre-antonio-jose-seguro-e-andre-ventura-535cd329",
-      "https://sicnoticias.pt/especiais/eleicoes-legislativas/2025-05-20-video-ventura-diz-que-vai-liderar-oposicao-e-tera-governo-alternativo-pronto-7378b945"
+      "https://sicnoticias.pt/pais/2026-05-13-luis-montenegro-recebe-andre-ventura-em-sao-bento-c4dbf247"
      ],
      "ligacoes": 20,
      "responde": true,
@@ -40,13 +396,26 @@
      "url": "https://search.brave.com/search?q=site%3Asicnoticias.pt+ventura+entrevista&offset=1"
     },
     {
-     "erro": "pedido falhou: https://search.brave.com/search?q=site%3Asicnoticias.pt+ventura+entrevista&offset=2: HTTP Error 429: Too Many Requests",
-     "responde": false,
+     "bytes_html": 245972,
+     "bytes_texto": 10748,
+     "exemplos": [
+      "https://sicnoticias.pt/pais/2023-11-13-A-entrevista-a-Andre-Ventura-947f0b8a",
+      "https://sicnoticias.pt/pais/2024-01-13-Andre-Ventura-em-entrevista-a-SIC-Noticias-4b82221c",
+      "https://sicnoticias.pt/pais/2025-01-24-video-andre-ventura-em-entrevista-a-sic-sobre-polemica-que-envolve-miguel-arruda-1490e423"
+     ],
+     "ligacoes": 20,
+     "responde": true,
+     "termos_presentes": [
+      "ventura entrevista",
+      "Ventura",
+      "André Ventura",
+      "Andre Ventura"
+     ],
      "url": "https://search.brave.com/search?q=site%3Asicnoticias.pt+ventura+entrevista&offset=2"
     },
     {
-     "bytes_html": 246373,
-     "bytes_texto": 10886,
+     "bytes_html": 246006,
+     "bytes_texto": 10748,
      "exemplos": [
       "https://sicnoticias.pt/pais/2023-11-13-A-entrevista-a-Andre-Ventura-947f0b8a",
       "https://sicnoticias.pt/pais/2024-01-13-Andre-Ventura-em-entrevista-a-SIC-Noticias-4b82221c",
@@ -64,8 +433,104 @@
     }
    ],
    "nome": "Paginacao do motor escolhido"
+  },
+  {
+   "dominio_alvo": "",
+   "hipoteses": [
+    {
+     "bytes_html": 14219,
+     "bytes_texto": 305,
+     "exemplos": [],
+     "ligacoes": 0,
+     "responde": true,
+     "termos_presentes": [],
+     "url": "https://html.duckduckgo.com/html/?q=ventura+entrevista"
+    },
+    {
+     "bytes_html": 14231,
+     "bytes_texto": 305,
+     "exemplos": [],
+     "ligacoes": 0,
+     "responde": true,
+     "termos_presentes": [],
+     "url": "https://lite.duckduckgo.com/lite/?q=ventura+entrevista"
+    },
+    {
+     "erro": "pedido falhou: https://www.mojeek.com/search?q=ventura+entrevista: HTTP Error 403: Forbidden",
+     "responde": false,
+     "url": "https://www.mojeek.com/search?q=ventura+entrevista"
+    },
+    {
+     "bytes_html": 37453,
+     "bytes_texto": 5795,
+     "exemplos": [],
+     "ligacoes": 0,
+     "responde": true,
+     "termos_presentes": [
+      "ventura entrevista",
+      "Ventura"
+     ],
+     "url": "https://search.marginalia.nu/search?query=ventura+entrevista"
+    },
+    {
+     "bytes_html": 85164,
+     "bytes_texto": 2366,
+     "exemplos": [],
+     "ligacoes": 0,
+     "responde": true,
+     "termos_presentes": [],
+     "url": "https://www.startpage.com/sp/search?query=ventura+entrevista"
+    },
+    {
+     "bytes_html": 223393,
+     "bytes_texto": 6916,
+     "exemplos": [
+      "https://www.rtp.pt/play/p16214/e938491/grande-entrevista",
+      "https://sicnoticias.pt/especiais/eleicoes-presidenciais/2026/2026-02-04-video-presidenciais-2026-entrevista-completa-de-andre-ventura-na-sic-ca647d3e",
+      "https://sicnoticias.pt/especiais/eleicoes-presidenciais/2026/2026-02-04-presidenciais-a-entrevista-ao-candidato-andre-ventura-6de21045"
+     ],
+     "ligacoes": 4,
+     "responde": true,
+     "termos_presentes": [
+      "ventura entrevista",
+      "Ventura",
+      "André Ventura",
+      "Andre Ventura"
+     ],
+     "url": "https://search.brave.com/search?q=ventura+entrevista"
+    },
+    {
+     "erro": "pedido falhou: https://www.ecosia.org/search?q=ventura+entrevista: HTTP Error 403: Forbidden",
+     "responde": false,
+     "url": "https://www.ecosia.org/search?q=ventura+entrevista"
+    },
+    {
+     "bytes_html": 11324,
+     "bytes_texto": 670,
+     "exemplos": [],
+     "ligacoes": 0,
+     "responde": true,
+     "termos_presentes": [],
+     "url": "https://searx.be/search?q=ventura+entrevista"
+    },
+    {
+     "bytes_html": 14205,
+     "bytes_texto": 305,
+     "exemplos": [],
+     "ligacoes": 0,
+     "responde": true,
+     "termos_presentes": [],
+     "url": "https://lite.duckduckgo.com/lite/?q=site%3Asicnoticias.pt+ventura+entrevista"
+    },
+    {
+     "erro": "pedido falhou: https://www.mojeek.com/search?q=site%3Asicnoticias.pt+ventura+entrevista: HTTP Error 403: Forbidden",
+     "responde": false,
+     "url": "https://www.mojeek.com/search?q=site%3Asicnoticias.pt+ventura+entrevista"
+    }
+   ],
+   "nome": "Motores de busca alternativos"
   }
  ],
  "termo": "ventura entrevista",
- "verificado_em": "2026-09-08T12:44:48+00:00"
+ "verificado_em": "2026-09-08T13:32:17+00:00"
 }
