@@ -1,0 +1,78 @@
+name: levantamento
+
+# Corre uma vez, a pedido. Sonda as paginas dos nove canais, resolve os
+# handles de YouTube e pergunta ao arquivo.pt o que ha por dominio e ano.
+# Escreve levantamento/ (fora de docs/: nao e publicado no site) e guarda
+# o mesmo como artefacto da corrida.
+
+on:
+  workflow_dispatch:
+    inputs:
+      canal:
+        description: 'So um canal (id de config/porquinho.yml). Vazio corre os nove.'
+        required: false
+        default: ''
+      sem_arquivo:
+        description: 'Nao consultar o arquivo.pt'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: recolha
+  cancel-in-progress: false
+
+jobs:
+  levantar:
+    runs-on: ubuntu-latest
+    env:
+      TZ: UTC
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Testes Python
+        run: python -m unittest discover -s tests -t .
+
+      - name: Levantar
+        run: |
+          args=""
+          if [ -n "${{ github.event.inputs.canal }}" ]; then args="$args --canal ${{ github.event.inputs.canal }}"; fi
+          if [ "${{ github.event.inputs.sem_arquivo }}" = "true" ]; then args="$args --sem-arquivo"; fi
+          python -m ferramentas.levantamento $args
+
+      - name: Guardar como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: levantamento
+          path: levantamento/
+
+      - name: Publicar no repositorio
+        run: |
+          if [ -z "$(git status --porcelain levantamento)" ]; then
+            echo "sem alteracoes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add levantamento
+          git commit -m "levantamento: fontes verificadas em $(date -u +%Y-%m-%d)"
+          for i in 1 2 3 4 5; do
+            if git push; then
+              exit 0
+            fi
+            echo "push rejeitado, a tentar rebase (tentativa $i/5)"
+            git fetch origin main
+            git rebase origin/main || { git rebase --abort; exit 1; }
+            sleep $((i * 3))
+          done
+          echo "nao foi possivel publicar depois de 5 tentativas" >&2
+          exit 1

@@ -2,8 +2,13 @@ name: recolha
 
 on:
   schedule:
-    # 06:20 UTC. Hora sem relacao com o fuso de quem mantem o repositorio.
-    - cron: '20 6 * * *'
+    # As 06:00 de Lisboa. O cron do GitHub e sempre UTC e nao conhece a
+    # hora de verao, por isso ha duas entradas e o job `porta` deixa
+    # passar so a que cai nas 06 de Lisboa (05 UTC no verao, 06 UTC no
+    # inverno). O agendador atrasa habitualmente 5 a 30 minutos, e a
+    # verificacao e por hora inteira para tolerar esse atraso.
+    - cron: '0 5 * * *'
+    - cron: '0 6 * * *'
   workflow_dispatch:
 
 permissions:
@@ -15,7 +20,24 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  porta:
+    runs-on: ubuntu-latest
+    outputs:
+      passa: ${{ steps.hora.outputs.passa }}
+    steps:
+      - id: hora
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "passa=sim" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          hora=$(TZ=Europe/Lisbon date +%H)
+          echo "hora em Lisboa: $hora"
+          if [ "$hora" = "06" ]; then echo "passa=sim" >> "$GITHUB_OUTPUT"; else echo "passa=nao" >> "$GITHUB_OUTPUT"; fi
+
   recolher:
+    needs: porta
+    if: needs.porta.outputs.passa == 'sim'
     runs-on: ubuntu-latest
     env:
       TZ: UTC

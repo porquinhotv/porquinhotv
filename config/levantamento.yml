@@ -1,0 +1,111 @@
+---
+# Levantamento automatico das fontes dos nove canais.
+#
+# Corre uma vez, por workflow_dispatch (.github/workflows/levantamento.yml)
+# ou a mao com `python -m ferramentas.levantamento`. Nao escreve dados do
+# site: escreve levantamento/levantamento.json e levantamento/LEVANTAMENTO.md,
+# uma tabela com nove linhas e data de verificacao, mesmo quando o
+# resultado e "nada encontrado". So depois disto se escrevem adaptadores.
+#
+# Tudo o que aqui esta sao hipoteses a verificar. Um dominio ou um handle
+# que nao responda fica registado como tal; ninguem deve corrigir a mao o
+# resultado, corrige-se esta lista e corre-se outra vez.
+#
+# Por canal:
+#   dominios   dominios do proprio canal, para o arquivo.pt (siteSearch)
+#              e para a hierarquia das fontes (registo do canal primeiro)
+#   paginas    paginas a sondar; `{termo}` e substituido por cada termo de
+#              deteccao do sujeito, o resto e sondado tal como esta
+#   youtube    handles candidatos (sem @); a ferramenta resolve o UC... a
+#              partir da pagina publica, sem conta nem chave
+#
+# Para cada pagina a ferramenta regista: se responde, se o HTML ja traz
+# os termos no titulo, nos metadados (meta, og:, keywords, JSON-LD) ou no
+# corpo, ou se a pagina e vazia sem JavaScript; se ha JSON-LD de video com
+# duracao declarada; feeds anunciados; ids de canal de YouTube.
+#
+# Para cada dominio a ferramenta pergunta ao arquivo.pt quantas paginas
+# arquivadas ha com cada termo, por ano, desde a data de inicio do tema.
+# O arquivo.pt tem API publica, sem chave, e nao e de terceiros de fora
+# da UE. Nao substitui o canal: diz onde vale a pena escavar.
+
+arquivo:
+  api: https://arquivo.pt/textsearch
+  # Maximo de itens por pedido. A API aceita mais, mas basta para contar
+  # por ano e guardar exemplos; os totais vem de estimated_total_results.
+  max_itens: 200
+  # Termos combinados com cada termo de deteccao do sujeito.
+  termos_extra: [entrevista, entrevista exclusiva, grande entrevista]
+  # Pausa entre pedidos, em segundos. Cortesia, nao exigencia.
+  pausa_s: 1.0
+
+# Termos que, alem dos de deteccao do sujeito, se procuram no titulo, nos
+# metadados e no corpo das paginas sondadas.
+termos_formato: [entrevista, entrevista exclusiva, grande entrevista, exclusivo]
+
+canais:
+  - id: rtp1
+    dominios: [rtp.pt]
+    paginas:
+      - https://www.rtp.pt/play/
+      - https://www.rtp.pt/play/pesquisa?q={termo}
+      - https://www.rtp.pt/noticias/
+    youtube: [rtp, RTPPlay]
+
+  - id: rtp2
+    dominios: [rtp.pt]
+    paginas:
+      - https://www.rtp.pt/play/pesquisa?q={termo}
+    youtube: []
+
+  - id: rtp3
+    dominios: [rtp.pt]
+    paginas:
+      - https://www.rtp.pt/play/pesquisa?q={termo}
+      - https://www.rtp.pt/noticias/
+    youtube: [rtpnoticias]
+
+  - id: sic
+    dominios: [sic.pt]
+    paginas:
+      - https://sic.pt/
+      - https://sic.pt/pesquisa?q={termo}
+    youtube: [sic]
+
+  - id: sic-noticias
+    dominios: [sicnoticias.pt]
+    paginas:
+      - https://sicnoticias.pt/
+      - https://sicnoticias.pt/pesquisa?q={termo}
+    youtube: [sicnoticias]
+
+  - id: tvi
+    dominios: [tvi.iol.pt, tviplayer.iol.pt]
+    paginas:
+      - https://tvi.iol.pt/
+      - https://tviplayer.iol.pt/
+      - https://tviplayer.iol.pt/pesquisa/{termo}
+    youtube: [tvi]
+
+  - id: cnn-portugal
+    dominios: [cnnportugal.iol.pt]
+    paginas:
+      - https://cnnportugal.iol.pt/
+      - https://cnnportugal.iol.pt/pesquisa/{termo}
+      - https://cnnportugal.iol.pt/videos
+    youtube: [cnnportugal]
+
+  - id: now
+    dominios: [now.pt, canalnow.pt]
+    paginas:
+      - https://now.pt/
+      - https://canalnow.pt/
+    youtube: [canalnow, nowpt]
+
+  - id: cmtv
+    dominios: [cmtv.pt, cmjornal.pt]
+    paginas:
+      - https://www.cmtv.pt/
+      - https://www.cmjornal.pt/cmtv/
+      - https://www.cmjornal.pt/pesquisa?q={termo}
+    youtube: [cmtv, correiodamanha]

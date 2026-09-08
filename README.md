@@ -29,6 +29,8 @@ python -m http.server -d docs 8000
 
 Antes de ativar uma fonte nova, `python -m ferramentas.descobrir <url>` mostra o que a página anuncia e o que o feed contém.
 
+`python -m ferramentas.levantamento` (ou o workflow `levantamento`, a pedido) sonda as páginas dos nove canais declaradas em `config/levantamento.yml`, resolve os canais de YouTube e conta no arquivo.pt o que existe por domínio e por ano. Escreve `levantamento/`, que não faz parte do site. É o passo antes de qualquer adaptador novo.
+
 ## Contribuir com uma emissão
 
 Acrescentar uma linha a `config/entrevistas.yml` com os campos obrigatórios (`data`, `canal`, `programa`, `prova`) e, sempre que for possível apurá-la, `duracao_s` em segundos, tal como a página do canal a declara. Procurar a duração primeiro; omitir o campo só quando não existir forma pública de a saber. Se a prova for uma peça de imprensa e não o canal, a linha vai para `config/clipping.yml`. Sem URL de prova a linha é rejeitada pela suite de testes.
