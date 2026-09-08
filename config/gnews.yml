@@ -103,14 +103,22 @@ canais_por_texto:
   cnn-portugal: [CNN Portugal, CNN]
   now: [NOW, canal NOW]
   cmtv: [CMTV]
+# Dominios que servem como prova. O grupo Media Capital serve os mesmos
+# videos em varios dominios, e o leitor (`tviplayer`) e um deles: sem o
+# declarar, uma prova legitima era recusada como imprensa.
+#
+# Atencao ao `rtp.pt`: serve os tres canais da RTP e a pagina do Play
+# declara "RTP Notícias", que e a RTP3. Quando a emissao tambem passou na
+# RTP1, o canal escreve-se a mao na coluna `canal` da triagem; o dominio
+# so decide quando ninguem decidiu.
 canais_por_dominio:
   rtp3: [rtp.pt]
   sic: [sic.pt]
   sic-noticias: [sicnoticias.pt]
-  tvi: [tvi.iol.pt]
+  tvi: [tvi.iol.pt, tviplayer.iol.pt]
   cnn-portugal: [cnnportugal.iol.pt]
   now: [nowcanal.pt]
-  cmtv: [cmjornal.pt]
+  cmtv: [cmjornal.pt, cmtv.pt]
 
 # Palavras no titulo que indicam formato. So indicam: a triagem e feita
 # por uma pessoa, com a pagina do canal aberta.

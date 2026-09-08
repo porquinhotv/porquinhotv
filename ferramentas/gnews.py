@@ -3,6 +3,7 @@
     python -m ferramentas.gnews --saida D:\\porquinho-local
     python -m ferramentas.gnews --saida D:\\porquinho-local --triar
     python -m ferramentas.gnews --saida D:\\porquinho-local --verificar
+    python -m ferramentas.gnews --saida D:\\porquinho-local --emitir
     python -m ferramentas.gnews --saida D:\\porquinho-local --resolver
     python -m ferramentas.gnews --saida D:\\porquinho-local --desde 2024-01-01
 
@@ -41,6 +42,7 @@ import json
 import re
 import sys
 import time
+import unicodedata
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -51,7 +53,7 @@ from pathlib import Path
 import yaml
 
 from recolha import extracao
-from recolha.modelos import RAIZ, carregar_config, contem_palavra
+from recolha.modelos import FICHEIRO_ENTREVISTAS, RAIZ, carregar_config, contem_palavra
 from recolha.rede import CABECALHOS, ErroDeRede, TEMPO_LIMITE, obter_texto
 
 FICHEIRO = RAIZ / "config" / "gnews.yml"
@@ -615,7 +617,7 @@ def verificar_pagina(config: dict, html_texto: str, url: str, sujeito) -> dict:
         "duracao_na_pagina": "" if not duracao else str(duracao),
         "programa_na_pagina": programa_do_titulo(config, dados.get("titulo") or ""),
         "data_na_pagina": dados.get("publicado_em", "") or "",
-        "titulo_na_pagina": " ".join((dados.get("titulo") or "").split())[:200],
+        "titulo_na_pagina": " ".join(html.unescape(dados.get("titulo") or "").split())[:200],
     }
 
 
@@ -646,6 +648,7 @@ def verificar(config: dict, pasta: Path, sujeito=None, obter=obter_texto, dormir
             print(f"  {i}/{len(linhas)}  sem ligacao", flush=True)
             dormir(pausa)
             continue
+        linha["prova_url"] = linha.get("prova_url") or url
         try:
             html_texto = obter(url)
         except ErroDeRede as exc:
@@ -655,7 +658,6 @@ def verificar(config: dict, pasta: Path, sujeito=None, obter=obter_texto, dormir
             dormir(pausa)
             continue
         linha.update(verificar_pagina(config, html_texto, url, sujeito))
-        linha["prova_url"] = linha.get("prova_url") or url
         resumo["visitadas"] += 1
         if linha["sujeito_na_pagina"] == "sim":
             resumo["com_sujeito"] += 1
@@ -674,6 +676,121 @@ def verificar(config: dict, pasta: Path, sujeito=None, obter=obter_texto, dormir
     return resumo
 
 
+# --- geracao do registo curado ---------------------------------------------
+
+
+def canal_da_prova(config: dict, url: str) -> str:
+    return canal_por_dominio(config, urllib.parse.urlsplit(url).hostname or "")
+
+
+def decidida_sim(linha: dict) -> bool:
+    """Aceita `sim` como for escrito, com ou sem acentos e maiusculas.
+
+    A recusa escreve-se de varias maneiras (`nao`, `não`, `n`) e nao ha
+    forma segura de as prever todas; por isso a regra e o contrario:
+    so entra o que diz sim, e tudo o resto fica de fora. Erro por
+    defeito, que e a regra do projeto.
+    """
+    valor = unicodedata.normalize("NFKD", (linha.get("decisao") or "").strip().lower())
+    return "".join(c for c in valor if not unicodedata.combining(c)) == "sim"
+
+
+def emitir(config: dict, pasta: Path, canais_validos: set[str]) -> tuple[list[dict], list[str]]:
+    """Converte as decisoes da triagem em linhas do registo curado.
+
+    Agrupa por (canal, data): varias linhas da triagem sao a mesma
+    emissao vista por fontes diferentes, e uma emissao entra uma vez. O
+    simulcast fica agrupado por `mesma_entrevista`, que e a data: canais
+    diferentes no mesmo dia sao duas emissoes com a mesma chave, que e
+    exatamente a decisao editorial 3.
+
+    Recusa e nao adivinha:
+      - sem `sim` na decisao, fica de fora;
+      - prova fora dos nove canais, fica de fora com aviso. Uma peca de
+        imprensa sobre a entrevista nao e a emissao, e a regra de que a
+        prova e sempre o endereco do canal existe para isso;
+      - sem duracao, a linha entra sem `duracao_s`. Conta como emissao e
+        nunca como tempo. Nunca zero, nunca estimativa.
+    """
+    caminho = pasta / "triagem.csv"
+    with caminho.open(encoding="utf-8-sig", newline="") as f:
+        linhas = list(csv.DictReader(f))
+
+    avisos: list[str] = []
+    blocos: dict[tuple[str, str], dict] = {}
+    for linha in linhas:
+        if not decidida_sim(linha):
+            continue
+        prova = (linha.get("prova_url") or "").strip()
+        canal = (linha.get("canal") or "").strip() or canal_da_prova(config, prova)
+        # A folha de calculo reescreve qualquer coluna que pareca uma
+        # data: 2024-03-20 volta como 20/03/2024. Cortar dez caracteres
+        # escreveria essa forma no registo e o coletor rejeitava-a. Le-se
+        # com a mesma funcao que le as datas dos sites.
+        data = extracao.data_para_iso(linha.get("data_na_pagina") or "") or extracao.data_para_iso(linha.get("data") or "")
+        if not data:
+            avisos.append(f"{linha.get('titulo', '')[:60]}: data ilegivel ({linha.get('data', '')!r})")
+            continue
+        if canal not in canais_validos:
+            avisos.append(f"{data} {linha.get('titulo', '')[:60]}: prova fora dos nove canais ({prova[:60]})")
+            continue
+        if not prova.startswith("http"):
+            avisos.append(f"{data} {linha.get('titulo', '')[:60]}: sem prova")
+            continue
+        duracao = (linha.get("duracao") or linha.get("duracao_na_pagina") or "").strip()
+        programa = (linha.get("programa") or linha.get("programa_na_pagina") or "").strip()
+        novo = {
+            "data": data,
+            "canal": canal,
+            "programa": programa or "não apurado",
+            "prova": prova,
+            # Titulos colhidos antes de a leitura desfazer as entidades
+            # ficaram com `&#233;` em vez de `é`. Desfazer aqui evita
+            # obrigar a repetir a verificacao inteira so por causa disso.
+            "titulo": html.unescape((linha.get("titulo_na_pagina") or linha.get("titulo") or "").strip()),
+            "mesma_entrevista": data,
+        }
+        if duracao.isdigit() and int(duracao) > 0:
+            novo["duracao_s"] = int(duracao)
+
+        chave = (canal, data)
+        antigo = blocos.get(chave)
+        if antigo is None:
+            blocos[chave] = novo
+            continue
+        # Entre duas linhas do mesmo bloco fica a que tem duracao apurada,
+        # e entre duas com duracao a mais longa: a curta e tipicamente um
+        # recorte da mesma emissao. E a mesma regra do coletor.
+        if novo.get("duracao_s", 0) > antigo.get("duracao_s", 0):
+            blocos[chave] = novo
+
+    # Por data e depois por canal: o ficheiro le-se como uma cronologia,
+    # que e como quem contesta um numero o vai percorrer.
+    ordenadas = sorted(blocos.values(), key=lambda l: (l["data"], l["canal"]))
+    # A chave de simulcast so faz sentido quando ha mais do que um canal
+    # no mesmo dia; sozinha nao agrupa nada e so poluia o ficheiro.
+    por_data: dict[str, int] = {}
+    for linha in ordenadas:
+        por_data[linha["data"]] = por_data.get(linha["data"], 0) + 1
+    for linha in ordenadas:
+        if por_data[linha["data"]] < 2:
+            linha.pop("mesma_entrevista", None)
+    return ordenadas, avisos
+
+
+def escrever_registo(entrevistas: list[dict], caminho: Path) -> None:
+    """Reescreve config/entrevistas.yml, preservando o cabecalho.
+
+    O cabecalho documenta os campos e e a primeira coisa que ve quem
+    abrir o ficheiro para contestar um numero.
+    """
+    texto = caminho.read_text(encoding="utf-8")
+    marca = "\nentrevistas:"
+    cabecalho = texto.split(marca)[0]
+    corpo = yaml.safe_dump({"entrevistas": entrevistas}, allow_unicode=True, sort_keys=False, width=1000)
+    caminho.write_text(cabecalho + "\n" + corpo, encoding="utf-8", newline="\n")
+
+
 # --- entrada -----------------------------------------------------------------
 
 
@@ -683,6 +800,7 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--desde", help="AAAA-MM-DD; por omissao o inicio do tema")
     parser.add_argument("--ate", help="AAAA-MM-DD; por omissao hoje")
     parser.add_argument("--triar", action="store_true", help="reduzir a colheita a uma lista para decidir")
+    parser.add_argument("--emitir", action="store_true", help="escrever config/entrevistas.yml a partir das decisoes")
     parser.add_argument("--verificar", action="store_true", help="ler a pagina do canal de cada candidato triado")
     parser.add_argument("--resolver", action="store_true", help="seguir as ligacoes dos candidatos triados ate ao destino")
     parser.add_argument("--limite", type=int, help="com --resolver: parar ao fim de N ligacoes, para sondar")
@@ -691,7 +809,14 @@ def main(argv: list[str]) -> int:
 
     config = carregar()
     pasta = pasta_de_saida(args.saida)
-    if args.verificar:
+    if args.emitir:
+        editorial = carregar_config()
+        entrevistas, avisos = emitir(config, pasta, set(editorial.canais))
+        for aviso in avisos:
+            print(f"  fora: {aviso}", flush=True)
+        escrever_registo(entrevistas, FICHEIRO_ENTREVISTAS)
+        resumo = {"emissoes": len(entrevistas), "fora": len(avisos)}
+    elif args.verificar:
         print(f"a verificar candidatos de {pasta}", flush=True)
         resumo = verificar(config, pasta)
     elif args.triar:
