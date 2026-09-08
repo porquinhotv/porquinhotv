@@ -281,22 +281,25 @@ def correr(
         if so_canal and cid != so_canal:
             continue
         if not tema.canal_valido(cid):
-            print(f"AVISO canal desconhecido em levantamento.yml: {cid}", file=sys.stderr)
+            print(f"AVISO canal desconhecido em levantamento.yml: {cid}", file=sys.stderr, flush=True)
             continue
         linha = {"canal": cid, "nome": tema.canais[cid].nome, "paginas": [], "youtube": [], "arquivo": {}}
 
         for modelo in canal.get("paginas") or []:
             urls = [modelo.format(termo=urllib.parse.quote(t)) for t in termos_sujeito] if "{termo}" in modelo else [modelo]
             for url in urls:
+                print(f"  {cid}: a sondar {url}", flush=True)
                 html, erro = _sondar(url, obter)
                 if html is None:
                     linha["paginas"].append({"url": url, "responde": False, "erro": erro})
+                    print(f"  {cid}: nao respondeu ({erro})", flush=True)
                 else:
                     linha["paginas"].append({"url": url, "responde": True, **analisar_html(html, termos)})
                 dormir(pausa)
 
         for handle in canal.get("youtube") or []:
             if handle not in cache_yt:
+                print(f"  {cid}: a resolver YouTube @{handle}", flush=True)
                 html, erro = _sondar(PAGINA_YT.format(handle=handle), obter)
                 uc = id_de_canal_youtube(html) if html else None
                 cache_yt[handle] = {"handle": handle, "channel_id": uc, "feed": FEED_YT.format(id=uc) if uc else None, "erro": erro}
@@ -311,10 +314,12 @@ def correr(
                 for consulta in consultas:
                     chave = (dominio, consulta)
                     if chave not in cache_arquivo:
+                        print(f"  {cid}: arquivo.pt {dominio} \"{consulta}\"", flush=True)
                         url = url_arquivo(arquivo["api"], consulta, dominio, desde, ate, int(arquivo.get("max_itens", 200)))
                         texto, erro = _sondar(url, obter)
                         if texto is None:
                             cache_arquivo[chave] = {"erro": erro}
+                            print(f"  {cid}: arquivo.pt {dominio} falhou ({erro})", flush=True)
                         else:
                             try:
                                 cache_arquivo[chave] = ler_resposta_arquivo(texto)
@@ -325,7 +330,7 @@ def correr(
                 linha["arquivo"][dominio] = por_termo
 
         resultado["canais"].append(linha)
-        print(f"{cid}: {len(linha['paginas'])} paginas, {len(linha['youtube'])} handles, {len(linha['arquivo'])} dominios")
+        print(f"{cid}: {len(linha['paginas'])} paginas, {len(linha['youtube'])} handles, {len(linha['arquivo'])} dominios", flush=True)
 
     return resultado
 
@@ -415,7 +420,7 @@ def main(argv: list[str]) -> int:
     args = parser.parse_args(argv)
     resultado = correr(carregar(), so_canal=args.canal, com_arquivo=not args.sem_arquivo)
     escrever(resultado)
-    print(f"escrito em {PASTA_SAIDA}")
+    print(f"escrito em {PASTA_SAIDA}", flush=True)
     return 0
 
 

@@ -27,8 +27,18 @@ concurrency:
 jobs:
   levantar:
     runs-on: ubuntu-latest
+    # Limite de seguranca: o pior caso teorico (falhas a repetir 3
+    # tentativas de 30s em muitos dos ~170 pedidos) fica perto de 4h30.
+    # 45 minutos chega para uma corrida saudavel e evita gastar minutos
+    # de Actions numa corrida presa por engano.
+    timeout-minutes: 45
     env:
       TZ: UTC
+      # Sem isto, a saida do Python fica em buffer de bloco num pipe (o
+      # log do Actions nao e um terminal) e o log pode ficar em branco
+      # minutos a fio mesmo a correr bem. Os prints ja tem flush=True,
+      # isto e um segundo cinto de seguranca.
+      PYTHONUNBUFFERED: '1'
     steps:
       - uses: actions/checkout@v4
 
