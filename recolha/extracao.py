@@ -243,6 +243,29 @@ def extrair(html: str, url: str = "") -> dict:
     }
 
 
+def _desembrulhar(url: str) -> str:
+    """Endereco real de dentro de um redireccionamento, quando existe.
+
+    Ha paginas que nao ligam directamente ao destino: poem o endereco
+    verdadeiro num parametro do seu proprio URL de saida. Sem desfazer
+    isso, uma pagina cheia de resultados uteis parece nao ter nenhum,
+    porque nenhuma ligacao pertence ao dominio que se procura.
+
+    Generico de proposito: qualquer parametro cujo valor seja um endereco
+    http serve, sem nomear nenhum servico.
+    """
+    from urllib.parse import parse_qs, urlparse
+
+    partes = urlparse(url)
+    if not partes.query:
+        return url
+    for valores in parse_qs(partes.query).values():
+        for valor in valores:
+            if valor.startswith(("http://", "https://")):
+                return valor
+    return url
+
+
 def ligacoes(html: str, base: str, dominio: str, padrao: str = "") -> list[str]:
     """URLs candidatos a artigo, do mesmo dominio, pela ordem da pagina.
 
@@ -252,7 +275,7 @@ def ligacoes(html: str, base: str, dominio: str, padrao: str = "") -> list[str]:
     segmentos e um slug com hifen, que e a forma de praticamente todos os
     URL de artigo e exclui a navegacao.
     """
-    from urllib.parse import urljoin, urlparse
+    from urllib.parse import parse_qs, urljoin, urlparse
 
     compilado = re.compile(padrao) if padrao else None
     saida: list[str] = []
@@ -261,7 +284,7 @@ def ligacoes(html: str, base: str, dominio: str, padrao: str = "") -> list[str]:
         alvo = html_mod.unescape(bruto).strip()
         if alvo.startswith(("mailto:", "tel:", "javascript:")):
             continue
-        completo = urljoin(base, alvo)
+        completo = _desembrulhar(urljoin(base, alvo))
         partes = urlparse(completo)
         if partes.scheme not in ("http", "https"):
             continue

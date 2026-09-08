@@ -16,7 +16,11 @@ from recolha import rede
 
 
 def _http_error(codigo, cabecalhos=None):
-    return urllib.error.HTTPError("https://exemplo.pt/x", codigo, "erro", cabecalhos or {}, None)
+    """HTTPError e um objecto de ficheiro: sem o fechar, o Python avisa
+    com um ResourceWarning no meio da saida dos testes."""
+    erro = urllib.error.HTTPError("https://exemplo.pt/x", codigo, "erro", cabecalhos or {}, None)
+    erro.close()
+    return erro
 
 
 class TestRepeticao(unittest.TestCase):

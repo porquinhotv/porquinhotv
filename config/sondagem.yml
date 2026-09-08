@@ -63,6 +63,47 @@ grupos:
       - https://cnnportugal.iol.pt/search?pagina=1&pesquisa={termo}
       - https://cnnportugal.iol.pt/search?pagina=2&pesquisa={termo}
 
+  - nome: As paginas dos canais respondem, ou nao
+    # A pergunta decisiva. O motor de busca ja nos deu enderecos reais de
+    # artigos da SIC Noticias, mas nunca chegamos a pedir nenhum deles: os
+    # pedidos de pesquisa levaram 429 antes disso. Se as paginas de artigo
+    # tambem recusarem, nenhuma estrategia de indice serve para esse canal,
+    # e e melhor saber ja do que depois de outra corrida longa.
+    dominio_alvo: ''
+    hipoteses:
+      - https://sicnoticias.pt/pais/2023-11-13-A-entrevista-a-Andre-Ventura-947f0b8a
+      - https://sicnoticias.pt/pais/2024-01-13-Andre-Ventura-em-entrevista-a-SIC-Noticias-4b82221c
+      - https://sicnoticias.pt/especiais/eleicoes-presidenciais/2025-10-24-andre-ventura-em-entrevista-exclusiva-a-sic-884d8388
+      - https://www.cmjornal.pt/robots.txt
+      - https://sic.pt/robots.txt
+
+  - nome: Mapas do site e feeds, que sao servidos para maquinas
+    # Um sitemap e um feed existem para serem lidos por programas, nao
+    # apesar disso. Se responderem, sao melhor fonte do que qualquer
+    # motor de busca: nao ha limite de ritmo, nao ha intermediario, e o
+    # sitemap de noticias costuma cobrir anos.
+    dominio_alvo: ''
+    hipoteses:
+      - https://sicnoticias.pt/robots.txt
+      - https://sicnoticias.pt/sitemap.xml
+      - https://sicnoticias.pt/rss
+      - https://sicnoticias.pt/feed
+      - https://www.cmjornal.pt/sitemap.xml
+      - https://cnnportugal.iol.pt/sitemap.xml
+      - https://tvi.iol.pt/sitemap.xml
+      - https://www.rtp.pt/robots.txt
+
+  - nome: Motor que embrulha os enderecos, agora desembrulhados
+    # A sondagem anterior contou zero ligacoes neste motor porque ele nao
+    # liga directamente ao destino: poe o endereco verdadeiro num
+    # parametro do seu proprio URL de saida. Isso ja e desfeito, por isso
+    # a contagem desta vez diz o que ele devolve mesmo.
+    dominio_alvo: ''
+    hipoteses:
+      - https://lite.duckduckgo.com/lite/?q=site%3Asicnoticias.pt+{termo}
+      - https://html.duckduckgo.com/html/?q=site%3Asicnoticias.pt+{termo}
+      - https://lite.duckduckgo.com/lite/?q=site%3Asic.pt+{termo}
+
   - nome: Paginacao do motor escolhido
     # A sondagem de 2026-09-08 mostrou que este motor responde. Falta
     # saber se a paginacao funciona: duas paginas com ligacoes diferentes

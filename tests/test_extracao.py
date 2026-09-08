@@ -113,3 +113,30 @@ class TestLigacoes(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class TestRedireccionamentos(unittest.TestCase):
+    """Ha paginas que nao ligam ao destino: poem o endereco verdadeiro num
+    parametro do seu proprio URL de saida. Sem desfazer isso, uma pagina
+    cheia de resultados uteis parece nao ter nenhum."""
+
+    def test_endereco_dentro_do_parametro(self):
+        html = '<a href="//saida.exemplo/l/?uddg=https%3A%2F%2Falvo.pt%2Fnoticias%2Fuma-peca&rut=x">r</a>'
+        self.assertEqual(
+            extracao.ligacoes(html, "https://saida.exemplo/q", "alvo.pt"),
+            ["https://alvo.pt/noticias/uma-peca"],
+        )
+
+    def test_ligacao_directa_continua_a_funcionar(self):
+        html = '<a href="https://alvo.pt/noticias/uma-peca">r</a>'
+        self.assertEqual(
+            extracao.ligacoes(html, "https://alvo.pt/", "alvo.pt"),
+            ["https://alvo.pt/noticias/uma-peca"],
+        )
+
+    def test_parametro_sem_endereco_nao_altera_nada(self):
+        html = '<a href="https://alvo.pt/noticias/uma-peca?ref=homepage">r</a>'
+        self.assertEqual(
+            extracao.ligacoes(html, "https://alvo.pt/", "alvo.pt"),
+            ["https://alvo.pt/noticias/uma-peca?ref=homepage"],
+        )
