@@ -53,7 +53,7 @@
       var daImprensa = emissoes.filter(function (e) { return e.origem === "imprensa"; }).length;
       if (semDuracao || daImprensa) {
         var notas = [];
-        if (daImprensa) { notas.push(daImprensa + " " + (daImprensa === 1 ? "emissão está provada" : "emissões estão provadas") + " por peças de imprensa, porque o canal não as publicou ou já as retirou"); }
+        if (daImprensa) { notas.push(daImprensa + " " + (daImprensa === 1 ? "emissão está provada" : "emissões estão provadas") + " por peças de imprensa que relatam a entrevista, e não pela página do canal; provam que existiu e quando, não a duração"); }
         if (semDuracao) { notas.push("em " + semDuracao + " " + (semDuracao === 1 ? "delas" : "casos") + " não foi possível apurar a duração, e por isso não contam no tempo"); }
         alvo.appendChild(el("p", { class: "legenda-secao", text: notas.join("; ") + "." }));
       }

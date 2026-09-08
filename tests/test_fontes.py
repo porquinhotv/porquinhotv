@@ -127,7 +127,7 @@ class TestConfig(unittest.TestCase):
         self.assertGreater(
             [f.id for f in config.fontes].index("clipping-imprensa"),
             [f.id for f in config.fontes].index("registo-curado"),
-            "o clipping e o ultimo recurso e tem de correr depois do registo do canal",
+            "a prova do canal e melhor do que a da imprensa e tem de correr primeiro",
         )
 
 

@@ -55,6 +55,20 @@ class TestExtrair(unittest.TestCase):
         self.assertTrue(r["e_video"])
         self.assertIn("Pessoa Exemplo", r["titulo"])
 
+    def test_apostrofo_dentro_do_content_nao_corta_o_valor(self):
+        """Uma peca de jornal escreve `esteve no 'Grande Jornal' da CMTV`
+        no lead, com aspas simples dentro de aspas duplas. A leitura parava
+        na primeira aspa de qualquer tipo e devolvia "esteve no": a palavra
+        que provava o formato e o nome do programa caiam fora em silencio.
+        Visto a 2026-09-08 numa pagina real."""
+        pagina = (
+            '<meta property="og:description" content="Esteve esta segunda-feira no \'Grande Programa\' numa entrevista exclusiva.">'
+            "<meta name='og:title' content='Titulo com \"aspas\" duplas dentro'>"
+        )
+        m = extracao.metadados(pagina)
+        self.assertEqual(m["og:description"], "Esteve esta segunda-feira no 'Grande Programa' numa entrevista exclusiva.")
+        self.assertEqual(m["og:title"], 'Titulo com "aspas" duplas dentro')
+
     def test_artigo_sem_duracao(self):
         r = extracao.extrair(ler("artigo_sem_duracao.html"), "https://exemplo.pt/b")
         self.assertIsNone(r["duracao_s"])

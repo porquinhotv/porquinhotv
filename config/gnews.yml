@@ -126,3 +126,43 @@ marcadores_formato:
   entrevista: [entrevista, entrevistado, entrevistada, entrevistas]
   debate: [debate, frente a frente, frente-a-frente]
   declaracao: [declarações, declaracoes, reage, reação, reacao]
+
+# Prova de imprensa (`--emitir --imprensa`). Uma peca de um jornal prova
+# que a entrevista existiu e em que dia, e mais nada: nao prova a
+# duracao. Vai para config/clipping.yml, que o coletor le com `origem:
+# imprensa`, e o site mostra a origem ao lado de cada linha. As regras
+# aqui sao as que qualquer pessoa verifica abrindo a peca; cada recusa
+# fica escrita com o motivo no ecra.
+#
+# Todas as listas casam por palavra inteira e sem acentos, por isso basta
+# uma forma de cada termo.
+imprensa:
+  # Verbos de relato. Uma peca que relata a entrevista escreve "esteve",
+  # "disse", "garantiu"; uma que a anuncia escreve "vai estar", "dara",
+  # "sera as 20h". Sem um verbo destes a peca nao esta a relatar nada e a
+  # linha espera por uma pessoa. "Esta" nao entra de proposito: sem
+  # acentos e igual ao demonstrativo de "esta segunda-feira".
+  relato: [esteve, disse, afirmou, afirma, garante, garantiu, considerou, considera,
+           defendeu, defende, revelou, revela, admite, admitiu, acusa, acusou, diz,
+           critica, criticou, justifica, justificou, respondeu, responde, recusa, recusou,
+           deu, concedeu, falou, fala, reconhece, reconheceu, lamenta, lamentou]
+  # Marcas de anuncio. Uma peca com uma destas fala de uma entrevista que
+  # ainda nao aconteceu quando foi escrita. So entra se uma pessoa
+  # escrever `data_emissao`, que e a forma de dizer que confirmou.
+  anuncio: [vai estar, vai dar, dará, não perca, amanhã, hora marcada, na próxima, será às, sera as]
+  # Como a peca fixa o dia, lido contra a data de publicacao. A ordem de
+  # leitura e esta: ontem, dia da semana, hoje.
+  ontem: [ontem, na noite de ontem, ontem à noite]
+  hoje: [hoje, esta noite, esta tarde, esta manhã, em direto, agora]
+  # Dia da semana e o mais recente com esse nome ate ao dia da publicacao,
+  # inclusive: "esteve esta segunda-feira" numa peca de terca e a vespera;
+  # numa peca de segunda e o proprio dia. Indice como o de Python, segunda
+  # a zero.
+  dias_da_semana:
+    segunda-feira: 0
+    terça-feira: 1
+    quarta-feira: 2
+    quinta-feira: 3
+    sexta-feira: 4
+    sábado: 5
+    domingo: 6

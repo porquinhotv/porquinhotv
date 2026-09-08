@@ -1,27 +1,41 @@
 ---
-# Clipping de imprensa. Ultimo recurso.
+# Clipping de imprensa. Prova de que a emissao existiu, e de quando.
 #
-# Uma linha por emissao que a imprensa escrita noticiou e que o canal nao
-# publicou, ou ja retirou. A `prova` e o URL da peca, e a peca tem de
-# dizer, por palavras, que naquele dia houve uma entrevista exclusiva ao
-# sujeito naquele canal. Uma peca que apenas cite declaracoes nao serve.
+# Uma linha por emissao provada por uma peca de imprensa. A `prova` e o
+# URL da peca, e a peca tem de cumprir quatro condicoes, que quem abrir a
+# ligacao consegue verificar:
+#   1. nomeia o canal ("em entrevista a CMTV", nao "a televisao");
+#   2. diz entrevista, e nao debate nem declaracoes;
+#   3. fixa o dia da emissao (data, "ontem", "esta segunda-feira");
+#   4. relata a entrevista, nao a anuncia. Um anuncio ("da hoje
+#      entrevista as 19h") so serve com uma segunda peca ou a pagina do
+#      canal a confirmar que aconteceu.
 #
-# Formato igual a config/entrevistas.yml. A duracao procura-se sempre,
-# tambem aqui; se a peca nao a der e nao houver outra forma de a apurar,
-# omitir o campo. A emissao conta como evento, nunca como tempo, e o site
-# mostra "duração não apurada" ao lado.
+# Ate 2026-09-08 esta fonte era o ultimo recurso, para o que o canal nao
+# publicara. Deixou de ser: seis dos nove canais nao respondem a uma
+# maquina e titulam as pecas com a citacao, e a imprensa e muitas vezes o
+# unico rasto publico de que a entrevista existiu. O que nao mudou: a
+# peca prova o evento, nao a duracao. Se a peca ou o canal a declararem,
+# escreve-se; senao omite-se o campo, a emissao conta como evento e nunca
+# como tempo, e o site escreve "duração não apurada" e "(imprensa)" ao
+# lado. A reparticao entre provas do canal e da imprensa e publicada.
+#
+# `data` e o dia da emissao; `publicado_em` e o dia da peca, quando e
+# outro. Confundir os dois desloca a emissao um dia.
 #
 # Regra: se a mesma emissao aparecer aqui e em config/entrevistas.yml,
 # fica a do canal, e esta vai para a quarentena como fragmento_ou_repetido.
-# Nao ha duplicacao, mas tambem nao vale a pena escrever as duas.
+# `python -m ferramentas.gnews --emitir --imprensa` escreve este ficheiro
+# a partir da triagem e ja salta o que o registo do canal tem.
 #
 # Exemplo (apagar quando houver linhas reais):
 #
 #   - data: 2021-03-15
 #     canal: cmtv
-#     programa: Entrevista CMTV
+#     programa: Grande Jornal
 #     prova: https://exemplo.pt/noticia-que-relata-a-entrevista
 #     titulo: Entrevista relatada pela imprensa
-#     duracao_s: 1500          # so se a peca ou o canal a declararem
+#     publicado_em: 2021-03-16   # so se for outro dia
+#     duracao_s: 1500            # so se a peca ou o canal a declararem
 
 entrevistas: []

@@ -5,9 +5,9 @@
 #   manual        registo verificado a mao, com prova (URL) em cada linha.
 #                 Ha duas: o registo do canal (config/entrevistas.yml),
 #                 que e a fonte principal, e o clipping de imprensa
-#                 (config/clipping.yml), que e o ultimo recurso e corre
-#                 depois. Quando as duas cobrem a mesma emissao, fica a
-#                 do canal.
+#                 (config/clipping.yml), que prova o evento e a data mas
+#                 raramente a duracao, e por isso corre depois. Quando as
+#                 duas cobrem a mesma emissao, fica a do canal.
 #   podcast_rss   feed RSS de podcast: da duracao e data. Entra sozinho se
 #                 o criterio deixar. Usar `segmentos` quando o feed mistura
 #                 programas; `formato` diferente de "entrevista" exclui.
@@ -32,10 +32,11 @@ fontes:
     # nao foi possivel apurar. O evento conta, o tempo nao.
     duracao_opcional: true
 
-  # Clipping de imprensa escrita. Ultimo recurso, para as emissoes que o
-  # canal nunca publicou ou ja retirou. Uma peca que diga que no dia X
-  # houve entrevista exclusiva no canal Y e prova do evento; raramente
-  # traz duracao. Corre depois do registo do canal de proposito.
+  # Clipping de imprensa escrita. Prova de que a emissao existiu e de
+  # quando: uma peca que diga que no dia X houve entrevista ao sujeito no
+  # canal Y. Raramente traz duracao, e por isso corre depois do registo do
+  # canal, que quando existe e a melhor prova. Deixou de ser ultimo recurso
+  # a 2026-09-08 (ver o cabecalho de config/clipping.yml).
   - id: clipping-imprensa
     tipo: manual
     ativa: true

@@ -459,6 +459,15 @@ class TestEmitir(unittest.TestCase):
         self.assertEqual(saida[0]["data"], "2024-03-20")
         self.assertEqual(avisos, [])
 
+    def test_data_de_emissao_escrita_a_mao_ganha_a_da_pagina(self):
+        """A pagina do canal declara a data de publicacao. Um artigo do
+        canal publicado na terca sobre a entrevista de segunda deslocava a
+        emissao um dia, e ninguem tinha onde corrigir."""
+        linhas = [{"decisao": "sim", "prova_url": "https://canal.exemplo/a", "data": "2026-06-24", "data_na_pagina": "2026-06-24", "data_emissao": "23/06/2026"}]
+        with tempfile.TemporaryDirectory() as tmp:
+            saida, _ = gnews.emitir(self.CONFIG_E, self._pasta(tmp, linhas), self.CANAIS)
+        self.assertEqual(saida[0]["data"], "2026-06-23")
+
     def test_data_ilegivel_fica_de_fora_com_aviso(self):
         linhas = [{"decisao": "sim", "prova_url": "https://canal.exemplo/a", "data": "marco de 2024", "duracao_na_pagina": "900"}]
         with tempfile.TemporaryDirectory() as tmp:
@@ -525,6 +534,209 @@ class TestEmitir(unittest.TestCase):
         self.assertIn("# comentario que documenta os campos", texto)
         self.assertIn("canal-generalista", texto)
         self.assertNotIn("\r", texto)
+
+
+
+class TestProvaDeImprensa(unittest.TestCase):
+    """O clipping deixou de ser ultimo recurso a 2026-09-08. O que estes
+    testes travam: uma peca que so anuncia a entrevista a contar como se
+    tivesse acontecido, a data da peca a passar por data da emissao, e o
+    canal do grupo trocado quando o lead nomeia dois."""
+
+    CANAIS = {"canal-generalista", "canal-noticias"}
+    CONFIG_I = {
+        **CONFIG,
+        "imprensa": {
+            "relato": ["esteve", "disse", "garantiu", "justifica"],
+            "anuncio": ["vai estar", "não perca", "será às"],
+            "ontem": ["ontem"],
+            "hoje": ["hoje", "esta noite"],
+            "dias_da_semana": {"segunda-feira": 0, "terça-feira": 1, "quarta-feira": 2, "quinta-feira": 3, "sexta-feira": 4, "sábado": 5, "domingo": 6},
+        },
+    }
+    PECA = "https://jornal.exemplo/politica/peca"
+
+    class SujeitoFalso:
+        def aparece_em(self, texto):
+            return "pessoa exemplo" in texto.lower()
+
+    def _pasta(self, tmp, linhas):
+        pasta = Path(tmp)
+        with (pasta / "triagem.csv").open("w", encoding="utf-8-sig", newline="") as f:
+            escritor = csv.DictWriter(f, fieldnames=gnews.COLUNAS_TRIAGEM, lineterminator="\n", extrasaction="ignore")
+            escritor.writeheader()
+            for l in linhas:
+                escritor.writerow({c: l.get(c, "") for c in gnews.COLUNAS_TRIAGEM})
+        return pasta
+
+    def _emitir(self, linhas, ja_no_canal=None):
+        with tempfile.TemporaryDirectory() as tmp:
+            return gnews.emitir_imprensa(self.CONFIG_I, self._pasta(tmp, linhas), self.CANAIS, ja_no_canal)
+
+    def _linha(self, **campos):
+        base = {
+            "decisao": "sim",
+            "prova_url": self.PECA,
+            "data_na_pagina": "2026-06-23",
+            "titulo_na_pagina": "\"A idade da reforma tinha de descer\": Pessoa Exemplo justifica voto contra",
+            "descricao_na_pagina": "Pessoa Exemplo esteve esta segunda-feira no Grande Programa do Canal Notícias numa entrevista exclusiva.",
+        }
+        return {**base, **campos}
+
+    def test_a_pagina_da_peca_guarda_o_lead(self):
+        """O titulo de uma peca de jornal e a citacao; "numa entrevista
+        exclusiva" esta na primeira frase. Sem guardar o lead, sete das
+        doze entrevistas da CMTV encontradas a 2026-09-08 nao tinham a
+        palavra em lado nenhum da triagem."""
+        pagina = ler("peca_imprensa_exemplo.html")
+        config = {**TestVerificacao.CONFIG_V}
+        r = gnews.verificar_pagina(config, pagina, self.PECA, self.SujeitoFalso())
+        self.assertEqual(r["sujeito_na_pagina"], "sim")
+        self.assertIn("numa entrevista exclusiva", r["descricao_na_pagina"])
+        self.assertEqual(r["data_na_pagina"], "2026-06-23")
+
+    def test_peca_que_relata_entra_no_dia_da_emissao_e_nao_no_da_peca(self):
+        """A peca saiu na terca sobre a entrevista de segunda. Escrever a
+        data da peca deslocava a emissao um dia; foi um dos erros vistos no
+        registo a 2026-09-08."""
+        saida, avisos = self._emitir([self._linha()])
+        self.assertEqual(avisos, [])
+        self.assertEqual(len(saida), 1)
+        self.assertEqual(saida[0]["data"], "2026-06-22")
+        self.assertEqual(saida[0]["publicado_em"], "2026-06-23")
+        self.assertEqual(saida[0]["canal"], "canal-noticias")
+        self.assertNotIn("duracao_s", saida[0])
+        self.assertNotIn("mesma_entrevista", saida[0])
+
+    def test_dia_da_semana_igual_ao_da_peca_e_o_proprio_dia(self):
+        linha = self._linha(data_na_pagina="2026-06-22")
+        saida, _ = self._emitir([linha])
+        self.assertEqual(saida[0]["data"], "2026-06-22")
+        self.assertNotIn("publicado_em", saida[0])
+
+    def test_ontem_recua_um_dia(self):
+        linha = self._linha(descricao_na_pagina="Pessoa Exemplo esteve ontem no Canal Notícias em entrevista.")
+        saida, _ = self._emitir([linha])
+        self.assertEqual(saida[0]["data"], "2026-06-22")
+
+    def test_sem_dia_fixado_a_linha_espera(self):
+        """"Em entrevista ao canal, disse que..." nao diz quando. A data da
+        peca nao serve de substituto: seria inventar um dia."""
+        linha = self._linha(descricao_na_pagina="Em entrevista ao Canal Notícias, Pessoa Exemplo disse que nao teme eleicoes.")
+        saida, avisos = self._emitir([linha])
+        self.assertEqual(saida, [])
+        self.assertIn("nao fixa o dia", avisos[0])
+
+    def test_data_escrita_a_mao_ganha_a_leitura(self):
+        linha = self._linha(descricao_na_pagina="Em entrevista ao Canal Notícias, Pessoa Exemplo disse que nao teme eleicoes.", data_emissao="20/06/2026")
+        saida, avisos = self._emitir([linha])
+        self.assertEqual(avisos, [])
+        self.assertEqual(saida[0]["data"], "2026-06-20")
+
+    def test_anuncio_nao_e_relato(self):
+        """"Da hoje entrevista, sera as 19h" e um anuncio. Contar um anuncio
+        e afirmar que aconteceu o que ainda nao tinha acontecido."""
+        linha = self._linha(
+            titulo_na_pagina="Pessoa Exemplo: primeira entrevista hoje no Canal Notícias",
+            descricao_na_pagina="Pessoa Exemplo dá hoje a primeira entrevista. Será às 19 horas no Grande Programa do Canal Notícias.",
+        )
+        saida, avisos = self._emitir([linha])
+        self.assertEqual(saida, [])
+        self.assertIn("anuncia", avisos[0])
+
+    def test_anuncio_entra_se_uma_pessoa_escrever_a_data(self):
+        linha = self._linha(
+            descricao_na_pagina="Pessoa Exemplo dá hoje a primeira entrevista. Será às 19 horas no Grande Programa do Canal Notícias.",
+            data_emissao="2026-06-23",
+        )
+        saida, avisos = self._emitir([linha])
+        self.assertEqual(avisos, [])
+        self.assertEqual(saida[0]["data"], "2026-06-23")
+
+    def test_sem_verbo_de_relato_a_linha_espera(self):
+        """"Pessoa Exemplo em entrevista ao Canal esta segunda-feira" tanto
+        pode ser a legenda de um video como a chamada para o que vem a
+        seguir. Sem um verbo que relate, a linha espera por uma pessoa."""
+        linha = self._linha(
+            titulo_na_pagina="Pessoa Exemplo em entrevista ao Canal Notícias",
+            descricao_na_pagina="Pessoa Exemplo em entrevista ao Canal Notícias esta segunda-feira.",
+        )
+        saida, avisos = self._emitir([linha])
+        self.assertEqual(saida, [])
+        self.assertIn("nao relata", avisos[0])
+
+    def test_peca_que_nao_nomeia_o_canal_fica_de_fora(self):
+        linha = self._linha(descricao_na_pagina="Pessoa Exemplo esteve esta segunda-feira em entrevista na televisão.")
+        saida, avisos = self._emitir([linha])
+        self.assertEqual(saida, [])
+        self.assertIn("nao nomeia o canal", avisos[0])
+
+    def test_dois_canais_no_lead_e_a_pessoa_que_escolhe(self):
+        """Um artigo de audiencias nomeia o canal da entrevista e os
+        concorrentes. Escolher o primeiro que aparece e adivinhar."""
+        linha = self._linha(descricao_na_pagina="Pessoa Exemplo esteve esta segunda-feira em entrevista no Canal Notícias, que bateu o Canal Exemplo.")
+        saida, avisos = self._emitir([linha])
+        self.assertEqual(saida, [])
+        self.assertIn("mais de um canal", avisos[0])
+        saida, avisos = self._emitir([{**linha, "canal": "canal-noticias"}])
+        self.assertEqual(saida[0]["canal"], "canal-noticias")
+
+    def test_nome_longo_nao_conta_tambem_como_o_curto(self):
+        """"Canal Notícias" contem "Canal"; sem retirar o nome longo antes
+        de procurar o curto, um so canal nomeado contava como dois."""
+        config = {**self.CONFIG_I, "canais_por_texto": {"canal-generalista": ["Canal"], "canal-noticias": ["Canal Notícias"]}}
+        self.assertEqual(gnews.canais_no_texto(config, "esteve no Canal Notícias"), ["canal-noticias"])
+
+    def test_peca_que_nao_diz_entrevista_fica_de_fora(self):
+        linha = self._linha(descricao_na_pagina="Pessoa Exemplo esteve esta segunda-feira no Canal Notícias e disse que nao teme eleicoes.")
+        saida, avisos = self._emitir([linha])
+        self.assertEqual(saida, [])
+        self.assertIn("nao diz entrevista", avisos[0])
+
+    def test_titulo_que_diz_debate_nao_e_entrevista(self):
+        linha = self._linha(titulo_na_pagina="Debate: Pessoa Exemplo frente a rival no Canal Notícias")
+        saida, avisos = self._emitir([linha])
+        self.assertEqual(saida, [])
+        self.assertIn("debate", avisos[0])
+
+    def test_emissao_ja_no_registo_do_canal_nao_se_repete(self):
+        saida, avisos = self._emitir([self._linha()], ja_no_canal={("canal-noticias", "2026-06-22")})
+        self.assertEqual(saida, [])
+        self.assertIn("ja no registo do canal", avisos[0])
+
+    def test_pagina_do_canal_e_ignorada_neste_modo(self):
+        """As provas do canal pertencem a `--emitir`. Aqui nao sao erro nem
+        entram: seriam escritas no ficheiro errado."""
+        linha = self._linha(prova_url="https://canalnoticias.exemplo/video")
+        saida, avisos = self._emitir([linha])
+        self.assertEqual((saida, avisos), ([], []))
+
+    def test_duas_pecas_sobre_a_mesma_emissao_e_uma_linha(self):
+        perto = self._linha(data_na_pagina="2026-06-22", prova_url="https://jornal.exemplo/a")
+        longe = self._linha(data_na_pagina="2026-06-23", prova_url="https://outro.exemplo/b", descricao_na_pagina="Pessoa Exemplo esteve ontem no Canal Notícias em entrevista.")
+        saida, _ = self._emitir([longe, perto])
+        self.assertEqual(len(saida), 1)
+        self.assertEqual(saida[0]["prova"], "https://jornal.exemplo/a")
+
+    def test_simulcast_de_imprensa_fica_agrupado(self):
+        a = self._linha(prova_url="https://jornal.exemplo/a")
+        b = self._linha(prova_url="https://jornal.exemplo/b", descricao_na_pagina="Pessoa Exemplo esteve esta segunda-feira no Canal Exemplo em entrevista.")
+        saida, _ = self._emitir([a, b])
+        self.assertEqual([l["canal"] for l in saida], ["canal-generalista", "canal-noticias"])
+        self.assertEqual({l["mesma_entrevista"] for l in saida}, {"2026-06-22"})
+
+    def test_registo_do_canal_da_os_pares_ja_provados(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            caminho = Path(tmp) / "entrevistas.yml"
+            caminho.write_text("---\n# c\n\nentrevistas:\n- data: '2026-06-22'\n  canal: canal-noticias\n  programa: P\n  prova: https://canalnoticias.exemplo/v\n", encoding="utf-8")
+            self.assertEqual(gnews.emissoes_do_registo(caminho), {("canal-noticias", "2026-06-22")})
+            self.assertEqual(gnews.emissoes_do_registo(Path(tmp) / "nada.yml"), set())
+
+    def test_configuracao_real_tem_as_regras_de_imprensa(self):
+        config = gnews.carregar()
+        for chave in ("relato", "anuncio", "ontem", "hoje", "dias_da_semana"):
+            self.assertIn(chave, config["imprensa"])
+        self.assertEqual(len(config["imprensa"]["dias_da_semana"]), 7)
 
 
 

@@ -56,7 +56,10 @@ CANAL_YT = re.compile(r"\b(UC[0-9A-Za-z_-]{22})\b")
 CANONICO_YT = re.compile(r'rel=["\']canonical["\'][^>]+href=["\']https://www\.youtube\.com/channel/(UC[0-9A-Za-z_-]{22})')
 TITULO = re.compile(r"<title[^>]*>(.*?)</title>", re.IGNORECASE | re.DOTALL)
 META = re.compile(r"<meta\s[^>]*>", re.IGNORECASE)
-META_ATRIB = re.compile(r'(name|property|content)=["\']([^"\']*)["\']', re.IGNORECASE)
+# O valor fecha com a mesma aspa que o abriu. Com uma classe que parava em
+# qualquer das duas, `content="esteve no 'Grande Programa' do canal"` ficava
+# em "esteve no", e a palavra que provava o formato caia fora sem aviso.
+META_ATRIB = re.compile(r'(name|property|content)=(["\'])(.*?)\2', re.IGNORECASE | re.DOTALL)
 JSONLD = re.compile(r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>', re.IGNORECASE | re.DOTALL)
 ETIQUETAS = re.compile(r"<[^>]+>")
 SCRIPTS = re.compile(r"<(script|style)[^>]*>.*?</\1>", re.IGNORECASE | re.DOTALL)
@@ -76,7 +79,7 @@ def _metadados(html: str) -> dict[str, str]:
     """name/property -> content das <meta>. Chaves em minusculas."""
     saida: dict[str, str] = {}
     for etiqueta in META.findall(html):
-        pares = {k.lower(): v for k, v in META_ATRIB.findall(etiqueta)}
+        pares = {k.lower(): v for k, _, v in META_ATRIB.findall(etiqueta)}
         chave = pares.get("name") or pares.get("property")
         if chave and "content" in pares:
             saida[chave.lower()] = html_mod.unescape(pares["content"])

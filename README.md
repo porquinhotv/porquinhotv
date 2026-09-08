@@ -7,7 +7,7 @@ O site publica, por período (semana, mês, ano, desde sempre): entrevistas excl
 ## Como funciona
 
 - `config/entrevistas.yml` é o registo do canal: uma linha por emissão, com data, canal, programa, URL de prova e a duração declarada sempre que exista. É a fonte principal.
-- `config/clipping.yml` é o último recurso: emissões provadas por peças de imprensa, para o que o canal nunca publicou ou já retirou. Entram identificadas como tal e nunca deslocam um registo do canal.
+- `config/clipping.yml` são as emissões provadas por peças de imprensa: a peça nomeia o canal, diz entrevista, fixa o dia e relata em vez de anunciar. Provam que a emissão existiu e quando, raramente a duração. Entram identificadas como tal e nunca deslocam um registo do canal.
 - Uma emissão sem duração apurada conta como entrevista e nunca como tempo. O site escreve "duração não apurada"; não escreve zero nem estima.
 - `config/fontes.yml` declara as fontes automáticas. A principal é a pesquisa do próprio site de cada canal: pede a pesquisa do canal por cada forma do nome, recolhe os endereços de artigo desse domínio e lê de cada página o que ela publica em schema.org e OpenGraph, incluindo a duração quando existe. Não há seletores de HTML de nenhum site, e por isso a leitura sobrevive a uma remodelação em vez de passar a devolver zero em silêncio.
 - Uma emissão vinda de fonte automática não entra na primeira vez que é vista: só entra depois de o mesmo bloco aparecer em rondas distintas. O registo de avistamentos está em `docs/dados/candidatos.json`, e ao lado de cada linha ficam as rondas e o número de fontes distintas que a viram. Ver a Metodologia para o que isto protege e o que não protege.
