@@ -23,6 +23,7 @@ que separa entrevista de declaracao e o formato, nao o relogio.
 Cada rejeicao vai para a quarentena com o motivo e um excerto. Nada
 desaparece em silencio. Os motivos, para quem le a quarentena:
 
+    sem_data                    a pagina nao declara data nenhuma
     anterior_ao_inicio          antes da data de inicio do tema
     sem_sujeito                 o nome nao aparece no titulo nem na descricao
     formato_nao_elegivel (x)    debate, declaracao, direto, ou outro formato
@@ -48,7 +49,30 @@ from .modelos import (
 )
 
 
-def classificar(item: ItemBruto, fonte: Fonte) -> tuple[str, str, str]:
+def programa_do_titulo(titulo: str, config: Config) -> str:
+    """Nome do programa deduzido do titulo, quando a fonte nao o declara.
+
+    Os canais escrevem o titulo como "Programa - Convidado - ep. N". A
+    parte antes do primeiro separador e o nome do programa, exceto quando
+    ja e o nome do sujeito, caso em que nao ha programa a deduzir.
+
+    Isto importa alem da apresentacao: o bloco que junta fragmentos da
+    mesma emissao e (canal, programa, dia). Com o programa sempre vazio,
+    duas emissoes diferentes do mesmo canal no mesmo dia colidiam num so
+    bloco e uma delas era descartada como repetida.
+
+    Os separadores estao em config/porquinho.yml. Nenhum nome de programa
+    vive no codigo.
+    """
+    for separador in config.separadores_programa:
+        if separador in titulo:
+            cabeca = titulo.split(separador)[0].strip()
+            if cabeca and not config.sujeito.aparece_em(cabeca):
+                return cabeca
+    return ""
+
+
+def classificar(item: ItemBruto, fonte: Fonte, config: Config) -> tuple[str, str, str]:
     """(programa, canal, formato) para este item. Classifica pelo titulo:
     a descricao fala de tudo e apanharia programas mencionados de passagem."""
     for regra in fonte.segmentos:
@@ -58,7 +82,8 @@ def classificar(item: ItemBruto, fonte: Fonte) -> tuple[str, str, str]:
                 regra.canal or item.canal or fonte.canal,
                 regra.formato or fonte.formato,
             )
-    return item.programa or fonte.programa, item.canal or fonte.canal, fonte.formato
+    programa = item.programa or fonte.programa or programa_do_titulo(item.titulo, config)
+    return programa, item.canal or fonte.canal, fonte.formato
 
 
 def motivo_de_exclusao(item: ItemBruto, config: Config) -> str | None:
@@ -94,6 +119,14 @@ def avaliar(
     texto = f"{item.titulo} {item.descricao}"
 
     data, origem = resolver_data(texto, item.publicado_em, item.data_declarada)
+    if not data:
+        # Sem data nao ha emissao: nao se sabe em que dia foi. Motivo
+        # proprio, e nao `anterior_ao_inicio`: uma data que nao existe nao
+        # e uma data anterior, e rotula-la assim faria a quarentena
+        # afirmar uma coisa falsa sobre 59 das 64 rejeicoes da primeira
+        # corrida de historico.
+        rejeitar(quarentena, item, fonte, "sem_data")
+        return None
     if data < tema.desde:
         rejeitar(quarentena, item, fonte, "anterior_ao_inicio")
         return None
@@ -102,7 +135,7 @@ def avaliar(
         rejeitar(quarentena, item, fonte, "sem_sujeito")
         return None
 
-    programa, canal, formato = classificar(item, fonte)
+    programa, canal, formato = classificar(item, fonte, config)
     if formato != FORMATO_ELEGIVEL:
         rejeitar(quarentena, item, fonte, f"formato_nao_elegivel ({formato})")
         return None

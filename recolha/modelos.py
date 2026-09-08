@@ -142,6 +142,7 @@ class Config:
     sujeito: Sujeito
     canais: dict[str, Canal]
     exclusoes: dict[str, tuple[str, ...]]
+    separadores_programa: tuple[str, ...] = ()
     fontes: tuple[Fonte, ...] = ()
 
     def canal_valido(self, canal_id: str) -> bool:
@@ -276,7 +277,14 @@ def carregar_config(
             if canal_id and canal_id not in canais:
                 raise ValueError(f"fonte {fonte.id}: canal desconhecido '{canal_id}'")
 
-    return Config(tema=tema, sujeito=sujeito, canais=canais, exclusoes=exclusoes, fontes=fontes)
+    return Config(
+        tema=tema,
+        sujeito=sujeito,
+        canais=canais,
+        exclusoes=exclusoes,
+        separadores_programa=tuple(bruto.get("separadores_programa", []) or []),
+        fontes=fontes,
+    )
 
 
 def id_estavel(*partes: str) -> str:

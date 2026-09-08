@@ -69,7 +69,10 @@ fontes:
     confianca: media
     busca:
       - https://www.rtp.pt/play/pesquisa?q={termo}
-    padrao_artigo: '/play/p[0-9]+/|/noticias/'
+    # So episodios. O padrao anterior apanhava tambem as paginas de
+    # programa (/play/pNNN/nome), que nao tem data nem duracao: 45 das 65
+    # rejeicoes da primeira corrida eram isso.
+    padrao_artigo: '/play/p[0-9]+/e[0-9]+/'
     max_candidatos: 40
     paginas_max: 1
 

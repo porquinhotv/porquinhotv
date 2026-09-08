@@ -6,6 +6,8 @@ tema:
   desde: '2019-05-16'
   desde_rotulo: desde o inicio
   duracao_minima_s: 600
+separadores_programa: [' - ', ' | ', ': ']
+
 sujeito:
   id: ventura
   nome: André Ventura

@@ -22,6 +22,10 @@ on:
         description: 'Rondas a correr nesta operacao. O minimo util e o valor de rondas_para_confirmar.'
         required: false
         default: '3'
+      repor:
+        description: 'Apagar docs/dados antes de comecar. Obrigatorio quando muda uma regra que altera classificacoes.'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -52,6 +56,16 @@ jobs:
 
       - name: Testes da logica do site
         run: node --test tests/frontend/*.test.js
+
+      # Uma regra que muda classificacoes muda tambem a chave dos blocos.
+      # Sem repor, os registos antigos ficavam com a classificacao velha
+      # e as contagens de rondas recomecavam do zero na chave nova, o que
+      # daria um dataset com duas geracoes de regras misturadas.
+      - name: Repor dados
+        if: github.event.inputs.repor == 'true'
+        run: |
+          rm -f docs/dados/emissoes.json docs/dados/quarentena.json docs/dados/candidatos.json docs/dados/resumo.json
+          echo "docs/dados reposto"
 
       - name: Rondas de historico
         run: |

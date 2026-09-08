@@ -208,3 +208,47 @@ class TestIdentidadeEBlocos(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class TestLicoesDaPrimeiraCorridaDeHistorico(unittest.TestCase):
+    """Tres defeitos reais da primeira reconstrucao do historico.
+
+    Ficam travados por teste porque cada um deles fazia o site publicar,
+    ou a quarentena afirmar, uma coisa que nao era verdade.
+    """
+
+    def setUp(self):
+        self.config = config_teste()
+        self.fonte = fonte(self.config, "registo-curado")
+
+    def test_sem_data_nao_e_anterior_ao_inicio(self):
+        """59 de 64 rejeicoes diziam "antes de 2019" a paginas que
+        simplesmente nao declaravam data nenhuma."""
+        q = []
+        self.assertIsNone(criterio.avaliar(item(publicado_em="", titulo="Grande Entrevista", canal="rtp1"), self.fonte, self.config, q))
+        self.assertEqual(q[0]["motivo"], "sem_data")
+
+    def test_data_anterior_continua_a_ser_anterior(self):
+        q = []
+        self.assertIsNone(criterio.avaliar(item(publicado_em="2013-12-05", canal="rtp1"), self.fonte, self.config, q))
+        self.assertEqual(q[0]["motivo"], "anterior_ao_inicio")
+
+    def test_programa_deduzido_do_titulo(self):
+        self.assertEqual(criterio.programa_do_titulo("Grande Entrevista - Alguem - ep. 41", self.config), "Grande Entrevista")
+        self.assertEqual(criterio.programa_do_titulo("Programa | Alguem", self.config), "Programa")
+
+    def test_programa_nao_e_o_nome_do_sujeito(self):
+        titulo = f"{self.config.sujeito.nome} - entrevista"
+        self.assertEqual(criterio.programa_do_titulo(titulo, self.config), "")
+
+    def test_titulo_sem_separador_nao_inventa_programa(self):
+        self.assertEqual(criterio.programa_do_titulo("Grande Entrevista", self.config), "")
+
+    def test_duas_emissoes_do_mesmo_dia_e_canal_nao_colidem(self):
+        """Com o programa sempre vazio, o bloco (canal, programa, dia) era
+        o mesmo para programas diferentes e uma das emissoes era
+        descartada como repetida."""
+        a = criterio.avaliar(item(titulo="Programa A - Alguem", canal="rtp1", url="https://exemplo.pt/1", prova_url="https://exemplo.pt/1"), self.fonte, self.config)
+        b = criterio.avaliar(item(titulo="Programa B - Alguem", canal="rtp1", url="https://exemplo.pt/2", prova_url="https://exemplo.pt/2"), self.fonte, self.config)
+        self.assertNotEqual(a.bloco, b.bloco)
+        self.assertEqual(len(criterio.resolver_blocos([a, b], [])), 2)

@@ -88,6 +88,7 @@ Nada é descartado em silêncio. Todo o item que uma fonte devolveu e que não e
 
 | Motivo | Significado |
 |---|---|
+| `sem_data` | a página não declara data nenhuma; sem dia não há emissão |
 | `anterior_ao_inicio` | antes de 16 de maio de 2019 |
 | `sem_sujeito` | o nome não aparece no título nem na descrição |
 | `formato_nao_elegivel (x)` | debate, declaração, direto ou outro formato |

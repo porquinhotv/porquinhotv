@@ -66,6 +66,14 @@ canais:
   - id: cmtv
     nome: CMTV
 
+# Quando a fonte nao declara o programa, ele e deduzido do titulo: a
+# parte antes do primeiro destes separadores, desde que nao seja o nome
+# do sujeito. Os canais escrevem "Programa - Convidado - ep. N".
+# O programa entra na chave que junta fragmentos da mesma emissao
+# (canal, programa, dia), por isso deixa-lo vazio fazia duas emissoes
+# diferentes do mesmo canal no mesmo dia colidirem numa so.
+separadores_programa: [' - ', ' | ', ': ']
+
 # Termos que, no TITULO de um item, o retiram do formato elegivel. Cada
 # rejeicao fica na quarentena com o motivo. Afinar com a quarentena a
 # vista, nunca as cegas.
