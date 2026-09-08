@@ -20,6 +20,7 @@ CONFIG = {
     "consultas": ["Pessoa Exemplo entrevista"],
     "limiar_divisao": 90,
     "pausa_s": 0,
+    "pausa_resolucao_s": 0,
     "canais_por_texto": {"canal-generalista": ["Canal Exemplo"], "canal-noticias": ["Canal Notícias", "Canal Noticias"]},
     "canais_por_dominio": {"canal-noticias": ["canalnoticias.exemplo"], "canal-generalista": ["canal.exemplo"]},
     "marcadores_formato": {"entrevista": ["entrevista", "entrevistado"], "debate": ["debate"]},
@@ -169,6 +170,66 @@ class TestResolver(unittest.TestCase):
         def parte(u):
             raise OSError("sem rede")
         self.assertEqual(gnews.resolver_url("https://x", seguir_fn=parte), "")
+
+
+class TestTriagem(unittest.TestCase):
+    class SujeitoFalso:
+        def aparece_em(self, texto):
+            return "pessoa exemplo" in texto.lower()
+
+    def _linhas(self):
+        return [
+            # grupo sujeito: nomeia a pessoa e diz entrevista
+            {"data": "2024-01-13", "titulo": "A entrevista a Pessoa Exemplo na íntegra", "fonte": "Canal Notícias",
+             "canal_por_fonte": "canal-noticias", "canal_no_titulo": "", "formato_no_titulo": "entrevista", "url_google": "u1"},
+            # grupo programa: canal titula pelo programa, a pessoa fica na sinopse que o indice nao traz
+            {"data": "2024-03-20", "titulo": "Grande Entrevista Episódio 12 - de 20 mar 2024", "fonte": "Canal Exemplo",
+             "canal_por_fonte": "canal-generalista", "canal_no_titulo": "", "formato_no_titulo": "entrevista", "url_google": "u2"},
+            # ruido: cita a pessoa, nada indica entrevista
+            {"data": "2024-01-14", "titulo": "Pessoa Exemplo foi à convenção", "fonte": "Jornal",
+             "canal_por_fonte": "", "canal_no_titulo": "", "formato_no_titulo": "", "url_google": "u3"},
+            # ruido: diz entrevista, mas nem pessoa nem canal
+            {"data": "2024-01-15", "titulo": "Entrevista a outra pessoa qualquer", "fonte": "Jornal",
+             "canal_por_fonte": "", "canal_no_titulo": "", "formato_no_titulo": "entrevista", "url_google": "u4"},
+        ]
+
+    def test_dois_grupos_e_o_ruido_fica_de_fora(self):
+        retidas = gnews.agrupar(CONFIG, self._linhas(), self.SujeitoFalso())
+        self.assertEqual([(l["url_google"], l["grupo"]) for l in retidas], [("u1", "sujeito"), ("u2", "programa")])
+
+    def test_episodio_de_programa_sem_o_nome_da_pessoa_e_retido(self):
+        """O canal titula os episodios com o nome do programa e a data. Se
+        a triagem exigisse o nome no titulo, perdiam-se todas as emissoes
+        desse canal, que sao as que tem duracao declarada."""
+        retidas = gnews.agrupar(CONFIG, self._linhas(), self.SujeitoFalso())
+        self.assertIn("u2", [l["url_google"] for l in retidas])
+
+    def test_ficheiros_de_triagem_escritos_com_as_colunas_de_decisao_primeiro(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            pasta = Path(tmp)
+            retidas = gnews.agrupar(CONFIG, self._linhas(), self.SujeitoFalso())
+            gnews.gravar_triagem(pasta, retidas)
+            cabecalho = (pasta / "triagem.csv").read_text(encoding="utf-8-sig").splitlines()[0]
+            self.assertEqual(cabecalho.split(",")[:3], ["decisao", "prova_url", "duracao"])
+            self.assertIn("<a href=", (pasta / "triagem.html").read_text(encoding="utf-8"))
+
+    def test_resolver_so_toca_nos_triados(self):
+        """Resolver a colheita inteira sao milhares de pedidos e horas de
+        espera para linhas que ninguem vai abrir."""
+        with tempfile.TemporaryDirectory() as tmp:
+            pasta = Path(tmp)
+            gnews.gravar_csv(pasta, {l["url_google"]: {**l, "url_final": ""} for l in self._linhas()})
+            gnews.gravar_triagem(pasta, gnews.agrupar(CONFIG, self._linhas(), self.SujeitoFalso()))
+            pedidos = []
+
+            def seguir(url):
+                pedidos.append(url)
+                return "https://canal.exemplo/peca", ""
+
+            resumo = gnews.resolver(CONFIG, pasta, seguir_fn=seguir, dormir=lambda s: None)
+            self.assertEqual(sorted(pedidos), ["u1", "u2"])
+            self.assertEqual(resumo["resolvidas"], 2)
+
 
 
 if __name__ == "__main__":

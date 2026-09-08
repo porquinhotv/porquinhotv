@@ -1,6 +1,7 @@
 """Colheita do indice do Google Noticias por RSS. Corre em casa, nunca na CI.
 
     python -m ferramentas.gnews --saida D:\\porquinho-local
+    python -m ferramentas.gnews --saida D:\\porquinho-local --triar
     python -m ferramentas.gnews --saida D:\\porquinho-local --resolver
     python -m ferramentas.gnews --saida D:\\porquinho-local --desde 2024-01-01
 
@@ -10,6 +11,8 @@ o inicio do tema, e escreve na pasta de saida:
     bruto/<janela>__<n>.xml   cada resposta tal como veio, para auditoria
     estado.json               o que ja foi pedido, para retomar sem repetir
     candidatos.csv            um item por linha, deduplicado, por data
+    triagem.csv               so o que uma pessoa tem de decidir (--triar)
+    triagem.html              a mesma lista, com as ligacoes clicaveis
 
 Isto e um detetor e nao uma fonte: aponta o dia e o canal de uma
 entrevista provavel. A prova de cada linha e o URL do canal, e la vai
@@ -335,13 +338,23 @@ def resolver_url(url: str, seguir_fn=seguir) -> str:
     return destino_na_pagina(corpo)
 
 
-def resolver(config: dict, pasta: Path, seguir_fn=seguir, dormir=time.sleep) -> dict:
+def resolver(config: dict, pasta: Path, so_triados: bool = True, seguir_fn=seguir, dormir=time.sleep) -> dict:
+    """Segue as ligacoes do Google ate ao destino.
+
+    Por omissao so as linhas que a triagem reteve. Resolver as milhares
+    de linhas da colheita inteira demora horas e nao serve para nada: o
+    que interessa e o destino dos candidatos, e esses sao poucos.
+
+    Imprime uma linha por ligacao. A primeira corrida ficou uma hora sem
+    escrever nada no ecra e parecia parada quando estava a trabalhar.
+    """
     linhas = ler_csv(pasta)
-    pausa = float(config.get("pausa_s", 6))
-    resumo = {"resolvidas": 0, "por_resolver": 0}
-    for i, linha in enumerate(linhas.values()):
-        if linha.get("url_final"):
-            continue
+    triados = urls_triados(pasta) if so_triados else None
+    pausa = float(config.get("pausa_resolucao_s", 2))
+    alvo = [l for l in linhas.values() if not l.get("url_final") and (triados is None or l["url_google"] in triados)]
+    resumo = {"alvo": len(alvo), "resolvidas": 0, "por_resolver": 0}
+    print(f"  {len(alvo)} ligacoes por resolver", flush=True)
+    for i, linha in enumerate(alvo, 1):
         final = resolver_url(linha["url_google"], seguir_fn)
         if final:
             linha["url_final"] = final
@@ -351,11 +364,101 @@ def resolver(config: dict, pasta: Path, seguir_fn=seguir, dormir=time.sleep) -> 
                 linha["canal_por_fonte"] = canal
         else:
             resumo["por_resolver"] += 1
+        print(f"  {i}/{len(alvo)}  {(final or 'por resolver')[:90]}", flush=True)
         if i % 10 == 0:
             gravar_csv(pasta, linhas)
         dormir(pausa)
     gravar_csv(pasta, linhas)
     return resumo
+
+
+# --- triagem ---------------------------------------------------------------
+
+COLUNAS_TRIAGEM = ["decisao", "prova_url", "duracao", "programa", "canal", "nota", "grupo", "data", "titulo", "fonte", "formato_no_titulo", "url_google"]
+
+
+def agrupar(config: dict, linhas: list[dict], sujeito) -> list[dict]:
+    """Reduz a colheita ao que uma pessoa tem de olhar, em dois grupos.
+
+    `sujeito`  o titulo nomeia o sujeito e indica entrevista. E o grupo
+               denso: quase tudo aqui e uma emissao ou uma peca sobre uma.
+    `programa` o titulo indica entrevista e a fonte e um canal, mas o
+               sujeito nao aparece. Existe porque um canal titula os seus
+               episodios com o nome do programa e a data, e o convidado
+               fica so na sinopse, que o indice nao traz. Sem este grupo
+               perdiam-se todas as emissoes desse canal.
+
+    O que fica de fora e o ruido: pecas que citam o sujeito sem que nada
+    no titulo sugira entrevista. Fica no `candidatos.csv`, que nao se
+    apaga, para se poder voltar atras sem repetir a colheita.
+    """
+    retidas = []
+    for linha in linhas:
+        formato = linha.get("formato_no_titulo", "")
+        if "entrevista" not in formato:
+            continue
+        tem_sujeito = sujeito.aparece_em(linha.get("titulo", ""))
+        tem_canal = bool(linha.get("canal_por_fonte") or linha.get("canal_no_titulo"))
+        if tem_sujeito and tem_canal:
+            grupo = "sujeito"
+        elif not tem_sujeito and linha.get("canal_por_fonte"):
+            grupo = "programa"
+        else:
+            continue
+        retidas.append({**linha, "grupo": grupo})
+    return sorted(retidas, key=lambda l: (l.get("data") or "9999", l.get("grupo") or "", l.get("fonte") or ""))
+
+
+def gravar_triagem(pasta: Path, retidas: list[dict]) -> None:
+    """Um CSV para decidir e um HTML para ver.
+
+    O CSV abre no Excel e tem as colunas de decisao a esquerda, para se
+    escrever sem andar a rolar. O HTML existe porque as ligacoes do
+    indice sao redirecionamentos que so abrem num browser: e a forma de
+    ir ver a peca e copiar o URL do canal, que e a prova.
+    """
+    caminho = pasta / "triagem.csv"
+    with caminho.open("w", encoding="utf-8-sig", newline="") as f:
+        escritor = csv.DictWriter(f, fieldnames=COLUNAS_TRIAGEM, lineterminator="\n", extrasaction="ignore")
+        escritor.writeheader()
+        for linha in retidas:
+            escritor.writerow({c: linha.get(c, "") for c in COLUNAS_TRIAGEM})
+
+    partes = [
+        "<!doctype html><meta charset='utf-8'><title>Triagem</title>",
+        "<style>body{font:15px/1.5 system-ui;margin:2rem;max-width:70rem}"
+        "tr:nth-child(even){background:#f4f4f4}td{padding:.3rem .5rem;vertical-align:top}"
+        ".g{color:#777;font-size:.85em}</style>",
+        f"<h1>Triagem: {len(retidas)} candidatos</h1><table>",
+    ]
+    for i, linha in enumerate(retidas, 1):
+        titulo = html.escape(linha.get("titulo", ""))
+        canal = linha.get("canal_no_titulo") or linha.get("canal_por_fonte") or ""
+        partes.append(
+            f"<tr><td>{i}</td><td>{html.escape(linha.get('data', ''))}</td>"
+            f"<td><a href=\"{html.escape(linha.get('url_google', ''))}\" target=_blank>{titulo}</a>"
+            f"<div class=g>{html.escape(linha.get('fonte', ''))} | {html.escape(canal)} | {html.escape(linha.get('grupo', ''))}</div></td></tr>"
+        )
+    partes.append("</table>")
+    (pasta / "triagem.html").write_text("\n".join(partes), encoding="utf-8", newline="\n")
+
+
+def urls_triados(pasta: Path) -> set[str]:
+    caminho = pasta / "triagem.csv"
+    if not caminho.exists():
+        return set()
+    with caminho.open(encoding="utf-8-sig", newline="") as f:
+        return {linha["url_google"] for linha in csv.DictReader(f) if linha.get("url_google")}
+
+
+def triar(config: dict, pasta: Path) -> dict:
+    linhas = list(ler_csv(pasta).values())
+    retidas = agrupar(config, linhas, carregar_config().sujeito)
+    gravar_triagem(pasta, retidas)
+    contagem = {}
+    for linha in retidas:
+        contagem[linha["grupo"]] = contagem.get(linha["grupo"], 0) + 1
+    return {"colhidas": len(linhas), "retidas": len(retidas), **contagem}
 
 
 # --- entrada -----------------------------------------------------------------
@@ -366,14 +469,19 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--saida", required=True, help="pasta fora do repositorio")
     parser.add_argument("--desde", help="AAAA-MM-DD; por omissao o inicio do tema")
     parser.add_argument("--ate", help="AAAA-MM-DD; por omissao hoje")
-    parser.add_argument("--resolver", action="store_true", help="seguir as ligacoes do Google ate ao destino")
+    parser.add_argument("--triar", action="store_true", help="reduzir a colheita a uma lista para decidir")
+    parser.add_argument("--resolver", action="store_true", help="seguir as ligacoes dos candidatos triados ate ao destino")
+    parser.add_argument("--tudo", action="store_true", help="com --resolver: resolver a colheita inteira, nao so os triados")
     args = parser.parse_args(argv)
 
     config = carregar()
     pasta = pasta_de_saida(args.saida)
-    if args.resolver:
+    if args.triar:
+        print(f"a triar {pasta}", flush=True)
+        resumo = triar(config, pasta)
+    elif args.resolver:
         print(f"a resolver ligacoes em {pasta}", flush=True)
-        resumo = resolver(config, pasta)
+        resumo = resolver(config, pasta, so_triados=not args.tudo)
     else:
         desde = date.fromisoformat(args.desde) if args.desde else date.fromisoformat(carregar_config().tema.desde)
         ate = date.fromisoformat(args.ate) if args.ate else datetime.now(timezone.utc).date()

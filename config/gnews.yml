@@ -43,6 +43,11 @@ consultas:
 limiar_divisao: 90
 pausa_s: 6
 
+# Pausa da resolucao das ligacoes. E mais baixa do que a da colheita
+# porque a resolucao so corre sobre os candidatos triados, que sao
+# poucas centenas, e nao sobre a colheita inteira.
+pausa_resolucao_s: 2
+
 # Deteccao de canal no nome da fonte, no dominio da fonte e no titulo.
 # Vive aqui e nao no codigo: nenhum modulo Python conhece um canal.
 # Os dois sites do grupo Media Capital publicam os mesmos videos um no
