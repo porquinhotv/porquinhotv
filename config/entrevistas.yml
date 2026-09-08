@@ -80,6 +80,11 @@ entrevistas:
   prova: https://www.rtp.pt/play/p14350/e855325/grande-entrevista
   titulo: Grande Entrevista - André Ventura
   duracao_s: 3470
+- data: '2025-08-28'
+  canal: sic-noticias
+  programa: não apurado
+  prova: https://sicnoticias.pt/pais/2025-08-28-video-entrevista-de-andre-ventura-a-sic-noticias-61d623ea
+  titulo: Entrevista de André Ventura à SIC Notícias
 - data: '2025-10-16'
   canal: cnn-portugal
   programa: não apurado
@@ -94,6 +99,11 @@ entrevistas:
   titulo: A entrevista exclusiva a André Ventura na íntegra
   mesma_entrevista: '2025-10-16'
   duracao_s: 3388
+- data: '2025-10-24'
+  canal: sic-noticias
+  programa: não apurado
+  prova: https://sicnoticias.pt/especiais/eleicoes-presidenciais/2025-10-24-video-a-entrevista-completa-de-andre-ventura-em-exclusivo-a-sic-e42d4a95
+  titulo: A entrevista completa de André Ventura em exclusivo à SIC
 - data: '2025-11-01'
   canal: cnn-portugal
   programa: não apurado
@@ -108,12 +118,6 @@ entrevistas:
   titulo: A entrevista a André Ventura na íntegra
   mesma_entrevista: '2025-11-01'
   duracao_s: 3506
-- data: '2025-11-03'
-  canal: tvi
-  programa: André Ventura
-  prova: https://tviplayer.iol.pt/programa/cnn-em-foco/66576e34d34e049892216643/video/6908c5360cf2c7eb24444036
-  titulo: 'André Ventura: «Eu francamente não tenho vontade de continuar esta entrevista (...) acho que ficávamos por aqui»'
-  duracao_s: 250
 - data: '2025-11-04'
   canal: rtp3
   programa: não apurado
@@ -124,7 +128,6 @@ entrevistas:
   programa: Dois às 10
   prova: https://tviplayer.iol.pt/programa/dois-as-10/5fe219a40cf2cc9de7ef9590/video/69135c440cf229bd2f8d4401
   titulo: Dois às 10 - Entrevista exclusiva com André Ventura
-  duracao_s: 9358
 - data: '2025-12-17'
   canal: now
   programa: não apurado
@@ -147,6 +150,11 @@ entrevistas:
   prova: https://cnnportugal.iol.pt/videos/a-entrevista-a-andre-ventura-na-integra/697d339c0cf22dd7c7f529a1
   titulo: A entrevista a André Ventura na íntegra
   duracao_s: 2862
+- data: '2026-02-04'
+  canal: sic-noticias
+  programa: não apurado
+  prova: https://sicnoticias.pt/especiais/eleicoes-presidenciais/2026/2026-02-04-video-presidenciais-2026-entrevista-completa-de-andre-ventura-na-sic-ca647d3e
+  titulo: 'Presidenciais 2026: entrevista completa de André Ventura na SIC'
 - data: '2026-03-06'
   canal: cnn-portugal
   programa: Teresa Morais, Passos e a guerra
@@ -184,6 +192,11 @@ entrevistas:
   prova: https://cnnportugal.iol.pt/videos/a-entrevista-a-andre-ventura-na-cnn-portugal-na-integra/6a1fd4390cf2d0ed34b86072
   titulo: A entrevista a André Ventura na CNN Portugal na íntegra
   duracao_s: 902
+- data: '2026-06-16'
+  canal: sic-noticias
+  programa: não apurado
+  prova: https://sicnoticias.pt/pais/politica/2026-06-16-video-entrevista-na-integra-de-andre-ventura-a-sic-noticias-sobre-o-pacote-laboral-cc04bbc9
+  titulo: Entrevista na íntegra de André Ventura à SIC Notícias sobre o pacote laboral
 - data: '2026-06-24'
   canal: rtp3
   programa: Grande Entrevista
