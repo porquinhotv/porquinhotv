@@ -1,17 +1,18 @@
 {
  "candidatos": [
   {
-   "bloco": "01e0559cfd98",
+   "bloco": "094a740b2ea0",
    "fontes": [
-    "busca-rtp1"
+    "motor-rtp3"
    ],
    "primeira_ronda": "historico-2026-09-08-1",
-   "prova_url": "https://www.rtp.pt/play/p12659/e756333/grande-entrevista",
+   "prova_url": "https://www.rtp.pt/noticias/politica/andre-ventura-quer-chegar-aos-15-nas-proximas-legislativas_v1367276",
    "rondas": [
-    "historico-2026-09-08-1"
+    "historico-2026-09-08-1",
+    "historico-2026-09-08-3"
    ],
-   "titulo": "Grande Entrevista - André Ventura - ep. 12",
-   "ultima_ronda": "historico-2026-09-08-1"
+   "titulo": "André Ventura quer chegar aos 15% nas próximas legislativas",
+   "ultima_ronda": "historico-2026-09-08-3"
   },
   {
    "bloco": "140ec62fb372",
@@ -21,49 +22,68 @@
    "primeira_ronda": "historico-2026-09-08-1",
    "prova_url": "https://www.rtp.pt/play/p13071/e752537/eleicoes-legislativas-2024-entrevistas-lideres-partidarios",
    "rondas": [
-    "historico-2026-09-08-1"
+    "historico-2026-09-08-1",
+    "historico-2026-09-08-2",
+    "historico-2026-09-08-3"
    ],
    "titulo": "Eleições Legislativas 2024 - Entrevistas Líderes Partidários - André Ventura - ep. 6",
-   "ultima_ronda": "historico-2026-09-08-1"
+   "ultima_ronda": "historico-2026-09-08-3"
   },
   {
-   "bloco": "141741c08dcd",
+   "bloco": "1a3e06092d4d",
    "fontes": [
     "motor-rtp3"
    ],
    "primeira_ronda": "historico-2026-09-08-1",
-   "prova_url": "https://www.rtp.pt/noticias/mundo/ferreira-e-ventura-em-confronto-caotico-na-tvi_v1286639",
+   "prova_url": "https://www.rtp.pt/noticias/politica/entrevista-rtp-ventura-garante-que-o-chega-esta-na-corrida-para-vencer-as-eleicoes_v1654290",
    "rondas": [
-    "historico-2026-09-08-1"
+    "historico-2026-09-08-1",
+    "historico-2026-09-08-3"
    ],
-   "titulo": "Ferreira e Ventura na TVI em confronto caótico",
-   "ultima_ronda": "historico-2026-09-08-1"
+   "titulo": "Entrevista RTP. Ventura garante que o Chega está na corrida para vencer as eleições",
+   "ultima_ronda": "historico-2026-09-08-3"
   },
   {
-   "bloco": "2f3de93eac9e",
+   "bloco": "377ad48245b9",
    "fontes": [
-    "busca-rtp1"
+    "motor-rtp3"
    ],
    "primeira_ronda": "historico-2026-09-08-1",
-   "prova_url": "https://www.rtp.pt/play/p16214/e938491/grande-entrevista",
+   "prova_url": "https://www.rtp.pt/noticias/politica/andre-ventura-centra-se-na-formacao-de-governo-sombra_v1660027",
    "rondas": [
-    "historico-2026-09-08-1"
+    "historico-2026-09-08-1",
+    "historico-2026-09-08-3"
    ],
-   "titulo": "Grande Entrevista - André Ventura - ep. 19",
-   "ultima_ronda": "historico-2026-09-08-1"
+   "titulo": "André Ventura centra-se na formação de governo sombra",
+   "ultima_ronda": "historico-2026-09-08-3"
   },
   {
-   "bloco": "87db4c1c9f6e",
+   "bloco": "3f90a1527311",
    "fontes": [
-    "busca-rtp1"
+    "motor-rtp3"
    ],
    "primeira_ronda": "historico-2026-09-08-1",
-   "prova_url": "https://www.rtp.pt/play/p14350/e855325/grande-entrevista",
+   "prova_url": "https://www.rtp.pt/noticias/politica/andre-ventura-homicidio-de-ucraniano-envergonha-os-portugueses_v1283111",
    "rondas": [
-    "historico-2026-09-08-1"
+    "historico-2026-09-08-1",
+    "historico-2026-09-08-3"
    ],
-   "titulo": "Grande Entrevista - André Ventura",
-   "ultima_ronda": "historico-2026-09-08-1"
+   "titulo": "André Ventura: homicídio de ucraniano envergonha os portugueses",
+   "ultima_ronda": "historico-2026-09-08-3"
+  },
+  {
+   "bloco": "94606ab3019e",
+   "fontes": [
+    "motor-rtp3"
+   ],
+   "primeira_ronda": "historico-2026-09-08-1",
+   "prova_url": "https://www.rtp.pt/noticias/politica/andre-ventura-clama-vitoria-do-chega-nos-acores_a1366360",
+   "rondas": [
+    "historico-2026-09-08-1",
+    "historico-2026-09-08-3"
+   ],
+   "titulo": "André Ventura clama vitória do Chega nos Açores",
+   "ultima_ronda": "historico-2026-09-08-3"
   },
   {
    "bloco": "a2842ebd3cd9",
@@ -73,10 +93,40 @@
    "primeira_ronda": "historico-2026-09-08-1",
    "prova_url": "https://www.rtp.pt/play/p16214/e903851/grande-entrevista",
    "rondas": [
-    "historico-2026-09-08-1"
+    "historico-2026-09-08-1",
+    "historico-2026-09-08-2",
+    "historico-2026-09-08-3"
    ],
    "titulo": "Grande Entrevista - André Ventura - ep. 2",
-   "ultima_ronda": "historico-2026-09-08-1"
+   "ultima_ronda": "historico-2026-09-08-3"
+  },
+  {
+   "bloco": "ba05f89988d7",
+   "fontes": [
+    "motor-rtp3"
+   ],
+   "primeira_ronda": "historico-2026-09-08-1",
+   "prova_url": "https://www.rtp.pt/noticias/politica/entrevista-a-rtp-ventura-assume-que-eleger-menos-de-50-deputados-seria-derrota_v1641804",
+   "rondas": [
+    "historico-2026-09-08-1",
+    "historico-2026-09-08-3"
+   ],
+   "titulo": "Entrevista à RTP. Ventura assume que eleger menos de 50 deputados seria derrota",
+   "ultima_ronda": "historico-2026-09-08-3"
+  },
+  {
+   "bloco": "c35fbc107499",
+   "fontes": [
+    "motor-rtp3"
+   ],
+   "primeira_ronda": "historico-2026-09-08-1",
+   "prova_url": "https://www.rtp.pt/noticias/mundo/presidenciais-lider-do-chega-nao-concorda-com-extincao-do-sef_v1283167",
+   "rondas": [
+    "historico-2026-09-08-1",
+    "historico-2026-09-08-3"
+   ],
+   "titulo": "Presidenciais. Líder do Chega não concorda com extinção do SEF",
+   "ultima_ronda": "historico-2026-09-08-3"
   },
   {
    "bloco": "caa909947e86",
@@ -86,10 +136,12 @@
    "primeira_ronda": "historico-2026-09-08-1",
    "prova_url": "https://www.rtp.pt/play/p15797/e887091/grande-entrevista-candidatos-a-presidencia-da-republica",
    "rondas": [
-    "historico-2026-09-08-1"
+    "historico-2026-09-08-1",
+    "historico-2026-09-08-2",
+    "historico-2026-09-08-3"
    ],
    "titulo": "Grande Entrevista - Candidatos à Presidência da República - André Ventura - ep. 2",
-   "ultima_ronda": "historico-2026-09-08-1"
+   "ultima_ronda": "historico-2026-09-08-3"
   },
   {
    "bloco": "d73b643e43ca",
@@ -99,12 +151,14 @@
    "primeira_ronda": "historico-2026-09-08-1",
    "prova_url": "https://www.rtp.pt/play/p9766/e648005/grande-entrevista",
    "rondas": [
-    "historico-2026-09-08-1"
+    "historico-2026-09-08-1",
+    "historico-2026-09-08-2",
+    "historico-2026-09-08-3"
    ],
    "titulo": "Grande Entrevista - André Ventura - ep. 41",
-   "ultima_ronda": "historico-2026-09-08-1"
+   "ultima_ronda": "historico-2026-09-08-3"
   }
  ],
  "esquema": 1,
- "total": 8
+ "total": 11
 }

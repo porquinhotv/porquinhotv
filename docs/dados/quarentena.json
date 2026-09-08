@@ -172,58 +172,22 @@
    "url": "https://www.rtp.pt/play/p5487/e402977/filhos-da-nacao"
   },
   {
-   "excerto": "",
+   "excerto": "Todas as semanas, um protagonista da vida portuguesa responde às perguntas de Vítor Gonçalves, na Grande Entrevista.",
    "fonte": "busca-rtp1",
-   "id_nativo": "busca-rtp1:5f9258629744",
-   "motivo": "aguarda_confirmacao (1 de 2 rondas)",
-   "publicado_em": "2022-10-19",
-   "titulo": "Grande Entrevista - André Ventura - ep. 41",
-   "url": "https://www.rtp.pt/play/p9766/e648005/grande-entrevista"
-  },
-  {
-   "excerto": "",
-   "fonte": "busca-rtp1",
-   "id_nativo": "busca-rtp1:c6a11aec62a9",
-   "motivo": "aguarda_confirmacao (1 de 2 rondas)",
-   "publicado_em": "2024-03-04",
-   "titulo": "Eleições Legislativas 2024 - Entrevistas Líderes Partidários - André Ventura - ep. 6",
-   "url": "https://www.rtp.pt/play/p13071/e752537/eleicoes-legislativas-2024-entrevistas-lideres-partidarios"
-  },
-  {
-   "excerto": "",
-   "fonte": "busca-rtp1",
-   "id_nativo": "busca-rtp1:a79aec829b25",
-   "motivo": "aguarda_confirmacao (1 de 2 rondas)",
+   "id_nativo": "https://www.rtp.pt/play/p12659/e756333/grande-entrevista",
+   "motivo": "ja_registado (registo-curado)",
    "publicado_em": "2024-03-20",
    "titulo": "Grande Entrevista - André Ventura - ep. 12",
    "url": "https://www.rtp.pt/play/p12659/e756333/grande-entrevista"
   },
   {
-   "excerto": "",
+   "excerto": "Espaço de entrevista com personalidades que importa ouvir, promovendo uma reflexão aprofundada sobre os grandes temas da atualidade nacional e internacional. Entrevista conduzida por Vítor Gonçalves.",
    "fonte": "busca-rtp1",
-   "id_nativo": "busca-rtp1:a65ba43cd7d0",
-   "motivo": "aguarda_confirmacao (1 de 2 rondas)",
+   "id_nativo": "https://www.rtp.pt/play/p14350/e855325/grande-entrevista",
+   "motivo": "ja_registado (registo-curado)",
    "publicado_em": "2025-06-04",
    "titulo": "Grande Entrevista - André Ventura",
    "url": "https://www.rtp.pt/play/p14350/e855325/grande-entrevista"
-  },
-  {
-   "excerto": "",
-   "fonte": "busca-rtp1",
-   "id_nativo": "busca-rtp1:030ba3fe596e",
-   "motivo": "aguarda_confirmacao (1 de 2 rondas)",
-   "publicado_em": "2025-11-04",
-   "titulo": "Grande Entrevista - Candidatos à Presidência da República - André Ventura - ep. 2",
-   "url": "https://www.rtp.pt/play/p15797/e887091/grande-entrevista-candidatos-a-presidencia-da-republica"
-  },
-  {
-   "excerto": "",
-   "fonte": "busca-rtp1",
-   "id_nativo": "busca-rtp1:61cd1ef1d4fb",
-   "motivo": "aguarda_confirmacao (1 de 2 rondas)",
-   "publicado_em": "2026-01-21",
-   "titulo": "Grande Entrevista - André Ventura - ep. 2",
-   "url": "https://www.rtp.pt/play/p16214/e903851/grande-entrevista"
   },
   {
    "excerto": "António José Seguro e André Ventura vão estar frente a frente no único debate da segunda volta das Presidenciais. O debate conta com a moderação de Carlos Daniel pela RTP.",
@@ -235,10 +199,10 @@
    "url": "https://www.rtp.pt/play/p16317/e905134/presidenciais-2026-debate-antonio-jose-seguro-x-andre-ventura"
   },
   {
-   "excerto": "",
+   "excerto": "Espaço de entrevista com personalidades que importa ouvir, promovendo uma reflexão aprofundada sobre os grandes temas da atualidade nacional e internacional. Entrevista conduzida por Vítor Gonçalves.",
    "fonte": "busca-rtp1",
-   "id_nativo": "busca-rtp1:ad177f13ef3e",
-   "motivo": "aguarda_confirmacao (1 de 2 rondas)",
+   "id_nativo": "https://www.rtp.pt/play/p16214/e938491/grande-entrevista",
+   "motivo": "ja_registado (registo-curado)",
    "publicado_em": "2026-06-24",
    "titulo": "Grande Entrevista - André Ventura - ep. 19",
    "url": "https://www.rtp.pt/play/p16214/e938491/grande-entrevista"
@@ -271,33 +235,6 @@
    "url": "https://tvi.iol.pt/novelas/resumo/estreia/coracao-de-mae-as-cinco-cenas-que-nos-partiram-o-coracao-no-episodio-de-estreia"
   },
   {
-   "excerto": "Um desabafo emocionante.",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/novelas/coracao-de-mae/joana-solnado/em-dia-de-estreia-joana-solnado-deixa-mensagem-emocionante-a-todas-as-maes-e-a-todas-as-vitimas-e-sobreviventes-de-violencia",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-07",
-   "titulo": "Em dia de estreia, Joana Solnado deixa mensagem emocionante: «A todas as mães e a todas as vítimas e sobreviventes de violência»",
-   "url": "https://tvi.iol.pt/novelas/coracao-de-mae/joana-solnado/em-dia-de-estreia-joana-solnado-deixa-mensagem-emocionante-a-todas-as-maes-e-a-todas-as-vitimas-e-sobreviventes-de-violencia"
-  },
-  {
-   "excerto": "Choque no mundo dos reality shows.",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/vmais/amber-eggers/morte-aos-41-anos/morre-aos-41-anos-ex-participante-de-reality-show-apos-ser-internada-de-urgencia",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-07",
-   "titulo": "Morre aos 41 anos ex-participante de reality show após ser internada de urgência",
-   "url": "https://tvi.iol.pt/vmais/amber-eggers/morte-aos-41-anos/morre-aos-41-anos-ex-participante-de-reality-show-apos-ser-internada-de-urgencia"
-  },
-  {
-   "excerto": "Sandra Felgueiras recorreu às redes sociais para partilhar uma reflexão emotiva sobre o Norte, as suas raízes e o sentimento de pertença que esta região lhe transmite.",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/doisas10/sandra-felgueiras/jornalista/sandra-felgueiras-faz-declaracao-emotiva-sempre-significou-voltar-a-casa",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-07",
-   "titulo": "Sandra Felgueiras faz declaração emotiva: «Sempre significou voltar a casa»",
-   "url": "https://tvi.iol.pt/doisas10/sandra-felgueiras/jornalista/sandra-felgueiras-faz-declaracao-emotiva-sempre-significou-voltar-a-casa"
-  },
-  {
    "excerto": "O especialista fez um comunicado sobre o processo que estará em curso entre Catarina Miranda e Afonso Leitão.",
    "fonte": "busca-tvi",
    "id_nativo": "https://tvi.iol.pt/bigbrother/afonso-leitao/catarina-miranda/afonso-leitao-proibido-de-se-aproximar-de-catarina-miranda-advogado-conta-tudo",
@@ -316,6 +253,15 @@
    "url": "https://tvi.iol.pt/bigbrother/david-mauricio/big-brother-all-stars/menos-de-48-horas-depois-de-ter-comecado-o-bb-all-stars-ja-se-fala-em-desistir-saiba-tudo"
   },
   {
+   "excerto": "Sara Alves voltou a reencontrar dois dos concorrentes com quem partilhou a experiência do ‘Big Brother Verão’.",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/doisas10/big-brother-verao/reality-show/apos-vencer-o-big-brother-verao-sara-reencontra-se-com-nuno-entramos-como-concorrentes-e-acabamos-por",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-08",
+   "titulo": "Após vencer o Big Brother Verão, Sara reencontra-se com Nuno: «Entrámos como concorrentes e acabámos por...»",
+   "url": "https://tvi.iol.pt/doisas10/big-brother-verao/reality-show/apos-vencer-o-big-brother-verao-sara-reencontra-se-com-nuno-entramos-como-concorrentes-e-acabamos-por"
+  },
+  {
    "excerto": "Liliana Oliveira analisou a estreia do ‘Big Brother All Stars’ e não ficou convencida com o elenco escolhido. Num vídeo partilhado nas redes sociais, a jovem comentou algumas das entradas e deixou críticas particularmente duras a vários dos nomes que aceitaram o desafio.",
    "fonte": "busca-tvi",
    "id_nativo": "https://tvi.iol.pt/bigbrother/vera-claudia/liliana-oliveira/eram-inseparaveis-envolveram-se-com-o-mesmo-homem-hoje-trocam-farpas-se-agressividade-faz-de-alguem-uma-estrela",
@@ -332,6 +278,15 @@
    "publicado_em": "2026-09-08",
    "titulo": "Filho mais velho de Kelly Bailey e Lourenço Ortigão derrete-se com a irmã bebé e encanta a Internet: «Que sonho!»",
    "url": "https://tvi.iol.pt/novelas/lourenco-ortigao/kelly-bailey/filho-mais-velho-de-kelly-bailey-e-lourenco-ortigao-derrete-se-com-a-irma-bebe-e-encanta-a-internet-que-sonho"
+  },
+  {
+   "excerto": "Maria Botelho Moniz abriu a gala de estreia do Big Brother All Stars com uma entrada digna de uma verdadeira estrela. Suspensa num baloiço e sentada diante de uma enorme estrela, a apresentadora surgiu de vermelho e acabou por protagonizar uma imagem que rapidamente fez recordar ",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/bigbrother/maria-botelho-moniz/britney-spears/maria-botelho-moniz-e-comparada-a-estrela-internacional-e-vai-surpreender-se-quando-perceber-quem-e",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-08",
+   "titulo": "Maria Botelho Moniz é comparada a estrela internacional. E vai surpreender-se quando perceber quem é",
+   "url": "https://tvi.iol.pt/bigbrother/maria-botelho-moniz/britney-spears/maria-botelho-moniz-e-comparada-a-estrela-internacional-e-vai-surpreender-se-quando-perceber-quem-e"
   },
   {
    "excerto": "O segundo episódio de «Coração de Mãe», a nova novela da TVI que estreou a 7 de setembro de 2026, intensifica os dramas familiares, os confrontos emocionais e as reviravoltas profissionais que marcam o destino de Linda (Joana Solnado) e de quem a rodeia.",
@@ -361,6 +316,15 @@
    "url": "https://tvi.iol.pt/doisas10/musica/cantor/tragedia-musico-portugues-morre-em-acidente-uma-semana-depois-de-casar"
   },
   {
+   "excerto": "Paulo Rocha, agora a brilhar na novela «Coração de Mãe», abriu exceção da sua vida privada e não escondeu o amor que sente pela mulher, Juliana.",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/doisas10/novelas/paulo-rocha/um-oceano-separa-este-gala-da-tvi-da-mulher-que-ama-ha-15-anos-tenho-saudade-de-nos",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-08",
+   "titulo": "Um oceano separa este galã da TVI da mulher que ama há 15 anos: «Tenho saudade de nós»",
+   "url": "https://tvi.iol.pt/doisas10/novelas/paulo-rocha/um-oceano-separa-este-gala-da-tvi-da-mulher-que-ama-ha-15-anos-tenho-saudade-de-nos"
+  },
+  {
    "excerto": "Sara Alves esteve esta terça-feira, 8 de setembro, no ‘Dois às 10’ para a sua primeira grande entrevista depois de vencer o ‘Big Brother Verão’.",
    "fonte": "busca-tvi",
    "id_nativo": "https://tvi.iol.pt/doisas10/big-brother-verao/sara/estas-apaixonada-pelo-nuno-fora-do-big-brother-verao-sara-poe-fim-as-duvidas-e-esclarece-sentimentos",
@@ -370,114 +334,69 @@
    "url": "https://tvi.iol.pt/doisas10/big-brother-verao/sara/estas-apaixonada-pelo-nuno-fora-do-big-brother-verao-sara-poe-fim-as-duvidas-e-esclarece-sentimentos"
   },
   {
-   "excerto": "Deputado afirmou ainda que a 'justiça tem de apurar os factos'.",
-   "fonte": "motor-cmtv",
-   "id_nativo": "https://www.cmjornal.pt/cmtv/videos/detalhe/como-socio-do-benfica-e-como-pessoa-estou-triste-andre-ventura-sobre-detencao-de-luis-filipe-vieira",
-   "motivo": "por_confirmar",
-   "publicado_em": "2021-07-08",
-   "titulo": "&quot;Como s&#243;cio do Benfica e como pessoa estou triste&quot;: Andr&#233; Ventura sobre deten&#231;&#227;o de Lu&#237;s Filipe Vieira",
-   "url": "https://www.cmjornal.pt/cmtv/videos/detalhe/como-socio-do-benfica-e-como-pessoa-estou-triste-andre-ventura-sobre-detencao-de-luis-filipe-vieira"
+   "excerto": "A notícia foi partilhada pela própria nas redes sociais",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/vmais/ashley-michelle/manuel-velez/nao-voltes-a-esta-casa-estrela-de-reality-show-pede-o-divorcio-no-dia-em-que-assinala-quatro-anos-de-casamento",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-08",
+   "titulo": "«Não voltes a esta casa»: estrela de reality show pede o divórcio no dia em que assinala quatro anos de casamento",
+   "url": "https://tvi.iol.pt/vmais/ashley-michelle/manuel-velez/nao-voltes-a-esta-casa-estrela-de-reality-show-pede-o-divorcio-no-dia-em-que-assinala-quatro-anos-de-casamento"
   },
   {
-   "excerto": "Presidente do Chega recusa 'alimentar a ideia de que a esquerda pode governar'.",
-   "fonte": "motor-cmtv",
-   "id_nativo": "https://www.cmjornal.pt/cmtv/videos/detalhe/entrevista-a-andre-ventura-no-grande-jornal",
-   "motivo": "por_confirmar",
-   "publicado_em": "2024-03-14",
-   "titulo": "Entrevista a Andr&#233; Ventura no Grande Jornal",
-   "url": "https://www.cmjornal.pt/cmtv/videos/detalhe/entrevista-a-andre-ventura-no-grande-jornal"
-  },
-  {
-   "excerto": "André Ventura, líder do Chega, diz, ainda, que este é o último debate que teremos sobre a governação de Montenegro e critica o discurso inicial do primeiro-ministro sobre o País.",
-   "fonte": "motor-cmtv",
-   "id_nativo": "https://www.cmjornal.pt/cmtv/videos/detalhe/andre-ventura-questiona-luis-montenegro-se-for-suspeito-de-um-crime-continuara-a-ser-candidato",
-   "motivo": "por_confirmar",
-   "publicado_em": "2025-03-11",
-   "titulo": "Andr&#233; Ventura questiona Lu&#237;s Montenegro: &quot;Se for suspeito de um crime, continuar&#225; a ser candidato?&quot;",
-   "url": "https://www.cmjornal.pt/cmtv/videos/detalhe/andre-ventura-questiona-luis-montenegro-se-for-suspeito-de-um-crime-continuara-a-ser-candidato"
-  },
-  {
-   "excerto": "Presidente do partido garante que 'nada ficará como dantes em Portugal, a partir da noite de hoje'.",
-   "fonte": "motor-cmtv",
-   "id_nativo": "https://www.cmjornal.pt/cmtv/videos/detalhe/20250519-010146-andre-ventura-o-chega-tornou-se-o-segundo-maior-partido-da-nossa-democracia",
-   "motivo": "por_confirmar",
-   "publicado_em": "2025-05-19",
-   "titulo": "Andr&#233; Ventura: &quot;O Chega tornou-se o segundo maior partido da nossa democracia&quot;",
-   "url": "https://www.cmjornal.pt/cmtv/videos/detalhe/20250519-010146-andre-ventura-o-chega-tornou-se-o-segundo-maior-partido-da-nossa-democracia"
-  },
-  {
-   "excerto": "Líder do Chega foi confrontado com 'posts' que publicou a acusar o parlamento de ter aprovado a deslocação de Marcelo Rebelo de Sousa 'à Alemanha para ir a um festival de hambúrgueres'.",
-   "fonte": "motor-cmtv",
-   "id_nativo": "https://www.cmjornal.pt/cmtv/videos/detalhe/20250911-201319-tive-um-lapso-andre-ventura-exalta-se-com-jornalistas-apos-confundir-evento-de-cidadania-com-festa-de-hamburgueres",
-   "motivo": "por_confirmar",
-   "publicado_em": "2025-09-11",
-   "titulo": "&quot;Tive um lapso&quot;: Andr&#233; Ventura exalta-se com jornalistas ap&#243;s confundir evento de cidadania com festa de hamb&#250;rgueres",
-   "url": "https://www.cmjornal.pt/cmtv/videos/detalhe/20250911-201319-tive-um-lapso-andre-ventura-exalta-se-com-jornalistas-apos-confundir-evento-de-cidadania-com-festa-de-hamburgueres"
-  },
-  {
-   "excerto": "Depois de ter sido 'obrigado' a retirar os cartazes sobre ciganos, André Ventura, líder do Chega e candidato presidencial, voltou a subir ao escadote, agora para colocar um novo, onde se pode ler 'as minorias 'do costume' têm de cumprir a lei'. E ainda pergunta, em jeito de desaf",
-   "fonte": "motor-cmtv",
-   "id_nativo": "https://www.cmjornal.pt/cmtv/videos/detalhe/andre-ventura-visa-minorias-em-novo-cartaz-e-pergunta-e-assim-ja-pode-ser",
-   "motivo": "por_confirmar",
-   "publicado_em": "2025-12-29",
-   "titulo": "Andr&#233; Ventura visa minorias em novo cartaz e pergunta: &quot;E assim, j&#225; pode ser?&quot;",
-   "url": "https://www.cmjornal.pt/cmtv/videos/detalhe/andre-ventura-visa-minorias-em-novo-cartaz-e-pergunta-e-assim-ja-pode-ser"
-  },
-  {
-   "excerto": "Candidato presidencial tem dito que quer afastar-se da campanha tradicional na sequência do mau tempo, mas a campanha acabou por ir ter com ele.",
-   "fonte": "motor-cmtv",
-   "id_nativo": "https://www.cmjornal.pt/cmtv/videos/detalhe/20260203-123407-andre-ventura-visitou-fabrica-em-chaves-mas-acabou-a-fazer-uma-especie-de-arruada",
-   "motivo": "por_confirmar",
-   "publicado_em": "2026-02-03",
-   "titulo": "Andr&#233; Ventura visitou f&#225;brica em Chaves, mas acabou a fazer uma esp&#233;cie de arruada",
-   "url": "https://www.cmjornal.pt/cmtv/videos/detalhe/20260203-123407-andre-ventura-visitou-fabrica-em-chaves-mas-acabou-a-fazer-uma-especie-de-arruada"
-  },
-  {
-   "excerto": "Um perfil com o essencial do candidato à segunda volta das eleições presidenciais.",
-   "fonte": "motor-cmtv",
-   "id_nativo": "https://www.cmjornal.pt/cmtv/videos/presidenciais-2026/detalhe/20260204-110923-andre-ventura",
-   "motivo": "por_confirmar",
-   "publicado_em": "2026-02-04",
-   "titulo": "Andr&#233; Ventura",
-   "url": "https://www.cmjornal.pt/cmtv/videos/presidenciais-2026/detalhe/20260204-110923-andre-ventura"
-  },
-  {
-   "excerto": "",
+   "excerto": "RTP Notícias - Descrição",
    "fonte": "motor-rtp3",
-   "id_nativo": "motor-rtp3:3d225e89602f",
-   "motivo": "aguarda_confirmacao (1 de 2 rondas)",
-   "publicado_em": "2021-01-03",
-   "titulo": "Ferreira e Ventura na TVI em confronto caótico",
-   "url": "https://www.rtp.pt/noticias/mundo/ferreira-e-ventura-em-confronto-caotico-na-tvi_v1286639"
+   "id_nativo": "https://www.rtp.pt/noticias/politica/entrevistas-aos-candidatos-presidenciais_i1283398",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2020-12-18",
+   "titulo": "Entrevistas aos candidatos presidenciais",
+   "url": "https://www.rtp.pt/noticias/politica/entrevistas-aos-candidatos-presidenciais_i1283398"
   },
   {
-   "excerto": "Em causa estão queixas relacionadas com os vídeos publicados nas páginas de André Ventura, em que o líder do Chega surge a criticar a comunidade cigana. As queixas denunciam \"incitamento ao ódio\".",
+   "excerto": "O líder do Chega esteve esta terça-feira na RTP para a primeira de uma série de entrevistas aos líderes partidários antes das Legislativas antecipadas. Duas ideias foram deixadas esta noite: o Chega quer ser a terceira força partidária já em Janeiro, com o objectivo dos 15%, e ap",
    "fonte": "motor-rtp3",
-   "id_nativo": "https://www.rtp.pt/noticias/pais/inquerito-aberto-a-videos-publicados-por-andre-ventura-sobre-comunidade-cigana_n1656488",
+   "id_nativo": "https://www.rtp.pt/noticias/politica/andre-ventura-quer-chega-como-terceira-forca-politica-nas-legislativas_n1367220",
    "motivo": "por_confirmar",
-   "publicado_em": "2025-05-21",
-   "titulo": "Inquérito aberto a vídeos publicados por André Ventura sobre comunidade cigana",
-   "url": "https://www.rtp.pt/noticias/pais/inquerito-aberto-a-videos-publicados-por-andre-ventura-sobre-comunidade-cigana_n1656488"
+   "publicado_em": "2021-11-30",
+   "titulo": "André Ventura quer Chega como terceira força política nas Legislativas",
+   "url": "https://www.rtp.pt/noticias/politica/andre-ventura-quer-chega-como-terceira-forca-politica-nas-legislativas_n1367220"
   },
   {
-   "excerto": "O primeiro debate entre candidatos presidenciais, que foi entre André Ventura e António José Seguro, transmitido na segunda-feira pela TVI, foi o programa mais visto do dia, de acordo com a análise da Universal McCann (UM).",
+   "excerto": "No debate transmitido esta segunda-feira na RTP, a líder do PAN, Inês Sousa Real, acusou o Chega de querer chegar ao poder \"a todo o custo\" e ser governo, o que \"porá em causa os direitos sociais\". André Ventura, líder do Chega, respondeu que é \"o PAN que se cola ao poder como um",
    "fonte": "motor-rtp3",
-   "id_nativo": "https://www.rtp.pt/noticias/politica/debate-entre-andre-ventura-e-antonio-jose-seguro-foi-programa-mais-visto-do-dia_n1699024",
+   "id_nativo": "https://www.rtp.pt/noticias/politica/debate-na-rtp3-chega-e-pan-trocam-acusacoes-sobre-apego-ao-poder_n1548758",
    "motivo": "formato_nao_elegivel (debate)",
-   "publicado_em": "2025-11-18",
-   "titulo": "Debate entre André Ventura e António José Seguro foi programa mais visto do dia",
-   "url": "https://www.rtp.pt/noticias/politica/debate-entre-andre-ventura-e-antonio-jose-seguro-foi-programa-mais-visto-do-dia_n1699024"
+   "publicado_em": "2024-02-05",
+   "titulo": "Debate na RTP3. Chega e PAN trocam acusações sobre apego ao poder",
+   "url": "https://www.rtp.pt/noticias/politica/debate-na-rtp3-chega-e-pan-trocam-acusacoes-sobre-apego-ao-poder_n1548758"
   },
   {
-   "excerto": "Colocamos à prova algumas das afirmações feitas no debate desta noite entre António Filipe e André Ventura. Um trabalho do jornalista Pedro Zambujo.",
+   "excerto": "O presidente do Chega foi o entrevistado da noite de terça-feira no Telejornal - a segunda de uma série de entrevistas da RTP aos líderes dos partidos com assento parlamentar a dois meses das eleições legislativas antecipadas de 18 de maio.",
    "fonte": "motor-rtp3",
-   "id_nativo": "https://www.rtp.pt/noticias/politica/debate-entre-andre-ventura-e-antonio-filipe-rtp-poe-a-prova-afirmacoes-dos-candidatos_v1704132",
-   "motivo": "formato_nao_elegivel (debate)",
-   "publicado_em": "2025-12-13",
-   "titulo": "Debate entre André Ventura e António Filipe. RTP põe à prova afirmações dos candidatos",
-   "url": "https://www.rtp.pt/noticias/politica/debate-entre-andre-ventura-e-antonio-filipe-rtp-poe-a-prova-afirmacoes-dos-candidatos_v1704132"
+   "id_nativo": "https://www.rtp.pt/noticias/politica/andre-ventura-e-o-entrevistado-desta-noite-no-telejornal_n1641739",
+   "motivo": "por_confirmar",
+   "publicado_em": "2025-03-18",
+   "titulo": "André Ventura diz \"nunca é nunca\" a Montenegro e assume \"cada vez menos esperança\" no PSD",
+   "url": "https://www.rtp.pt/noticias/politica/andre-ventura-e-o-entrevistado-desta-noite-no-telejornal_n1641739"
+  },
+  {
+   "excerto": "O candidato presidencial André Ventura foi o convidado desta terça-feira na Grande Entrevista, da RTP. Ao jornalista Vítor Gonçalves, o líder do Chega frisou que \"esta é uma candidatura de missão e não uma candidatura de vontade, de cargos\". Revelou também que pretende dar priori",
+   "fonte": "motor-rtp3",
+   "id_nativo": "https://www.rtp.pt/noticias/politica/grande-entrevista-andre-ventura-quer-ser-o-presidente-dos-portugueses-comuns_n1696020",
+   "motivo": "ja_registado (registo-curado)",
+   "publicado_em": "2025-11-04",
+   "titulo": "Grande Entrevista. André Ventura quer ser o presidente dos \"portugueses comuns\"",
+   "url": "https://www.rtp.pt/noticias/politica/grande-entrevista-andre-ventura-quer-ser-o-presidente-dos-portugueses-comuns_n1696020"
+  },
+  {
+   "excerto": "André Ventura foi o entrevistado desta noite na Grande Entrevista da RTP. O líder do Chega vai disputar a segunda volta das eleições presidenciais com António José Seguro.",
+   "fonte": "motor-rtp3",
+   "id_nativo": "https://www.rtp.pt/noticias/politica/presidenciais-andre-ventura-na-grande-entrevista-da-rtp_e1711973",
+   "motivo": "por_confirmar",
+   "publicado_em": "2026-01-21",
+   "titulo": "Presidenciais. André Ventura na Grande Entrevista da RTP",
+   "url": "https://www.rtp.pt/noticias/politica/presidenciais-andre-ventura-na-grande-entrevista-da-rtp_e1711973"
   }
  ],
  "esquema": 1,
- "total": 53
+ "total": 44
 }
