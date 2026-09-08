@@ -27,11 +27,13 @@ concurrency:
 jobs:
   levantar:
     runs-on: ubuntu-latest
-    # Limite de seguranca: o pior caso teorico (falhas a repetir 3
-    # tentativas de 30s em muitos dos ~170 pedidos) fica perto de 4h30.
-    # 45 minutos chega para uma corrida saudavel e evita gastar minutos
-    # de Actions numa corrida presa por engano.
-    timeout-minutes: 45
+    # Limite de seguranca. A primeira corrida real mostrou que a rede
+    # ate ao arquivo.pt pode ser instavel e as tentativas repetidas
+    # custam minutos, nao segundos: um canal sozinho levou perto de 10.
+    # 90 minutos da margem para os nove sem deixar o job preso por horas
+    # se algo bloquear a serio. O script escreve a cada canal terminado,
+    # por isso mesmo um corte a meio deixa o trabalho feito ate ali.
+    timeout-minutes: 90
     env:
       TZ: UTC
       # Sem isto, a saida do Python fica em buffer de bloco num pipe (o
@@ -60,12 +62,19 @@ jobs:
           python -m ferramentas.levantamento $args
 
       - name: Guardar como artefacto
+        # Idem: mesmo que o passo anterior tenha sido cortado, o que foi
+        # escrito ate ali fica disponivel como artefacto da corrida.
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: levantamento
           path: levantamento/
 
       - name: Publicar no repositorio
+        # Corre tambem se o passo anterior for interrompido (timeout ou
+        # cancelamento manual): o que ja foi escrito ate ali fica no
+        # repositorio em vez de se perder com o resto do job.
+        if: always()
         run: |
           if [ -z "$(git status --porcelain levantamento)" ]; then
             echo "sem alteracoes"

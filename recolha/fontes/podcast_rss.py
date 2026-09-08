@@ -100,7 +100,7 @@ def ler_feed(xml: str) -> tuple[list[ItemBruto], str | None]:
 class FontePodcastRss(PluginDeFonte):
     tipo = "podcast_rss"
 
-    def obter(self) -> Iterable[ItemBruto]:
+    def obter(self, termos: list[str] | None = None, registo: list | None = None) -> Iterable[ItemBruto]:
         if not self.fonte.url:
             return []
         vistos: set[str] = set()

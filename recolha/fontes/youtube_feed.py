@@ -53,7 +53,7 @@ def ler_feed(xml: str) -> list[ItemBruto]:
 class FonteYouTubeFeed(PluginDeFonte):
     tipo = "youtube_feed"
 
-    def obter(self) -> Iterable[ItemBruto]:
+    def obter(self, termos: list[str] | None = None, registo: list | None = None) -> Iterable[ItemBruto]:
         if not self.fonte.channel_id:
             return []
         itens = ler_feed(obter_texto(FEED.format(id=self.fonte.channel_id)))

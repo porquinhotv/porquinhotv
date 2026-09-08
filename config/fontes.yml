@@ -43,46 +43,114 @@ fontes:
     duracao_opcional: true
 
   # ------------------------------------------------------------------
-  # Detetores YouTube (feed Atom, ultimos 15 videos, sem chave).
-  # Preencher channel_id (comeca por UC) depois do levantamento e passar
-  # ativa para true. Com channel_id vazio a fonte devolve zero itens.
+  # Pesquisa do proprio site. A fonte automatica principal.
+  #
+  # Cada fonte pede a pagina de pesquisa do site, colhe os URL de artigo
+  # do mesmo dominio e le os dados estruturados (schema.org, OpenGraph)
+  # de cada um. Nao ha seletores CSS: o que se le e o que os sites
+  # publicam para os motores de busca, que e o que sobrevive as
+  # remodelacoes.
+  #
+  # `busca` aceita {termo} (cada termo de deteccao do sujeito, ja
+  # codificado) e {pagina} (1 ate paginas_max). Sem {pagina}, uma so.
+  # `padrao_artigo` aperta o que conta como URL de artigo; vazio usa a
+  # heuristica generica (dois segmentos de caminho e um slug com hifen).
+  #
+  # Para o historico: subir paginas_max. Cada pagina a mais sao mais
+  # pedidos, por isso o valor de todos os dias e baixo de proposito, e a
+  # corrida de historico corre com --paginas para o subir sem editar
+  # isto.
   # ------------------------------------------------------------------
-  - id: yt-rtp
-    tipo: youtube_feed
-    ativa: false
-    channel_id: ''
+  - id: busca-rtp1
+    tipo: busca_site
+    ativa: true
     canal: rtp1
-    confianca: baixa
-  - id: yt-sic-noticias
-    tipo: youtube_feed
-    ativa: false
-    channel_id: ''
+    dominio: rtp.pt
+    confianca: media
+    busca:
+      - https://www.rtp.pt/play/pesquisa?q={termo}
+    padrao_artigo: '/play/p[0-9]+/|/noticias/'
+    max_candidatos: 40
+    paginas_max: 1
+
+  - id: busca-rtp3
+    tipo: busca_site
+    ativa: true
+    canal: rtp3
+    dominio: rtp.pt
+    confianca: media
+    busca:
+      - https://www.rtp.pt/noticias/pesquisa?q={termo}
+    padrao_artigo: '/noticias/'
+    max_candidatos: 40
+    paginas_max: 1
+
+  - id: busca-sic
+    tipo: busca_site
+    ativa: true
+    canal: sic
+    dominio: sic.pt
+    confianca: media
+    busca:
+      - https://sic.pt/pesquisa?q={termo}
+    max_candidatos: 40
+    paginas_max: 1
+
+  - id: busca-sic-noticias
+    tipo: busca_site
+    ativa: true
     canal: sic-noticias
-    confianca: baixa
-  - id: yt-cnn-portugal
-    tipo: youtube_feed
-    ativa: false
-    channel_id: ''
-    canal: cnn-portugal
-    confianca: baixa
-  - id: yt-tvi
-    tipo: youtube_feed
-    ativa: false
-    channel_id: ''
+    dominio: sicnoticias.pt
+    confianca: media
+    busca:
+      - https://sicnoticias.pt/pesquisa?q={termo}
+    max_candidatos: 40
+    paginas_max: 1
+
+  - id: busca-tvi
+    tipo: busca_site
+    ativa: true
     canal: tvi
-    confianca: baixa
-  - id: yt-cmtv
-    tipo: youtube_feed
-    ativa: false
-    channel_id: ''
+    dominio: iol.pt
+    confianca: media
+    busca:
+      - https://tvi.iol.pt/pesquisa/{termo}
+    max_candidatos: 40
+    paginas_max: 1
+
+  - id: busca-cnn-portugal
+    tipo: busca_site
+    ativa: true
+    canal: cnn-portugal
+    dominio: iol.pt
+    confianca: media
+    busca:
+      - https://cnnportugal.iol.pt/pesquisa/{termo}
+    max_candidatos: 40
+    paginas_max: 1
+
+  - id: busca-cmtv
+    tipo: busca_site
+    ativa: true
     canal: cmtv
-    confianca: baixa
-  - id: yt-now
-    tipo: youtube_feed
-    ativa: false
-    channel_id: ''
+    dominio: cmjornal.pt
+    confianca: media
+    busca:
+      - https://www.cmjornal.pt/pesquisa?q={termo}
+    padrao_artigo: '/cmtv/'
+    max_candidatos: 40
+    paginas_max: 1
+
+  - id: busca-now
+    tipo: busca_site
+    ativa: true
     canal: now
-    confianca: baixa
+    dominio: now.pt
+    confianca: media
+    busca:
+      - https://now.pt/?s={termo}
+    max_candidatos: 40
+    paginas_max: 1
 
   # ------------------------------------------------------------------
   # Exemplo de feed de podcast com varios programas. Copiar e adaptar

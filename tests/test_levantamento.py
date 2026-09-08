@@ -67,26 +67,66 @@ class TestYouTube(unittest.TestCase):
         self.assertIsNone(levantamento.id_de_canal_youtube("<html></html>"))
 
 
-class TestArquivo(unittest.TestCase):
-    def test_url(self):
-        url = levantamento.url_arquivo("https://arquivo.pt/textsearch", "Pessoa Exemplo entrevista", "exemplo.pt", "2019-05-16", "2026-09-08", 200)
-        self.assertIn("q=%22Pessoa+Exemplo+entrevista%22", url)
-        self.assertIn("siteSearch=exemplo.pt", url)
-        self.assertIn("from=20190516", url)
-        self.assertIn("to=20260908", url)
-        self.assertIn("maxItems=200", url)
+class TestMesclaComCorridasAnteriores(unittest.TestCase):
+    """Uma corrida com --canal nao pode apagar o que outra ja verificou."""
 
-    def test_contagem_por_ano(self):
-        r = levantamento.ler_resposta_arquivo(ler("arquivo_exemplo.json"))
-        self.assertEqual(r["total_estimado"], 37)
-        self.assertEqual(r["itens_lidos"], 3)
-        self.assertEqual(r["por_ano"], {"2020": 2, "2023": 1})
-        self.assertEqual(r["exemplos"][0]["data"], "20200301")
+    def test_carregar_sem_ficheiro(self):
+        with tempfile.TemporaryDirectory() as pasta:
+            self.assertEqual(levantamento.carregar_anterior(Path(pasta)), {})
 
-    def test_resposta_vazia(self):
-        r = levantamento.ler_resposta_arquivo('{"response_items": []}')
-        self.assertEqual(r["total_estimado"], 0)
-        self.assertEqual(r["por_ano"], {})
+    def test_carregar_ficheiro_ilegivel(self):
+        with tempfile.TemporaryDirectory() as pasta:
+            (Path(pasta) / "levantamento.json").write_text("nao e json", encoding="utf-8")
+            self.assertEqual(levantamento.carregar_anterior(Path(pasta)), {})
+
+    def test_canal_novo_substitui_so_o_seu(self):
+        anteriores = {"rtp1": {"canal": "rtp1", "nome": "RTP1"}, "cmtv": {"canal": "cmtv", "nome": "CMTV"}}
+        novo = {"canais": [{"canal": "cmtv", "nome": "CMTV novo"}]}
+        combinado = levantamento.mesclar(novo, anteriores, ["rtp1", "cmtv", "sic"])
+        self.assertEqual([c["canal"] for c in combinado["canais"]], ["rtp1", "cmtv"])
+        self.assertEqual(combinado["canais"][1]["nome"], "CMTV novo")
+
+    def test_ordem_segue_a_configuracao(self):
+        anteriores = {"cmtv": {"canal": "cmtv"}, "rtp1": {"canal": "rtp1"}}
+        combinado = levantamento.mesclar({"canais": []}, anteriores, ["rtp1", "cmtv"])
+        self.assertEqual([c["canal"] for c in combinado["canais"]], ["rtp1", "cmtv"])
+
+    def _minimo(self, canais):
+        return {"verificado_em": "2026-09-08T00:00:00+00:00", "desde": "2019-05-16", "termos": [], "canais": canais}
+
+    def test_round_trip_por_ficheiro(self):
+        with tempfile.TemporaryDirectory() as pasta:
+            p = Path(pasta)
+            levantamento.escrever(self._minimo([{"canal": "rtp1", "nome": "RTP1", "paginas": [], "youtube": []}]), p)
+            anteriores = levantamento.carregar_anterior(p)
+            self.assertEqual(set(anteriores), {"rtp1"})
+            combinado = levantamento.mesclar(self._minimo([{"canal": "cmtv", "nome": "CMTV", "paginas": [], "youtube": []}]), anteriores, ["rtp1", "cmtv"])
+            levantamento.escrever(combinado, p)
+            outra_vez = levantamento.carregar_anterior(p)
+            self.assertEqual(set(outra_vez), {"rtp1", "cmtv"})
+
+
+class TestForcaIPv4(unittest.TestCase):
+    """Contorna o erro 'Network is unreachable' visto no runner do GitHub."""
+
+    def test_getaddrinfo_forca_af_inet(self):
+        import socket
+
+        from recolha import rede
+
+        vistos = []
+
+        def falso(host, port, family=0, type=0, proto=0, flags=0):
+            vistos.append(family)
+            return []
+
+        original = rede._getaddrinfo_original
+        rede._getaddrinfo_original = falso
+        try:
+            socket.getaddrinfo("exemplo.pt", 443, socket.AF_UNSPEC)
+        finally:
+            rede._getaddrinfo_original = original
+        self.assertEqual(vistos, [socket.AF_INET])
 
 
 class TestCorrida(unittest.TestCase):
@@ -96,8 +136,6 @@ class TestCorrida(unittest.TestCase):
         self.pedidos.append(url)
         if "youtube.com/@" in url:
             return ler("youtube_canal_exemplo.html")
-        if "textsearch" in url:
-            return ler("arquivo_exemplo.json")
         if "falha" in url:
             raise ErroDeRede("pedido falhou: " + url)
         return ler("pagina_canal_exemplo.html")
@@ -105,7 +143,7 @@ class TestCorrida(unittest.TestCase):
     def setUp(self):
         self.pedidos = []
         self.config = {
-            "arquivo": {"api": "https://arquivo.pt/textsearch", "max_itens": 10, "termos_extra": ["entrevista"], "pausa_s": 0},
+            "pausa_s": 0,
             "termos_formato": ["entrevista"],
             "canais": [
                 {"id": "rtp1", "dominios": ["exemplo.pt"], "paginas": ["https://exemplo.pt/", "https://exemplo.pt/pesquisa?q={termo}"], "youtube": ["exemplo"]},
@@ -119,12 +157,9 @@ class TestCorrida(unittest.TestCase):
         primeiro, segundo = r["canais"]
         self.assertTrue(all(p["responde"] for p in primeiro["paginas"]))
         self.assertEqual(primeiro["youtube"][0]["channel_id"], "UCzyxwvutsrqponmlkjihgfe")
-        self.assertIn("exemplo.pt", primeiro["arquivo"])
         self.assertFalse(segundo["paginas"][0]["responde"])
-        # Handle e consultas ao arquivo.pt repetidos entre canais nao se pedem duas vezes.
+        # Um handle repetido entre canais nao se pede duas vezes.
         self.assertEqual(sum(1 for u in self.pedidos if "youtube.com/@" in u), 1)
-        consultas = [u for u in self.pedidos if "textsearch" in u]
-        self.assertEqual(len(consultas), len(set(consultas)))
 
         md = levantamento.relatorio(r)
         self.assertIn("| RTP1 |", md)
@@ -133,8 +168,15 @@ class TestCorrida(unittest.TestCase):
         for t in ("\u2014", "\u2013"):
             self.assertNotIn(t, md)
 
+    def test_escreve_a_cada_canal(self):
+        """Se a corrida for interrompida a meio, o que ja foi apurado nao
+        se perde: cada canal terminado dispara uma escrita parcial."""
+        chamadas = []
+        levantamento.correr(self.config, obter=self._obter, dormir=lambda s: None, escrever_a_cada_canal=lambda parcial: chamadas.append(len(parcial["canais"])))
+        self.assertEqual(chamadas, [1, 2])
+
     def test_escrita_em_lf(self):
-        r = levantamento.correr(self.config, obter=self._obter, com_arquivo=False, dormir=lambda s: None)
+        r = levantamento.correr(self.config, obter=self._obter, dormir=lambda s: None)
         with tempfile.TemporaryDirectory() as pasta:
             levantamento.escrever(r, Path(pasta))
             for nome in ("levantamento.json", "LEVANTAMENTO.md"):

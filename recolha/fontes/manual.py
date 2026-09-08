@@ -89,7 +89,7 @@ def ler_registo(caminho: Path) -> list[ItemBruto]:
 class FonteManual(PluginDeFonte):
     tipo = "manual"
 
-    def obter(self) -> Iterable[ItemBruto]:
+    def obter(self, termos: list[str] | None = None, registo: list | None = None) -> Iterable[ItemBruto]:
         caminho = RAIZ / self.fonte.ficheiro if self.fonte.ficheiro else FICHEIRO_ENTREVISTAS
         if not caminho.exists():
             return []

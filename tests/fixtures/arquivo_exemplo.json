@@ -1,6 +1,0 @@
-{"serviceName":"Arquivo.pt - the Portuguese web-archive","estimated_total_results":37,
- "response_items":[
-  {"title":"Entrevista a Pessoa Exemplo","originalURL":"https://exemplo.pt/a","linkToArchive":"https://arquivo.pt/wayback/20200301120000/https://exemplo.pt/a","tstamp":"20200301120000"},
-  {"title":"Outra","originalURL":"https://exemplo.pt/b","linkToArchive":"https://arquivo.pt/wayback/20200401120000/https://exemplo.pt/b","tstamp":"20200401120000"},
-  {"title":"Terceira","originalURL":"https://exemplo.pt/c","linkToArchive":"https://arquivo.pt/wayback/20230101000000/https://exemplo.pt/c","tstamp":"20230101000000"}
- ]}

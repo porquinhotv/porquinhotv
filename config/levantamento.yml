@@ -24,20 +24,10 @@
 # corpo, ou se a pagina e vazia sem JavaScript; se ha JSON-LD de video com
 # duracao declarada; feeds anunciados; ids de canal de YouTube.
 #
-# Para cada dominio a ferramenta pergunta ao arquivo.pt quantas paginas
-# arquivadas ha com cada termo, por ano, desde a data de inicio do tema.
-# O arquivo.pt tem API publica, sem chave, e nao e de terceiros de fora
-# da UE. Nao substitui o canal: diz onde vale a pena escavar.
-
-arquivo:
-  api: https://arquivo.pt/textsearch
-  # Maximo de itens por pedido. A API aceita mais, mas basta para contar
-  # por ano e guardar exemplos; os totais vem de estimated_total_results.
-  max_itens: 200
-  # Termos combinados com cada termo de deteccao do sujeito.
-  termos_extra: [entrevista, entrevista exclusiva, grande entrevista]
-  # Pausa entre pedidos, em segundos. Cortesia, nao exigencia.
-  pausa_s: 1.0
+# O arquivo.pt foi testado e removido: devolveu zero resultados para o
+# nome do sujeito no dominio de um canal generalista ao longo de sete
+# anos, o que foi confirmado a mao no browser. Uma fonte que devolve zero
+# onde tem de haver resultados nao e uma fonte.
 
 # Termos que, alem dos de deteccao do sujeito, se procuram no titulo, nos
 # metadados e no corpo das paginas sondadas.

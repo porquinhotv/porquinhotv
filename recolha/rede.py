@@ -7,6 +7,7 @@ projeto, nunca uma pessoa. Sem cookies, sem referer, sem estado.
 
 from __future__ import annotations
 
+import socket
 import time
 import urllib.error
 import urllib.request
@@ -15,6 +16,22 @@ AGENTE = "porquinho-tv/1.0 (contagem de emissoes; dados publicos)"
 TEMPO_LIMITE = 30
 TENTATIVAS = 3
 MAX_BYTES = 32 * 1024 * 1024
+
+# Corridas em GitHub Actions falharam a metade dos pedidos ao mesmo
+# dominio com "Network is unreachable", sucessos e falhas alternados.
+# E a assinatura de um IPv6 anunciado pelo DNS mas sem rota utilizavel
+# na maquina que corre o job, nao um bloqueio do servidor (que devolveria
+# um erro HTTP, nao um erro de encaminhamento). Forcar IPv4 evita a rota
+# que nao existe. Isto altera o processo inteiro, aceitavel aqui porque
+# o processo so faz pedidos HTTP e nada mais precisa de IPv6.
+_getaddrinfo_original = socket.getaddrinfo
+
+
+def _getaddrinfo_so_ipv4(host, port, family=0, type=0, proto=0, flags=0):
+    return _getaddrinfo_original(host, port, socket.AF_INET, type, proto, flags)
+
+
+socket.getaddrinfo = _getaddrinfo_so_ipv4
 
 
 class ErroDeRede(RuntimeError):

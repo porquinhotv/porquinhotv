@@ -20,7 +20,13 @@ class PluginDeFonte:
     def __init__(self, fonte: Fonte):
         self.fonte = fonte
 
-    def obter(self) -> Iterable[ItemBruto]:
+    def obter(self, termos: list[str] | None = None, registo: list | None = None) -> Iterable[ItemBruto]:
+        """Itens brutos desta fonte.
+
+        `termos` sao os termos de deteccao do sujeito, para as fontes que
+        pesquisam por nome; `registo` recolhe linhas de diagnostico da
+        corrida. Ambos opcionais: as fontes que nao precisam ignoram-nos.
+        """
         raise NotImplementedError
 
 

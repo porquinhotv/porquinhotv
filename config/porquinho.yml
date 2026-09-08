@@ -31,6 +31,12 @@ tema:
   # (2.a serie, n.o 94, 16 de maio de 2019). Nada anterior entra.
   desde: '2019-05-16'
   desde_rotulo: desde a fundação do partido
+  # Rondas distintas em que um bloco tem de ser visto antes de entrar no
+  # dataset publicado. Protege de um erro transitorio da recolha (pagina
+  # truncada, JSON-LD malformado nesse dia); nao protege de a fonte estar
+  # errada, e a Metodologia diz isso por palavras. O registo curado e o
+  # clipping, que sao verificados a mao, entram sem esperar.
+  rondas_para_confirmar: 2
 
 sujeito:
   id: ventura

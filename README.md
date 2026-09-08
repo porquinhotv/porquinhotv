@@ -9,7 +9,8 @@ O site publica, por período (semana, mês, ano, desde sempre): entrevistas excl
 - `config/entrevistas.yml` é o registo do canal: uma linha por emissão, com data, canal, programa, URL de prova e a duração declarada sempre que exista. É a fonte principal.
 - `config/clipping.yml` é o último recurso: emissões provadas por peças de imprensa, para o que o canal nunca publicou ou já retirou. Entram identificadas como tal e nunca deslocam um registo do canal.
 - Uma emissão sem duração apurada conta como entrevista e nunca como tempo. O site escreve "duração não apurada"; não escreve zero nem estima.
-- `config/fontes.yml` declara as fontes automáticas: feeds de podcast (com duração) e feeds públicos de YouTube (sem duração, só detetam candidatos).
+- `config/fontes.yml` declara as fontes automáticas. A principal é a pesquisa do próprio site de cada canal: pede a pesquisa do canal por cada forma do nome, recolhe os endereços de artigo desse domínio e lê de cada página o que ela publica em schema.org e OpenGraph, incluindo a duração quando existe. Não há seletores de HTML de nenhum site, e por isso a leitura sobrevive a uma remodelação em vez de passar a devolver zero em silêncio.
+- Uma emissão vinda de fonte automática não entra na primeira vez que é vista: só entra depois de o mesmo bloco aparecer em rondas distintas. O registo de avistamentos está em `docs/dados/candidatos.json`, e ao lado de cada linha ficam as rondas e o número de fontes distintas que a viram. Ver a Metodologia para o que isto protege e o que não protege.
 - `recolha/` aplica o critério em `config/porquinho.yml`, escreve `docs/dados/emissoes.json` (append-only), `docs/dados/quarentena.json` (tudo o que ficou de fora, com motivo) e `docs/dados/resumo.json` (os agregados).
 - `docs/` é o site. Zero dependências externas: sem CDN, sem fontes remotas, sem analytics. A fonte tipográfica é servida localmente, licença OFL ao lado.
 - Uma GitHub Action corre a recolha todos os dias e publica as alterações.
@@ -24,6 +25,7 @@ python -m unittest discover -s tests -t .      # 68 testes, offline
 node --test tests/frontend/*.test.js           # 13 testes a logica do site, sem browser
 python -m recolha.principal --dry-run          # nao escreve nada
 python -m recolha.principal                    # escreve docs/dados
+python -m recolha.principal --paginas 15       # mais fundo no tempo (historico)
 python -m http.server -d docs 8000
 ```
 

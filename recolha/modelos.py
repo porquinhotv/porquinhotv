@@ -57,6 +57,9 @@ class Tema:
     pergunta: str
     desde: str
     desde_rotulo: str = "desde sempre"
+    # Rondas distintas em que um bloco tem de ser visto antes de entrar
+    # no dataset publicado. Ver recolha/confirmacao.py.
+    rondas_para_confirmar: int = 2
 
 
 @dataclass(frozen=True)
@@ -120,6 +123,16 @@ class Fonte:
     # Uma fonte que so publica recortes marca tudo como parcial. O numero
     # publicado passa a ser um limite inferior declarado, nao uma adivinha.
     assumir_parcial: bool = False
+    # Fonte do tipo busca_site: modelos de URL da pesquisa do proprio
+    # site, com {termo} e opcionalmente {pagina}; dominio a que os
+    # candidatos tem de pertencer; expressao regular opcional para
+    # apertar o que conta como URL de artigo; e dois limites que evitam
+    # que uma pesquisa mal apertada gere milhares de pedidos.
+    busca: tuple[str, ...] = ()
+    dominio: str = ""
+    padrao_artigo: str = ""
+    max_candidatos: int = 40
+    paginas_max: int = 1
     segmentos: tuple[Segmento, ...] = ()
 
 
@@ -190,6 +203,11 @@ class Emissao:
     prova_url: str
     titulo: str
     primeira_vez: str = ""
+    # Preenchidos por recolha/confirmacao.py. Publicados ao lado de cada
+    # linha: rondas mede a estabilidade da leitura, fontes_distintas mede
+    # a corroboracao. Sao coisas diferentes e o site nao as confunde.
+    rondas: int = 0
+    fontes_distintas: int = 0
 
     def como_dict(self) -> dict:
         return asdict(self)
@@ -211,6 +229,7 @@ def carregar_config(
         pergunta=t.get("pergunta", ""),
         desde=str(t["desde"]),
         desde_rotulo=t.get("desde_rotulo", "desde sempre"),
+        rondas_para_confirmar=int(t.get("rondas_para_confirmar", 2)),
     )
     sujeito = Sujeito(id=s["id"], nome=s["nome"], detetar=tuple(s.get("detetar", [])))
     canais = {c["id"]: Canal(id=c["id"], nome=c["nome"]) for c in bruto.get("canais", [])}
@@ -234,6 +253,11 @@ def carregar_config(
             origem=f.get("origem", "canal"),
             duracao_opcional=bool(f.get("duracao_opcional", False)),
             assumir_parcial=bool(f.get("assumir_parcial", False)),
+            busca=tuple(f.get("busca", []) or []),
+            dominio=f.get("dominio", ""),
+            padrao_artigo=f.get("padrao_artigo", ""),
+            max_candidatos=int(f.get("max_candidatos", 40)),
+            paginas_max=int(f.get("paginas_max", 1)),
             segmentos=tuple(
                 Segmento(
                     se_titulo_tem=tuple(r.get("se_titulo_tem", []) or []),

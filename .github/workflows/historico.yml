@@ -1,0 +1,85 @@
+name: historico
+
+# Reconstrucao do historico, a pedido. Corre a recolha varias vezes
+# seguidas com paginacao profunda, cada corrida com o seu identificador
+# de ronda, para que a confirmacao em rondas se cumpra numa so operacao.
+#
+# A primeira ronda recolhe, as seguintes confirmam. Um bloco visto apenas
+# numa das rondas fica na quarentena como `aguarda_confirmacao` e e
+# visivel; nao entra no dataset.
+#
+# Isto protege de um erro passageiro de leitura, nao de a fonte estar
+# errada, e a Metodologia diz isso por palavras.
+
+on:
+  workflow_dispatch:
+    inputs:
+      paginas:
+        description: 'Paginas de resultados por termo e por canal. Mais paginas, mais fundo no tempo, mais demora.'
+        required: false
+        default: '15'
+      rondas:
+        description: 'Rondas a correr nesta operacao. O minimo util e o valor de rondas_para_confirmar.'
+        required: false
+        default: '3'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: recolha
+  cancel-in-progress: false
+
+jobs:
+  historico:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    env:
+      TZ: UTC
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Testes Python
+        run: python -m unittest discover -s tests -t .
+
+      - name: Testes da logica do site
+        run: node --test tests/frontend/*.test.js
+
+      - name: Rondas de historico
+        run: |
+          carimbo=$(date -u +%Y-%m-%d)
+          for i in $(seq 1 ${{ github.event.inputs.rondas }}); do
+            echo "=== ronda $i de ${{ github.event.inputs.rondas }}"
+            python -m recolha.principal --paginas ${{ github.event.inputs.paginas }} --ronda "historico-$carimbo-$i"
+          done
+
+      - name: Publicar
+        if: always()
+        run: |
+          if [ -z "$(git status --porcelain docs/dados)" ]; then
+            echo "sem alteracoes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/dados
+          git commit -m "dados: historico de $(date -u +%Y-%m-%d)"
+          for i in 1 2 3 4 5; do
+            if git push; then
+              exit 0
+            fi
+            echo "push rejeitado, a tentar rebase (tentativa $i/5)"
+            git fetch origin main
+            git rebase origin/main || { git rebase --abort; exit 1; }
+            sleep $((i * 3))
+          done
+          echo "nao foi possivel publicar depois de 5 tentativas" >&2
+          exit 1

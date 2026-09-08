@@ -66,11 +66,17 @@ As fontes têm uma hierarquia, e ela é deliberada: quando duas cobrem a mesma e
 
 **1. Registo do canal** (`config/entrevistas.yml`). Uma linha por emissão, escrita por uma pessoa, com data, canal, programa, um URL da própria página ou do próprio feed do canal e, sempre que exista, a duração declarada. É a fonte principal.
 
-**2. Feeds de podcast**. Quando um canal publica um programa como podcast, o feed traz a duração e a data de publicação. Estes itens entram sozinhos se passarem o critério. Um feed que mistura programas é classificado pelo título de cada item.
+**2. Pesquisa do próprio canal**. É a fonte automática principal. O site do canal é interrogado pela sua própria pesquisa, uma vez por cada forma do nome, e de cada página de resultado recolhem-se os endereços de artigo desse domínio. Cada um é depois lido para extrair o que a página publica em formato normalizado (schema.org, OpenGraph): título, data e, quando existe, a duração declarada. Não é lida a apresentação da página, apenas estes campos, que os canais mantêm por causa dos motores de busca; é o que faz esta leitura sobreviver a uma remodelação do site em vez de passar a devolver zero em silêncio. Estes itens não entram na hora: ver a secção 10.
 
-**3. Clipping de imprensa** (`config/clipping.yml`). Último recurso, para emissões que o canal nunca publicou ou já retirou. Uma peça de imprensa escrita que diga, por palavras, que no dia X houve uma entrevista exclusiva a André Ventura no canal Y é prova de que a emissão aconteceu. Não é prova do seu conteúdo nem, quase nunca, da sua duração: por isso estas emissões entram muitas vezes sem duração apurada, e o site marca-as sempre com a origem "imprensa", com a ligação para a peça. Uma peça que apenas cite declarações não serve: tem de relatar uma entrevista.
+**3. Feeds de podcast**. Quando um canal publica um programa como podcast, o feed traz a duração e a data de publicação. Um feed que mistura programas é classificado pelo título de cada item.
 
-**Detetores: feeds públicos de YouTube**. Dizem que saiu um vídeo com o nome no título, e mais nada. Nunca entram no dataset por esta via, mesmo agora que uma emissão pode entrar sem duração: numa fonte automática, a falta de duração significa "ainda não verificado", não "sem duração". Vão para a quarentena como `por_confirmar`, com o URL, para verificação humana.
+**4. Clipping de imprensa** (`config/clipping.yml`). Último recurso, para emissões que o canal nunca publicou ou já retirou. Uma peça de imprensa escrita que diga, por palavras, que no dia X houve uma entrevista exclusiva a André Ventura no canal Y é prova de que a emissão aconteceu. Não é prova do seu conteúdo nem, quase nunca, da sua duração: por isso estas emissões entram muitas vezes sem duração apurada, e o site marca-as sempre com a origem "imprensa", com a ligação para a peça. Uma peça que apenas cite declarações não serve: tem de relatar uma entrevista.
+
+**Detetores: feeds públicos de YouTube**. Dizem que saiu um vídeo com o nome no título, e mais nada. Nunca entram no dataset por esta via, mesmo agora que uma emissão pode entrar sem duração: numa fonte automática, a falta de duração significa "ainda não verificado", não "sem duração". Vão para a quarentena como `por_confirmar`, com o URL.
+
+**Uma fonte que foi testada e recusada.** O arquivo da web portuguesa foi ensaiado como fonte para o histórico e devolveu zero resultados para o nome do sujeito no domínio de um canal generalista ao longo de sete anos, o que foi confirmado à mão. Uma fonte que devolve zero onde tem de haver resultados não é uma fonte, e não é usada. Fica registado aqui porque saber o que foi tentado e recusado faz parte do método.
+
+**Motores de busca externos não são usados.** Não por preferência, mas porque respondem a pedidos automáticos com muro de consentimento ou verificação, o que faria da recolha uma coisa que funciona uma vez. A pesquisa do próprio canal é além disso a fonte primária, que é o que esta Metodologia manda procurar primeiro.
 
 A repartição entre o que vem do canal e o que vem da imprensa é publicada, porque é uma medida da qualidade da própria cobertura.
 
@@ -87,10 +93,21 @@ Nada é descartado em silêncio. Todo o item que uma fonte devolveu e que não e
 | `formato_nao_elegivel (x)` | debate, declaração, direto ou outro formato |
 | `canal_desconhecido` | canal que não é um dos nove |
 | `por_confirmar` | fonte automática sem duração; é um candidato a verificação humana |
+| `aguarda_confirmacao (n de m)` | visto por fonte automática, ainda sem as rondas necessárias |
 | `fragmento_ou_repetido` | outro item do mesmo bloco (canal, programa, dia) tem melhor prova |
 | `ja_registado` | o registo curado já tem esta prova |
 
 A quarentena é uma fotografia da última recolha, não um histórico.
+
+### Confirmação em rondas
+
+Uma emissão vinda de fonte automática não entra no dataset na primeira vez que é vista. Fica registada como candidata e só entra depois de o mesmo bloco (canal, programa, dia) ser encontrado em rondas distintas de recolha. O registo de avistamentos está em `dados/candidatos.json`, é append-only, e ao lado de cada linha publicada ficam dois números: em quantas rondas foi vista e por quantas fontes distintas.
+
+O que isto protege, e o que não protege, dito sem enfeite:
+
+**Protege** de um erro passageiro da recolha. Uma página que veio truncada, um campo malformado nesse dia, uma pesquisa que devolveu lixo por causa de uma remodelação a meio: qualquer destes injetaria uma emissão falsa numa recolha de leitura única. Exigir que o mesmo bloco reapareça noutra corrida elimina esta classe de erro.
+
+**Não protege** de a fonte estar errada. Se a página do canal disser o que não é, dirá o mesmo em todas as rondas. Ler a mesma fonte mais vezes não a torna mais verdadeira. O que aumenta mesmo a fiabilidade é a corroboração por fontes diferentes, e é por isso que o número de fontes distintas é publicado ao lado do número de rondas: são coisas diferentes e o site não as confunde.
 
 ## 11. Fragmentos e prova repetida
 

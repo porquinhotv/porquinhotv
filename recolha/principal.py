@@ -3,6 +3,8 @@
     python -m recolha.principal              recolhe e escreve docs/dados
     python -m recolha.principal --dry-run    recolhe, nao escreve nada
     python -m recolha.principal --fonte X    so uma fonte
+    python -m recolha.principal --paginas 20 mais paginas de pesquisa (historico)
+    python -m recolha.principal --ronda X    identificador desta ronda
 
 Uma fonte que falhe nao derruba as outras. As fontes correm pela ordem de
 config/fontes.yml; o registo curado deve vir primeiro, para ganhar os
@@ -13,34 +15,38 @@ from __future__ import annotations
 
 import argparse
 import sys
+from dataclasses import replace
 
-from . import armazem, criterio, resumo
+from . import armazem, confirmacao, criterio, resumo
 from .fontes import base as fontes_base
-from .fontes import manual, podcast_rss, youtube_feed  # noqa: F401  (registo dos plugins)
-from .modelos import carregar_config
+from .fontes import busca_site, manual, podcast_rss, youtube_feed  # noqa: F401  (registo dos plugins)
+from .modelos import carregar_config, hoje_iso
 
 
 def _url_normalizado(url: str) -> str:
     return url.strip().rstrip("/").replace("http://", "https://").replace("www.", "")
 
 
-def correr(so_fonte: str | None = None, dry_run: bool = False) -> int:
+def correr(so_fonte: str | None = None, dry_run: bool = False, paginas: int = 0, ronda: str = "") -> int:
     config = carregar_config()
     existentes = armazem.carregar()
     aceites = []
     quarentena: list[dict] = []
     avisos: list[str] = []
+    diario: list[str] = []
     provas_vistas: dict[str, str] = {}
 
     for fonte in config.fontes:
         if not fonte.ativa or (so_fonte and fonte.id != so_fonte):
             continue
+        if paginas and fonte.tipo == "busca_site":
+            fonte = replace(fonte, paginas_max=paginas, max_candidatos=max(fonte.max_candidatos, paginas * 20))
         plugin = fontes_base.plugin_para(fonte)
         if plugin is None:
             avisos.append(f"{fonte.id}: tipo desconhecido '{fonte.tipo}'")
             continue
         try:
-            itens = list(plugin.obter())
+            itens = list(plugin.obter(termos=list(config.sujeito.detetar), registo=diario))
         except Exception as exc:  # noqa: BLE001  uma fonte nao derruba a corrida
             avisos.append(f"{fonte.id}: {exc}")
             continue
@@ -61,6 +67,29 @@ def correr(so_fonte: str | None = None, dry_run: bool = False) -> int:
         print(f"{fonte.id}: {len(itens)} itens, {contadas} emissoes")
 
     aceites = criterio.resolver_blocos(aceites, quarentena)
+
+    # Confirmacao em rondas. O registo curado e o clipping sao verificados
+    # a mao e entram na hora; as fontes automaticas so entram depois de o
+    # mesmo bloco aparecer em rondas distintas. Ver recolha/confirmacao.py
+    # para o que isto protege e o que nao protege.
+    # Por omissao a ronda e o dia: duas corridas no mesmo dia leem o
+    # mesmo e nao devem contar como duas confirmacoes. A corrida de
+    # historico passa identificadores proprios, porque ai cada ronda e
+    # uma releitura completa e independente das paginas.
+    ronda = ronda or hoje_iso()
+    candidatos = confirmacao.carregar()
+    # Verificadas a mao: o tipo declarado na configuracao, nunca o nome
+    # da fonte. Um prefixo de nome parte em silencio quando alguem
+    # renomeia uma fonte, e o silencio aqui significava publicar sem
+    # confirmacao.
+    a_mao = {f.id for f in config.fontes if f.tipo == "manual"}
+    manuais = [e for e in aceites if e.fonte in a_mao]
+    automaticas = [e for e in aceites if e.fonte not in a_mao]
+    candidatos = confirmacao.registar(candidatos, automaticas, ronda)
+    minimo = config.tema.rondas_para_confirmar
+    aceites = manuais + confirmacao.filtrar(automaticas, candidatos, minimo, quarentena)
+    aceites = confirmacao.anotar(aceites, candidatos)
+
     fundidas, adicionadas, atualizadas = armazem.fundir(existentes, aceites)
     agregados = resumo.construir(list(fundidas.values()), config)
 
@@ -71,10 +100,18 @@ def correr(so_fonte: str | None = None, dry_run: bool = False) -> int:
     if por_confirmar:
         print(f"{prefixo}{por_confirmar} por confirmar no registo curado (ver quarentena)")
 
+    aguardam = sum(1 for e in quarentena if e["motivo"].startswith("aguarda_confirmacao"))
+    if aguardam:
+        print(f"{prefixo}{aguardam} a aguardar confirmacao noutra ronda")
+
     if not dry_run:
         armazem.guardar(fundidas)
         resumo.guardar(agregados)
         armazem.guardar_quarentena(quarentena)
+        confirmacao.guardar(candidatos)
+
+    for linha in diario:
+        print(f"  {linha}", flush=True)
 
     for aviso in avisos:
         print(f"AVISO {aviso}", file=sys.stderr)
@@ -85,8 +122,10 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Recolha de emissoes")
     parser.add_argument("--fonte", help="correr apenas esta fonte")
     parser.add_argument("--dry-run", action="store_true", help="nao escrever em disco")
+    parser.add_argument("--paginas", type=int, default=0, help="paginas de pesquisa por termo (historico)")
+    parser.add_argument("--ronda", default="", help="identificador desta ronda (por omissao, o dia)")
     args = parser.parse_args()
-    return correr(so_fonte=args.fonte, dry_run=args.dry_run)
+    return correr(so_fonte=args.fonte, dry_run=args.dry_run, paginas=args.paginas, ronda=args.ronda)
 
 
 if __name__ == "__main__":

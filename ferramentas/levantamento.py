@@ -1,12 +1,10 @@
 """Levantamento automatico das fontes dos canais. Corre uma vez.
 
     python -m ferramentas.levantamento
-    python -m ferramentas.levantamento --sem-arquivo      so as paginas
     python -m ferramentas.levantamento --canal <id>       so um canal
 
 Le config/levantamento.yml e, para cada canal, sonda as paginas
-declaradas, resolve os handles de YouTube para ids UC..., e pergunta ao
-arquivo.pt quantas paginas de cada dominio falam do sujeito, por ano.
+declaradas e resolve os handles de YouTube para ids UC...
 Escreve levantamento/levantamento.json e levantamento/LEVANTAMENTO.md.
 
 Nao decide nada e nao toca em docs/dados. E a resposta a "o que expoe
@@ -196,51 +194,6 @@ def id_de_canal_youtube(html: str) -> str | None:
 
 
 # --------------------------------------------------------------------------
-# arquivo.pt: quantas paginas arquivadas por dominio, termo e ano
-# --------------------------------------------------------------------------
-
-
-def url_arquivo(api: str, termo: str, dominio: str, desde: str, ate: str, max_itens: int) -> str:
-    parametros = {
-        "q": f'"{termo}"',
-        "siteSearch": dominio,
-        "from": desde.replace("-", ""),
-        "to": ate.replace("-", ""),
-        "maxItems": str(max_itens),
-        "dedupField": "url",
-        "prettyPrint": "false",
-    }
-    return f"{api}?{urllib.parse.urlencode(parametros)}"
-
-
-def ler_resposta_arquivo(texto: str) -> dict:
-    """Total estimado, contagem por ano e ate cinco exemplos."""
-    dados = json.loads(texto)
-    itens = dados.get("response_items") or []
-    por_ano: Counter = Counter()
-    exemplos = []
-    for item in itens:
-        carimbo = str(item.get("tstamp") or "")
-        if len(carimbo) >= 4:
-            por_ano[carimbo[:4]] += 1
-        if len(exemplos) < 5:
-            exemplos.append(
-                {
-                    "titulo": (item.get("title") or "")[:160],
-                    "url": item.get("originalURL") or "",
-                    "arquivo": item.get("linkToArchive") or "",
-                    "data": carimbo[:8],
-                }
-            )
-    return {
-        "total_estimado": int(dados.get("estimated_total_results") or 0),
-        "itens_lidos": len(itens),
-        "por_ano": dict(sorted(por_ano.items())),
-        "exemplos": exemplos,
-    }
-
-
-# --------------------------------------------------------------------------
 # Corrida
 # --------------------------------------------------------------------------
 
@@ -256,16 +209,14 @@ def correr(
     config: dict,
     obter: Obter = obter_texto,
     so_canal: str | None = None,
-    com_arquivo: bool = True,
     dormir: Callable[[float], None] = time.sleep,
+    escrever_a_cada_canal: Callable[[dict], None] | None = None,
 ) -> dict:
     tema = carregar_config()
     termos_sujeito = list(tema.sujeito.detetar)
     termos = termos_sujeito + list(config.get("termos_formato") or [])
-    arquivo = config.get("arquivo") or {}
     desde = tema.tema.desde
-    ate = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    pausa = float(arquivo.get("pausa_s", 1.0))
+    pausa = float(config.get("pausa_s", 1.0))
 
     resultado = {
         "verificado_em": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
@@ -273,7 +224,6 @@ def correr(
         "termos": termos,
         "canais": [],
     }
-    cache_arquivo: dict[tuple[str, str], dict] = {}
     cache_yt: dict[str, dict] = {}
 
     for canal in config.get("canais") or []:
@@ -283,7 +233,7 @@ def correr(
         if not tema.canal_valido(cid):
             print(f"AVISO canal desconhecido em levantamento.yml: {cid}", file=sys.stderr, flush=True)
             continue
-        linha = {"canal": cid, "nome": tema.canais[cid].nome, "paginas": [], "youtube": [], "arquivo": {}}
+        linha = {"canal": cid, "nome": tema.canais[cid].nome, "paginas": [], "youtube": []}
 
         for modelo in canal.get("paginas") or []:
             urls = [modelo.format(termo=urllib.parse.quote(t)) for t in termos_sujeito] if "{termo}" in modelo else [modelo]
@@ -306,31 +256,13 @@ def correr(
                 dormir(pausa)
             linha["youtube"].append(cache_yt[handle])
 
-        if com_arquivo and arquivo.get("api"):
-            extras = list(arquivo.get("termos_extra") or [])
-            for dominio in canal.get("dominios") or []:
-                consultas = termos_sujeito + [f"{s} {e}" for s in termos_sujeito for e in extras]
-                por_termo = {}
-                for consulta in consultas:
-                    chave = (dominio, consulta)
-                    if chave not in cache_arquivo:
-                        print(f"  {cid}: arquivo.pt {dominio} \"{consulta}\"", flush=True)
-                        url = url_arquivo(arquivo["api"], consulta, dominio, desde, ate, int(arquivo.get("max_itens", 200)))
-                        texto, erro = _sondar(url, obter)
-                        if texto is None:
-                            cache_arquivo[chave] = {"erro": erro}
-                            print(f"  {cid}: arquivo.pt {dominio} falhou ({erro})", flush=True)
-                        else:
-                            try:
-                                cache_arquivo[chave] = ler_resposta_arquivo(texto)
-                            except (json.JSONDecodeError, ValueError) as exc:
-                                cache_arquivo[chave] = {"erro": f"resposta ilegivel: {exc}"}
-                        dormir(pausa)
-                    por_termo[consulta] = cache_arquivo[chave]
-                linha["arquivo"][dominio] = por_termo
-
         resultado["canais"].append(linha)
-        print(f"{cid}: {len(linha['paginas'])} paginas, {len(linha['youtube'])} handles, {len(linha['arquivo'])} dominios", flush=True)
+        print(f"{cid}: {len(linha['paginas'])} paginas, {len(linha['youtube'])} handles", flush=True)
+        # Escrever a cada canal, nao so no fim: se o job for morto pelo
+        # timeout ou cancelado a meio, o que ja foi apurado fica em disco
+        # e no artefacto, em vez de se perder por inteiro.
+        if escrever_a_cada_canal is not None:
+            escrever_a_cada_canal(resultado)
 
     return resultado
 
@@ -349,17 +281,16 @@ def relatorio(resultado: dict) -> str:
     linhas = [
         "# Levantamento das fontes",
         "",
-        f"Verificado em {resultado['verificado_em']}. Periodo pedido ao arquivo.pt: desde {resultado['desde']}.",
+        f"Verificado em {resultado['verificado_em']}.",
         "",
         "Termos procurados: " + ", ".join(resultado["termos"]) + ".",
         "",
         "Cada linha e um canal. \"Paginas\" conta as que responderam sobre as sondadas.",
         "\"Servidor\" diz se algum termo ja vem no HTML sem JavaScript (titulo, metadados, JSON-LD ou corpo).",
         "\"Video com duracao\" e o numero de blocos JSON-LD de video com duration declarada.",
-        "\"arquivo.pt\" e o total estimado, somado por dominio, para o termo mais produtivo.",
         "",
-        "| Canal | Paginas | Servidor | Metadados | Video com duracao | Feeds | YouTube | arquivo.pt | Anos com resultados |",
-        "|---|---|---|---|---|---|---|---|---|",
+        "| Canal | Paginas | Servidor | Metadados | Video com duracao | Feeds | YouTube |",
+        "|---|---|---|---|---|---|---|",
     ]
     for c in resultado["canais"]:
         paginas = c["paginas"]
@@ -369,17 +300,9 @@ def relatorio(resultado: dict) -> str:
         videos = sum(p.get("jsonld_videos_com_duracao", 0) for p in respondem)
         feeds = sum(len(p.get("feeds") or []) for p in respondem)
         ids = [y["channel_id"] for y in c["youtube"] if y.get("channel_id")]
-        total = 0
-        anos: Counter = Counter()
-        for por_termo in c["arquivo"].values():
-            melhor = max((r for r in por_termo.values() if "erro" not in r), key=lambda r: r["total_estimado"], default=None)
-            if melhor:
-                total += melhor["total_estimado"]
-                anos.update(melhor["por_ano"])
-        anos_txt = ", ".join(f"{a} ({n})" for a, n in sorted(anos.items())) or "nenhum"
         linhas.append(
             f"| {c['nome']} | {len(respondem)}/{len(paginas)} | {_sim_nao(servidor)} | {_sim_nao(metadados)} | {videos} | {feeds} "
-            f"| {', '.join(ids) or 'nenhum'} | {total} | {anos_txt} |"
+            f"| {', '.join(ids) or 'nenhum'} |"
         )
 
     linhas += ["", "## Detalhe por canal", ""]
@@ -397,14 +320,41 @@ def relatorio(resultado: dict) -> str:
             )
         for y in c["youtube"]:
             linhas.append(f"- YouTube @{y['handle']}: {y['channel_id'] or 'nao resolvido'}" + (f" ({y['erro']})" if y.get("erro") else ""))
-        for dominio, por_termo in c["arquivo"].items():
-            for consulta, r in por_termo.items():
-                if "erro" in r:
-                    linhas.append(f"- arquivo.pt {dominio} \"{consulta}\": erro ({r['erro']})")
-                else:
-                    linhas.append(f"- arquivo.pt {dominio} \"{consulta}\": {r['total_estimado']} estimados; por ano {r['por_ano'] or 'nenhum'}")
         linhas.append("")
     return "\n".join(linhas).rstrip() + "\n"
+
+
+def carregar_anterior(pasta: Path = PASTA_SAIDA) -> dict[str, dict]:
+    """Canais ja escritos numa corrida anterior, por id.
+
+    Uma corrida com --canal reprocessa um canal so; sem isto, escrever()
+    substituiria o ficheiro inteiro e apagaria os outros canais que uma
+    corrida mais antiga ja tinha verificado.
+    """
+    caminho = pasta / "levantamento.json"
+    if not caminho.exists():
+        return {}
+    try:
+        dados = json.loads(caminho.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+    return {c["canal"]: c for c in dados.get("canais") or [] if "canal" in c}
+
+
+def mesclar(resultado: dict, anteriores: dict[str, dict], ordem: list[str]) -> dict:
+    """Combina os canais desta corrida com os de corridas anteriores.
+
+    Um canal reprocessado agora substitui a versao anterior; um canal nao
+    tocado nesta corrida mantem-se tal como estava. A ordem final segue a
+    ordem dos canais em config/porquinho.yml, para o relatorio ser sempre
+    lido pela mesma sequencia.
+    """
+    por_id = dict(anteriores)
+    for c in resultado.get("canais") or []:
+        por_id[c["canal"]] = c
+    combinado = dict(resultado)
+    combinado["canais"] = [por_id[cid] for cid in ordem if cid in por_id]
+    return combinado
 
 
 def escrever(resultado: dict, pasta: Path = PASTA_SAIDA) -> None:
@@ -416,10 +366,17 @@ def escrever(resultado: dict, pasta: Path = PASTA_SAIDA) -> None:
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--canal", help="so este canal")
-    parser.add_argument("--sem-arquivo", action="store_true", help="nao consultar o arquivo.pt")
     args = parser.parse_args(argv)
-    resultado = correr(carregar(), so_canal=args.canal, com_arquivo=not args.sem_arquivo)
-    escrever(resultado)
+    config = carregar()
+    anteriores = carregar_anterior()
+    ordem = [c["id"] for c in config.get("canais") or []]
+
+    resultado = correr(
+        config,
+        so_canal=args.canal,
+        escrever_a_cada_canal=lambda parcial: escrever(mesclar(parcial, anteriores, ordem)),
+    )
+    escrever(mesclar(resultado, anteriores, ordem))
     print(f"escrito em {PASTA_SAIDA}", flush=True)
     return 0
 
