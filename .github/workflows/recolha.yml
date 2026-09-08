@@ -60,8 +60,36 @@ jobs:
       - name: Testes da logica do site
         run: node --test tests/frontend/*.test.js
 
-      - name: Recolher
-        run: python -m recolha.principal
+      # Duas rondas no mesmo dia, mas so quando a primeira encontra algo.
+      #
+      # A confirmacao em rondas existe para apanhar um erro passageiro de
+      # leitura: uma pagina truncada, um campo malformado nesse dia. Uma
+      # segunda leitura completa, minutos depois, apanha essa classe de
+      # erro na mesma, e permite publicar no proprio dia em vez de no dia
+      # seguinte. Continua a nao proteger de a fonte estar errada, que e
+      # coisa que releitura nenhuma protege.
+      #
+      # A segunda leitura e mais proxima da primeira do que uma leitura no
+      # dia seguinte, por isso apanha menos: um site que sirva uma pagina
+      # partida a manha inteira engana as duas. E o preco de publicar no
+      # dia, e esta escrito na Metodologia.
+      #
+      # Sem nada a espera de confirmacao, a segunda ronda nao teria nada
+      # para confirmar e nao se corre: sao menos pedidos aos canais e ao
+      # motor de busca em todos os dias em que nao ha entrevista.
+      - name: Recolher, primeira ronda
+        run: python -m recolha.principal --ronda "$(date -u +%Y-%m-%d)-r1" --estado estado.json
+
+      - name: Recolher, segunda ronda se houver algo por confirmar
+        run: |
+          por_confirmar=$(python -c "import json; print(json.load(open('estado.json'))['por_confirmar'])")
+          echo "por confirmar depois da primeira ronda: $por_confirmar"
+          if [ "$por_confirmar" -gt 0 ]; then
+            python -m recolha.principal --ronda "$(date -u +%Y-%m-%d)-r2"
+          else
+            echo "nada por confirmar, nao ha segunda ronda"
+          fi
+          rm -f estado.json
 
       - name: Publicar
         run: |

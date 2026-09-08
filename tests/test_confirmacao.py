@@ -83,3 +83,20 @@ class TestIntegracaoComAsFontes(unittest.TestCase):
         self.assertTrue(automaticas, "sem fontes automaticas o site nunca se povoa sozinho")
         for fonte in automaticas:
             self.assertFalse(fonte.duracao_opcional, f"{fonte.id}: fonte automatica nao regista duracao por apurar")
+
+
+class TestSegundaRondaNoMesmoDia(unittest.TestCase):
+    """A recolha diaria corre uma segunda ronda no mesmo dia, com
+    identificador proprio, para publicar no dia em vez de no seguinte."""
+
+    def test_identificadores_distintos_confirmam_no_mesmo_dia(self):
+        c = confirmacao.registar({}, [emissao()], "2026-09-08-r1")
+        self.assertEqual(confirmacao.filtrar([emissao()], c, 2, []), [])
+        c = confirmacao.registar(c, [emissao()], "2026-09-08-r2")
+        self.assertEqual(len(confirmacao.filtrar([emissao()], c, 2, [])), 1)
+
+    def test_o_mesmo_identificador_repetido_continua_a_nao_confirmar(self):
+        """A protecao vem de duas leituras, nao de duas escritas."""
+        c = confirmacao.registar({}, [emissao()], "2026-09-08-r1")
+        c = confirmacao.registar(c, [emissao()], "2026-09-08-r1")
+        self.assertEqual(confirmacao.filtrar([emissao()], c, 2, []), [])

@@ -200,6 +200,17 @@ def resolver_blocos(emissoes: list[Emissao], quarentena: list | None = None) -> 
     recortes, e a imprensa noticia a mesma entrevista que o canal publica.
     Contar cada item daria varias entrevistas onde houve uma. Ver _melhor
     para o criterio de desempate.
+
+    Ha mais do que uma emissao por dia no mesmo canal com frequencia: uma
+    entrevista de manha num programa de entretenimento e outra a noite num
+    noticiario sao duas emissoes, e contam as duas, porque o programa
+    entra na chave e e diferente nas duas.
+
+    O caso que esta chave nao resolve e o de duas emissoes do mesmo dia e
+    canal cujo programa nao foi possivel apurar em nenhuma das duas: ficam
+    com a mesma chave e uma delas e tratada como recorte da outra. O erro
+    e sempre por defeito, nunca por excesso, e a quarentena diz que foi
+    isso que aconteceu para que se veja em vez de se adivinhar.
     """
     por_bloco: dict[str, Emissao] = {}
     ordem: list[str] = []
@@ -219,7 +230,11 @@ def resolver_blocos(emissoes: list[Emissao], quarentena: list | None = None) -> 
                     "publicado_em": perdedora.publicado_em,
                     "titulo": perdedora.titulo,
                     "url": perdedora.prova_url,
-                    "motivo": f"fragmento_ou_repetido (ficou {vencedora.id})",
+                    "motivo": (
+                        f"fragmento_ou_repetido (ficou {vencedora.id})"
+                        if vencedora.programa
+                        else f"fragmento_ou_repetido (programa nao apurado, ficou {vencedora.id})"
+                    ),
                     "excerto": "",
                 }
             )

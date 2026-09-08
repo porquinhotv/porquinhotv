@@ -275,3 +275,44 @@ class TestSujeitoNasEtiquetas(unittest.TestCase):
         q = []
         self.assertIsNone(criterio.avaliar(alvo, automatica, self.config, q))
         self.assertEqual(q[0]["motivo"], "sem_sujeito")
+
+
+class TestVariasEmissoesNoMesmoDia(unittest.TestCase):
+    """Uma entrevista de manha num programa de entretenimento e outra a
+    noite num noticiario, no mesmo canal, sao duas emissoes."""
+
+    def setUp(self):
+        self.config = config_teste()
+        self.fonte = fonte(self.config, "registo-curado")
+
+    def _emissao(self, titulo, n, duracao=1800):
+        return criterio.avaliar(
+            item(titulo=titulo, canal="rtp1", duracao_s=duracao,
+                 url=f"https://exemplo.pt/{n}", prova_url=f"https://exemplo.pt/{n}"),
+            self.fonte, self.config,
+        )
+
+    def test_manha_e_noite_contam_as_duas(self):
+        manha = self._emissao("Programa da Manha - Alguem", 1)
+        noite = self._emissao("Jornal da Noite - Alguem", 2)
+        self.assertNotEqual(manha.bloco, noite.bloco)
+        self.assertEqual(len(criterio.resolver_blocos([manha, noite], [])), 2)
+
+    def test_recorte_do_mesmo_programa_nao_conta_duas_vezes(self):
+        """O que a chave existe para juntar: o video integral e o recorte."""
+        integral = self._emissao("Jornal da Noite - Alguem", 1, duracao=1800)
+        recorte = self._emissao("Jornal da Noite - Alguem", 2, duracao=120)
+        q = []
+        ficam = criterio.resolver_blocos([integral, recorte], q)
+        self.assertEqual(len(ficam), 1)
+        self.assertEqual(ficam[0].duracao_s, 1800)
+        self.assertIn("fragmento_ou_repetido", q[0]["motivo"])
+
+    def test_programa_nao_apurado_fica_dito_na_quarentena(self):
+        """O erro e por defeito, nunca por excesso, mas tem de se ver."""
+        a = self._emissao("Alguem em entrevista", 1, duracao=1800)
+        b = self._emissao("Alguem outra vez", 2, duracao=600)
+        self.assertEqual(a.programa, "")
+        q = []
+        self.assertEqual(len(criterio.resolver_blocos([a, b], q)), 1)
+        self.assertIn("programa nao apurado", q[0]["motivo"])

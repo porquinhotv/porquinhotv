@@ -5,6 +5,7 @@
     python -m recolha.principal --fonte X    so uma fonte
     python -m recolha.principal --paginas 20 mais paginas de pesquisa (historico)
     python -m recolha.principal --ronda X    identificador desta ronda
+    python -m recolha.principal --estado F   escreve o resumo da corrida em F
 
 Uma fonte que falhe nao derruba as outras. As fontes correm pela ordem de
 config/fontes.yml; o registo curado deve vir primeiro, para ganhar os
@@ -14,8 +15,10 @@ empates na resolucao de blocos.
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from dataclasses import replace
+from pathlib import Path
 
 from . import armazem, confirmacao, criterio, resumo
 from .fontes import base as fontes_base
@@ -27,7 +30,7 @@ def _url_normalizado(url: str) -> str:
     return url.strip().rstrip("/").replace("http://", "https://").replace("www.", "")
 
 
-def correr(so_fonte: str | None = None, dry_run: bool = False, paginas: int = 0, ronda: str = "") -> int:
+def correr(so_fonte: str | None = None, dry_run: bool = False, paginas: int = 0, ronda: str = "", estado: str = "") -> int:
     config = carregar_config()
     existentes = armazem.carregar()
     aceites = []
@@ -87,7 +90,12 @@ def correr(so_fonte: str | None = None, dry_run: bool = False, paginas: int = 0,
     automaticas = [e for e in aceites if e.fonte not in a_mao]
     candidatos = confirmacao.registar(candidatos, automaticas, ronda)
     minimo = config.tema.rondas_para_confirmar
-    aceites = manuais + confirmacao.filtrar(automaticas, candidatos, minimo, quarentena)
+    confirmadas = confirmacao.filtrar(automaticas, candidatos, minimo, quarentena)
+    # Quantas emissoes esta corrida viu mas ainda nao pode publicar. E o
+    # sinal que decide se vale a pena uma segunda ronda hoje: sem nada a
+    # espera, uma segunda leitura nao teria nada para confirmar.
+    por_confirmar = len(automaticas) - len(confirmadas)
+    aceites = manuais + confirmadas
     aceites = confirmacao.anotar(aceites, candidatos)
 
     fundidas, adicionadas, atualizadas = armazem.fundir(existentes, aceites)
@@ -110,6 +118,25 @@ def correr(so_fonte: str | None = None, dry_run: bool = False, paginas: int = 0,
         armazem.guardar_quarentena(quarentena)
         confirmacao.guardar(candidatos)
 
+    if estado:
+        Path(estado).write_text(
+            json.dumps(
+                {
+                    "ronda": ronda,
+                    "adicionadas": adicionadas,
+                    "atualizadas": atualizadas,
+                    "por_confirmar": por_confirmar,
+                    "total": len(fundidas),
+                },
+                ensure_ascii=False,
+                indent=1,
+                sort_keys=True,
+            )
+            + "\n",
+            encoding="utf-8",
+            newline="\n",
+        )
+
     for linha in diario:
         print(f"  {linha}", flush=True)
 
@@ -124,8 +151,9 @@ def main() -> int:
     parser.add_argument("--dry-run", action="store_true", help="nao escrever em disco")
     parser.add_argument("--paginas", type=int, default=0, help="paginas de pesquisa por termo (historico)")
     parser.add_argument("--ronda", default="", help="identificador desta ronda (por omissao, o dia)")
+    parser.add_argument("--estado", default="", help="ficheiro onde escrever o resumo da corrida")
     args = parser.parse_args()
-    return correr(so_fonte=args.fonte, dry_run=args.dry_run, paginas=args.paginas, ronda=args.ronda)
+    return correr(so_fonte=args.fonte, dry_run=args.dry_run, paginas=args.paginas, ronda=args.ronda, estado=args.estado)
 
 
 if __name__ == "__main__":

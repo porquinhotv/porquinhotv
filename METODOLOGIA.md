@@ -106,7 +106,13 @@ A quarentena é uma fotografia da última recolha, não um histórico.
 
 ### Confirmação em rondas
 
+Há mais do que uma emissão por dia no mesmo canal com frequência: uma entrevista de manhã num programa de entretenimento e outra à noite num noticiário são duas emissões, e contam as duas. O que as separa é o nome do programa, que entra na chave. Quando o programa não é possível apurar em nenhuma das duas, elas partilham a chave e uma é tratada como excerto da outra: a contagem fica curta, nunca inflacionada, e a quarentena diz que foi isso que aconteceu.
+
 Uma emissão vinda de fonte automática não entra no dataset na primeira vez que é vista. Fica registada como candidata e só entra depois de o mesmo bloco (canal, programa, dia) ser encontrado em rondas distintas de recolha. O registo de avistamentos está em `dados/candidatos.json`, é append-only, e ao lado de cada linha publicada ficam dois números: em quantas rondas foi vista e por quantas fontes distintas.
+
+As rondas da reconstrução do histórico correm seguidas, numa só operação. Na recolha de todos os dias, a segunda ronda corre no mesmo dia, minutos depois da primeira, e só quando a primeira encontrou alguma coisa à espera de confirmação. Assim uma entrevista da noite anterior é publicada na manhã seguinte e não no dia a seguir a essa; nos dias em que não há nada, não há segunda leitura e não se incomodam os servidores de ninguém.
+
+Uma segunda leitura minutos depois da primeira apanha menos do que uma leitura no dia seguinte: um site que sirva uma página defeituosa a manhã inteira engana as duas. É o preço de publicar no próprio dia, e fica dito aqui em vez de ficar escondido.
 
 O que isto protege, e o que não protege, dito sem enfeite:
 
