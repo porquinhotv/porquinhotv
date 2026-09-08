@@ -1,0 +1,74 @@
+---
+# Colheita do indice do Google Noticias, por RSS, para reconstruir o
+# historico. Corre em casa, uma vez. Nunca corre na CI.
+#
+# Porque existe: seis dos nove canais nao respondem a uma maquina de
+# datacenter, ou montam a pesquisa por JavaScript. O Google Noticias
+# indexa a imprensa toda, incluindo os sites dos canais, e a sua porta RSS
+# responde sem conta, sem chave e sem JavaScript. E um detetor: diz que
+# no dia X houve entrevista no canal Y. Nao e prova. A prova de cada
+# linha continua a ser o URL do canal, procurado a mao a partir do que a
+# colheita apontou, e a duracao le-se la.
+#
+# Sondado em 2026-09-08: a janela `after:2024-01-01 before:2024-02-01`
+# devolveu 13 itens, todos de janeiro, um dos quais era uma entrevista
+# real ja conhecida. A consulta solta apanha muito ruido e o RSS devolve
+# no maximo cerca de 100 itens por consulta. Por isso ha varias consultas
+# por janela, e a janela divide-se ao meio quando vem cheia.
+
+# Como o RSS e pedido. Os parametros de regiao e lingua definem a edicao
+# portuguesa do indice; sem eles a mesma consulta devolve outra coisa.
+base: https://news.google.com/rss/search
+parametros:
+  hl: pt-PT
+  gl: PT
+  ceid: 'PT:pt-150'
+
+# Varias consultas por janela, unidas e deduplicadas. A primeira e a
+# solta que se sondou; as outras apertam com aspas. Uma consulta nova
+# junta-se aqui e a colheita repete-se so para ela: o estado guarda o que
+# ja foi pedido por consulta e por janela.
+consultas:
+  - 'André Ventura entrevista'
+  - '"André Ventura" "entrevista exclusiva"'
+  - '"André Ventura" "grande entrevista"'
+  - '"entrevista a André Ventura"'
+  - '"André Ventura" entrevistado'
+
+# Janela de um mes. Quando uma consulta numa janela devolve `limiar_divisao`
+# itens ou mais, esta a bater no teto do RSS e a janela e dividida em duas
+# ate caber. Cada janela pede-se com um dia de folga de cada lado, porque
+# nao esta documentado se `after:` e `before:` incluem ou excluem o dia;
+# a deduplicacao trata das sobreposicoes.
+limiar_divisao: 90
+pausa_s: 6
+
+# Deteccao de canal no nome da fonte, no dominio da fonte e no titulo.
+# Vive aqui e nao no codigo: nenhum modulo Python conhece um canal.
+# Os dois sites do grupo Media Capital publicam os mesmos videos um no
+# outro, por isso a coluna do titulo vale mais do que a da fonte.
+canais_por_texto:
+  rtp1: [RTP1, RTP 1]
+  rtp2: [RTP2, RTP 2]
+  rtp3: [RTP3, RTP 3, RTP Notícias, RTP Noticias]
+  sic: [SIC]
+  sic-noticias: [SIC Notícias, SIC Noticias]
+  tvi: [TVI]
+  cnn-portugal: [CNN Portugal, CNN]
+  now: [NOW, canal NOW]
+  cmtv: [CMTV]
+canais_por_dominio:
+  rtp3: [rtp.pt]
+  sic: [sic.pt]
+  sic-noticias: [sicnoticias.pt]
+  tvi: [tvi.iol.pt]
+  cnn-portugal: [cnnportugal.iol.pt]
+  now: [nowcanal.pt]
+  cmtv: [cmjornal.pt]
+
+# Palavras no titulo que indicam formato. So indicam: a triagem e feita
+# por uma pessoa, com a pagina do canal aberta.
+marcadores_formato:
+  entrevista: [entrevista, entrevistado, entrevistada, entrevistas]
+  debate: [debate, frente a frente, frente-a-frente]
+  declaracao: [declarações, declaracoes, reage, reação, reacao]
