@@ -311,17 +311,6 @@ def colher(config: dict, pasta: Path, desde: date, ate: date, obter=obter_texto,
 # --- resolucao dos redirecionamentos ---------------------------------------
 
 
-def destino_na_pagina(html_texto: str) -> str:
-    """O Google serve, em vez de um 302, uma pagina cujo unico conteudo
-    util e o destino num atributo. E uma leitura de uma pagina do Google
-    e nao de um canal, e pode partir; quando partir a coluna fica vazia e
-    a ligacao do Google continua a abrir no browser."""
-    m = re.search(r'data-n-au="([^"]+)"', html_texto)
-    if m:
-        return html.unescape(m.group(1))
-    return ""
-
-
 def seguir(url: str) -> tuple[str, str]:
     """(url final, corpo). Segue redirecionamentos HTTP normais."""
     pedido = urllib.request.Request(url, headers=CABECALHOS)
@@ -330,7 +319,96 @@ def seguir(url: str) -> tuple[str, str]:
         return resposta.geturl(), resposta.read(4 * 1024 * 1024).decode(charset, errors="replace")
 
 
-def resolver_url(url: str, seguir_fn=seguir) -> str:
+ENDERECO_DECODE = "https://news.google.com/_/DotsSplashUi/data/batchexecute"
+PEDIDO_DECODE = (
+    '[[["Fbv4je","[\\"garturlreq\\",[[\\"X\\",\\"X\\",[\\"X\\",\\"X\\"],null,null,1,1,'
+    '\\"US:en\\",null,1,null,null,null,null,null,0,1],\\"X\\",\\"X\\",1,[1,1,1],1,1,null,0,0,null,0],'
+    '\\"{id}\\",{ts},\\"{sg}\\"]",null,"generic"]]]'
+)
+
+
+def destino_na_pagina(html_texto: str) -> str:
+    """Destino declarado num atributo, no formato antigo do indice.
+
+    Deixou de aparecer: as ligacoes colhidas em 2026 trazem um
+    identificador opaco e a pagina nao declara destino nenhum. Fica
+    porque nao custa nada e resolve as ligacoes antigas que ainda
+    existam guardadas.
+    """
+    m = re.search(r'data-n-au="([^"]+)"', html_texto)
+    return html.unescape(m.group(1)) if m else ""
+
+
+def parametros_de_decode(html_texto: str) -> tuple[str, str]:
+    """Assinatura e carimbo temporal que a pagina do indice publica para
+    o seu proprio codigo pedir o destino.
+
+    Nao e um seletor de um site do qual se leem dados: nenhum numero do
+    Porquinho TV sai daqui. E a chave para chegar a pagina do canal, que
+    e onde a prova esta. Se um dia isto deixar de existir, o efeito e a
+    coluna ficar vazia e o trabalho passar a ser feito a mao no browser,
+    nunca um numero errado publicado.
+    """
+    sg = re.search(r'data-n-a-sg="([^"]+)"', html_texto)
+    ts = re.search(r'data-n-a-ts="([^"]+)"', html_texto)
+    if sg and ts:
+        return html.unescape(sg.group(1)), ts.group(1)
+    return "", ""
+
+
+def identificador(url: str) -> str:
+    caminho = urllib.parse.urlsplit(url).path
+    return caminho.rsplit("/", 1)[-1]
+
+
+def destino_na_resposta(corpo: str) -> str:
+    """O endereco final dentro da resposta do indice.
+
+    A resposta vem com um prefixo de defesa e varias camadas de JSON
+    dentro de texto. Le-se camada a camada, e nao com uma expressao
+    regular a apanhar o primeiro http que aparecer: essa apanharia
+    tambem enderecos de recursos que nada tem que ver com o artigo.
+    """
+    for linha in corpo.splitlines():
+        if "garturlres" not in linha:
+            continue
+        try:
+            fora = json.loads(linha)
+        except json.JSONDecodeError:
+            continue
+        for parte in fora:
+            if isinstance(parte, list) and len(parte) > 2 and isinstance(parte[2], str) and "garturlres" in parte[2]:
+                dentro = json.loads(parte[2])
+                if len(dentro) > 1 and isinstance(dentro[1], str) and dentro[1].startswith("http"):
+                    return dentro[1]
+    return ""
+
+
+def publicar(url: str, dados: bytes) -> str:
+    pedido = urllib.request.Request(
+        url,
+        data=dados,
+        headers={**CABECALHOS, "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"},
+    )
+    with urllib.request.urlopen(pedido, timeout=TEMPO_LIMITE) as resposta:
+        charset = resposta.headers.get_content_charset() or "utf-8"
+        return resposta.read(8 * 1024 * 1024).decode(charset, errors="replace")
+
+
+def resolver_url(url: str, seguir_fn=seguir, publicar_fn=publicar) -> str:
+    """Endereco do artigo por tras de uma ligacao do indice, ou vazio.
+
+    Tres caminhos, do mais simples para o mais fragil: um
+    redirecionamento normal; o destino declarado na pagina; e, so
+    quando nenhum dos dois existe, pedir o destino ao indice com a
+    assinatura que a propria pagina publica.
+
+    O terceiro caminho depende do funcionamento interno de um sitio de
+    terceiros e ha de partir sem aviso. Escreveu-se assim, e nao de
+    outra maneira, porque a alternativa e abrir cento e cinquenta
+    ligacoes a mao. Quando partir, a coluna fica vazia e o trabalho
+    volta a ser manual: nunca produz um endereco errado.
+    """
     try:
         final, corpo = seguir_fn(url)
     except Exception as exc:  # noqa: BLE001  (qualquer falha deixa a coluna vazia)
@@ -338,10 +416,22 @@ def resolver_url(url: str, seguir_fn=seguir) -> str:
         return ""
     if "news.google." not in (urllib.parse.urlsplit(final).hostname or ""):
         return final
-    return destino_na_pagina(corpo)
+    declarado = destino_na_pagina(corpo)
+    if declarado:
+        return declarado
+    sg, ts = parametros_de_decode(corpo)
+    if not sg:
+        return ""
+    pedido = PEDIDO_DECODE.format(id=identificador(url).split("?")[0], ts=ts, sg=sg)
+    dados = urllib.parse.urlencode({"f.req": pedido}).encode()
+    try:
+        return destino_na_resposta(publicar_fn(ENDERECO_DECODE, dados))
+    except Exception as exc:  # noqa: BLE001
+        print(f"  decode falhou: {exc}", flush=True)
+        return ""
 
 
-def resolver(config: dict, pasta: Path, so_triados: bool = True, seguir_fn=seguir, dormir=time.sleep) -> dict:
+def resolver(config: dict, pasta: Path, so_triados: bool = True, limite: int | None = None, seguir_fn=seguir, dormir=time.sleep) -> dict:
     """Segue as ligacoes do Google ate ao destino.
 
     Por omissao so as linhas que a triagem reteve. Resolver as milhares
@@ -355,6 +445,8 @@ def resolver(config: dict, pasta: Path, so_triados: bool = True, seguir_fn=segui
     triados = urls_triados(pasta) if so_triados else None
     pausa = float(config.get("pausa_resolucao_s", 2))
     alvo = [l for l in linhas.values() if not l.get("url_final") and (triados is None or l["url_google"] in triados)]
+    if limite:
+        alvo = alvo[:limite]
     resumo = {"alvo": len(alvo), "resolvidas": 0, "por_resolver": 0}
     print(f"  {len(alvo)} ligacoes por resolver", flush=True)
     for i, linha in enumerate(alvo, 1):
@@ -593,6 +685,7 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--triar", action="store_true", help="reduzir a colheita a uma lista para decidir")
     parser.add_argument("--verificar", action="store_true", help="ler a pagina do canal de cada candidato triado")
     parser.add_argument("--resolver", action="store_true", help="seguir as ligacoes dos candidatos triados ate ao destino")
+    parser.add_argument("--limite", type=int, help="com --resolver: parar ao fim de N ligacoes, para sondar")
     parser.add_argument("--tudo", action="store_true", help="com --resolver: resolver a colheita inteira, nao so os triados")
     args = parser.parse_args(argv)
 
@@ -606,7 +699,7 @@ def main(argv: list[str]) -> int:
         resumo = triar(config, pasta)
     elif args.resolver:
         print(f"a resolver ligacoes em {pasta}", flush=True)
-        resumo = resolver(config, pasta, so_triados=not args.tudo)
+        resumo = resolver(config, pasta, so_triados=not args.tudo, limite=args.limite)
     else:
         desde = date.fromisoformat(args.desde) if args.desde else date.fromisoformat(carregar_config().tema.desde)
         ate = date.fromisoformat(args.ate) if args.ate else datetime.now(timezone.utc).date()

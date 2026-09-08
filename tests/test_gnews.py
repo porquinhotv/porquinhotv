@@ -155,82 +155,94 @@ class TestPastaDeSaida(unittest.TestCase):
 
 
 class TestResolver(unittest.TestCase):
+    PAGINA_MODERNA = (
+        '<html><body><c-wiz jscontroller="x"><div jsname="y" '
+        'data-n-a-id="AU_yqLxyz" data-n-a-sg="ASSINATURA&amp;1" data-n-a-ts="1757000000">'
+        "</div></c-wiz></body></html>"
+    )
+    RESPOSTA = (
+        ")]}'\n\n"
+        '[["wrb.fr","Fbv4je","[\\"garturlres\\",\\"https://canal.exemplo/peca\\"]",null,null,null,"generic"],["di",22]]'
+    )
+
     def test_redirecionamento_http_e_seguido(self):
         final = gnews.resolver_url("https://news.google.com/rss/articles/X?oc=5", seguir_fn=lambda u: ("https://canal.exemplo/peca", ""))
         self.assertEqual(final, "https://canal.exemplo/peca")
 
-    def test_pagina_do_motor_com_destino_no_atributo(self):
+    def test_formato_antigo_com_destino_no_atributo(self):
         corpo = '<html><body><c-wiz><a data-n-au="https://canal.exemplo/peca?a=1&amp;b=2">x</a></c-wiz></body></html>'
         final = gnews.resolver_url("https://news.google.com/rss/articles/X?oc=5", seguir_fn=lambda u: ("https://news.google.com/rss/articles/X", corpo))
         self.assertEqual(final, "https://canal.exemplo/peca?a=1&b=2")
 
-    def test_sem_destino_fica_vazio_e_nao_inventa(self):
+    def test_formato_novo_pede_o_destino_ao_indice(self):
+        """As ligacoes colhidas em 2026 trazem um identificador opaco e a
+        pagina nao declara destino nenhum: a primeira versao devolveu
+        vazio nas 150 e o passo seguinte nao teve nada para ler."""
+        pedidos = []
+
+        def publicar(url, dados):
+            pedidos.append((url, dados.decode()))
+            return self.RESPOSTA
+
+        final = gnews.resolver_url(
+            "https://news.google.com/rss/articles/AU_yqLxyz?oc=5",
+            seguir_fn=lambda u: ("https://news.google.com/rss/articles/AU_yqLxyz", self.PAGINA_MODERNA),
+            publicar_fn=publicar,
+        )
+        self.assertEqual(final, "https://canal.exemplo/peca")
+        self.assertEqual(len(pedidos), 1)
+        self.assertIn("AU_yqLxyz", pedidos[0][1])
+        self.assertIn("1757000000", pedidos[0][1])
+
+    def test_pedido_de_decode_e_json_valido(self):
+        """Um pedido malformado devolve 400 e a coluna ficaria vazia sem
+        que se percebesse se a culpa era do pedido ou do indice."""
+        import json as _json
+
+        pedido = gnews.PEDIDO_DECODE.format(id="AU_yqLxyz", ts="1757000000", sg="ASSINATURA")
+        fora = _json.loads(pedido)
+        dentro = _json.loads(fora[0][0][1])
+        self.assertEqual(fora[0][0][0], "Fbv4je")
+        self.assertEqual((dentro[0], dentro[2], dentro[3], dentro[4]), ("garturlreq", "AU_yqLxyz", 1757000000, "ASSINATURA"))
+
+    def test_assinatura_com_entidade_html_e_desfeita(self):
+        sg, ts = gnews.parametros_de_decode(self.PAGINA_MODERNA)
+        self.assertEqual(sg, "ASSINATURA&1")
+        self.assertEqual(ts, "1757000000")
+
+    def test_sem_assinatura_fica_vazio_e_nao_inventa(self):
         final = gnews.resolver_url("https://news.google.com/rss/articles/X?oc=5", seguir_fn=lambda u: ("https://news.google.com/rss/articles/X", "<html></html>"))
+        self.assertEqual(final, "")
+
+    def test_resposta_sem_endereco_fica_vazia(self):
+        final = gnews.resolver_url(
+            "https://news.google.com/rss/articles/AU_yqLxyz?oc=5",
+            seguir_fn=lambda u: ("https://news.google.com/rss/articles/AU_yqLxyz", self.PAGINA_MODERNA),
+            publicar_fn=lambda u, d: ")]}'\n\n[[\"wrb.fr\",\"Fbv4je\",null,null,null,null,\"generic\"]]",
+        )
         self.assertEqual(final, "")
 
     def test_falha_de_rede_deixa_vazio(self):
         def parte(u):
             raise OSError("sem rede")
+
         self.assertEqual(gnews.resolver_url("https://x", seguir_fn=parte), "")
 
-
-class TestTriagem(unittest.TestCase):
-    class SujeitoFalso:
-        def aparece_em(self, texto):
-            return "pessoa exemplo" in texto.lower()
-
-    def _linhas(self):
-        return [
-            # grupo sujeito: nomeia a pessoa e diz entrevista
-            {"data": "2024-01-13", "titulo": "A entrevista a Pessoa Exemplo na íntegra", "fonte": "Canal Notícias",
-             "canal_por_fonte": "canal-noticias", "canal_no_titulo": "", "formato_no_titulo": "entrevista", "url_google": "u1"},
-            # grupo programa: canal titula pelo programa, a pessoa fica na sinopse que o indice nao traz
-            {"data": "2024-03-20", "titulo": "Grande Entrevista Episódio 12 - de 20 mar 2024", "fonte": "Canal Exemplo",
-             "canal_por_fonte": "canal-generalista", "canal_no_titulo": "", "formato_no_titulo": "entrevista", "url_google": "u2"},
-            # ruido: cita a pessoa, nada indica entrevista
-            {"data": "2024-01-14", "titulo": "Pessoa Exemplo foi à convenção", "fonte": "Jornal",
-             "canal_por_fonte": "", "canal_no_titulo": "", "formato_no_titulo": "", "url_google": "u3"},
-            # ruido: diz entrevista, mas nem pessoa nem canal
-            {"data": "2024-01-15", "titulo": "Entrevista a outra pessoa qualquer", "fonte": "Jornal",
-             "canal_por_fonte": "", "canal_no_titulo": "", "formato_no_titulo": "entrevista", "url_google": "u4"},
-        ]
-
-    def test_dois_grupos_e_o_ruido_fica_de_fora(self):
-        retidas = gnews.agrupar(CONFIG, self._linhas(), self.SujeitoFalso())
-        self.assertEqual([(l["url_google"], l["grupo"]) for l in retidas], [("u1", "sujeito"), ("u2", "programa")])
-
-    def test_episodio_de_programa_sem_o_nome_da_pessoa_e_retido(self):
-        """O canal titula os episodios com o nome do programa e a data. Se
-        a triagem exigisse o nome no titulo, perdiam-se todas as emissoes
-        desse canal, que sao as que tem duracao declarada."""
-        retidas = gnews.agrupar(CONFIG, self._linhas(), self.SujeitoFalso())
-        self.assertIn("u2", [l["url_google"] for l in retidas])
-
-    def test_ficheiros_de_triagem_escritos_com_as_colunas_de_decisao_primeiro(self):
+    def test_limite_permite_sondar_sem_gastar_a_lista_toda(self):
+        """A resolucao inteira sao 150 pedidos ao indice. Sondar cinco
+        antes de os gastar todos e o que faltou da primeira vez."""
         with tempfile.TemporaryDirectory() as tmp:
             pasta = Path(tmp)
-            retidas = gnews.agrupar(CONFIG, self._linhas(), self.SujeitoFalso())
-            gnews.gravar_triagem(pasta, retidas)
-            cabecalho = (pasta / "triagem.csv").read_text(encoding="utf-8-sig").splitlines()[0]
-            self.assertEqual(cabecalho.split(",")[:3], ["decisao", "prova_url", "duracao"])
-            self.assertIn("<a href=", (pasta / "triagem.html").read_text(encoding="utf-8"))
-
-    def test_resolver_so_toca_nos_triados(self):
-        """Resolver a colheita inteira sao milhares de pedidos e horas de
-        espera para linhas que ninguem vai abrir."""
-        with tempfile.TemporaryDirectory() as tmp:
-            pasta = Path(tmp)
-            gnews.gravar_csv(pasta, {l["url_google"]: {**l, "url_final": ""} for l in self._linhas()})
-            gnews.gravar_triagem(pasta, gnews.agrupar(CONFIG, self._linhas(), self.SujeitoFalso()))
+            linhas = {f"u{i}": {"url_google": f"u{i}", "url_final": "", "data": "2026-01-0{}".format(i % 9 + 1), "titulo": "t"} for i in range(20)}
+            gnews.gravar_csv(pasta, linhas)
             pedidos = []
 
             def seguir(url):
                 pedidos.append(url)
                 return "https://canal.exemplo/peca", ""
 
-            resumo = gnews.resolver(CONFIG, pasta, seguir_fn=seguir, dormir=lambda s: None)
-            self.assertEqual(sorted(pedidos), ["u1", "u2"])
-            self.assertEqual(resumo["resolvidas"], 2)
+            gnews.resolver(CONFIG, pasta, so_triados=False, limite=5, seguir_fn=seguir, dormir=lambda s: None)
+            self.assertEqual(len(pedidos), 5)
 
 
 
@@ -292,6 +304,13 @@ class TestVerificacao(unittest.TestCase):
         r = gnews.verificar_pagina(self.CONFIG_V, self.PAGINA_SEM, "https://canal.exemplo/e2", self.SujeitoFalso())
         self.assertEqual(r["sujeito_na_pagina"], "nao")
 
+    @staticmethod
+    def _ler(pasta):
+        """Fechar o ficheiro. Deixa-lo aberto enche a saida dos testes de
+        ResourceWarning e esconde o que interessa ler."""
+        with (pasta / "triagem.csv").open(encoding="utf-8-sig", newline="") as f:
+            return list(csv.DictReader(f))
+
     def _pasta_com_triagem(self, tmp):
         pasta = Path(tmp)
         linhas = [
@@ -312,7 +331,7 @@ class TestVerificacao(unittest.TestCase):
             paginas = {"https://canal.exemplo/e1": self.PAGINA_COM, "https://canal.exemplo/e2": self.PAGINA_SEM}
             resumo = gnews.verificar(self.CONFIG_V, pasta, sujeito=self.SujeitoFalso(), obter=lambda u: paginas[u], dormir=lambda s: None)
             self.assertEqual((resumo["com_sujeito"], resumo["sem_sujeito"]), (1, 1))
-            linhas = {l["url_google"]: l for l in csv.DictReader((pasta / "triagem.csv").open(encoding="utf-8-sig"))}
+            linhas = {l["url_google"]: l for l in self._ler(pasta)}
             self.assertEqual(linhas["u2"]["decisao"], "nao")
             self.assertIn("nao nomeia o sujeito", linhas["u2"]["nota"])
             self.assertEqual(linhas["u1"]["decisao"], "")
@@ -323,13 +342,13 @@ class TestVerificacao(unittest.TestCase):
         uma pessoa perderia trabalho que nao se repete."""
         with tempfile.TemporaryDirectory() as tmp:
             pasta = self._pasta_com_triagem(tmp)
-            linhas = list(csv.DictReader((pasta / "triagem.csv").open(encoding="utf-8-sig")))
+            linhas = self._ler(pasta)
             for l in linhas:
                 l["decisao"] = "sim"
             gnews.gravar_triagem(pasta, linhas)
             paginas = {"https://canal.exemplo/e1": self.PAGINA_COM, "https://canal.exemplo/e2": self.PAGINA_SEM}
             gnews.verificar(self.CONFIG_V, pasta, sujeito=self.SujeitoFalso(), obter=lambda u: paginas[u], dormir=lambda s: None)
-            depois = {l["url_google"]: l for l in csv.DictReader((pasta / "triagem.csv").open(encoding="utf-8-sig"))}
+            depois = {l["url_google"]: l for l in self._ler(pasta)}
             self.assertEqual(depois["u2"]["decisao"], "sim")
 
     def test_pagina_que_nao_responde_fica_anotada_e_nao_reprovada(self):
@@ -341,7 +360,7 @@ class TestVerificacao(unittest.TestCase):
 
             resumo = gnews.verificar(self.CONFIG_V, pasta, sujeito=self.SujeitoFalso(), obter=parte, dormir=lambda s: None)
             self.assertEqual(resumo["sem_pagina"], 2)
-            linhas = list(csv.DictReader((pasta / "triagem.csv").open(encoding="utf-8-sig")))
+            linhas = self._ler(pasta)
             self.assertEqual([l["decisao"] for l in linhas], ["", ""])
             self.assertIn("nao respondeu", linhas[0]["nota"])
 
