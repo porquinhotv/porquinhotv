@@ -1,5 +1,753 @@
 {
- "entradas": [],
+ "entradas": [
+  {
+   "excerto": "Micronovelas - Correio da Manhã Vídeos Programas Micronovelas Guia TV Enviar Iniciar Sessão Pesquisar Exclusivos Portugal Sociedade Clima Política Mundo Desporto Futebol Mundial 2026 Modalidades Economia Cultura Insólitos Tv Media Boa Onda Tecnologia Opinião Colunistas Editorial ",
+   "fonte": "busca-cmtv",
+   "id_nativo": "https://www.cmjornal.pt/cmtv/micronovelas",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Micronovelas - Correio da Manhã",
+   "url": "https://www.cmjornal.pt/cmtv/micronovelas"
+  },
+  {
+   "excerto": "No cmjornal.pt: As principais",
+   "fonte": "busca-cmtv",
+   "id_nativo": "https://www.cmjornal.pt/cmtv/videos",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Vídeos - Correio da Manhã",
+   "url": "https://www.cmjornal.pt/cmtv/videos"
+  },
+  {
+   "excerto": "Presidente do Chega tinha referido que comunicaria a decisão ontem, mas acabou por adiar para esta quarta-feira.",
+   "fonte": "busca-cmtv",
+   "id_nativo": "https://www.cmjornal.pt/cmtv/videos/detalhe/andre-ventura-anuncia-hoje-as-16h30-se-avanca-com-mocao-de-censura-ao-governo",
+   "motivo": "por_confirmar",
+   "publicado_em": "2026-09-02",
+   "titulo": "Andr&#233; Ventura anuncia hoje &#224;s 16h30 se avan&#231;a com mo&#231;&#227;o de censura ao Governo",
+   "url": "https://www.cmjornal.pt/cmtv/videos/detalhe/andre-ventura-anuncia-hoje-as-16h30-se-avanca-com-mocao-de-censura-ao-governo"
+  },
+  {
+   "excerto": "André Ventura remeteu a decisão para esta quarta-feira.",
+   "fonte": "busca-cmtv",
+   "id_nativo": "https://www.cmjornal.pt/cmtv/videos/detalhe/20260902-012531-chega-ainda-nao-tomou-decisao-sobre-mocao-de-censura-ao-governo",
+   "motivo": "por_confirmar",
+   "publicado_em": "2026-09-02",
+   "titulo": "Chega ainda n&#227;o tomou decis&#227;o sobre mo&#231;&#227;o de censura ao Governo",
+   "url": "https://www.cmjornal.pt/cmtv/videos/detalhe/20260902-012531-chega-ainda-nao-tomou-decisao-sobre-mocao-de-censura-ao-governo"
+  },
+  {
+   "excerto": "Em entrevista exclusiva à CMTV, o líder do Chega critica a forma com o Ministro da Administração Interna tem reagido às polémicas que o envolvem.",
+   "fonte": "busca-cmtv",
+   "id_nativo": "https://www.cmjornal.pt/cmtv/videos/detalhe/pergunto-me-quem-e-o-primeiro-ministro-andre-ventura-fala-sobre-luis-neves-um-dia-antes-da-mocao-de-censura",
+   "motivo": "por_confirmar",
+   "publicado_em": "2026-09-07",
+   "titulo": "&quot;Pergunto-me quem &#233; o primeiro-ministro&quot;: Andr&#233; Ventura fala sobre Lu&#237;s Neves um dia antes da mo&#231;&#227;o de censura",
+   "url": "https://www.cmjornal.pt/cmtv/videos/detalhe/pergunto-me-quem-e-o-primeiro-ministro-andre-ventura-fala-sobre-luis-neves-um-dia-antes-da-mocao-de-censura"
+  },
+  {
+   "excerto": "Buy Estate in Azores",
+   "fonte": "busca-now",
+   "id_nativo": "https://now.pt/en/estate/list/lowered-price",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Buy Estate in Azores | Now Imobiliária",
+   "url": "https://now.pt/en/estate/list/lowered-price"
+  },
+  {
+   "excerto": "Buy House or Apartment in São Miguel, Azores | Now Real Estate, in Ponta Delgada and Vila Franca do Campo PDL Ponta Delgada : 296 630 380 (National landline call) VFC Vila Franca do Campo : 296 092 960 (National landline call) Home Estates Company Services Contacts We're hiring! ",
+   "fonte": "busca-now",
+   "id_nativo": "https://now.pt/en/privacy-policy",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2020-08-04",
+   "titulo": "Buy House or Apartment in São Miguel, Azores | Now Real Estate, in Ponta Delgada and Vila Franca do Campo",
+   "url": "https://now.pt/en/privacy-policy"
+  },
+  {
+   "excerto": "Buy, rent or sell houses, apartments and land in São Miguel, Azores and beyond. Now Imobiliária, with stores in Ponta Delgada and Vila Franca do Campo.",
+   "fonte": "busca-now",
+   "id_nativo": "https://now.pt/en/were-hiring",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2025-01-13",
+   "titulo": "We're hiring!",
+   "url": "https://now.pt/en/were-hiring"
+  },
+  {
+   "excerto": "O essencial da informação à meia-noite e as primeiras páginas dos jornais com análise em antena.",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16068/24-horas",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "24 Horas",
+   "url": "https://www.rtp.pt/play/p16068/24-horas"
+  },
+  {
+   "excerto": "O irreverente e hilariante 5 para a Meia-Noite está de volta! Gilmário Vemba recebe grandes convidados para boas conversas e onde n&atil",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p15655/5-para-a-meia-noite",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "5 Para a Meia-Noite",
+   "url": "https://www.rtp.pt/play/p15655/5-para-a-meia-noite"
+  },
+  {
+   "excerto": "A Casa da Mensagem, um documentário da autoria de Margarida Mercês de Mello sobre a Casa dos Estudantes do Império, uma institui&c",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p4141/a-casa-da-mensagem",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "A Casa da Mensagem",
+   "url": "https://www.rtp.pt/play/p4141/a-casa-da-mensagem"
+  },
+  {
+   "excerto": "Um programa de Ricardo Saló De sábado para domingo às 00h00 com repetição sábado às 03h00",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p264/fuga-da-arte",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "A Fuga da Arte",
+   "url": "https://www.rtp.pt/play/p264/fuga-da-arte"
+  },
+  {
+   "excerto": "A Nossa Tarde é o seu lugar",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16123/a-nossa-tarde",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "A Nossa Tarde",
+   "url": "https://www.rtp.pt/play/p16123/a-nossa-tarde"
+  },
+  {
+   "excerto": "Programa de investigação da RTP com coordenação de Rita Marrafa de Carvalho e apresentação de Mariana Flor",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16129/a-prova-dos-factos",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "A Prova dos Factos",
+   "url": "https://www.rtp.pt/play/p16129/a-prova-dos-factos"
+  },
+  {
+   "excerto": "Um programa de Luís Caetano De 2ª a 6ª feira às 23h00, com repetição de 3ª feira a sábado à",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p1299/a-ronda-da-noite",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "A Ronda da Noite",
+   "url": "https://www.rtp.pt/play/p1299/a-ronda-da-noite"
+  },
+  {
+   "excerto": "Sábado, às 18h, na Antena 3",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p366/a3-30",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "A3.30",
+   "url": "https://www.rtp.pt/play/p366/a3-30"
+  },
+  {
+   "excerto": "Emiliano Ventura - Emiliano Ventura",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p9149/e628428/afinal-ha-tempo",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Afinal há tempo",
+   "url": "https://www.rtp.pt/play/p9149/e628428/afinal-ha-tempo"
+  },
+  {
+   "excerto": "#AosNossosHeróis André Gaio Pereira abrilhanta a quarentena com o seu violino!",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p7005/andre-gaio-pereira",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "André Gaio Pereira",
+   "url": "https://www.rtp.pt/play/p7005/andre-gaio-pereira"
+  },
+  {
+   "excerto": "Comédia romântica interativa sobre desventuras amorosas na era digital",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p4443/appaixonados",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Appaixonados",
+   "url": "https://www.rtp.pt/play/p4443/appaixonados"
+  },
+  {
+   "excerto": "E porque é de manhã que começa o dia, então inicie-o na nossa companhia!",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16050/bom-dia-portugal-fim-de-semana",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Bom Dia Portugal Fim de Semana",
+   "url": "https://www.rtp.pt/play/p16050/bom-dia-portugal-fim-de-semana"
+  },
+  {
+   "excerto": "Uma versão televisiva, em formato de curtas metragens, do programa sobre cinema da Antena 1 com exibição e estreia de curtas-metr",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p14895/cinemax",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Cinemax",
+   "url": "https://www.rtp.pt/play/p14895/cinemax"
+  },
+  {
+   "excerto": "O camarada Ventura… - Uma entrevista à antena 1 que pode obrigar o governo a recuar nas propostas laborais. Uma greve que fez efeito. Os debates pr",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p283/e895598/contraditorio",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Contraditório",
+   "url": "https://www.rtp.pt/play/p283/e895598/contraditorio"
+  },
+  {
+   "excerto": "Festa do Jazz 2024 - As diferentes comunidades do jazz voltam a encontrar-se no Pequeno Auditório do Centro Cultural de Belém, na 22.ª edição da",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p14501/duarte-ventura-reperio",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Duarte Ventura - Reperio",
+   "url": "https://www.rtp.pt/play/p14501/duarte-ventura-reperio"
+  },
+  {
+   "excerto": "Um espaço de encontro entre pessoas e culturas diversas. Um espaço de diálogo, de celebração do agora cultural.",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16551/e-agora",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "E Agora?",
+   "url": "https://www.rtp.pt/play/p16551/e-agora"
+  },
+  {
+   "excerto": "Chega - André Ventura - A caminho das eleições legislativas, a RTP entrevista todos os líderes dos partidos com assento parlamentar sobre os desaf",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p9596/e585994/eleicoes-legislativas-2022-entrevistas-lideres-partidarios",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Eleições Legislativas 2022 - Entrevistas Líderes Partidários",
+   "url": "https://www.rtp.pt/play/p9596/e585994/eleicoes-legislativas-2022-entrevistas-lideres-partidarios"
+  },
+  {
+   "excerto": "Ana Ventura - Ana Ventura conta a sua história com o Grunge através do",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p9208/e568712/eu-e-o-grunge-historias-do-tempo-da-flanela",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Eu e o Grunge: Histórias do Tempo da Flanela",
+   "url": "https://www.rtp.pt/play/p9208/e568712/eu-e-o-grunge-historias-do-tempo-da-flanela"
+  },
+  {
+   "excerto": "Os grandes temas que preocupam os cidadãos europeus em debate, semanalmente.",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16197/eurodeputados",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Eurodeputados",
+   "url": "https://www.rtp.pt/play/p16197/eurodeputados"
+  },
+  {
+   "excerto": "Quem será o vencedor da edição de 2026?",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16368/festival-da-cancao-2026",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Festival da Canção 2026",
+   "url": "https://www.rtp.pt/play/p16368/festival-da-cancao-2026"
+  },
+  {
+   "excerto": "Sábados das 22h00 às 23h00, com repetição aos domingos das 04h00 às 05h00",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p285/geografia-dos-sons",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Geografia dos Sons",
+   "url": "https://www.rtp.pt/play/p285/geografia-dos-sons"
+  },
+  {
+   "excerto": "Em busca, dos melhores talentos do país. Sem limite de idade, sem limite de talento!",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16134/got-talent-portugal",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Got Talent Portugal",
+   "url": "https://www.rtp.pt/play/p16134/got-talent-portugal"
+  },
+  {
+   "excerto": "Um protagonista da vida portuguesa responde às perguntas de Vítor Gonçalves",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16214/grande-entrevista",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Grande Entrevista",
+   "url": "https://www.rtp.pt/play/p16214/grande-entrevista"
+  },
+  {
+   "excerto": "André Ventura - O líder do maior partido da oposição, André Ventura, Presidente do Chega vem à Grande Entrevista com Vítor Gonçalves",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p10324/e938640/grande-entrevista",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Grande Entrevista",
+   "url": "https://www.rtp.pt/play/p10324/e938640/grande-entrevista"
+  },
+  {
+   "excerto": "André Ventura - Todas as semanas, um protagonista da vida portuguesa responde às perguntas de Vítor Gonçalves, na Grande Entrevista.",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p10324/e888399/grande-entrevista",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Grande Entrevista",
+   "url": "https://www.rtp.pt/play/p10324/e888399/grande-entrevista"
+  },
+  {
+   "excerto": "André Ventura - André Ventura está na segunda volta das Eleições Presidenciais. Três dias depois das eleições vem à Grande Entrevista com Ví",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p10324/e903969/grande-entrevista",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Grande Entrevista",
+   "url": "https://www.rtp.pt/play/p10324/e903969/grande-entrevista"
+  },
+  {
+   "excerto": "André Ventura - As eleições de 18 de maio tornaram o Chega o segundo partido no Parlamento. É um crescimento notável de um partido que há apenas",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p10324/e855476/grande-entrevista",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Grande Entrevista",
+   "url": "https://www.rtp.pt/play/p10324/e855476/grande-entrevista"
+  },
+  {
+   "excerto": "André Ventura - É um dos maiores sobressaltos que o sistema político português assistiu nas últimas décadas. O partido Chega, que em 2019 elegeu",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p10324/e756469/grande-entrevista",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Grande Entrevista",
+   "url": "https://www.rtp.pt/play/p10324/e756469/grande-entrevista"
+  },
+  {
+   "excerto": "André Ventura - É o líder da terceira força politica no Parlamento e um dos deputados mais críticos na oposição. As divisões internas no Chega",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p10324/e648120/grande-entrevista",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Grande Entrevista",
+   "url": "https://www.rtp.pt/play/p10324/e648120/grande-entrevista"
+  },
+  {
+   "excerto": "A atualidade comentada por especialistas com moderação de Márcia Rodrigues",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16221/janela-global",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Janela Global",
+   "url": "https://www.rtp.pt/play/p16221/janela-global"
+  },
+  {
+   "excerto": "Um programa de João Moreira dos Santos Apresentação de Maria Alexandra Corvela e Luís Caetano De 2ª a 6ª feira,",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p647/jazz-a2",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Jazz a 2",
+   "url": "https://www.rtp.pt/play/p647/jazz-a2"
+  },
+  {
+   "excerto": "Hugo Gilberto e Sandra Sousa dão-lhe o Mundo em 30 minutos: o essencial da informação com rigor e objetividade",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16194/jornal-2",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Jornal 2",
+   "url": "https://www.rtp.pt/play/p16194/jornal-2"
+  },
+  {
+   "excerto": "A grande reportagem que retrata todas as realidades!",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16136/linha-da-frente",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Linha da Frente",
+   "url": "https://www.rtp.pt/play/p16136/linha-da-frente"
+  },
+  {
+   "excerto": "Um programa de João ChambersAos Domingos das 16h00 às 18h00, com repetição aos Sábados às 12h00",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p302/musica-aeterna",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Musica Aeterna",
+   "url": "https://www.rtp.pt/play/p302/musica-aeterna"
+  },
+  {
+   "excerto": "Um programa de Tiago PereiraDe 2ª a 6ª feira às 10h10.",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p5382/musica-portuguesa-a-gostar-dela-propria",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Música Portuguesa a Gostar dela Própria",
+   "url": "https://www.rtp.pt/play/p5382/musica-portuguesa-a-gostar-dela-propria"
+  },
+  {
+   "excerto": "Documentário da autoria de Joaquim Vieira sobre um dos pioneiros do modernismo arquitetónico, Pardal Monteiro, que transformou a face de",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p4533/o-arquiteto-de-lisboa",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "O Arquiteto de Lisboa: Pardal Monteiro",
+   "url": "https://www.rtp.pt/play/p4533/o-arquiteto-de-lisboa"
+  },
+  {
+   "excerto": "Bárbara Eugenia & Tatá Aeroplano - «Vida Ventureira» - Na Antena 3, à terça-feira, entre as 0h e as 2h. Repete às 2h de segunda-feira.",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p2016/e302729/o-disco-disse",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "O Disco Disse",
+   "url": "https://www.rtp.pt/play/p2016/e302729/o-disco-disse"
+  },
+  {
+   "excerto": "Programa de debate sobre a actualidade nacional",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p14403/o-outro-lado",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "O Outro Lado",
+   "url": "https://www.rtp.pt/play/p14403/o-outro-lado"
+  },
+  {
+   "excerto": "No \"Preço Certo\", as emoções são garantidas!",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p15334/o-preco-certo",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "O Preço Certo",
+   "url": "https://www.rtp.pt/play/p15334/o-preco-certo"
+  },
+  {
+   "excerto": "Um programa de Rui Vieira NeryAos Domingos às 11h00, com repetição aos Sábados às 14h00",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p2275/o-tempo-e-a-musica",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "O Tempo e a Música",
+   "url": "https://www.rtp.pt/play/p2275/o-tempo-e-a-musica"
+  },
+  {
+   "excerto": "Histórias de vidas surpreendentes que nos tocam e nos inspiram",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16303/outras-historias",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Outras Histórias",
+   "url": "https://www.rtp.pt/play/p16303/outras-historias"
+  },
+  {
+   "excerto": "As Primas, Aurora Venturini - Livro que apresentou ao mundo o talento de Aurora Venturini. Inquietante, um caso de escrita assustadoramente viciante.",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p3943/e769971/paraiso-perdido",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Paraíso Perdido",
+   "url": "https://www.rtp.pt/play/p3943/e769971/paraiso-perdido"
+  },
+  {
+   "excerto": "As primas, Aurora Venturini - LIVROS no olhar de Paulo Sérgio BEJu As primas de Aurora Venturini (Penguin Randon House Grupo Editorial – chancela A",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p9133/e705152/pequeno-toque",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Pequeno Toque",
+   "url": "https://www.rtp.pt/play/p9133/e705152/pequeno-toque"
+  },
+  {
+   "excerto": "Debate entre o André Ventura da parte da manhã e o André Ventura da tarde. - Portugal simplificado em poucos minutos. Um noticiário humorístico,",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p293/e515795/portugalex",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Portugalex",
+   "url": "https://www.rtp.pt/play/p293/e515795/portugalex"
+  },
+  {
+   "excerto": "Otimismo, entusiasmo e muita energia nas manhãs de Portugal!",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16170/praca-da-alegria",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Praça da Alegria",
+   "url": "https://www.rtp.pt/play/p16170/praca-da-alegria"
+  },
+  {
+   "excerto": "André Ventura - Na contagem decrescente para as Eleições Presidenciais que terão lugar em final de janeiro de 2021, a RTP irá entrevistar no mês",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p8076/e512484/entrevistas-eleicoes-presidenciais-2021",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Presidenciais 2021 - Entrevistas",
+   "url": "https://www.rtp.pt/play/p8076/e512484/entrevistas-eleicoes-presidenciais-2021"
+  },
+  {
+   "excerto": "António José Seguro e André Ventura vão estar frente a frente no único debate da segunda volta das Presidenciais. O",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16317/presidenciais-2026-debate-antonio-jose-seguro-x-andre-ventura",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Presidenciais 2026 - Debate: António José Seguro x André Ventura",
+   "url": "https://www.rtp.pt/play/p16317/presidenciais-2026-debate-antonio-jose-seguro-x-andre-ventura"
+  },
+  {
+   "excerto": "Abordagens distintas e plurais de diferentes figuras da nossa sociedade com Fátima Campos Ferreira",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16274/primeira-pessoa",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Primeira Pessoa",
+   "url": "https://www.rtp.pt/play/p16274/primeira-pessoa"
+  },
+  {
+   "excerto": "Chicão Venturette - Isto agora é todos os dias. Manuel Cardoso regressa com a rubrica Pão para Malucos, agora em todas as tardes da Antena 3. O des",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p4931/e474914/pao-para-malucos",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Pão para Malucos",
+   "url": "https://www.rtp.pt/play/p4931/e474914/pao-para-malucos"
+  },
+  {
+   "excerto": "Um programa de João Almeida Aos Sábados das 10h00 às 11h00",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p319/quinta-essencia",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Quinta Essência",
+   "url": "https://www.rtp.pt/play/p319/quinta-essencia"
+  },
+  {
+   "excerto": "D.Manuel I - o Venturoso - A evocação de D. Manuel nos 500 anos da sua morte. O legado do Rei que abraçou o Renascimento, a acção reformista do s",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p5994/e586404/radicais-livres-2a-serie",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Radicais Livres (2ª Série)",
+   "url": "https://www.rtp.pt/play/p5994/e586404/radicais-livres-2a-serie"
+  },
+  {
+   "excerto": "Um programa de André Pinto e Mafalda Serrano De 3ª feira a Sábado às 00h00",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p410/raizes",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Raízes",
+   "url": "https://www.rtp.pt/play/p410/raizes"
+  },
+  {
+   "excerto": "Cinco dias por semana, cinco temas de interesse com apresentação de Luís de Castro",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16075/sociedade-civil",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Sociedade Civil",
+   "url": "https://www.rtp.pt/play/p16075/sociedade-civil"
+  },
+  {
+   "excerto": "Taskmaster está de volta com muita loucura e diversão!",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16438/taskmaster",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Taskmaster",
+   "url": "https://www.rtp.pt/play/p16438/taskmaster"
+  },
+  {
+   "excerto": "A mais rigorosa seleção de notícias, todos os dias às 20h00",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16048/telejornal",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Telejornal",
+   "url": "https://www.rtp.pt/play/p16048/telejornal"
+  },
+  {
+   "excerto": "Um símbolo da critica satírica da politica e da cultura contemporâneas",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16581/the-daily-show",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "The Daily Show",
+   "url": "https://www.rtp.pt/play/p16581/the-daily-show"
+  },
+  {
+   "excerto": "Os livros e os seus autores",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p14532/todas-as-palavras",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Todas as Palavras",
+   "url": "https://www.rtp.pt/play/p14532/todas-as-palavras"
+  },
+  {
+   "excerto": "Domingos à noite, Trio D`Ataque...em direto",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16168/trio-dataque",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Trio d´Ataque",
+   "url": "https://www.rtp.pt/play/p16168/trio-dataque"
+  },
+  {
+   "excerto": "Um programa de Economia e Finanças",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16204/tudo-e-economia",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "",
+   "titulo": "Tudo é Economia",
+   "url": "https://www.rtp.pt/play/p16204/tudo-e-economia"
+  },
+  {
+   "excerto": "Programa semanal de entrevista.",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p202/e136873/em-entrevista",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "2013-12-05",
+   "titulo": "Em Entrevista ( Madeira) - Ventura Garcês - ep. 36",
+   "url": "https://www.rtp.pt/play/p202/e136873/em-entrevista"
+  },
+  {
+   "excerto": "Programa semanal de entrevistas da RTP Internacional conduzido por Cláudia Almeida. Conversas com portugueses que têm vidas sem fronteiras. Porque são (ou porque foram) emigrantes, porque conhecem a realidade das comunidades portuguesas espalhadas pelo mundo, porque as suas vidas",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p5487/e402977/filhos-da-nacao",
+   "motivo": "anterior_ao_inicio",
+   "publicado_em": "2019-04-23",
+   "titulo": "Filhos da Nação - Isabel Ventura - ep. 15",
+   "url": "https://www.rtp.pt/play/p5487/e402977/filhos-da-nacao"
+  },
+  {
+   "excerto": "António José Seguro e André Ventura vão estar frente a frente no único debate da segunda volta das Presidenciais. O debate conta com a moderação de Carlos Daniel pela RTP.",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16317/e905134/presidenciais-2026-debate-antonio-jose-seguro-x-andre-ventura",
+   "motivo": "formato_nao_elegivel (debate)",
+   "publicado_em": "2026-01-27",
+   "titulo": "Presidenciais 2026 - Debate: António José Seguro x André Ventura",
+   "url": "https://www.rtp.pt/play/p16317/e905134/presidenciais-2026-debate-antonio-jose-seguro-x-andre-ventura"
+  },
+  {
+   "excerto": "Festa do Jazz 2025: André Carvalho 'Of Fragility and Impermanence'",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/play/p16267/festa-do-jazz-2025-andre-carvalho-of-fragility-and-impermanence",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-03-24",
+   "titulo": "Festa do Jazz 2025: André Carvalho 'Of Fragility and Impermanence'",
+   "url": "https://www.rtp.pt/play/p16267/festa-do-jazz-2025-andre-carvalho-of-fragility-and-impermanence"
+  },
+  {
+   "excerto": "Informação actualizada sobre todas as modalidades desportivas. Futebol, com resultados em tempo real, mas também atletismo, desportos motorizados, entre outros. Todo o desporto do país e do mundo está aqui.",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/noticias/desporto",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-07",
+   "titulo": "Desporto, RTP Notícias",
+   "url": "https://www.rtp.pt/noticias/desporto"
+  },
+  {
+   "excerto": "12h Chega e IL reafirmam que Luís Neves não tem condições para continuar no cargo",
+   "fonte": "busca-rtp1",
+   "id_nativo": "https://www.rtp.pt/noticias/noticiario-antena1",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-08",
+   "titulo": "12h Chega e IL reafirmam que Luís Neves não tem condições para continuar no cargo",
+   "url": "https://www.rtp.pt/noticias/noticiario-antena1"
+  },
+  {
+   "excerto": "Inscreva-se no novo consurso da TVI.",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/novo-concurso/inscricoes/a-tvi-vai-estrear-um-novo-concurso-e-as-inscricoes-ja-estao-abertas",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-08-12",
+   "titulo": "A TVI vai estrear um novo concurso e as inscrições já estão abertas",
+   "url": "https://tvi.iol.pt/novo-concurso/inscricoes/a-tvi-vai-estrear-um-novo-concurso-e-as-inscricoes-ja-estao-abertas"
+  },
+  {
+   "excerto": "Até onde pode ir uma mãe para proteger quem ama? A novela Coração de mãe já está no ar",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/novelas/resumo/estreia/coracao-de-mae-as-cinco-cenas-que-nos-partiram-o-coracao-no-episodio-de-estreia",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-07",
+   "titulo": "Coração de Mãe: As cinco cenas que nos partiram o coração no episódio de estreia",
+   "url": "https://tvi.iol.pt/novelas/resumo/estreia/coracao-de-mae-as-cinco-cenas-que-nos-partiram-o-coracao-no-episodio-de-estreia"
+  },
+  {
+   "excerto": "Um desabafo emocionante.",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/novelas/coracao-de-mae/joana-solnado/em-dia-de-estreia-joana-solnado-deixa-mensagem-emocionante-a-todas-as-maes-e-a-todas-as-vitimas-e-sobreviventes-de-violencia",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-07",
+   "titulo": "Em dia de estreia, Joana Solnado deixa mensagem emocionante: «A todas as mães e a todas as vítimas e sobreviventes de violência»",
+   "url": "https://tvi.iol.pt/novelas/coracao-de-mae/joana-solnado/em-dia-de-estreia-joana-solnado-deixa-mensagem-emocionante-a-todas-as-maes-e-a-todas-as-vitimas-e-sobreviventes-de-violencia"
+  },
+  {
+   "excerto": "Choque no mundo dos reality shows.",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/vmais/amber-eggers/morte-aos-41-anos/morre-aos-41-anos-ex-participante-de-reality-show-apos-ser-internada-de-urgencia",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-07",
+   "titulo": "Morre aos 41 anos ex-participante de reality show após ser internada de urgência",
+   "url": "https://tvi.iol.pt/vmais/amber-eggers/morte-aos-41-anos/morre-aos-41-anos-ex-participante-de-reality-show-apos-ser-internada-de-urgencia"
+  },
+  {
+   "excerto": "O prémio final é uma das grandes novidades da edição.",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/bigbrother/premio-final/big-brother-all-stars/nao-e-so-dinheiro-este-e-o-premio-que-o-vencedor-do-big-brother-all-stars-vai-levar-para-casa-e-e-diferente-de-tudo-o-que-ja-se-viu",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-07",
+   "titulo": "Não é só dinheiro! Este é o prémio que o vencedor do Big Brother All Stars vai levar para casa. E é diferente de tudo o que já se viu",
+   "url": "https://tvi.iol.pt/bigbrother/premio-final/big-brother-all-stars/nao-e-so-dinheiro-este-e-o-premio-que-o-vencedor-do-big-brother-all-stars-vai-levar-para-casa-e-e-diferente-de-tudo-o-que-ja-se-viu"
+  },
+  {
+   "excerto": "Sandra Felgueiras recorreu às redes sociais para partilhar uma reflexão emotiva sobre o Norte, as suas raízes e o sentimento de pertença que esta região lhe transmite.",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/doisas10/sandra-felgueiras/jornalista/sandra-felgueiras-faz-declaracao-emotiva-sempre-significou-voltar-a-casa",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-07",
+   "titulo": "Sandra Felgueiras faz declaração emotiva: «Sempre significou voltar a casa»",
+   "url": "https://tvi.iol.pt/doisas10/sandra-felgueiras/jornalista/sandra-felgueiras-faz-declaracao-emotiva-sempre-significou-voltar-a-casa"
+  },
+  {
+   "excerto": "Depois de dois meses afastado de casa, Nuno Pereira está finalmente de regresso ao seu lar.",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/doisas10/big-brother-verao/nuno-pereira/apos-o-big-brother-verao-nuno-mostra-reencontro-muito-desejado-finalmente-juntos",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-08",
+   "titulo": "Após o Big Brother Verão, Nuno mostra reencontro muito desejado: «Finalmente juntos»",
+   "url": "https://tvi.iol.pt/doisas10/big-brother-verao/nuno-pereira/apos-o-big-brother-verao-nuno-mostra-reencontro-muito-desejado-finalmente-juntos"
+  },
+  {
+   "excerto": "Patrícia Candoso está noiva e já tem data marcada para subir ao altar. A atriz e cantora, que ficou conhecida do grande público pela participação em ‘Morangos com Açúcar’, vai casar com Marco Santos, pai das suas duas filhas, num dia muito especial para o casal.",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/doisas10/morangos-com-acucar/novelas/foi-estrela-em-morangos-com-acucar-e-agora-tem-o-casamento-marcado-so-faria-sentido-neste-dia",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-08",
+   "titulo": "Foi estrela em \"Morangos com Açúcar\" e agora tem o casamento marcado: «Só faria sentido neste dia»",
+   "url": "https://tvi.iol.pt/doisas10/morangos-com-acucar/novelas/foi-estrela-em-morangos-com-acucar-e-agora-tem-o-casamento-marcado-so-faria-sentido-neste-dia"
+  },
+  {
+   "excerto": "Rita Aleluia nasceu em Cascais, mas foi a Madeira que acabou por conquistar um lugar muito especial na sua vida. A jornalista viajou pela primeira vez até à ilha quando tinha apenas três anos e, anos mais tarde, regressaria para construir uma nova vida.",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/doisas10/jornalista/casamento/militar-e-fisiculturista-conheca-o-homem-que-conquistou-o-coracao-de-uma-cara-da-tvi",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-08",
+   "titulo": "Militar e fisiculturista. Conheça o homem que conquistou o coração de uma cara da TVI",
+   "url": "https://tvi.iol.pt/doisas10/jornalista/casamento/militar-e-fisiculturista-conheca-o-homem-que-conquistou-o-coracao-de-uma-cara-da-tvi"
+  },
+  {
+   "excerto": "Luís Carlos Ferreira tinha 34 anos, vivia na Suíça e estava em Portugal de férias. O jovem músico tinha casado há apenas uma semana quando morreu na sequência de um despiste de mota em Monção.",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/doisas10/musica/cantor/tragedia-musico-portugues-morre-em-acidente-uma-semana-depois-de-casar",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-08",
+   "titulo": "Tragédia. Músico português morre em acidente uma semana depois de casar",
+   "url": "https://tvi.iol.pt/doisas10/musica/cantor/tragedia-musico-portugues-morre-em-acidente-uma-semana-depois-de-casar"
+  }
+ ],
  "esquema": 1,
- "total": 0
+ "total": 83
 }

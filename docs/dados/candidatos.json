@@ -1,0 +1,111 @@
+{
+ "candidatos": [
+  {
+   "bloco": "5adc27508bd5",
+   "fontes": [
+    "busca-rtp1"
+   ],
+   "primeira_ronda": "historico-2026-09-08-1",
+   "prova_url": "https://www.rtp.pt/play/p12659/e756333/grande-entrevista",
+   "rondas": [
+    "historico-2026-09-08-1",
+    "historico-2026-09-08-2",
+    "historico-2026-09-08-3"
+   ],
+   "titulo": "Grande Entrevista - André Ventura - ep. 12",
+   "ultima_ronda": "historico-2026-09-08-3"
+  },
+  {
+   "bloco": "8ffaa57304af",
+   "fontes": [
+    "busca-rtp1"
+   ],
+   "primeira_ronda": "historico-2026-09-08-1",
+   "prova_url": "https://www.rtp.pt/play/p14350/e855325/grande-entrevista",
+   "rondas": [
+    "historico-2026-09-08-1",
+    "historico-2026-09-08-2",
+    "historico-2026-09-08-3"
+   ],
+   "titulo": "Grande Entrevista - André Ventura",
+   "ultima_ronda": "historico-2026-09-08-3"
+  },
+  {
+   "bloco": "bf5d5a46be3f",
+   "fontes": [
+    "busca-rtp1"
+   ],
+   "primeira_ronda": "historico-2026-09-08-1",
+   "prova_url": "https://www.rtp.pt/play/p15797/e887091/grande-entrevista-candidatos-a-presidencia-da-republica",
+   "rondas": [
+    "historico-2026-09-08-1",
+    "historico-2026-09-08-2",
+    "historico-2026-09-08-3"
+   ],
+   "titulo": "Grande Entrevista - Candidatos à Presidência da República - André Ventura - ep. 2",
+   "ultima_ronda": "historico-2026-09-08-3"
+  },
+  {
+   "bloco": "cae2c99544d6",
+   "fontes": [
+    "busca-rtp1"
+   ],
+   "primeira_ronda": "historico-2026-09-08-1",
+   "prova_url": "https://www.rtp.pt/play/p16214/e938491/grande-entrevista",
+   "rondas": [
+    "historico-2026-09-08-1",
+    "historico-2026-09-08-2",
+    "historico-2026-09-08-3"
+   ],
+   "titulo": "Grande Entrevista - André Ventura - ep. 19",
+   "ultima_ronda": "historico-2026-09-08-3"
+  },
+  {
+   "bloco": "d5d7e6219a96",
+   "fontes": [
+    "busca-rtp1"
+   ],
+   "primeira_ronda": "historico-2026-09-08-1",
+   "prova_url": "https://www.rtp.pt/play/p9766/e648005/grande-entrevista",
+   "rondas": [
+    "historico-2026-09-08-1",
+    "historico-2026-09-08-2",
+    "historico-2026-09-08-3"
+   ],
+   "titulo": "Grande Entrevista - André Ventura - ep. 41",
+   "ultima_ronda": "historico-2026-09-08-3"
+  },
+  {
+   "bloco": "f588bcdfb227",
+   "fontes": [
+    "busca-rtp1"
+   ],
+   "primeira_ronda": "historico-2026-09-08-1",
+   "prova_url": "https://www.rtp.pt/play/p16214/e903851/grande-entrevista",
+   "rondas": [
+    "historico-2026-09-08-1",
+    "historico-2026-09-08-2",
+    "historico-2026-09-08-3"
+   ],
+   "titulo": "Grande Entrevista - André Ventura - ep. 2",
+   "ultima_ronda": "historico-2026-09-08-3"
+  },
+  {
+   "bloco": "f7a4d979e3cd",
+   "fontes": [
+    "busca-rtp1"
+   ],
+   "primeira_ronda": "historico-2026-09-08-1",
+   "prova_url": "https://www.rtp.pt/play/p13071/e752537/eleicoes-legislativas-2024-entrevistas-lideres-partidarios",
+   "rondas": [
+    "historico-2026-09-08-1",
+    "historico-2026-09-08-2",
+    "historico-2026-09-08-3"
+   ],
+   "titulo": "Eleições Legislativas 2024 - Entrevistas Líderes Partidários - André Ventura - ep. 6",
+   "ultima_ronda": "historico-2026-09-08-3"
+  }
+ ],
+ "esquema": 1,
+ "total": 7
+}
