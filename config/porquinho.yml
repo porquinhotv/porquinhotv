@@ -81,3 +81,36 @@ exclusoes:
   debate: [debate, frente a frente, frente-a-frente, painel]
   declaracao: [declarações, declaracoes, reage, reação, reacao, à saída, a saida]
   direto: [em direto, comício, comicio, conferência de imprensa, conferencia de imprensa, discurso]
+
+# Prova positiva de formato, exigida as fontes automaticas.
+#
+# Antes desta regra o formato de um item era `entrevista` por omissao e
+# so os termos de exclusao acima o retiravam. Numa fonte automatica, em
+# que ninguem leu a pagina, isso fazia contar como entrevista exclusiva
+# qualquer peca com o nome do sujeito, com data e com duracao, desde que
+# o titulo nao dissesse debate, declaracoes ou direto. Verificado no
+# dataset de 8 de setembro de 2026: sete pecas noticiosas curtas, uma de
+# 55 segundos, estavam publicadas como entrevistas.
+#
+# A regra passa a ser a inversa: numa fonte automatica so conta o que o
+# proprio canal chama entrevista. Ou o titulo contem um destes termos, ou
+# o programa e um dos programas de entrevista abaixo. Tudo o resto vai
+# para a quarentena como `formato_nao_apurado`, que e um motivo
+# verdadeiro: nao se sabe o formato, e nao se publica o que nao se sabe.
+#
+# O registo curado e o clipping nao passam por aqui: uma pessoa leu a
+# pagina e decidiu. Tambem nao passa uma fonte cuja configuracao ja
+# declare `formato: entrevista` para o programa inteiro (um feed de um
+# programa de entrevistas), porque essa declaracao e a decisao editorial.
+prova_de_formato:
+  # Por palavra inteira, sem acentos, so no titulo. A sinopse fala de
+  # tudo e uma entrevista mencionada de passagem nao faz de uma peca
+  # uma entrevista.
+  termos: [entrevista, entrevistas, entrevistado, entrevistada]
+  # Programas cujo formato e, por definicao, a entrevista a um so
+  # convidado. Um episodio destes conta mesmo que o titulo nao diga a
+  # palavra. Programas de magazine que tem entrevistas entre outras
+  # coisas (manhas, tardes) nao estao aqui de proposito: um episodio
+  # inteiro com o nome do sujeito nas etiquetas nao e uma entrevista, e
+  # para esses o titulo tem de o dizer.
+  programas: [Grande Entrevista, Alta Definição, Entrevista exclusiva]

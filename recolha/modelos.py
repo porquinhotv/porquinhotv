@@ -79,6 +79,27 @@ class Canal:
 
 
 @dataclass(frozen=True)
+class ProvaDeFormato:
+    """O que uma fonte automatica tem de mostrar para o item contar como
+    entrevista. Sem isto o formato era `entrevista` por omissao e a
+    ausencia de um termo de exclusao chegava para publicar uma peca
+    noticiosa de 55 segundos como entrevista exclusiva.
+
+    Ou o titulo contem um dos termos, ou o programa e um dos programas.
+    As listas vivem em config/porquinho.yml; aqui nao ha nomes.
+    """
+
+    termos: tuple[str, ...] = ()
+    programas: tuple[str, ...] = ()
+
+    def cobre(self, titulo: str, programa: str) -> bool:
+        if contem_palavra(titulo, self.termos) is not None:
+            return True
+        alvo = normalizar(programa)
+        return bool(alvo) and any(normalizar(p) == alvo for p in self.programas)
+
+
+@dataclass(frozen=True)
 class Segmento:
     """Classifica um item de uma fonte que mistura programas.
 
@@ -107,6 +128,11 @@ class Fonte:
     canal: str = ""
     programa: str = ""
     formato: str = FORMATO_ELEGIVEL
+    # True quando a configuracao escreveu `formato` para esta fonte. E
+    # uma decisao editorial sobre a fonte inteira (um feed de um programa
+    # de entrevistas), e dispensa a prova de formato item a item. Sem a
+    # linha, `formato` e so a omissao do modelo e nao prova nada.
+    formato_declarado: bool = False
     confianca: str = "media"
     ficheiro: str = ""
     channel_id: str = ""
@@ -151,6 +177,7 @@ class Config:
     exclusoes: dict[str, tuple[str, ...]]
     separadores_programa: tuple[str, ...] = ()
     fontes: tuple[Fonte, ...] = ()
+    prova_de_formato: ProvaDeFormato = ProvaDeFormato()
 
     def canal_valido(self, canal_id: str) -> bool:
         return canal_id in self.canais
@@ -248,6 +275,12 @@ def carregar_config(
         motivo: tuple(termos or []) for motivo, termos in (bruto.get("exclusoes") or {}).items()
     }
 
+    prova_bruto = bruto.get("prova_de_formato") or {}
+    prova_de_formato = ProvaDeFormato(
+        termos=tuple(prova_bruto.get("termos", []) or []),
+        programas=tuple(prova_bruto.get("programas", []) or []),
+    )
+
     fontes_bruto = _ler_yaml(fontes_path).get("fontes", []) if fontes_path.exists() else []
     fontes = tuple(
         Fonte(
@@ -258,6 +291,7 @@ def carregar_config(
             canal=f.get("canal", ""),
             programa=f.get("programa", ""),
             formato=f.get("formato", FORMATO_ELEGIVEL),
+            formato_declarado="formato" in f,
             confianca=f.get("confianca", "media"),
             ficheiro=f.get("ficheiro", ""),
             channel_id=f.get("channel_id", ""),
@@ -296,6 +330,7 @@ def carregar_config(
         exclusoes=exclusoes,
         separadores_programa=tuple(bruto.get("separadores_programa", []) or []),
         fontes=fontes,
+        prova_de_formato=prova_de_formato,
     )
 
 

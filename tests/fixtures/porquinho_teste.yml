@@ -5,7 +5,6 @@ tema:
   pergunta: Quantas?
   desde: '2019-05-16'
   desde_rotulo: desde o inicio
-  duracao_minima_s: 600
 separadores_programa: [' - ', ' | ', ': ']
 
 sujeito:
@@ -25,3 +24,6 @@ canais:
 exclusoes:
   debate: [debate, frente a frente]
   declaracao: [reage, declarações]
+prova_de_formato:
+  termos: [entrevista, entrevistado]
+  programas: [Programa de Entrevista]

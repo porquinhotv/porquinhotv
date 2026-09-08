@@ -4,9 +4,11 @@
 
 Devolve os ultimos 15 videos com titulo, data de publicacao e descricao.
 Nao devolve duracao. Por isso estes itens nunca entram no dataset por
-esta via: o criterio manda-os para a quarentena como `por_confirmar`, com
-o URL, e a duracao e confirmada a mao no registo curado, onde cada linha
-leva prova. E um detetor, nao um medidor.
+esta via: os que tem o nome e a prova de formato no titulo vao para a
+quarentena como `por_confirmar`, com o URL, e os que nao dizem que sao
+uma entrevista ficam como `formato_nao_apurado`. A duracao e confirmada
+a mao no registo curado, onde cada linha leva prova. E um detetor, nao
+um medidor.
 """
 
 from __future__ import annotations

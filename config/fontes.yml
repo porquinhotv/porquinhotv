@@ -12,9 +12,11 @@
 #                 o criterio deixar. Usar `segmentos` quando o feed mistura
 #                 programas; `formato` diferente de "entrevista" exclui.
 #   youtube_feed  feed Atom publico de um canal de YouTube, sem conta nem
-#                 chave. Nao da duracao: os itens em que o nome aparece vao
-#                 para a quarentena como `por_confirmar`, para passar a
-#                 mao ao registo curado. E um detetor, nao um medidor.
+#                 chave. Nao da duracao: os itens em que o nome e a prova
+#                 de formato aparecem vao para a quarentena como
+#                 `por_confirmar`, para passar a mao ao registo curado;
+#                 os que nao dizem que sao entrevista ficam como
+#                 `formato_nao_apurado`. E um detetor, nao um medidor.
 #
 # Antes de ativar uma fonte nova: --dry-run, ler a quarentena, contar os
 # motivos, ler dez titulos aceites a mao contra o criterio. Depois ativar.

@@ -316,3 +316,104 @@ class TestVariasEmissoesNoMesmoDia(unittest.TestCase):
         q = []
         self.assertEqual(len(criterio.resolver_blocos([a, b], q)), 1)
         self.assertIn("programa nao apurado", q[0]["motivo"])
+
+
+class TestProvaDeFormato(unittest.TestCase):
+    """Numa fonte automatica ninguem leu a pagina. Ate 8 de setembro de
+    2026 o formato era `entrevista` por omissao e bastava nao haver termo
+    de exclusao no titulo: sete pecas noticiosas curtas, uma de 55
+    segundos, ficaram publicadas como entrevistas exclusivas. Estes
+    testes travam esse erro com os titulos reais que o causaram."""
+
+    def setUp(self):
+        self.config = config_teste()
+        # Fonte automatica sem `formato` declarado: a que estava a
+        # publicar as pecas indevidas era desta especie.
+        self.automatica = fonte(self.config, "yt-exemplo")
+        self.assertFalse(self.automatica.formato_declarado)
+
+    def _avaliar(self, **campos):
+        q = []
+        campos.setdefault("duracao_s", 55)
+        r = criterio.avaliar(item(**campos), self.automatica, self.config, q)
+        return r, q
+
+    def test_peca_noticiosa_com_o_nome_nao_e_entrevista(self):
+        """A peca de 55 segundos que estava publicada como entrevista."""
+        r, q = self._avaliar(titulo="André Ventura centra-se na formação de governo sombra")
+        self.assertIsNone(r)
+        self.assertEqual(q[0]["motivo"], "formato_nao_apurado")
+
+    def test_sujeito_so_nas_etiquetas_nao_prova_o_formato(self):
+        """As etiquetas encontram o sujeito, mas nao dizem que a peca e
+        uma entrevista. Titulo real da RTP3, 2 minutos e 41 segundos."""
+        r, q = self._avaliar(
+            titulo="Presidenciais. Líder do partido não concorda com extinção do SEF",
+            etiquetas="André Ventura, presidenciais",
+        )
+        self.assertIsNone(r)
+        self.assertEqual(q[0]["motivo"], "formato_nao_apurado")
+
+    def test_concorrente_de_reality_show_nao_entra(self):
+        """Ha um concorrente de reality show com o mesmo apelido. O nome
+        passa a deteccao do sujeito; o formato e que o tem de travar."""
+        r, q = self._avaliar(titulo="Big Brother Ventura fica fora de si e grita com Tatiana", duracao_s=90)
+        self.assertIsNone(r)
+        self.assertEqual(q[0]["motivo"], "formato_nao_apurado")
+
+    def test_a_palavra_na_sinopse_nao_prova(self):
+        """A sinopse fala de tudo: uma peca que fala de uma entrevista nao
+        e uma entrevista."""
+        r, q = self._avaliar(titulo="André Ventura fala do país", descricao="Em entrevista, disse que...")
+        self.assertIsNone(r)
+        self.assertEqual(q[0]["motivo"], "formato_nao_apurado")
+
+    def test_titulo_que_diz_entrevista_prova(self):
+        """Titulo real da RTP: o canal chama-lhe entrevista, e isso conta,
+        seja qual for a duracao. Nao ha duracao minima."""
+        r, q = self._avaliar(titulo="Entrevista à RTP. Ventura assume que eleger menos de 50 deputados seria mau", duracao_s=145)
+        self.assertIsNotNone(r, q)
+
+    def test_programa_de_entrevista_prova_sem_a_palavra(self):
+        """Um canal titula o episodio pelo programa e deixa o convidado a
+        seguir ao separador. Se o programa e de entrevista, e prova."""
+        r, q = self._avaliar(titulo="Programa de Entrevista - André Ventura - ep. 12", duracao_s=3000)
+        self.assertIsNotNone(r, q)
+        self.assertEqual(r.programa, "Programa de Entrevista")
+
+    def test_programa_fora_da_lista_nao_prova(self):
+        r, q = self._avaliar(titulo="Programa da Manhã - André Ventura", duracao_s=3000)
+        self.assertIsNone(r)
+        self.assertEqual(q[0]["motivo"], "formato_nao_apurado")
+
+    def test_exclusao_ganha_a_falta_de_prova(self):
+        """"Debate com o sujeito" e um debate. Dizer que o formato nao se
+        apurou seria menos verdade, e a quarentena tem de dizer a verdade."""
+        r, q = self._avaliar(titulo="Debate com André Ventura", duracao_s=3000)
+        self.assertIsNone(r)
+        self.assertEqual(q[0]["motivo"], "formato_nao_elegivel (debate)")
+
+    def test_fonte_com_formato_declarado_dispensa_a_prova(self):
+        """Um feed de um programa de entrevistas declara o formato na
+        configuracao; essa linha e a decisao editorial, e chega."""
+        declarada = fonte(self.config, "podcast-exemplo")
+        self.assertTrue(any(s.formato for s in declarada.segmentos))
+        r = criterio.avaliar(item(titulo="André Ventura fala do país"), declarada, self.config, [])
+        self.assertIsNotNone(r)
+
+    def test_registo_curado_dispensa_a_prova(self):
+        """Uma pessoa leu a pagina. O titulo do canal pode dizer o que quiser."""
+        curado = fonte(self.config, "registo-curado")
+        r = criterio.avaliar(
+            item(titulo="Jornal da Noite", canal="sic", programa="Jornal da Noite", data_declarada="2025-09-04", duracao_s=None),
+            curado, self.config, [],
+        )
+        self.assertIsNotNone(r)
+
+    def test_sem_prova_nunca_chega_a_por_confirmar(self):
+        """Antes, uma peca sem duracao e sem prova de formato ficava como
+        `por_confirmar`, ou seja, como candidata a entrevista. Nao e
+        candidata a nada enquanto nao se souber o formato."""
+        r, q = self._avaliar(titulo="André Ventura centra-se na formação de governo sombra", duracao_s=None)
+        self.assertIsNone(r)
+        self.assertEqual(q[0]["motivo"], "formato_nao_apurado")

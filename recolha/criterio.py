@@ -13,12 +13,23 @@ Um item conta como emissao quando, por esta ordem:
    outras fontes, por nome no titulo, na sinopse ou nas etiquetas);
 3. a classificacao por segmento lhe da um formato elegivel;
 4. nenhum termo de exclusao aparece no titulo;
-5. o canal e um dos canais medidos;
-6. a duracao e conhecida, ou a fonte e verificada a mao e pode registar
+5. numa fonte automatica, o formato esta provado: o titulo diz
+   entrevista, ou o programa e um programa de entrevista, ou a propria
+   fonte declara o formato na configuracao. No registo curado e no
+   clipping foi uma pessoa que leu a pagina, e isso e a prova;
+6. o canal e um dos canais medidos;
+7. a duracao e conhecida, ou a fonte e verificada a mao e pode registar
    uma emissao com a duracao por apurar.
 
 Nao ha duracao minima. Uma entrevista curta e uma entrevista curta, e o
 que separa entrevista de declaracao e o formato, nao o relogio.
+
+O passo 5 existe porque o contrario ja aconteceu: com o formato a
+`entrevista` por omissao, bastava nao haver termo de exclusao para uma
+peca noticiosa de 55 segundos com o nome do sujeito ser publicada como
+entrevista exclusiva. Sete das 42 emissoes publicadas a 8 de setembro de
+2026 eram isso. A regra e agora a inversa: sem prova de formato nao ha
+formato, e o que nao se sabe nao se publica.
 
 Cada rejeicao vai para a quarentena com o motivo e um excerto. Nada
 desaparece em silencio. Os motivos, para quem le a quarentena:
@@ -27,6 +38,10 @@ desaparece em silencio. Os motivos, para quem le a quarentena:
     anterior_ao_inicio          antes da data de inicio do tema
     sem_sujeito                 o nome nao aparece no titulo nem na descricao
     formato_nao_elegivel (x)    debate, declaracao, direto, ou outro formato
+    formato_nao_apurado         fonte automatica sem prova de que e uma
+                                entrevista: nem o titulo nem o programa o
+                                dizem. Nao e uma rejeicao do formato, e a
+                                ausencia dele
     canal_desconhecido          canal que nao esta em config/porquinho.yml
     por_confirmar               fonte automatica sem duracao: e um candidato
                                 a verificar a mao, nao uma emissao
@@ -72,18 +87,33 @@ def programa_do_titulo(titulo: str, config: Config) -> str:
     return ""
 
 
-def classificar(item: ItemBruto, fonte: Fonte, config: Config) -> tuple[str, str, str]:
-    """(programa, canal, formato) para este item. Classifica pelo titulo:
-    a descricao fala de tudo e apanharia programas mencionados de passagem."""
+def classificar(item: ItemBruto, fonte: Fonte, config: Config) -> tuple[str, str, str, bool]:
+    """(programa, canal, formato, formato_declarado) para este item.
+    Classifica pelo titulo: a descricao fala de tudo e apanharia programas
+    mencionados de passagem.
+
+    `formato_declarado` diz se o formato veio de uma decisao escrita na
+    configuracao (uma regra de segmento que correspondeu, ou a fonte com
+    `formato` declarado) ou se e so a omissao do modelo. A distincao
+    importa: a omissao nao e prova de nada.
+    """
     for regra in fonte.segmentos:
         if regra.corresponde(item.titulo):
             return (
                 regra.programa or item.programa or fonte.programa,
                 regra.canal or item.canal or fonte.canal,
                 regra.formato or fonte.formato,
+                True,
             )
     programa = item.programa or fonte.programa or programa_do_titulo(item.titulo, config)
-    return programa, item.canal or fonte.canal, fonte.formato
+    return programa, item.canal or fonte.canal, fonte.formato, fonte.formato_declarado
+
+
+def formato_provado(item: ItemBruto, programa: str, config: Config) -> bool:
+    """So o titulo e o programa contam. A sinopse e as etiquetas servem
+    para encontrar o sujeito, nao para provar o formato: uma peca que
+    fale de uma entrevista nao e uma entrevista."""
+    return config.prova_de_formato.cobre(item.titulo, programa)
 
 
 def motivo_de_exclusao(item: ItemBruto, config: Config) -> str | None:
@@ -138,7 +168,7 @@ def avaliar(
         rejeitar(quarentena, item, fonte, "sem_sujeito")
         return None
 
-    programa, canal, formato = classificar(item, fonte, config)
+    programa, canal, formato, formato_declarado = classificar(item, fonte, config)
     if formato != FORMATO_ELEGIVEL:
         rejeitar(quarentena, item, fonte, f"formato_nao_elegivel ({formato})")
         return None
@@ -146,6 +176,12 @@ def avaliar(
     exclusao = motivo_de_exclusao(item, config)
     if exclusao:
         rejeitar(quarentena, item, fonte, f"formato_nao_elegivel ({exclusao})")
+        return None
+
+    # A exclusao vem primeiro de proposito: "Debate com o sujeito" e um
+    # debate, e dizer que nao se apurou o formato seria menos verdade.
+    if fonte.tipo != "manual" and not formato_declarado and not formato_provado(item, programa, config):
+        rejeitar(quarentena, item, fonte, "formato_nao_apurado")
         return None
 
     if not config.canal_valido(canal):

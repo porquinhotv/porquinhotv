@@ -21,6 +21,10 @@ Programas de entretenimento com uma entrevista a solo contam. Noticiários com u
 
 **Não há duração mínima.** O que separa uma entrevista de uma declaração é o formato, não o relógio: uma entrevista de oito minutos é uma entrevista, e um limite de duração deixaria de fora emissões reais só por serem curtas, o que deturparia a contagem em vez de a proteger.
 
+**O formato tem de estar provado.** No registo curado e no clipping, a prova é a leitura da página por uma pessoa. Numa fonte automática, em que ninguém leu a página, o formato só se considera apurado quando o próprio canal lhe chama entrevista: o título contém a palavra, ou o programa é um dos programas de entrevista listados em `config/porquinho.yml`, ou a fonte foi configurada para um programa cujo formato é declarado. Uma peça com o nome no título, com data e com duração, mas sem nada que diga que é uma entrevista, não é uma entrevista por omissão: fica na quarentena como `formato_nao_apurado`, à espera de alguém que a leia.
+
+Esta regra foi invertida a 8 de setembro de 2026. Até então bastava não haver termo de exclusão no título, e isso publicou como entrevistas exclusivas sete peças noticiosas curtas, uma delas de 55 segundos. A correção fica registada aqui porque um número que esteve errado e foi corrigido deve poder ser reconstituído por quem o leu antes.
+
 ## 3. O que não conta
 
 - **Debates e painéis**: mais de um convidado a responder às mesmas perguntas.
@@ -72,7 +76,7 @@ As fontes têm uma hierarquia, e ela é deliberada: quando duas cobrem a mesma e
 
 **4. Clipping de imprensa** (`config/clipping.yml`). Último recurso, para emissões que o canal nunca publicou ou já retirou. Uma peça de imprensa escrita que diga, por palavras, que no dia X houve uma entrevista exclusiva a André Ventura no canal Y é prova de que a emissão aconteceu. Não é prova do seu conteúdo nem, quase nunca, da sua duração: por isso estas emissões entram muitas vezes sem duração apurada, e o site marca-as sempre com a origem "imprensa", com a ligação para a peça. Uma peça que apenas cite declarações não serve: tem de relatar uma entrevista.
 
-**Detetores: feeds públicos de YouTube**. Dizem que saiu um vídeo com o nome no título, e mais nada. Nunca entram no dataset por esta via, mesmo agora que uma emissão pode entrar sem duração: numa fonte automática, a falta de duração significa "ainda não verificado", não "sem duração". Vão para a quarentena como `por_confirmar`, com o URL.
+**Detetores: feeds públicos de YouTube**. Dizem que saiu um vídeo com o nome no título, e mais nada. Nunca entram no dataset por esta via, mesmo agora que uma emissão pode entrar sem duração: numa fonte automática, a falta de duração significa "ainda não verificado", não "sem duração". Os que têm prova de formato no título vão para a quarentena como `por_confirmar`, com o URL; os outros ficam como `formato_nao_apurado`.
 
 **Uma fonte que foi testada e recusada.** O arquivo da web portuguesa foi ensaiado como fonte para o histórico e devolveu zero resultados para o nome do sujeito no domínio de um canal generalista ao longo de sete anos, o que foi confirmado à mão. Uma fonte que devolve zero onde tem de haver resultados não é uma fonte, e não é usada. Fica registado aqui porque saber o que foi tentado e recusado faz parte do método.
 
@@ -96,6 +100,7 @@ Nada é descartado em silêncio. Todo o item que uma fonte devolveu e que não e
 | `anterior_ao_inicio` | antes de 16 de maio de 2019 |
 | `sem_sujeito` | o nome não aparece no título nem na descrição |
 | `formato_nao_elegivel (x)` | debate, declaração, direto ou outro formato |
+| `formato_nao_apurado` | fonte automática em que nem o título nem o programa dizem que é uma entrevista; não é rejeição do formato, é a ausência dele |
 | `canal_desconhecido` | canal que não é um dos nove |
 | `por_confirmar` | fonte automática sem duração; é um candidato a verificação humana |
 | `aguarda_confirmacao (n de m)` | visto por fonte automática, ainda sem as rondas necessárias |
@@ -149,7 +154,7 @@ O humor do porquinho depende só de uma coisa: quantos dias passaram desde a úl
 - **Tempo por período.** Como há emissões sem duração apurada, o tempo publicado num período é o tempo das emissões apuradas nesse período. Comparar o tempo de 2020 com o de 2026 compara também a qualidade dos arquivos dos canais, não só a antena. A contagem de entrevistas é a comparação mais segura entre anos.
 - **Clipping.** Uma peça de imprensa prova que houve entrevista, não a duração nem o formato exato. É por isso o último recurso, é sempre identificada como tal, e nunca desloca um registo do próprio canal.
 - **Duração online e duração em antena.** A duração declarada pelo canal na sua página pode diferir por segundos da duração em antena (genéricos, cortes). Usa-se a declarada porque é a única verificável por terceiros.
-- **Critério de formato.** A fronteira entre entrevista e declaração longa é uma decisão editorial, e sem limite de duração é uma leitura do formato, feita por uma pessoa, caso a caso. O registo mostra sempre a prova, para que essa leitura possa ser contestada linha a linha.
+- **Critério de formato.** A fronteira entre entrevista e declaração longa é uma decisão editorial, e sem limite de duração é uma leitura do formato, feita por uma pessoa, caso a caso. O registo mostra sempre a prova, para que essa leitura possa ser contestada linha a linha. Nas fontes automáticas a leitura é substituída pela palavra do canal: o que o canal não chamou entrevista fica de fora, mesmo que o seja. É um erro por defeito, assumido: neste site é preferível ficar curto e dizê-lo a inflacionar.
 
 ## 15. Correções
 
