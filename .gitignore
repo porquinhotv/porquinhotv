@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+node_modules/
+# Nunca versionados: vivem fora do repositorio.
+NOTAS-*.md
+HANDOVER.md
+INSTRUCOES.md
+kb/

@@ -1,0 +1,27 @@
+---
+# Clipping de imprensa. Ultimo recurso.
+#
+# Uma linha por emissao que a imprensa escrita noticiou e que o canal nao
+# publicou, ou ja retirou. A `prova` e o URL da peca, e a peca tem de
+# dizer, por palavras, que naquele dia houve uma entrevista exclusiva ao
+# sujeito naquele canal. Uma peca que apenas cite declaracoes nao serve.
+#
+# Formato igual a config/entrevistas.yml. A duracao procura-se sempre,
+# tambem aqui; se a peca nao a der e nao houver outra forma de a apurar,
+# omitir o campo. A emissao conta como evento, nunca como tempo, e o site
+# mostra "duração não apurada" ao lado.
+#
+# Regra: se a mesma emissao aparecer aqui e em config/entrevistas.yml,
+# fica a do canal, e esta vai para a quarentena como fragmento_ou_repetido.
+# Nao ha duplicacao, mas tambem nao vale a pena escrever as duas.
+#
+# Exemplo (apagar quando houver linhas reais):
+#
+#   - data: 2021-03-15
+#     canal: cmtv
+#     programa: Entrevista CMTV
+#     prova: https://exemplo.pt/noticia-que-relata-a-entrevista
+#     titulo: Entrevista relatada pela imprensa
+#     duracao_s: 1500          # so se a peca ou o canal a declararem
+
+entrevistas: []

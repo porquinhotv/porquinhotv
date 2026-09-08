@@ -1,0 +1,11 @@
+entrevistas:
+  - data: 2021-03-15
+    canal: cmtv
+    programa: Entrevista CMTV
+    prova: https://exemplo.pt/imprensa/2021-03-15
+    titulo: Entrevista relatada pela imprensa
+  - data: 2025-09-04
+    canal: sic
+    programa: Jornal da Noite
+    prova: https://exemplo.pt/imprensa/2025-09-04
+    titulo: A mesma emissão que o canal já publicou

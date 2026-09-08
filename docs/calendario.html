@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calendário, Porquinho TV</title>
+<meta name="robots" content="index, follow">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<header class="topo">
+  <a class="marca" href="index.html" aria-label="Porquinho TV, início">
+    <img src="favicon.svg" alt="" width="44" height="44">
+    <h1>Porquinho TV</h1>
+  </a>
+  <nav class="menu" aria-label="Páginas">
+    <a href="index.html">Hoje</a>
+    <a href="calendario.html" aria-current="page">Calendário</a>
+    <a href="fontes.html">Fontes</a>
+    <a href="metodologia.html">Metodologia</a>
+  </nav>
+</header>
+<main id="painel">
+  <section>
+    <h2>Calendário de entrevistas exclusivas</h2>
+    <p class="legenda-secao">Cada coluna é uma semana, cada linha um dia da semana, cada quadrado um dia. A cor é o canal. Um quadrado só com contorno é um dia em que a data de emissão não foi declarada pelo canal: ficou a data de publicação, normalmente um dia depois.</p>
+  </section>
+  <div id="conteudo"><p class="legenda-secao">A carregar os dados.</p></div>
+</main>
+<footer class="rodape">
+  <div><p><a href="dados/emissoes.json" download>Descarregar os dados</a></p></div>
+</footer>
+<script src="logica.js"></script>
+<script src="comum.js"></script>
+<script src="calendario.js"></script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+name: recolha
+
+on:
+  schedule:
+    # 06:20 UTC. Hora sem relacao com o fuso de quem mantem o repositorio.
+    - cron: '20 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Um so escritor em docs/dados de cada vez.
+concurrency:
+  group: recolha
+  cancel-in-progress: false
+
+jobs:
+  recolher:
+    runs-on: ubuntu-latest
+    env:
+      TZ: UTC
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      # A suite corre antes da recolha: uma regressao no criterio nunca
+      # chega a escrever dados. Inclui a verificacao de que a Metodologia
+      # publicada e os textos do site correspondem aos ficheiros fonte.
+      - name: Testes Python
+        run: python -m unittest discover -s tests -t .
+
+      - name: Testes da logica do site
+        run: node --test tests/frontend/*.test.js
+
+      - name: Recolher
+        run: python -m recolha.principal
+
+      - name: Publicar
+        run: |
+          if [ -z "$(git status --porcelain docs/dados)" ]; then
+            echo "sem alteracoes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/dados
+          git commit -m "dados: recolha de $(date -u +%Y-%m-%d)"
+          # O push pode chegar depois de outro commit ter avancado o main.
+          # Sem retentativa, a recolha ficava perdida na maquina da CI.
+          for i in 1 2 3 4 5; do
+            if git push; then
+              exit 0
+            fi
+            echo "push rejeitado, a tentar rebase (tentativa $i/5)"
+            git fetch origin main
+            git rebase origin/main || { git rebase --abort; exit 1; }
+            sleep $((i * 3))
+          done
+          echo "nao foi possivel publicar depois de 5 tentativas" >&2
+          exit 1

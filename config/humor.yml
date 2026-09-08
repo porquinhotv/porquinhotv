@@ -1,0 +1,55 @@
+---
+# Humor do porquinho. Uma funcao dos dias desde a ultima emissao.
+#
+# Este ficheiro e lido pelo site como docs/textos.json, gerado por
+# ferramentas/gerar_textos.py. Ha um teste que falha se divergirem.
+#
+# Regra: cada frase tem no maximo um numero, {dias}, que vem dos dados.
+# As frases falam do porquinho e do tempo. Nunca da pessoa.
+#
+# `ate_dias` e o limite superior inclusivo de cada humor; o ultimo tem
+# `ate_dias: null` e apanha o resto.
+
+cabecalho:
+  hoje: Hoje houve entrevista exclusiva.
+  um_dia: Há 1 dia sem entrevista exclusiva.
+  varios_dias: Há {dias} dias sem entrevista exclusiva.
+  sem_dados: Ainda não há entrevistas registadas.
+estado: O porquinho está {humor}.
+
+humores:
+  - id: euforico
+    ate_dias: 1
+    rotulo: eufórico
+    frases:
+      - Entrevista fresquinha. O porquinho rebola na lama e não se aguenta.
+      - Ainda ontem. O porquinho já viu a repetição três vezes.
+      - Dia de festa no chiqueiro. As moscas puseram gravata.
+  - id: contente
+    ate_dias: 3
+    rotulo: contente
+    frases:
+      - '{dias} dias. Ainda se ouve o eco na sala.'
+      - '{dias} dias sem entrevista. O porquinho espreita a grelha com esperança.'
+      - '{dias} dias. O porquinho guardou o telecomando debaixo da palha, por precaução.'
+  - id: triste
+    ate_dias: 6
+    rotulo: triste
+    frases:
+      - '{dias} dias. O porquinho olha para o telecomando e suspira.'
+      - '{dias} dias de silêncio. As moscas já andam devagar.'
+      - '{dias} dias. O porquinho pergunta às moscas se a televisão ainda funciona.'
+  - id: deprimido
+    ate_dias: 13
+    rotulo: deprimido
+    frases:
+      - '{dias} dias. Já se fala numa intervenção.'
+      - '{dias} dias sem uma única entrevista exclusiva. Chove no chiqueiro.'
+      - '{dias} dias. O porquinho deitou-se na lama e recusa-se a rebolar.'
+  - id: hibernacao
+    ate_dias: null
+    rotulo: em hibernação
+    frases:
+      - '{dias} dias. O porquinho pergunta se a televisão foi desligada.'
+      - '{dias} dias. Foi deitar-se. Acordem-no quando houver novidades.'
+      - '{dias} dias. As moscas mudaram de chiqueiro. O porquinho não deu por nada.'

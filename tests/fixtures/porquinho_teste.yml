@@ -1,0 +1,25 @@
+versao: 1
+tema:
+  id: entrevistas
+  nome: Entrevistas exclusivas
+  pergunta: Quantas?
+  desde: '2019-05-16'
+  desde_rotulo: desde o inicio
+  duracao_minima_s: 600
+sujeito:
+  id: ventura
+  nome: André Ventura
+  detetar: [Ventura, André Ventura]
+canais:
+  - {id: rtp1, nome: RTP1}
+  - {id: rtp2, nome: RTP2}
+  - {id: sic, nome: SIC}
+  - {id: tvi, nome: TVI}
+  - {id: sic-noticias, nome: SIC Notícias}
+  - {id: rtp3, nome: RTP3}
+  - {id: cnn-portugal, nome: CNN Portugal}
+  - {id: now, nome: NOW}
+  - {id: cmtv, nome: CMTV}
+exclusoes:
+  debate: [debate, frente a frente]
+  declaracao: [reage, declarações]

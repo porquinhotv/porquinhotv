@@ -1,0 +1,105 @@
+---
+# De onde vem a informacao. As fontes correm por esta ordem.
+#
+# Tipos:
+#   manual        registo verificado a mao, com prova (URL) em cada linha.
+#                 Ha duas: o registo do canal (config/entrevistas.yml),
+#                 que e a fonte principal, e o clipping de imprensa
+#                 (config/clipping.yml), que e o ultimo recurso e corre
+#                 depois. Quando as duas cobrem a mesma emissao, fica a
+#                 do canal.
+#   podcast_rss   feed RSS de podcast: da duracao e data. Entra sozinho se
+#                 o criterio deixar. Usar `segmentos` quando o feed mistura
+#                 programas; `formato` diferente de "entrevista" exclui.
+#   youtube_feed  feed Atom publico de um canal de YouTube, sem conta nem
+#                 chave. Nao da duracao: os itens em que o nome aparece vao
+#                 para a quarentena como `por_confirmar`, para passar a
+#                 mao ao registo curado. E um detetor, nao um medidor.
+#
+# Antes de ativar uma fonte nova: --dry-run, ler a quarentena, contar os
+# motivos, ler dez titulos aceites a mao contra o criterio. Depois ativar.
+
+fontes:
+  - id: registo-curado
+    tipo: manual
+    ativa: true
+    ficheiro: config/entrevistas.yml
+    origem: canal
+    confianca: alta
+    # Verificado a mao, com prova: pode registar uma emissao cuja duracao
+    # nao foi possivel apurar. O evento conta, o tempo nao.
+    duracao_opcional: true
+
+  # Clipping de imprensa escrita. Ultimo recurso, para as emissoes que o
+  # canal nunca publicou ou ja retirou. Uma peca que diga que no dia X
+  # houve entrevista exclusiva no canal Y e prova do evento; raramente
+  # traz duracao. Corre depois do registo do canal de proposito.
+  - id: clipping-imprensa
+    tipo: manual
+    ativa: true
+    ficheiro: config/clipping.yml
+    origem: imprensa
+    confianca: media
+    duracao_opcional: true
+
+  # ------------------------------------------------------------------
+  # Detetores YouTube (feed Atom, ultimos 15 videos, sem chave).
+  # Preencher channel_id (comeca por UC) depois do levantamento e passar
+  # ativa para true. Com channel_id vazio a fonte devolve zero itens.
+  # ------------------------------------------------------------------
+  - id: yt-rtp
+    tipo: youtube_feed
+    ativa: false
+    channel_id: ''
+    canal: rtp1
+    confianca: baixa
+  - id: yt-sic-noticias
+    tipo: youtube_feed
+    ativa: false
+    channel_id: ''
+    canal: sic-noticias
+    confianca: baixa
+  - id: yt-cnn-portugal
+    tipo: youtube_feed
+    ativa: false
+    channel_id: ''
+    canal: cnn-portugal
+    confianca: baixa
+  - id: yt-tvi
+    tipo: youtube_feed
+    ativa: false
+    channel_id: ''
+    canal: tvi
+    confianca: baixa
+  - id: yt-cmtv
+    tipo: youtube_feed
+    ativa: false
+    channel_id: ''
+    canal: cmtv
+    confianca: baixa
+  - id: yt-now
+    tipo: youtube_feed
+    ativa: false
+    channel_id: ''
+    canal: now
+    confianca: baixa
+
+  # ------------------------------------------------------------------
+  # Exemplo de feed de podcast com varios programas. Copiar e adaptar
+  # depois de verificar o feed concreto com ferramentas/descobrir.py.
+  # ------------------------------------------------------------------
+  # - id: podcast-exemplo
+  #   tipo: podcast_rss
+  #   ativa: false
+  #   url: https://exemplo.pt/feed.rss
+  #   canal: sic-noticias
+  #   programa: Nome do Programa
+  #   formato: entrevista
+  #   confianca: alta
+  #   segmentos:
+  #     - se_titulo_tem: ['Nome do Debate']
+  #       programa: Nome do Debate
+  #       formato: debate
+  #     - se_titulo_tem: []          # catch-all
+  #       programa: Nome do Programa
+  #       formato: entrevista

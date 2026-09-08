@@ -1,0 +1,149 @@
+"""Gera docs/metodologia.html a partir de METODOLOGIA.md.
+
+    python -m ferramentas.gerar_metodologia            escreve
+    python -m ferramentas.gerar_metodologia --check    so verifica
+
+Converte apenas o subconjunto de Markdown usado nesse documento: titulos,
+paragrafos, listas, tabelas, blocos de codigo, negrito e codigo inline.
+Nao e um conversor geral e nao deve passar a ser.
+
+O que este gerador NAO garante: que o Markdown diz a verdade sobre o
+site. Isso e trabalho de quem muda o comportamento do site.
+"""
+
+from __future__ import annotations
+
+import html
+import re
+import sys
+from pathlib import Path
+
+RAIZ = Path(__file__).resolve().parents[1]
+ORIGEM = RAIZ / "METODOLOGIA.md"
+ALVO = RAIZ / "docs" / "metodologia.html"
+
+CABECA = """<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Metodologia, Porquinho TV</title>
+<meta name="robots" content="index, follow">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body class="pagina-texto">
+<header class="topo">
+  <a class="voltar" href="index.html">Porquinho TV</a>
+  <h1>Metodologia</h1>
+</header>
+<main class="texto">
+"""
+
+CAUDA = """</main>
+</body>
+</html>
+"""
+
+
+def em_linha(texto: str) -> str:
+    partes = re.split(r"(`[^`]+`)", texto)
+    saida = []
+    for parte in partes:
+        if parte.startswith("`") and parte.endswith("`") and len(parte) > 1:
+            saida.append(f"<code>{html.escape(parte[1:-1])}</code>")
+            continue
+        escapado = html.escape(parte)
+        escapado = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", escapado)
+        saida.append(escapado)
+    return "".join(saida)
+
+
+def converter(markdown: str) -> str:
+    linhas = markdown.splitlines()
+    saida: list[str] = []
+    i = 0
+    lista_aberta = ""
+
+    def fechar_lista() -> None:
+        nonlocal lista_aberta
+        if lista_aberta:
+            saida.append(f"</{lista_aberta}>")
+            lista_aberta = ""
+
+    while i < len(linhas):
+        linha = linhas[i].strip()
+        if not linha:
+            fechar_lista()
+            i += 1
+            continue
+        if linha.startswith("```"):
+            fechar_lista()
+            i += 1
+            bloco = []
+            while i < len(linhas) and not linhas[i].strip().startswith("```"):
+                bloco.append(html.escape(linhas[i]))
+                i += 1
+            i += 1
+            saida.append("<pre>\n" + "\n".join(bloco) + "\n</pre>")
+            continue
+        if linha.startswith("|"):
+            fechar_lista()
+            filas = []
+            while i < len(linhas) and linhas[i].strip().startswith("|"):
+                filas.append([c.strip() for c in linhas[i].strip().strip("|").split("|")])
+                i += 1
+            cabeca, corpo = filas[0], filas[2:]
+            saida.append("<table><thead><tr>" + "".join(f"<th>{em_linha(c)}</th>" for c in cabeca) + "</tr></thead><tbody>")
+            for fila in corpo:
+                saida.append("<tr>" + "".join(f"<td>{em_linha(c)}</td>" for c in fila) + "</tr>")
+            saida.append("</tbody></table>")
+            continue
+        titulo = re.match(r"^(#{1,3})\s+(.*)$", linha)
+        if titulo:
+            fechar_lista()
+            nivel = len(titulo.group(1))
+            if nivel > 1:
+                saida.append(f"<h{nivel}>{em_linha(titulo.group(2))}</h{nivel}>")
+            i += 1
+            continue
+        item = re.match(r"^(\d+\.|-)\s+(.*)$", linha)
+        if item:
+            etiqueta = "ul" if item.group(1) == "-" else "ol"
+            if lista_aberta != etiqueta:
+                fechar_lista()
+                saida.append(f"<{etiqueta}>")
+                lista_aberta = etiqueta
+            saida.append(f"<li>{em_linha(item.group(2))}</li>")
+            i += 1
+            continue
+        fechar_lista()
+        saida.append(f"<p>{em_linha(linha)}</p>")
+        i += 1
+    fechar_lista()
+    return CABECA + "\n".join(saida) + "\n" + CAUDA
+
+
+def construir() -> str:
+    return converter(ORIGEM.read_text(encoding="utf-8"))
+
+
+def main(argv: list[str]) -> int:
+    gerado = construir()
+    if "--check" in argv:
+        atual = ALVO.read_text(encoding="utf-8") if ALVO.exists() else ""
+        if atual != gerado:
+            print("docs/metodologia.html desatualizado. Correr: python -m ferramentas.gerar_metodologia", file=sys.stderr)
+            return 1
+        print("docs/metodologia.html em dia")
+        return 0
+    # newline="\n" nao e opcional: sem ele, o Python traduz \n para \r\n
+    # em Windows e o ficheiro publicado fica em CRLF. Ha um teste que o
+    # apanha, e o site nao deve depender do sistema de quem o gerou.
+    ALVO.write_text(gerado, encoding="utf-8", newline="\n")
+    print(f"escrito {ALVO.relative_to(RAIZ)}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv[1:]))

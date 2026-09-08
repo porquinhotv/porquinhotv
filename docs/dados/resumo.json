@@ -1,0 +1,109 @@
+{
+ "canal_por_dia": [],
+ "esquema": 1,
+ "fontes": [],
+ "gerado_em": "2026-09-08T08:16:49+00:00",
+ "por_ano": [],
+ "por_canal": [
+  {
+   "canal": "rtp1",
+   "emissoes": 0,
+   "entrevistas_distintas": 0,
+   "nome": "RTP1",
+   "sem_duracao": 0,
+   "tempo_s": 0
+  },
+  {
+   "canal": "rtp2",
+   "emissoes": 0,
+   "entrevistas_distintas": 0,
+   "nome": "RTP2",
+   "sem_duracao": 0,
+   "tempo_s": 0
+  },
+  {
+   "canal": "sic",
+   "emissoes": 0,
+   "entrevistas_distintas": 0,
+   "nome": "SIC",
+   "sem_duracao": 0,
+   "tempo_s": 0
+  },
+  {
+   "canal": "tvi",
+   "emissoes": 0,
+   "entrevistas_distintas": 0,
+   "nome": "TVI",
+   "sem_duracao": 0,
+   "tempo_s": 0
+  },
+  {
+   "canal": "sic-noticias",
+   "emissoes": 0,
+   "entrevistas_distintas": 0,
+   "nome": "SIC Notícias",
+   "sem_duracao": 0,
+   "tempo_s": 0
+  },
+  {
+   "canal": "rtp3",
+   "emissoes": 0,
+   "entrevistas_distintas": 0,
+   "nome": "RTP3",
+   "sem_duracao": 0,
+   "tempo_s": 0
+  },
+  {
+   "canal": "cnn-portugal",
+   "emissoes": 0,
+   "entrevistas_distintas": 0,
+   "nome": "CNN Portugal",
+   "sem_duracao": 0,
+   "tempo_s": 0
+  },
+  {
+   "canal": "now",
+   "emissoes": 0,
+   "entrevistas_distintas": 0,
+   "nome": "NOW",
+   "sem_duracao": 0,
+   "tempo_s": 0
+  },
+  {
+   "canal": "cmtv",
+   "emissoes": 0,
+   "entrevistas_distintas": 0,
+   "nome": "CMTV",
+   "sem_duracao": 0,
+   "tempo_s": 0
+  }
+ ],
+ "por_dia": [],
+ "por_mes": [],
+ "por_origem": {},
+ "por_semana": [],
+ "primeiro_registo": null,
+ "recordes": {
+  "maior_jejum": null,
+  "maior_maratona": null,
+  "ultima_data": null
+ },
+ "sujeito": {
+  "id": "ventura",
+  "nome": "André Ventura"
+ },
+ "tema": {
+  "desde": "2019-05-16",
+  "desde_rotulo": "desde a fundação do partido",
+  "id": "entrevistas",
+  "nome": "Entrevistas exclusivas",
+  "pergunta": "Quantas entrevistas exclusivas deu André Ventura na televisão portuguesa, e quanto tempo ocuparam?"
+ },
+ "totais": {
+  "emissoes": 0,
+  "entrevistas_distintas": 0,
+  "sem_duracao": 0,
+  "tempo_s": 0
+ },
+ "ultimo_registo": null
+}

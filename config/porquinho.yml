@@ -1,0 +1,69 @@
+---
+# Configuracao editorial do Porquinho TV.
+#
+# Tudo o que decide o que conta esta neste ficheiro e em fontes.yml.
+# Nenhum modulo Python conhece nomes de canais, programas ou pessoas.
+#
+# Critério de inclusao (a Metodologia diz o mesmo por palavras):
+#   conta como emissao uma entrevista exclusiva, ou seja, um segmento em
+#   que o sujeito e o unico entrevistado, com pelo menos um entrevistador
+#   do canal em formato de pergunta e resposta, emitido num dos canais
+#   abaixo. Programas de entretenimento com entrevista a solo contam.
+#   Debates, painéis, declaracoes a imprensa e diretos de eventos nao
+#   contam.
+#
+#   Nao ha duracao minima: o que separa entrevista de declaracao e o
+#   formato, nao o relogio. A duracao procura-se sempre; quando nao foi
+#   possivel apurar, a emissao conta como evento e nao conta no tempo,
+#   e o site diz isso por palavras.
+#
+# Unidade: a emissao. A mesma entrevista emitida em dois canais sao duas
+# emissoes (mostra presenca por canal). O campo `mesma_entrevista` no
+# registo curado agrupa-as, e o site tambem mostra entrevistas distintas.
+
+versao: 1
+
+tema:
+  id: entrevistas
+  nome: Entrevistas exclusivas
+  pergunta: Quantas entrevistas exclusivas deu André Ventura na televisão portuguesa, e quanto tempo ocuparam?
+  # Data da publicacao em Diario da Republica da inscricao do partido
+  # (2.a serie, n.o 94, 16 de maio de 2019). Nada anterior entra.
+  desde: '2019-05-16'
+  desde_rotulo: desde a fundação do partido
+
+sujeito:
+  id: ventura
+  nome: André Ventura
+  # Deteccao por palavra inteira, sem acentos, nas fontes automaticas.
+  detetar: [Ventura, André Ventura, Andre Ventura]
+
+# Os nove canais medidos. O id e o que aparece nos dados; o nome e o que
+# aparece no site. A cor de cada canal vive no CSS, com o mesmo id.
+canais:
+  - id: rtp1
+    nome: RTP1
+  - id: rtp2
+    nome: RTP2
+  - id: sic
+    nome: SIC
+  - id: tvi
+    nome: TVI
+  - id: sic-noticias
+    nome: SIC Notícias
+  - id: rtp3
+    nome: RTP3
+  - id: cnn-portugal
+    nome: CNN Portugal
+  - id: now
+    nome: NOW
+  - id: cmtv
+    nome: CMTV
+
+# Termos que, no TITULO de um item, o retiram do formato elegivel. Cada
+# rejeicao fica na quarentena com o motivo. Afinar com a quarentena a
+# vista, nunca as cegas.
+exclusoes:
+  debate: [debate, frente a frente, frente-a-frente, painel]
+  declaracao: [declarações, declaracoes, reage, reação, reacao, à saída, a saida]
+  direto: [em direto, comício, comicio, conferência de imprensa, conferencia de imprensa, discurso]

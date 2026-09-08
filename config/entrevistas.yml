@@ -1,0 +1,31 @@
+---
+# Registo curado de emissoes. A fonte principal do Porquinho TV.
+#
+# Cada linha e uma entrevista exclusiva emitida num canal, verificada por
+# uma pessoa, com o URL onde qualquer outra pessoa a pode ver. Sem prova
+# nao entra. A duracao e a que a pagina declara, em segundos, nunca uma
+# estimativa.
+#
+# Campos:
+#   data             data de emissao (AAAA-MM-DD)            obrigatorio
+#   canal            id de config/porquinho.yml              obrigatorio
+#   programa         nome do programa ou noticiario           obrigatorio
+#   duracao_s        segundos declarados na pagina             obrigatorio
+#   prova            URL do video ou da pagina do canal        obrigatorio
+#   titulo           como o canal lhe chamou                   opcional
+#   parcial          true se so existem recortes online        opcional
+#   publicado_em     data de publicacao, se diferente          opcional
+#   mesma_entrevista chave livre; agrupa simulcast/repeticoes  opcional
+#
+# Exemplo (apagar quando houver linhas reais):
+#
+#   - data: 2026-09-04
+#     canal: sic-noticias
+#     programa: Jornal da Noite
+#     duracao_s: 1740
+#     prova: https://sicnoticias.pt/.../entrevista-a-...
+#     titulo: Entrevista a André Ventura
+#     parcial: false
+#     mesma_entrevista: 2026-09-04-jornal-da-noite
+
+entrevistas: []

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>Programa de Exemplo</title>
+<item>
+  <guid>ep-100</guid>
+  <title>Grande Conversa com André Ventura</title>
+  <link>https://exemplo.pt/ep/100</link>
+  <pubDate>Fri, 05 Sep 2025 09:00:00 +0000</pubDate>
+  <itunes:duration>00:48:20</itunes:duration>
+  <description><![CDATA[<p>Entrevista emitida a 4 de setembro. Uma hora de conversa.</p>]]></description>
+</item>
+<item>
+  <guid>ep-101</guid>
+  <title>Debate: André Ventura frente a Fulano de Tal</title>
+  <link>https://exemplo.pt/ep/101</link>
+  <pubDate>Sat, 06 Sep 2025 09:00:00 +0000</pubDate>
+  <itunes:duration>3600</itunes:duration>
+  <description>Dois convidados, um moderador.</description>
+</item>
+<item>
+  <guid>ep-102</guid>
+  <title>Conversa com Beltrano</title>
+  <link>https://exemplo.pt/ep/102</link>
+  <pubDate>Sun, 07 Sep 2025 09:00:00 +0000</pubDate>
+  <itunes:duration>40:00</itunes:duration>
+  <description>Sem o nome do sujeito em lado nenhum.</description>
+</item>
+<item>
+  <guid>ep-103</guid>
+  <title>André Ventura reage à polémica</title>
+  <link>https://exemplo.pt/ep/103</link>
+  <pubDate>Mon, 08 Sep 2025 09:00:00 +0000</pubDate>
+  <itunes:duration>04:10</itunes:duration>
+  <description>Declaracoes curtas.</description>
+</item>
+<item>
+  <guid>ep-104</guid>
+  <title>Entrevista a André Ventura</title>
+  <link>https://exemplo.pt/ep/104</link>
+  <pubDate>Tue, 07 May 2019 09:00:00 +0000</pubDate>
+  <itunes:duration>1500</itunes:duration>
+  <description>Antes do inicio do tema.</description>
+</item>
+<item>
+  <guid>ep-105</guid>
+  <title>Conversa com André Ventura (parte 1)</title>
+  <link>https://exemplo.pt/ep/105</link>
+  <pubDate>Fri, 05 Sep 2025 10:00:00 +0000</pubDate>
+  <itunes:duration>00:12:00</itunes:duration>
+  <description>Entrevista emitida a 4 de setembro. Recorte.</description>
+</item>
+<item>
+  <guid>ep-sem-duracao</guid>
+  <title>Entrevista a André Ventura sem duracao</title>
+  <link>https://exemplo.pt/ep/106</link>
+  <pubDate>Wed, 10 Sep 2025 09:00:00 +0000</pubDate>
+  <description>Item sem itunes:duration; nem chega a candidato.</description>
+</item>
+</channel>
+</rss>

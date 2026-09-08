@@ -1,0 +1,31 @@
+fontes:
+  - id: registo-curado
+    tipo: manual
+    ficheiro: tests/fixtures/entrevistas_exemplo.yml
+    origem: canal
+    confianca: alta
+    duracao_opcional: true
+  - id: clipping-imprensa
+    tipo: manual
+    ficheiro: tests/fixtures/clipping_exemplo.yml
+    origem: imprensa
+    confianca: media
+    duracao_opcional: true
+  - id: podcast-exemplo
+    tipo: podcast_rss
+    url: https://exemplo.pt/feed.rss
+    canal: sic-noticias
+    programa: Programa de Exemplo
+    confianca: alta
+    segmentos:
+      - se_titulo_tem: ['Debate']
+        programa: Debate de Exemplo
+        formato: debate
+      - se_titulo_tem: []
+        programa: Grande Conversa
+        formato: entrevista
+  - id: yt-exemplo
+    tipo: youtube_feed
+    channel_id: UCexemploexemploexemplo00
+    canal: rtp1
+    confianca: baixa

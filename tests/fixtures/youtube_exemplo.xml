@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns:yt="http://www.youtube.com/xml/schemas/2015" xmlns:media="http://search.yahoo.com/mrss/" xmlns="http://www.w3.org/2005/Atom">
+<title>Canal de Exemplo</title>
+<entry>
+  <yt:videoId>abc123DEF45</yt:videoId>
+  <title>Entrevista a André Ventura na íntegra</title>
+  <published>2025-09-06T22:10:00+00:00</published>
+  <media:group><media:description>Emitida a 6 de setembro.</media:description></media:group>
+</entry>
+<entry>
+  <yt:videoId>zzz999YYY88</yt:videoId>
+  <title>Reportagem sobre o tempo</title>
+  <published>2025-09-06T20:00:00+00:00</published>
+  <media:group><media:description>Nada a ver.</media:description></media:group>
+</entry>
+</feed>

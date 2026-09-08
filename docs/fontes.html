@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fontes, Porquinho TV</title>
+<meta name="robots" content="index, follow">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<header class="topo">
+  <a class="marca" href="index.html" aria-label="Porquinho TV, início">
+    <img src="favicon.svg" alt="" width="44" height="44">
+    <h1>Porquinho TV</h1>
+  </a>
+  <nav class="menu" aria-label="Páginas">
+    <a href="index.html">Hoje</a>
+    <a href="calendario.html">Calendário</a>
+    <a href="fontes.html" aria-current="page">Fontes</a>
+    <a href="metodologia.html">Metodologia</a>
+  </nav>
+</header>
+<main id="painel">
+  <section>
+    <h2>Uma fonte por entrevista</h2>
+    <p class="legenda-secao">Cada linha do site tem uma ligação para onde a entrevista pode ser vista e a duração confirmada. É esta página que responde a "onde é que isso está?". O que ficou de fora, e porquê, está em <a href="dados/quarentena.json" download>quarentena.json</a>.</p>
+  </section>
+  <div id="conteudo"><p class="legenda-secao">A carregar os dados.</p></div>
+</main>
+<footer class="rodape">
+  <div><p><a href="dados/emissoes.json" download>Descarregar os dados completos</a></p></div>
+</footer>
+<script src="logica.js"></script>
+<script src="comum.js"></script>
+<script src="fontes.js"></script>
+</body>
+</html>

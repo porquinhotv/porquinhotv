@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Porquinho TV</title>
+<meta name="description" content="Quantas entrevistas exclusivas deu André Ventura na televisão portuguesa, e quanto tempo ocuparam. Contagem pública, verificável, com prova em cada linha.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+<header class="topo">
+  <a class="marca" href="index.html" aria-label="Porquinho TV, início">
+    <img src="favicon.svg" alt="" width="44" height="44">
+    <h1>Porquinho TV</h1>
+  </a>
+  <nav class="menu" aria-label="Páginas">
+    <a href="index.html" aria-current="page">Hoje</a>
+    <a href="calendario.html">Calendário</a>
+    <a href="fontes.html">Fontes</a>
+    <a href="metodologia.html">Metodologia</a>
+  </nav>
+</header>
+
+<section class="palco" aria-label="Estado do porquinho">
+  <div class="chiqueiro">
+    <svg class="porco" id="porco" data-mood="sem-dados" viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" role="img" tabindex="0" aria-labelledby="porco-titulo">
+      <title id="porco-titulo">Porquinho, mascote do site. O humor muda com os dias sem entrevista.</title>
+      <circle cx="272" cy="42" r="22" fill="#FFD866"/>
+      <g class="nuvem">
+        <ellipse cx="160" cy="40" rx="42" ry="16" fill="#B8C3CC"/>
+        <circle cx="140" cy="34" r="16" fill="#B8C3CC"/>
+        <circle cx="168" cy="28" r="20" fill="#B8C3CC"/>
+        <g fill="#7FA9C7">
+          <rect class="gota" x="140" y="56" width="4" height="9" rx="2"/>
+          <rect class="gota" x="160" y="56" width="4" height="9" rx="2"/>
+          <rect class="gota" x="180" y="56" width="4" height="9" rx="2"/>
+        </g>
+      </g>
+      <g class="zzz" fill="#2B2118" font-weight="700">
+        <text x="214" y="70" font-size="18">z</text>
+        <text x="228" y="56" font-size="24">z</text>
+        <text x="248" y="40" font-size="30">z</text>
+      </g>
+      <ellipse cx="160" cy="206" rx="118" ry="16" fill="#6B4A2B" opacity="0.85"/>
+      <ellipse cx="120" cy="204" rx="30" ry="6" fill="#9C6B3F" opacity="0.6"/>
+      <g fill="#6B4A2B">
+        <path d="M34 198 c-6 -10 2 -16 8 -12 c-2 -8 8 -12 10 -4 c6 -4 12 4 6 10 c4 4 0 10 -6 8 c-6 6 -18 6 -18 -2 z"/>
+        <path d="M262 196 c-5 -8 2 -13 7 -10 c-2 -6 7 -10 8 -3 c5 -3 10 3 5 8 c3 3 0 8 -5 6 c-5 5 -15 5 -15 -1 z"/>
+      </g>
+      <g class="corpo-todo">
+        <path class="rabo" d="M232 128 c10 -10 22 -4 16 6 c-4 6 -12 4 -10 -2" fill="none" stroke="#E38AA3" stroke-width="5" stroke-linecap="round"/>
+        <g fill="#E38AA3">
+          <rect x="112" y="166" width="20" height="30" rx="8"/>
+          <rect x="146" y="170" width="20" height="28" rx="8"/>
+          <rect x="182" y="170" width="20" height="28" rx="8"/>
+          <rect x="212" y="166" width="20" height="30" rx="8"/>
+        </g>
+        <g fill="#6B4A2B">
+          <rect x="112" y="186" width="20" height="10" rx="4"/>
+          <rect x="146" y="188" width="20" height="10" rx="4"/>
+          <rect x="182" y="188" width="20" height="10" rx="4"/>
+          <rect x="212" y="186" width="20" height="10" rx="4"/>
+        </g>
+        <ellipse cx="172" cy="130" rx="74" ry="52" fill="#F4A7B9"/>
+        <g fill="#6B4A2B">
+          <path d="M196 158 c8 -12 22 -8 20 4 c8 2 6 12 -4 10 c-4 8 -18 6 -16 -2 c-8 0 -8 -10 0 -12 z"/>
+          <ellipse cx="220" cy="118" rx="10" ry="7"/>
+          <circle cx="204" cy="100" r="4"/>
+          <circle cx="232" cy="140" r="3.5"/>
+          <path d="M150 168 c6 -8 16 -6 14 2 c6 2 4 10 -4 8 c-4 4 -12 2 -10 -4 z"/>
+        </g>
+        <path class="orelha-esq" d="M92 92 c-14 -26 -2 -46 18 -40 c6 10 4 26 -4 36 z" fill="#E38AA3"/>
+        <path class="orelha-dir" d="M150 84 c8 -24 26 -32 38 -22 c-2 12 -12 24 -24 30 z" fill="#E38AA3"/>
+        <circle cx="118" cy="118" r="46" fill="#F4A7B9"/>
+        <ellipse cx="102" cy="110" rx="7" ry="5" fill="#6B4A2B"/>
+        <g class="olho-aberto">
+          <circle cx="104" cy="106" r="5.5" fill="#2B2118"/>
+          <circle cx="132" cy="104" r="5.5" fill="#2B2118"/>
+          <circle cx="106" cy="104" r="1.8" fill="#FFFFFF"/>
+          <circle cx="134" cy="102" r="1.8" fill="#FFFFFF"/>
+        </g>
+        <g class="olho-fechado" stroke="#2B2118" stroke-width="3" stroke-linecap="round" fill="none">
+          <path d="M98 108 q6 4 12 0"/>
+          <path d="M126 106 q6 4 12 0"/>
+        </g>
+        <path class="lagrima" d="M132 112 c0 6 -4 8 -4 12 c0 3 8 3 8 0 c0 -4 -4 -6 -4 -12 z" fill="#7FA9C7"/>
+        <ellipse cx="118" cy="132" rx="18" ry="13" fill="#F9C4D0" stroke="#E38AA3" stroke-width="2"/>
+        <ellipse cx="111" cy="132" rx="3.2" ry="4.2" fill="#E38AA3"/>
+        <ellipse cx="125" cy="132" rx="3.2" ry="4.2" fill="#E38AA3"/>
+        <ellipse cx="128" cy="142" rx="6" ry="3.5" fill="#6B4A2B"/>
+        <path class="boca-grande" d="M96 148 q22 20 44 0" fill="#2B2118"/>
+        <path class="boca-sorriso" d="M100 150 q18 10 36 0" fill="none" stroke="#2B2118" stroke-width="3" stroke-linecap="round"/>
+        <path class="boca-neutra" d="M104 152 h28" fill="none" stroke="#2B2118" stroke-width="3" stroke-linecap="round"/>
+        <path class="boca-triste" d="M102 156 q16 -10 32 0" fill="none" stroke="#2B2118" stroke-width="3" stroke-linecap="round"/>
+      </g>
+      <g id="moscas">
+        <g class="fly-orbit"><g class="fly" transform="translate(160 44)">
+          <ellipse class="asa" cx="-3" cy="-4" rx="4" ry="2.5" fill="#9FD6E8" opacity="0.8"/>
+          <ellipse class="asa" cx="3" cy="-4" rx="4" ry="2.5" fill="#9FD6E8" opacity="0.8"/>
+          <ellipse cx="0" cy="0" rx="4" ry="2.8" fill="#2B2118"/>
+        </g></g>
+        <g class="fly-orbit"><g class="fly" transform="translate(240 118)">
+          <ellipse class="asa" cx="-3" cy="-4" rx="4" ry="2.5" fill="#9FD6E8" opacity="0.8"/>
+          <ellipse class="asa" cx="3" cy="-4" rx="4" ry="2.5" fill="#9FD6E8" opacity="0.8"/>
+          <ellipse cx="0" cy="0" rx="4" ry="2.8" fill="#2B2118"/>
+        </g></g>
+        <g class="fly-orbit"><g class="fly" transform="translate(96 60)">
+          <ellipse class="asa" cx="-3" cy="-4" rx="4" ry="2.5" fill="#9FD6E8" opacity="0.8"/>
+          <ellipse class="asa" cx="3" cy="-4" rx="4" ry="2.5" fill="#9FD6E8" opacity="0.8"/>
+          <ellipse cx="0" cy="0" rx="4" ry="2.8" fill="#2B2118"/>
+        </g></g>
+      </g>
+    </svg>
+  </div>
+  <div class="estado" aria-live="polite">
+    <p class="dias" id="dias">A carregar.</p>
+    <p class="frase" id="frase"></p>
+  </div>
+</section>
+
+<main id="painel" aria-live="polite">
+  <p class="legenda-secao">A carregar os dados.</p>
+</main>
+
+<footer class="rodape">
+  <div>
+    <h2>O que isto conta</h2>
+    <p>Entrevistas exclusivas na televisão portuguesa, uma linha por canal e por dia. A duração é a que o canal declara, e quando não foi possível apurá-la o site diz isso em vez de inventar um número. Se não há prova, não há linha.</p>
+    <p>O porquinho é a mascote do site. As frases falam de tempo e de moscas; não falam de ninguém.</p>
+  </div>
+  <div>
+    <h2>Verificar</h2>
+    <p><a href="fontes.html">Todas as fontes, uma por entrevista</a></p>
+    <p><a href="dados/emissoes.json" download>Descarregar os dados</a></p>
+    <p><a href="dados/quarentena.json" download>Ver o que ficou de fora, e porquê</a></p>
+    <p><a href="metodologia.html">Metodologia e limitações</a></p>
+    <p id="gerado"></p>
+  </div>
+</footer>
+
+<script src="logica.js"></script>
+<script src="comum.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
