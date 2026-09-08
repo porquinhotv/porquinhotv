@@ -2,6 +2,7 @@
 
     python -m ferramentas.gnews --saida D:\\porquinho-local
     python -m ferramentas.gnews --saida D:\\porquinho-local --triar
+    python -m ferramentas.gnews --saida D:\\porquinho-local --verificar
     python -m ferramentas.gnews --saida D:\\porquinho-local --resolver
     python -m ferramentas.gnews --saida D:\\porquinho-local --desde 2024-01-01
 
@@ -11,7 +12,8 @@ o inicio do tema, e escreve na pasta de saida:
     bruto/<janela>__<n>.xml   cada resposta tal como veio, para auditoria
     estado.json               o que ja foi pedido, para retomar sem repetir
     candidatos.csv            um item por linha, deduplicado, por data
-    triagem.csv               so o que uma pessoa tem de decidir (--triar)
+    triagem.csv               so o que uma pessoa tem de decidir (--triar),
+                              com o que a pagina do canal diz (--verificar)
     triagem.html              a mesma lista, com as ligacoes clicaveis
 
 Isto e um detetor e nao uma fonte: aponta o dia e o canal de uma
@@ -48,6 +50,7 @@ from pathlib import Path
 
 import yaml
 
+from recolha import extracao
 from recolha.modelos import RAIZ, carregar_config, contem_palavra
 from recolha.rede import CABECALHOS, ErroDeRede, TEMPO_LIMITE, obter_texto
 
@@ -374,7 +377,11 @@ def resolver(config: dict, pasta: Path, so_triados: bool = True, seguir_fn=segui
 
 # --- triagem ---------------------------------------------------------------
 
-COLUNAS_TRIAGEM = ["decisao", "prova_url", "duracao", "programa", "canal", "nota", "grupo", "data", "titulo", "fonte", "formato_no_titulo", "url_google"]
+COLUNAS_TRIAGEM = [
+    "decisao", "prova_url", "duracao", "programa", "canal", "nota",
+    "sujeito_na_pagina", "duracao_na_pagina", "programa_na_pagina", "data_na_pagina", "titulo_na_pagina",
+    "grupo", "data", "titulo", "fonte", "formato_no_titulo", "url_google",
+]
 
 
 def agrupar(config: dict, linhas: list[dict], sujeito) -> list[dict]:
@@ -461,6 +468,120 @@ def triar(config: dict, pasta: Path) -> dict:
     return {"colhidas": len(linhas), "retidas": len(retidas), **contagem}
 
 
+# --- verificacao na pagina do canal ----------------------------------------
+
+
+def duracao_no_texto(config: dict, texto: str) -> int | None:
+    """Duracao declarada no corpo, quando a pagina nao a publica para
+    maquinas. Os padroes vivem em config/gnews.yml, cada um com as suas
+    unidades.
+
+    As unidades sao declaradas e nao deduzidas do numero de grupos. Uma
+    primeira versao multiplicava tudo por sessenta a partir da direita e
+    lia "1h 12min" como 72 segundos: um erro que ninguem veria, porque o
+    numero sai plausivel. Zero nunca e duracao, aqui como em todo o
+    projeto.
+    """
+    fatores = {"h": 3600, "min": 60, "s": 1}
+    for regra in config.get("padroes_duracao") or []:
+        achado = re.search(regra["padrao"], texto, re.IGNORECASE)
+        if not achado:
+            continue
+        unidades = regra["unidades"]
+        grupos = achado.groups()
+        if len(grupos) != len(unidades):
+            continue
+        segundos = sum(int(g) * fatores[u] for g, u in zip(grupos, unidades) if g)
+        if segundos > 0:
+            return segundos
+    return None
+
+
+def programa_do_titulo(config: dict, titulo: str) -> str:
+    """Parte do titulo antes do primeiro separador. Os canais escrevem
+    "Programa - Convidado - ep. N". Os separadores vivem em YAML, como no
+    resto do projeto."""
+    for separador in config.get("separadores_programa") or []:
+        if separador in titulo:
+            return titulo.split(separador)[0].strip()
+    return ""
+
+
+def verificar_pagina(config: dict, html_texto: str, url: str, sujeito) -> dict:
+    """O que a pagina do canal diz, que e o unico sitio onde esta a verdade.
+
+    O indice de noticias da o dia e o titulo da peca; nao diz quem foi o
+    convidado quando o canal titula o episodio pelo nome do programa, e
+    nunca da duracao. Ler a propria pagina responde as duas perguntas com
+    o extrator que ja existe, sem seletores de nenhum site.
+    """
+    dados = extracao.extrair(html_texto, url)
+    texto = f"{dados.get('titulo', '')} {dados.get('descricao', '')} {' '.join(dados.get('etiquetas') or [])}"
+    duracao = dados.get("duracao_s") or duracao_no_texto(config, extracao.texto_visivel(html_texto))
+    return {
+        "sujeito_na_pagina": "sim" if sujeito.aparece_em(texto) else "nao",
+        "duracao_na_pagina": "" if not duracao else str(duracao),
+        "programa_na_pagina": programa_do_titulo(config, dados.get("titulo") or ""),
+        "data_na_pagina": dados.get("publicado_em", "") or "",
+        "titulo_na_pagina": " ".join((dados.get("titulo") or "").split())[:200],
+    }
+
+
+def verificar(config: dict, pasta: Path, sujeito=None, obter=obter_texto, dormir=time.sleep) -> dict:
+    """Visita cada candidato triado e escreve o que a pagina do canal diz.
+
+    Nao decide nada: preenche colunas e, quando a pagina nao nomeia o
+    sujeito, propoe `nao` na decisao com o motivo. A decisao continua a
+    ser de uma pessoa, e uma decisao ja escrita nunca e substituida.
+    """
+    caminho = pasta / "triagem.csv"
+    if not caminho.exists():
+        raise SystemExit("nao ha triagem.csv: correr primeiro com --triar")
+    with caminho.open(encoding="utf-8-sig", newline="") as f:
+        linhas = list(csv.DictReader(f))
+    finais = {l["url_google"]: l.get("url_final", "") for l in ler_csv(pasta).values()}
+    sujeito = sujeito or carregar_config().sujeito
+    pausa = float(config.get("pausa_resolucao_s", 2))
+    resumo = {"visitadas": 0, "com_sujeito": 0, "sem_sujeito": 0, "com_duracao": 0, "sem_pagina": 0}
+
+    for i, linha in enumerate(linhas, 1):
+        if linha.get("sujeito_na_pagina"):
+            continue
+        url = linha.get("prova_url") or finais.get(linha["url_google"]) or resolver_url(linha["url_google"])
+        if not url:
+            linha["nota"] = (linha.get("nota") or "") + " ligacao por resolver"
+            resumo["sem_pagina"] += 1
+            print(f"  {i}/{len(linhas)}  sem ligacao", flush=True)
+            dormir(pausa)
+            continue
+        try:
+            html_texto = obter(url)
+        except ErroDeRede as exc:
+            linha["nota"] = (linha.get("nota") or "") + f" pagina nao respondeu: {exc}"
+            resumo["sem_pagina"] += 1
+            print(f"  {i}/{len(linhas)}  falhou {url[:70]}", flush=True)
+            dormir(pausa)
+            continue
+        linha.update(verificar_pagina(config, html_texto, url, sujeito))
+        linha["prova_url"] = linha.get("prova_url") or url
+        resumo["visitadas"] += 1
+        if linha["sujeito_na_pagina"] == "sim":
+            resumo["com_sujeito"] += 1
+        else:
+            resumo["sem_sujeito"] += 1
+            if not linha.get("decisao"):
+                linha["decisao"] = "nao"
+                linha["nota"] = (linha.get("nota") or "") + " a pagina do canal nao nomeia o sujeito"
+        if linha["duracao_na_pagina"]:
+            resumo["com_duracao"] += 1
+        print(f"  {i}/{len(linhas)}  {linha['sujeito_na_pagina']:4s} {linha['duracao_na_pagina'] or '-':>6s}  {linha['titulo_na_pagina'][:60]}", flush=True)
+        if i % 10 == 0:
+            gravar_triagem(pasta, linhas)
+        dormir(pausa)
+    gravar_triagem(pasta, linhas)
+    return resumo
+
+
 # --- entrada -----------------------------------------------------------------
 
 
@@ -470,13 +591,17 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--desde", help="AAAA-MM-DD; por omissao o inicio do tema")
     parser.add_argument("--ate", help="AAAA-MM-DD; por omissao hoje")
     parser.add_argument("--triar", action="store_true", help="reduzir a colheita a uma lista para decidir")
+    parser.add_argument("--verificar", action="store_true", help="ler a pagina do canal de cada candidato triado")
     parser.add_argument("--resolver", action="store_true", help="seguir as ligacoes dos candidatos triados ate ao destino")
     parser.add_argument("--tudo", action="store_true", help="com --resolver: resolver a colheita inteira, nao so os triados")
     args = parser.parse_args(argv)
 
     config = carregar()
     pasta = pasta_de_saida(args.saida)
-    if args.triar:
+    if args.verificar:
+        print(f"a verificar candidatos de {pasta}", flush=True)
+        resumo = verificar(config, pasta)
+    elif args.triar:
         print(f"a triar {pasta}", flush=True)
         resumo = triar(config, pasta)
     elif args.resolver:

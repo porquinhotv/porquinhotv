@@ -5,6 +5,7 @@ duplicado por duas consultas contado duas vezes, e a pasta de saida a
 cair dentro do repositorio. O resto e leitura de XML.
 """
 
+import csv
 import tempfile
 import unittest
 from datetime import date
@@ -13,6 +14,7 @@ from pathlib import Path
 from tests.apoio import RAIZ, ler
 
 from ferramentas import gnews
+from recolha.rede import ErroDeRede
 
 CONFIG = {
     "base": "https://motor.exemplo/rss/search",
@@ -229,6 +231,119 @@ class TestTriagem(unittest.TestCase):
             resumo = gnews.resolver(CONFIG, pasta, seguir_fn=seguir, dormir=lambda s: None)
             self.assertEqual(sorted(pedidos), ["u1", "u2"])
             self.assertEqual(resumo["resolvidas"], 2)
+
+
+
+class TestDuracaoNoTexto(unittest.TestCase):
+    CONFIG_D = {
+        "padroes_duracao": [
+            {"padrao": r"dura[çc][ãa]o(?:\s+total)?\s*:?\s*(\d{1,2})\s*h(?:oras?)?\s*(\d{1,2})\s*min", "unidades": ["h", "min"]},
+            {"padrao": r"dura[çc][ãa]o(?:\s+total)?\s*:?\s*(\d{1,3})\s*min", "unidades": ["min"]},
+            {"padrao": r"\b(\d{1,2}):([0-5]\d):([0-5]\d)\b", "unidades": ["h", "min", "s"]},
+        ]
+    }
+
+    def test_horas_e_minutos_nao_sao_lidos_como_minutos_e_segundos(self):
+        """A primeira versao dobrava tudo por sessenta a partir da direita
+        e lia uma hora e doze minutos como 72 segundos. O numero sai
+        plausivel, por isso o erro passaria despercebido no site."""
+        self.assertEqual(gnews.duracao_no_texto(self.CONFIG_D, "duração total 1h 12min"), 4320)
+
+    def test_minutos_sozinhos(self):
+        self.assertEqual(gnews.duracao_no_texto(self.CONFIG_D, "Ep. 19 Duração: 51min Género: Informação"), 3060)
+
+    def test_relogio(self):
+        self.assertEqual(gnews.duracao_no_texto(self.CONFIG_D, "vídeo 00:47:42 fim"), 2862)
+
+    def test_zero_nunca_e_duracao(self):
+        self.assertIsNone(gnews.duracao_no_texto(self.CONFIG_D, "Duração: 0min"))
+
+    def test_sem_padrao_fica_por_apurar(self):
+        self.assertIsNone(gnews.duracao_no_texto(self.CONFIG_D, "uma pagina sem duracao nenhuma"))
+
+
+class TestVerificacao(unittest.TestCase):
+    class SujeitoFalso:
+        def aparece_em(self, texto):
+            return "pessoa exemplo" in texto.lower()
+
+    CONFIG_V = {**TestDuracaoNoTexto.CONFIG_D, "separadores_programa": [" - ", " | ", ": "], "pausa_resolucao_s": 0}
+
+    PAGINA_COM = (
+        '<html><head><meta property="og:title" content="Grande Entrevista - Pessoa Exemplo - ep. 41">'
+        '<meta name="description" content="A conversa com Pessoa Exemplo."></head>'
+        "<body>Ep. 41 Duração: 51min</body></html>"
+    )
+    PAGINA_SEM = (
+        '<html><head><meta property="og:title" content="Grande Entrevista - Outra Gente - ep. 12">'
+        '<meta name="description" content="Outro convidado qualquer."></head>'
+        "<body>Duração: 44min</body></html>"
+    )
+
+    def test_pagina_do_canal_diz_quem_foi_o_convidado(self):
+        """O indice titula o episodio pelo nome do programa. Sem ler a
+        pagina, 55 candidatos entravam na lista com o convidado errado."""
+        r = gnews.verificar_pagina(self.CONFIG_V, self.PAGINA_COM, "https://canal.exemplo/e1", self.SujeitoFalso())
+        self.assertEqual(r["sujeito_na_pagina"], "sim")
+        self.assertEqual(r["duracao_na_pagina"], "3060")
+        self.assertEqual(r["programa_na_pagina"], "Grande Entrevista")
+
+    def test_episodio_de_outro_convidado_e_reprovado(self):
+        r = gnews.verificar_pagina(self.CONFIG_V, self.PAGINA_SEM, "https://canal.exemplo/e2", self.SujeitoFalso())
+        self.assertEqual(r["sujeito_na_pagina"], "nao")
+
+    def _pasta_com_triagem(self, tmp):
+        pasta = Path(tmp)
+        linhas = [
+            {"data": "2026-06-24", "titulo": "Grande Entrevista Episódio 19", "fonte": "Canal Exemplo",
+             "canal_por_fonte": "canal-generalista", "canal_no_titulo": "", "formato_no_titulo": "entrevista",
+             "url_google": "u1", "url_final": "https://canal.exemplo/e1"},
+            {"data": "2026-04-08", "titulo": "Grande Entrevista Episódio 12", "fonte": "Canal Exemplo",
+             "canal_por_fonte": "canal-generalista", "canal_no_titulo": "", "formato_no_titulo": "entrevista",
+             "url_google": "u2", "url_final": "https://canal.exemplo/e2"},
+        ]
+        gnews.gravar_csv(pasta, {l["url_google"]: l for l in linhas})
+        gnews.gravar_triagem(pasta, gnews.agrupar(self.CONFIG_V, linhas, self.SujeitoFalso()))
+        return pasta
+
+    def test_reprovacao_automatica_com_o_motivo_escrito(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            pasta = self._pasta_com_triagem(tmp)
+            paginas = {"https://canal.exemplo/e1": self.PAGINA_COM, "https://canal.exemplo/e2": self.PAGINA_SEM}
+            resumo = gnews.verificar(self.CONFIG_V, pasta, sujeito=self.SujeitoFalso(), obter=lambda u: paginas[u], dormir=lambda s: None)
+            self.assertEqual((resumo["com_sujeito"], resumo["sem_sujeito"]), (1, 1))
+            linhas = {l["url_google"]: l for l in csv.DictReader((pasta / "triagem.csv").open(encoding="utf-8-sig"))}
+            self.assertEqual(linhas["u2"]["decisao"], "nao")
+            self.assertIn("nao nomeia o sujeito", linhas["u2"]["nota"])
+            self.assertEqual(linhas["u1"]["decisao"], "")
+            self.assertEqual(linhas["u1"]["prova_url"], "https://canal.exemplo/e1")
+
+    def test_decisao_ja_escrita_nunca_e_substituida(self):
+        """A verificacao e um auxilio, nao um juiz. Apagar uma decisao de
+        uma pessoa perderia trabalho que nao se repete."""
+        with tempfile.TemporaryDirectory() as tmp:
+            pasta = self._pasta_com_triagem(tmp)
+            linhas = list(csv.DictReader((pasta / "triagem.csv").open(encoding="utf-8-sig")))
+            for l in linhas:
+                l["decisao"] = "sim"
+            gnews.gravar_triagem(pasta, linhas)
+            paginas = {"https://canal.exemplo/e1": self.PAGINA_COM, "https://canal.exemplo/e2": self.PAGINA_SEM}
+            gnews.verificar(self.CONFIG_V, pasta, sujeito=self.SujeitoFalso(), obter=lambda u: paginas[u], dormir=lambda s: None)
+            depois = {l["url_google"]: l for l in csv.DictReader((pasta / "triagem.csv").open(encoding="utf-8-sig"))}
+            self.assertEqual(depois["u2"]["decisao"], "sim")
+
+    def test_pagina_que_nao_responde_fica_anotada_e_nao_reprovada(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            pasta = self._pasta_com_triagem(tmp)
+
+            def parte(url):
+                raise ErroDeRede("403")
+
+            resumo = gnews.verificar(self.CONFIG_V, pasta, sujeito=self.SujeitoFalso(), obter=parte, dormir=lambda s: None)
+            self.assertEqual(resumo["sem_pagina"], 2)
+            linhas = list(csv.DictReader((pasta / "triagem.csv").open(encoding="utf-8-sig")))
+            self.assertEqual([l["decisao"] for l in linhas], ["", ""])
+            self.assertIn("nao respondeu", linhas[0]["nota"])
 
 
 
