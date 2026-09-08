@@ -1,0 +1,219 @@
+{
+ "canais": [
+  {
+   "arquivo": {
+    "rtp.pt": {
+     "Andre Ventura": {
+      "erro": "pedido falhou: https://arquivo.pt/textsearch?q=%22Andre+Ventura%22&siteSearch=rtp.pt&from=20190516&to=20260908&maxItems=200&dedupField=url&prettyPrint=false: <urlopen error [Errno 101] Network is unreachable>"
+     },
+     "Andre Ventura entrevista": {
+      "erro": "pedido falhou: https://arquivo.pt/textsearch?q=%22Andre+Ventura+entrevista%22&siteSearch=rtp.pt&from=20190516&to=20260908&maxItems=200&dedupField=url&prettyPrint=false: <urlopen error [Errno 101] Network is unreachable>"
+     },
+     "Andre Ventura entrevista exclusiva": {
+      "exemplos": [],
+      "itens_lidos": 0,
+      "por_ano": {},
+      "total_estimado": 0
+     },
+     "Andre Ventura grande entrevista": {
+      "erro": "pedido falhou: https://arquivo.pt/textsearch?q=%22Andre+Ventura+grande+entrevista%22&siteSearch=rtp.pt&from=20190516&to=20260908&maxItems=200&dedupField=url&prettyPrint=false: <urlopen error [Errno 101] Network is unreachable>"
+     },
+     "André Ventura": {
+      "exemplos": [],
+      "itens_lidos": 0,
+      "por_ano": {},
+      "total_estimado": 0
+     },
+     "André Ventura entrevista": {
+      "erro": "pedido falhou: https://arquivo.pt/textsearch?q=%22Andr%C3%A9+Ventura+entrevista%22&siteSearch=rtp.pt&from=20190516&to=20260908&maxItems=200&dedupField=url&prettyPrint=false: <urlopen error [Errno 101] Network is unreachable>"
+     },
+     "André Ventura entrevista exclusiva": {
+      "erro": "pedido falhou: https://arquivo.pt/textsearch?q=%22Andr%C3%A9+Ventura+entrevista+exclusiva%22&siteSearch=rtp.pt&from=20190516&to=20260908&maxItems=200&dedupField=url&prettyPrint=false: <urlopen error [Errno 101] Network is unreachable>"
+     },
+     "André Ventura grande entrevista": {
+      "exemplos": [],
+      "itens_lidos": 0,
+      "por_ano": {},
+      "total_estimado": 0
+     },
+     "Ventura": {
+      "exemplos": [],
+      "itens_lidos": 0,
+      "por_ano": {},
+      "total_estimado": 0
+     },
+     "Ventura entrevista": {
+      "erro": "pedido falhou: https://arquivo.pt/textsearch?q=%22Ventura+entrevista%22&siteSearch=rtp.pt&from=20190516&to=20260908&maxItems=200&dedupField=url&prettyPrint=false: <urlopen error [Errno 101] Network is unreachable>"
+     },
+     "Ventura entrevista exclusiva": {
+      "exemplos": [],
+      "itens_lidos": 0,
+      "por_ano": {},
+      "total_estimado": 0
+     },
+     "Ventura grande entrevista": {
+      "exemplos": [],
+      "itens_lidos": 0,
+      "por_ano": {},
+      "total_estimado": 0
+     }
+    }
+   },
+   "canal": "rtp1",
+   "nome": "RTP1",
+   "paginas": [
+    {
+     "bytes_html": 96750,
+     "bytes_texto": 7983,
+     "feeds": [],
+     "ids_youtube": [],
+     "jsonld_blocos": 0,
+     "jsonld_videos": 0,
+     "jsonld_videos_com_duracao": 0,
+     "meta_keywords": true,
+     "responde": true,
+     "termos_no_corpo": [
+      "entrevista",
+      "grande entrevista"
+     ],
+     "termos_no_jsonld": [],
+     "termos_no_titulo": [],
+     "termos_nos_metadados": [],
+     "titulo": "RTP Play",
+     "url": "https://www.rtp.pt/play/"
+    },
+    {
+     "bytes_html": 91320,
+     "bytes_texto": 16049,
+     "feeds": [],
+     "ids_youtube": [],
+     "jsonld_blocos": 0,
+     "jsonld_videos": 0,
+     "jsonld_videos_com_duracao": 0,
+     "meta_keywords": true,
+     "responde": true,
+     "termos_no_corpo": [
+      "Ventura",
+      "André Ventura",
+      "Andre Ventura",
+      "entrevista",
+      "grande entrevista"
+     ],
+     "termos_no_jsonld": [],
+     "termos_no_titulo": [
+      "Ventura"
+     ],
+     "termos_nos_metadados": [
+      "Ventura"
+     ],
+     "titulo": "Resultados de pesquisa por Ventura - RTP Play",
+     "url": "https://www.rtp.pt/play/pesquisa?q=Ventura"
+    },
+    {
+     "bytes_html": 87183,
+     "bytes_texto": 15300,
+     "feeds": [],
+     "ids_youtube": [],
+     "jsonld_blocos": 0,
+     "jsonld_videos": 0,
+     "jsonld_videos_com_duracao": 0,
+     "meta_keywords": true,
+     "responde": true,
+     "termos_no_corpo": [
+      "Ventura",
+      "André Ventura",
+      "Andre Ventura",
+      "entrevista",
+      "grande entrevista"
+     ],
+     "termos_no_jsonld": [],
+     "termos_no_titulo": [
+      "Ventura"
+     ],
+     "termos_nos_metadados": [
+      "Ventura"
+     ],
+     "titulo": "Resultados de pesquisa por Andr� Ventura - RTP Play",
+     "url": "https://www.rtp.pt/play/pesquisa?q=Andr%C3%A9%20Ventura"
+    },
+    {
+     "bytes_html": 70051,
+     "bytes_texto": 10148,
+     "feeds": [],
+     "ids_youtube": [],
+     "jsonld_blocos": 0,
+     "jsonld_videos": 0,
+     "jsonld_videos_com_duracao": 0,
+     "meta_keywords": true,
+     "responde": true,
+     "termos_no_corpo": [
+      "Ventura",
+      "André Ventura",
+      "Andre Ventura",
+      "entrevista",
+      "grande entrevista"
+     ],
+     "termos_no_jsonld": [],
+     "termos_no_titulo": [
+      "Ventura",
+      "André Ventura",
+      "Andre Ventura"
+     ],
+     "termos_nos_metadados": [
+      "Ventura",
+      "André Ventura",
+      "Andre Ventura"
+     ],
+     "titulo": "Resultados de pesquisa por Andre Ventura - RTP Play",
+     "url": "https://www.rtp.pt/play/pesquisa?q=Andre%20Ventura"
+    },
+    {
+     "bytes_html": 424921,
+     "bytes_texto": 89105,
+     "feeds": [],
+     "ids_youtube": [],
+     "jsonld_blocos": 3,
+     "jsonld_videos": 0,
+     "jsonld_videos_com_duracao": 0,
+     "meta_keywords": true,
+     "responde": true,
+     "termos_no_corpo": [
+      "Ventura",
+      "entrevista",
+      "grande entrevista"
+     ],
+     "termos_no_jsonld": [],
+     "termos_no_titulo": [],
+     "termos_nos_metadados": [],
+     "titulo": "RTP Notícias",
+     "url": "https://www.rtp.pt/noticias/"
+    }
+   ],
+   "youtube": [
+    {
+     "channel_id": "UCWPpeeDOykyH5ducPITCDPw",
+     "erro": null,
+     "feed": "https://www.youtube.com/feeds/videos.xml?channel_id=UCWPpeeDOykyH5ducPITCDPw",
+     "handle": "rtp"
+    },
+    {
+     "channel_id": "UC4fG5nWciEoORzJ9M-piWxA",
+     "erro": null,
+     "feed": "https://www.youtube.com/feeds/videos.xml?channel_id=UC4fG5nWciEoORzJ9M-piWxA",
+     "handle": "RTPPlay"
+    }
+   ]
+  }
+ ],
+ "desde": "2019-05-16",
+ "termos": [
+  "Ventura",
+  "André Ventura",
+  "Andre Ventura",
+  "entrevista",
+  "entrevista exclusiva",
+  "grande entrevista",
+  "exclusivo"
+ ],
+ "verificado_em": "2026-09-08T10:31:17+00:00"
+}
