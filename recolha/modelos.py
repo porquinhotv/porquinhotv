@@ -172,6 +172,9 @@ class ItemBruto:
     mesma_entrevista: str = ""
     prova_url: str = ""
     origem: str = ""
+    # Etiquetas, tags e seccao declaradas pela pagina. Um canal marca a
+    # peca com o nome do convidado sem o escrever sempre no titulo.
+    etiquetas: str = ""
 
 
 @dataclass

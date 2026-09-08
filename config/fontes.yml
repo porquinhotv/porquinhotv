@@ -67,25 +67,15 @@ fontes:
     canal: rtp1
     dominio: rtp.pt
     confianca: media
+    # A RTP Play e servida pelo servidor e responde. Ja produziu emissoes
+    # reais. A pesquisa do site de noticias da RTP nao serve: e Google
+    # Custom Search, tudo o que interessa vai depois do # e nunca chega
+    # ao servidor, por isso um pedido devolve uma pagina vazia.
     busca:
       - https://www.rtp.pt/play/pesquisa?q={termo}
-    # So episodios. O padrao anterior apanhava tambem as paginas de
-    # programa (/play/pNNN/nome), que nao tem data nem duracao: 45 das 65
-    # rejeicoes da primeira corrida eram isso.
+      - https://www.rtp.pt/play/pesquisa?q={termo}%20entrevista
     padrao_artigo: '/play/p[0-9]+/e[0-9]+/'
-    max_candidatos: 40
-    paginas_max: 1
-
-  - id: busca-rtp3
-    tipo: busca_site
-    ativa: true
-    canal: rtp3
-    dominio: rtp.pt
-    confianca: media
-    busca:
-      - https://www.rtp.pt/noticias/pesquisa?q={termo}
-    padrao_artigo: '/noticias/'
-    max_candidatos: 40
+    max_candidatos: 200
     paginas_max: 1
 
   - id: busca-sic
@@ -95,8 +85,8 @@ fontes:
     dominio: sic.pt
     confianca: media
     busca:
-      - https://sic.pt/pesquisa?q={termo}
-    max_candidatos: 40
+      - https://sic.pt/pesquisa?q={termo}+entrevista
+    max_candidatos: 200
     paginas_max: 1
 
   - id: busca-sic-noticias
@@ -106,8 +96,8 @@ fontes:
     dominio: sicnoticias.pt
     confianca: media
     busca:
-      - https://sicnoticias.pt/pesquisa?q={termo}
-    max_candidatos: 40
+      - https://sicnoticias.pt/pesquisa?q={termo}+entrevista
+    max_candidatos: 200
     paginas_max: 1
 
   - id: busca-tvi
@@ -117,8 +107,8 @@ fontes:
     dominio: iol.pt
     confianca: media
     busca:
-      - https://tvi.iol.pt/pesquisa/{termo}
-    max_candidatos: 40
+      - https://tvi.iol.pt/search?pagina={pagina}&pesquisa={termo}+entrevista
+    max_candidatos: 400
     paginas_max: 1
 
   - id: busca-cnn-portugal
@@ -128,8 +118,8 @@ fontes:
     dominio: iol.pt
     confianca: media
     busca:
-      - https://cnnportugal.iol.pt/pesquisa/{termo}
-    max_candidatos: 40
+      - https://cnnportugal.iol.pt/search?pagina={pagina}&pesquisa={termo}+entrevista
+    max_candidatos: 400
     paginas_max: 1
 
   - id: busca-cmtv
@@ -139,20 +129,21 @@ fontes:
     dominio: cmjornal.pt
     confianca: media
     busca:
-      - https://www.cmjornal.pt/pesquisa?q={termo}
+      - https://www.cmjornal.pt/pesquisa?q={termo}+entrevista
     padrao_artigo: '/cmtv/'
-    max_candidatos: 40
+    max_candidatos: 200
     paginas_max: 1
 
+  # O site do NOW nao tem pesquisa. Fica inativa e registada como tal:
+  # uma fonte que nao existe e um facto do levantamento, nao um esquecimento.
   - id: busca-now
     tipo: busca_site
-    ativa: true
+    ativa: false
     canal: now
     dominio: now.pt
     confianca: media
-    busca:
-      - https://now.pt/?s={termo}
-    max_candidatos: 40
+    busca: []
+    max_candidatos: 200
     paginas_max: 1
 
   # ------------------------------------------------------------------

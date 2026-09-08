@@ -1,0 +1,83 @@
+---
+# Sondagem de hipoteses. Corre a pedido, nao escreve dados do site.
+#
+# Serve para responder a duas perguntas sem adivinhar:
+#
+# 1. qual e o parametro de paginacao de cada site cuja pesquisa funciona
+#    mas cujo URL da pagina 2 nao conhecemos;
+# 2. que motor de busca, se algum, responde a um pedido feito da maquina
+#    da CI sem muro de consentimento nem verificacao.
+#
+# Cada hipotese e um URL. A sonda pede, e regista: codigo de resposta,
+# tamanho, se os termos aparecem no HTML servido, e quantas ligacoes de
+# artigo do dominio alvo se conseguem colher. Uma hipotese que devolva
+# 200 mas zero ligacoes e tao inutil como uma que devolva 403, e o
+# relatorio mostra as duas coisas em vez de so o codigo.
+#
+# Nada aqui e configuracao de recolha: e uma experiencia. O que passar
+# na sondagem e depois escrito a mao em config/fontes.yml.
+
+# Substituido em cada URL. Uma consulta so, para a sondagem ser curta.
+termo: 'ventura entrevista'
+
+# Dominios que contam como resultado util quando a hipotese e um motor
+# de busca. Vivem aqui e nao no codigo: nenhum modulo Python conhece o
+# dominio de um canal, e ha um teste que falha se conhecer.
+dominios_de_interesse: [rtp.pt, sic.pt, sicnoticias.pt, iol.pt, cmjornal.pt, now.pt]
+
+grupos:
+  - nome: Paginacao dos sites que ja respondem
+    # A pagina 1 e conhecida e responde. A pergunta e como se pede a 2.
+    # Os nomes de parametro abaixo sao os correntes; o que devolver
+    # ligacoes diferentes da pagina 1 e o certo.
+    dominio_alvo: sic.pt
+    hipoteses:
+      - https://sic.pt/pesquisa?q={termo}
+      - https://sic.pt/pesquisa?q={termo}&pagina=2
+      - https://sic.pt/pesquisa?q={termo}&page=2
+      - https://sic.pt/pesquisa?q={termo}&p=2
+      - https://sic.pt/pesquisa?q={termo}&offset=10
+
+  - nome: Paginacao SIC Noticias
+    dominio_alvo: sicnoticias.pt
+    hipoteses:
+      - https://sicnoticias.pt/pesquisa?q={termo}
+      - https://sicnoticias.pt/pesquisa?q={termo}&pagina=2
+      - https://sicnoticias.pt/pesquisa?q={termo}&page=2
+      - https://sicnoticias.pt/pesquisa?q={termo}&p=2
+      - https://sicnoticias.pt/pesquisa?q={termo}&offset=10
+
+  - nome: Paginacao CMTV
+    dominio_alvo: cmjornal.pt
+    hipoteses:
+      - https://www.cmjornal.pt/pesquisa?q={termo}
+      - https://www.cmjornal.pt/pesquisa?q={termo}&pagina=2
+      - https://www.cmjornal.pt/pesquisa?q={termo}&page=2
+      - https://www.cmjornal.pt/pesquisa?q={termo}&p=2
+
+  - nome: Paginacao TVI e CNN (parametro ja conhecido, confirmar que muda)
+    dominio_alvo: iol.pt
+    hipoteses:
+      - https://tvi.iol.pt/search?pagina=1&pesquisa={termo}
+      - https://tvi.iol.pt/search?pagina=2&pesquisa={termo}
+      - https://cnnportugal.iol.pt/search?pagina=1&pesquisa={termo}
+      - https://cnnportugal.iol.pt/search?pagina=2&pesquisa={termo}
+
+  - nome: Motores de busca alternativos
+    # A Google e inutilizavel a partir da CI: responde a maquinas de
+    # datacenter com muro de consentimento ou verificacao. A pergunta e
+    # se algum outro responde. Nenhum destes precisa de conta ou chave.
+    # O dominio alvo nao se aplica: aqui conta so se a pagina responde e
+    # se traz resultados no HTML servido.
+    dominio_alvo: ''
+    hipoteses:
+      - https://html.duckduckgo.com/html/?q={termo}
+      - https://lite.duckduckgo.com/lite/?q={termo}
+      - https://www.mojeek.com/search?q={termo}
+      - https://search.marginalia.nu/search?query={termo}
+      - https://www.startpage.com/sp/search?query={termo}
+      - https://search.brave.com/search?q={termo}
+      - https://www.ecosia.org/search?q={termo}
+      - https://searx.be/search?q={termo}
+      - https://lite.duckduckgo.com/lite/?q=site%3Asicnoticias.pt+{termo}
+      - https://www.mojeek.com/search?q=site%3Asicnoticias.pt+{termo}

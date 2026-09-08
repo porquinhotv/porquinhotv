@@ -252,3 +252,26 @@ class TestLicoesDaPrimeiraCorridaDeHistorico(unittest.TestCase):
         b = criterio.avaliar(item(titulo="Programa B - Alguem", canal="rtp1", url="https://exemplo.pt/2", prova_url="https://exemplo.pt/2"), self.fonte, self.config)
         self.assertNotEqual(a.bloco, b.bloco)
         self.assertEqual(len(criterio.resolver_blocos([a, b], [])), 2)
+
+
+class TestSujeitoNasEtiquetas(unittest.TestCase):
+    """O canal identifica o convidado nas tags de pecas cujo titulo nao o
+    nomeia. Procurar so no titulo perdia essas emissoes."""
+
+    def setUp(self):
+        self.config = config_teste()
+        self.fonte = fonte(self.config, "yt-teste") if any(f.id == "yt-teste" for f in self.config.fontes) else fonte(self.config, "registo-curado")
+
+    def test_sujeito_so_nas_etiquetas_conta(self):
+        automatica = next(f for f in self.config.fontes if f.tipo != "manual")
+        alvo = item(titulo="Grande Entrevista - ep. 41", canal="rtp1", descricao="", etiquetas="André Ventura, política")
+        q = []
+        resultado = criterio.avaliar(alvo, automatica, self.config, q)
+        self.assertIsNotNone(resultado, f"rejeitado: {q}")
+
+    def test_sem_sujeito_em_lado_nenhum_continua_fora(self):
+        automatica = next(f for f in self.config.fontes if f.tipo != "manual")
+        alvo = item(titulo="Grande Entrevista - ep. 41", canal="rtp1", descricao="", etiquetas="outra pessoa")
+        q = []
+        self.assertIsNone(criterio.avaliar(alvo, automatica, self.config, q))
+        self.assertEqual(q[0]["motivo"], "sem_sujeito")

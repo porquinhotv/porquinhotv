@@ -108,6 +108,7 @@ class FonteBuscaSite(PluginDeFonte):
                     canal=self.fonte.canal,
                     programa=self.fonte.programa,
                     prova_url=alvo,
+                    etiquetas=dados["etiquetas"],
                 )
             )
             time.sleep(PAUSA_S)

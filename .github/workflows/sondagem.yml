@@ -1,0 +1,70 @@
+name: sondagem
+
+# Testa hipoteses, nao recolhe dados. Responde a duas perguntas que nao
+# se resolvem por raciocinio: qual e o parametro de paginacao de cada
+# site, e se algum motor de busca responde a partir da maquina da CI.
+#
+# Escreve sondagem/, que fica fora de docs/ e nao e publicado no site.
+
+on:
+  workflow_dispatch:
+    inputs:
+      grupo:
+        description: 'So um grupo de config/sondagem.yml. Vazio corre todos.'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: recolha
+  cancel-in-progress: false
+
+jobs:
+  sondar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      TZ: UTC
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+      - name: Testes Python
+        run: python -m unittest discover -s tests -t .
+      - name: Sondar
+        run: |
+          if [ -n "${{ github.event.inputs.grupo }}" ]; then
+            python -m ferramentas.sondar --grupo "${{ github.event.inputs.grupo }}"
+          else
+            python -m ferramentas.sondar
+          fi
+      - name: Guardar como artefacto
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sondagem
+          path: sondagem/
+      - name: Publicar
+        if: always()
+        run: |
+          if [ -z "$(git status --porcelain sondagem)" ]; then
+            echo "sem alteracoes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add sondagem
+          git commit -m "sondagem: hipoteses testadas em $(date -u +%Y-%m-%d)"
+          for i in 1 2 3 4 5; do
+            if git push; then exit 0; fi
+            git fetch origin main
+            git rebase origin/main || { git rebase --abort; exit 1; }
+            sleep $((i * 3))
+          done
+          exit 1

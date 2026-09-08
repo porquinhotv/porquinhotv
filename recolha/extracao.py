@@ -55,6 +55,18 @@ CAMPOS_DATA = (
 )
 CAMPOS_DURACAO = ("duration", "video:duration", "og:video:duration", "videoduration")
 CAMPOS_DESCRICAO = ("og:description", "description", "twitter:description")
+# Etiquetas e sinopses. Um canal marca a peca com o nome do convidado
+# muitas vezes sem o escrever no titulo: sem ler isto, a emissao era
+# rejeitada por `sem_sujeito` quando a propria pagina a identificava.
+CAMPOS_ETIQUETAS = (
+    "keywords",
+    "news_keywords",
+    "article:tag",
+    "article:section",
+    "og:article:tag",
+    "tags",
+    "subject",
+)
 CAMPOS_TITULO = ("og:title", "twitter:title", "title")
 
 
@@ -171,6 +183,7 @@ def extrair(html: str, url: str = "") -> dict:
     data = ""
     duracao = None
     e_video = False
+    etiquetas: list[str] = []
 
     for bloco in blocos:
         tipos = _tipos(bloco)
@@ -181,6 +194,14 @@ def extrair(html: str, url: str = "") -> dict:
             titulo = titulo or str(bloco.get("name") or bloco.get("headline") or "")
             descricao = descricao or str(bloco.get("description") or "")
             data = data or data_para_iso(bloco.get("datePublished") or bloco.get("uploadDate") or bloco.get("dateCreated"))
+        for chave in ("keywords", "about", "articleSection", "genre", "alternateName"):
+            valor = bloco.get(chave)
+            if isinstance(valor, dict):
+                valor = valor.get("name")
+            if isinstance(valor, list):
+                valor = " ".join(str(v.get("name") if isinstance(v, dict) else v) for v in valor)
+            if valor:
+                etiquetas.append(str(valor))
         duracao = duracao or duracao_para_segundos(bloco.get("duration"))
 
     for campo in CAMPOS_TITULO:
@@ -195,6 +216,9 @@ def extrair(html: str, url: str = "") -> dict:
     for campo in CAMPOS_DURACAO:
         if duracao is None and metas.get(campo):
             duracao = duracao_para_segundos(metas[campo])
+    for campo in CAMPOS_ETIQUETAS:
+        if metas.get(campo):
+            etiquetas.append(metas[campo])
 
     if not titulo:
         m = TITULO.search(html)
@@ -211,6 +235,7 @@ def extrair(html: str, url: str = "") -> dict:
         "descricao": " ".join(descricao.split())[:1000],
         "publicado_em": data,
         "duracao_s": duracao,
+        "etiquetas": " ".join(dict.fromkeys(" ".join(etiquetas).split()))[:600],
         "e_video": e_video,
         # Guardado para a quarentena poder mostrar contexto de uma
         # rejeicao sem obrigar a reabrir a pagina.

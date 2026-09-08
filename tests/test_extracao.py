@@ -61,6 +61,23 @@ class TestExtrair(unittest.TestCase):
         self.assertEqual(r["publicado_em"], "2021-03-15")
         self.assertFalse(r["e_video"])
 
+    def test_etiquetas_e_tags(self):
+        """Um canal marca a peca com o nome do convidado sem o escrever no
+        titulo. Sem ler as etiquetas, a emissao era rejeitada por
+        `sem_sujeito` quando a propria pagina a identificava."""
+        r = extracao.extrair(ler("artigo_sem_duracao.html"), "https://exemplo.pt/b")
+        self.assertIn("Pessoa", r["etiquetas"])
+        self.assertIn("Grande", r["etiquetas"])
+
+    def test_etiquetas_do_jsonld(self):
+        html = '''<script type="application/ld+json">
+        {"@type":"NewsArticle","headline":"Sem nome no titulo",
+         "keywords":["Pessoa Exemplo","politica"],
+         "about":{"name":"Grande Entrevista"}}</script>'''
+        r = extracao.extrair(html, "https://exemplo.pt/c")
+        self.assertIn("Pessoa", r["etiquetas"])
+        self.assertIn("Grande", r["etiquetas"])
+
     def test_pagina_sem_nada(self):
         r = extracao.extrair("<html><body>nada</body></html>", "https://exemplo.pt/c")
         self.assertIsNone(r["duracao_s"])

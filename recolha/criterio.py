@@ -10,7 +10,7 @@ Um item conta como emissao quando, por esta ordem:
 1. a data de emissao (declarada, ou de publicacao na falta dela) nao e
    anterior ao inicio do tema;
 2. o sujeito e identificado (no registo curado, por construcao; nas
-   outras fontes, por nome no titulo ou na descricao);
+   outras fontes, por nome no titulo, na sinopse ou nas etiquetas);
 3. a classificacao por segmento lhe da um formato elegivel;
 4. nenhum termo de exclusao aparece no titulo;
 5. o canal e um dos canais medidos;
@@ -116,7 +116,10 @@ def avaliar(
     item: ItemBruto, fonte: Fonte, config: Config, quarentena: list | None = None
 ) -> Emissao | None:
     tema = config.tema
-    texto = f"{item.titulo} {item.descricao}"
+    # O sujeito procura-se no titulo, na sinopse e nas etiquetas: um
+    # canal identifica o convidado nas tags de uma peca cujo titulo nao o
+    # nomeia. A classificacao por formato continua a ser so pelo titulo.
+    texto = f"{item.titulo} {item.descricao} {item.etiquetas}"
 
     data, origem = resolver_data(texto, item.publicado_em, item.data_declarada)
     if not data:
