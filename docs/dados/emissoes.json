@@ -17,7 +17,7 @@
    "programa": "Grande Entrevista",
    "prova_url": "https://www.rtp.pt/play/p9766/e648005/grande-entrevista",
    "publicado_em": "2022-10-19",
-   "rondas": 3,
+   "rondas": 5,
    "titulo": "Grande Entrevista - André Ventura - ep. 41"
   },
   {
@@ -37,7 +37,7 @@
    "programa": "Eleições Legislativas 2024",
    "prova_url": "https://www.rtp.pt/play/p13071/e752537/eleicoes-legislativas-2024-entrevistas-lideres-partidarios",
    "publicado_em": "2024-03-04",
-   "rondas": 3,
+   "rondas": 5,
    "titulo": "Eleições Legislativas 2024 - Entrevistas Líderes Partidários - André Ventura - ep. 6"
   },
   {
@@ -101,6 +101,26 @@
    "titulo": "André Ventura: a entrevista na íntegra"
   },
   {
+   "bloco": "ba05f89988d7",
+   "canal": "rtp3",
+   "confianca": "media",
+   "data": "2025-03-19",
+   "data_origem": "publicacao",
+   "duracao_s": 145,
+   "entrevista": "ba05f89988d7",
+   "fonte": "motor-rtp3",
+   "fontes_distintas": 1,
+   "id": "motor-rtp3:05261e0a3fbe",
+   "origem": "canal",
+   "parcial": false,
+   "primeira_vez": "2026-09-09",
+   "programa": "",
+   "prova_url": "https://www.rtp.pt/noticias/politica/entrevista-a-rtp-ventura-assume-que-eleger-menos-de-50-deputados-seria-derrota_v1641804",
+   "publicado_em": "2025-03-19",
+   "rondas": 2,
+   "titulo": "Entrevista à RTP. Ventura assume que eleger menos de 50 deputados seria derrota"
+  },
+  {
    "bloco": "6b76e93656cc",
    "canal": "now",
    "confianca": "alta",
@@ -139,6 +159,26 @@
    "publicado_em": "2025-04-09",
    "rondas": 0,
    "titulo": "Goucha - Entrevista exclusiva com André Ventura"
+  },
+  {
+   "bloco": "1a3e06092d4d",
+   "canal": "rtp3",
+   "confianca": "media",
+   "data": "2025-05-12",
+   "data_origem": "publicacao",
+   "duracao_s": 622,
+   "entrevista": "1a3e06092d4d",
+   "fonte": "motor-rtp3",
+   "fontes_distintas": 1,
+   "id": "motor-rtp3:30b3cb2606d1",
+   "origem": "canal",
+   "parcial": false,
+   "primeira_vez": "2026-09-09",
+   "programa": "",
+   "prova_url": "https://www.rtp.pt/noticias/politica/entrevista-rtp-ventura-garante-que-o-chega-esta-na-corrida-para-vencer-as-eleicoes_v1654290",
+   "publicado_em": "2025-05-12",
+   "rondas": 2,
+   "titulo": "Entrevista RTP. Ventura garante que o Chega está na corrida para vencer as eleições"
   },
   {
    "bloco": "23ec0aec09c5",
@@ -337,7 +377,7 @@
    "programa": "Grande Entrevista",
    "prova_url": "https://www.rtp.pt/play/p15797/e887091/grande-entrevista-candidatos-a-presidencia-da-republica",
    "publicado_em": "2025-11-04",
-   "rondas": 3,
+   "rondas": 5,
    "titulo": "Grande Entrevista - Candidatos à Presidência da República - André Ventura - ep. 2"
   },
   {
@@ -437,7 +477,7 @@
    "programa": "Grande Entrevista",
    "prova_url": "https://www.rtp.pt/play/p16214/e903851/grande-entrevista",
    "publicado_em": "2026-01-21",
-   "rondas": 3,
+   "rondas": 5,
    "titulo": "Grande Entrevista - André Ventura - ep. 2"
   },
   {
@@ -762,5 +802,5 @@
   }
  ],
  "esquema": 1,
- "total": 38
+ "total": 40
 }

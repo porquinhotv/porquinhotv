@@ -67,6 +67,19 @@
   },
   {
    "canais": {
+    "rtp3": {
+     "declaradas": 0,
+     "emissoes": 1,
+     "entrevistas_distintas": 1,
+     "parciais": 0,
+     "sem_duracao": 0,
+     "tempo_s": 145
+    }
+   },
+   "data": "2025-03-19"
+  },
+  {
+   "canais": {
     "now": {
      "declaradas": 1,
      "emissoes": 1,
@@ -85,6 +98,19 @@
     }
    },
    "data": "2025-04-09"
+  },
+  {
+   "canais": {
+    "rtp3": {
+     "declaradas": 0,
+     "emissoes": 1,
+     "entrevistas_distintas": 1,
+     "parciais": 0,
+     "sem_duracao": 0,
+     "tempo_s": 622
+    }
+   },
+   "data": "2025-05-12"
   },
   {
    "canais": {
@@ -453,9 +479,10 @@
  "esquema": 1,
  "fontes": [
   "busca-rtp1",
+  "motor-rtp3",
   "registo-curado"
  ],
- "gerado_em": "2026-09-08T21:40:03+00:00",
+ "gerado_em": "2026-09-09T05:41:21+00:00",
  "por_ano": [
   {
    "ano": "2022",
@@ -473,10 +500,10 @@
   },
   {
    "ano": "2025",
-   "emissoes": 15,
-   "entrevistas_distintas": 11,
+   "emissoes": 17,
+   "entrevistas_distintas": 13,
    "sem_duracao": 6,
-   "tempo_s": 27187
+   "tempo_s": 27954
   },
   {
    "ano": "2026",
@@ -529,11 +556,11 @@
   },
   {
    "canal": "rtp3",
-   "emissoes": 5,
-   "entrevistas_distintas": 5,
+   "emissoes": 7,
+   "entrevistas_distintas": 7,
    "nome": "RTP3",
    "sem_duracao": 1,
-   "tempo_s": 12322
+   "tempo_s": 13089
   },
   {
    "canal": "cnn-portugal",
@@ -613,6 +640,16 @@
   },
   {
    "chaves": [
+    "ba05f89988d7"
+   ],
+   "data": "2025-03-19",
+   "emissoes": 1,
+   "entrevistas_distintas": 1,
+   "sem_duracao": 0,
+   "tempo_s": 145
+  },
+  {
+   "chaves": [
     "2025-04-09"
    ],
    "data": "2025-04-09",
@@ -620,6 +657,16 @@
    "entrevistas_distintas": 1,
    "sem_duracao": 1,
    "tempo_s": 2821
+  },
+  {
+   "chaves": [
+    "1a3e06092d4d"
+   ],
+   "data": "2025-05-12",
+   "emissoes": 1,
+   "entrevistas_distintas": 1,
+   "sem_duracao": 0,
+   "tempo_s": 622
   },
   {
    "chaves": [
@@ -884,6 +931,13 @@
    "tempo_s": 2125
   },
   {
+   "emissoes": 1,
+   "entrevistas_distintas": 1,
+   "mes": "2025-03",
+   "sem_duracao": 0,
+   "tempo_s": 145
+  },
+  {
    "emissoes": 2,
    "entrevistas_distintas": 1,
    "mes": "2025-04",
@@ -891,11 +945,11 @@
    "tempo_s": 2821
   },
   {
-   "emissoes": 2,
-   "entrevistas_distintas": 1,
+   "emissoes": 3,
+   "entrevistas_distintas": 2,
    "mes": "2025-05",
    "sem_duracao": 0,
-   "tempo_s": 4926
+   "tempo_s": 5548
   },
   {
    "emissoes": 1,
@@ -984,10 +1038,10 @@
  ],
  "por_origem": {
   "canal": {
-   "emissoes": 38,
-   "entrevistas_distintas": 31,
+   "emissoes": 40,
+   "entrevistas_distintas": 33,
    "sem_duracao": 10,
-   "tempo_s": 65621
+   "tempo_s": 66388
   }
  },
  "por_semana": [
@@ -1027,11 +1081,25 @@
    "tempo_s": 2125
   },
   {
+   "emissoes": 1,
+   "entrevistas_distintas": 1,
+   "sem_duracao": 0,
+   "semana": "2025-W12",
+   "tempo_s": 145
+  },
+  {
    "emissoes": 2,
    "entrevistas_distintas": 1,
    "sem_duracao": 1,
    "semana": "2025-W15",
    "tempo_s": 2821
+  },
+  {
+   "emissoes": 1,
+   "entrevistas_distintas": 1,
+   "sem_duracao": 0,
+   "semana": "2025-W20",
+   "tempo_s": 622
   },
   {
    "emissoes": 2,
@@ -1207,10 +1275,10 @@
   "pergunta": "Quantas entrevistas exclusivas deu André Ventura na televisão portuguesa, e quanto tempo ocuparam?"
  },
  "totais": {
-  "emissoes": 38,
-  "entrevistas_distintas": 31,
+  "emissoes": 40,
+  "entrevistas_distintas": 33,
   "sem_duracao": 10,
-  "tempo_s": 65621
+  "tempo_s": 66388
  },
  "ultimo_registo": "2026-09-01"
 }
