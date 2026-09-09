@@ -133,3 +133,46 @@ grupos:
       - https://searx.be/search?q={termo}
       - https://lite.duckduckgo.com/lite/?q=site%3Asicnoticias.pt+{termo}
       - https://www.mojeek.com/search?q=site%3Asicnoticias.pt+{termo}
+
+  - nome: Indice proprio do jornal de fact-checking
+    # Nove das onze linhas do clipping publicadas a 2026-09-09 vieram deste
+    # jornal, atraves do RSS do indice de noticias. O indice nao traz tudo
+    # o que existe (verificado a 2026-09-08), por isso a pergunta e se se
+    # chega ao mesmo sitio pela porta da frente, e com que profundidade.
+    #
+    # O que ja se sabe, verificado a 2026-09-09 e nao suposto:
+    #
+    # - a data de publicacao le-se bem nas paginas deste jornal. Prova-o o
+    #   proprio dataset: as nove linhas entraram com a data lida por
+    #   "ontem", o que exige a data da peca. Nao ha aqui nada a sondar;
+    # - a listagem `/ultimas/N/` e servida pelo servidor, sem JavaScript,
+    #   com 24 itens por pagina e cerca de 561 paginas. Cada item traz
+    #   ligacao, titulo e as primeiras linhas do lead, mas nao traz data;
+    # - a pesquisa `?s=` devolve a entrada, nao resultados.
+    #
+    # Falta responder a tres coisas, e nenhuma se responde por raciocinio:
+    #
+    # 1. a listagem responde ao agente da ferramenta, a partir de casa, e
+    #    tanto na primeira pagina como no fundo do arquivo? Uma listagem
+    #    que responde na pagina 1 e falha na 500 nao serve para o historico,
+    #    que e onde faltam linhas;
+    # 2. o sitio corre WordPress (`meta-generator` diz Elementor). Se a API
+    #    de leitura estiver aberta, devolve titulo, lead e data em JSON, 100
+    #    por pedido, e dispensa percorrer 561 paginas de HTML. Se estiver
+    #    fechada, percorre-se a listagem;
+    # 3. existe um arquivo por pessoa, como ha por categoria? Se existir, o
+    #    funil comeca ja filtrado em vez de peneirar treze mil pecas.
+    #
+    # Uma hipotese que responda 200 e traga zero ligacoes nao serve: e uma
+    # pagina de aviso. E por isso que a sonda conta as duas coisas.
+    dominio_alvo: poligrafo.sapo.pt
+    hipoteses:
+      - https://poligrafo.sapo.pt/ultimas/
+      - https://poligrafo.sapo.pt/ultimas/2/
+      - https://poligrafo.sapo.pt/ultimas/300/
+      - https://poligrafo.sapo.pt/ultimas/561/
+      - https://poligrafo.sapo.pt/wp-json/wp/v2/posts?per_page=5
+      - https://poligrafo.sapo.pt/wp-json/wp/v2/posts?search=ventura&per_page=5
+      - https://poligrafo.sapo.pt/wp-json/wp/v2/search?search=ventura&per_page=5
+      - https://poligrafo.sapo.pt/tag/andre-ventura/
+      - https://poligrafo.sapo.pt/autor/poligrafo/
