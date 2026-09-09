@@ -760,6 +760,34 @@ class TestProvaDeImprensa(unittest.TestCase):
         self.assertEqual(saida, [])
         self.assertIn("noutro periodo", avisos[0])
 
+    def test_ano_solto_e_longe_da_palavra_nao_trava_a_leitura(self):
+        """Peca real de 2026-06-17: "Na entrevista a <canal>, ontem a noite
+        (16 de junho), (...) subvencoes revogadas em 2005". A primeira
+        versao da regra do ano cortou esta emissao, que estava certa e era
+        de um canal com poucas linhas, por causa de um ano a 366
+        caracteres da palavra a falar de outra coisa."""
+        config = gnews.carregar()
+        texto = ("Na entrevista ao canal, ontem à noite (16 de junho), o líder aproveitou o tempo de antena "
+                 "para defender bandeiras do seu partido, da redução da idade mínima de acesso à reforma sem "
+                 "penalizações até à eliminação das subvenções vitalícias para ex-políticos que as obtiveram "
+                 "antes da revogação de tal privilégio em 2005.")
+        self.assertFalse(gnews.entrevista_datada_por_extenso(config, texto))
+        self.assertEqual(gnews.data_de_emissao(config, texto, "2026-06-17"), ("2026-06-16", "ontem"))
+
+    def test_mes_com_ano_data_a_entrevista_esteja_onde_estiver(self):
+        """Peca real de 2026: "Em novembro de 2020, o jornalista (...) foi
+        criticado por uma entrevista que fez ao lider". O ano esta a 93
+        caracteres da palavra, longe de mais para a janela, mas "novembro
+        de 2020" e uma data por extenso e data a entrevista."""
+        config = gnews.carregar()
+        texto = ("Em novembro de 2020, o jornalista, que na altura ainda trabalhava no canal, foi duramente "
+                 "criticado por uma entrevista que fez ao líder do partido.")
+        self.assertTrue(gnews.entrevista_datada_por_extenso(config, texto))
+
+    def test_ano_solto_colado_a_palavra_trava_a_leitura(self):
+        config = gnews.carregar()
+        self.assertTrue(gnews.entrevista_datada_por_extenso(config, "disse em entrevista ao canal em 2021 que tinha razão"))
+
     def test_ano_noutra_frase_nao_trava_a_leitura(self):
         """"Em entrevista, esta noite, ao canal (...). Recicla uma
         declaracao de 2019" e uma peca certa: o ano esta na frase da

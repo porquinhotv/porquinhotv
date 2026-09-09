@@ -986,17 +986,34 @@ def entrevista_datada_por_extenso(config: dict, texto: str) -> bool:
     "Disse em entrevista ao canal em dezembro de 2021 que (...), hoje um
     novo militante diz outra coisa" tem a palavra do dia numa frase que
     fala do presente e a entrevista datada a um ano de distancia. Lido
-    pelo marcador, entrava com a data da peca. Quando a frase que fala da
-    entrevista traz um ano, o marcador relativo nao se le: quem escreve
-    "ontem" e quem escreve "em 2021" nao esta a falar do mesmo dia.
+    pelo marcador, entrava com a data da peca.
 
-    So o ano conta. O nome do mes sozinho aparece nas pecas que datam bem
-    a emissao ("ontem a noite (16 de junho)") e cortar por ele deitava
-    fora linhas certas.
+    Duas formas de a frase datar a entrevista, e as duas foram medidas em
+    pecas reais a 2026-09-09:
+
+    - um mes seguido de ano ("em dezembro de 2021", "Em novembro de
+      2020"): e uma data escrita por extenso e conta onde quer que
+      esteja na frase;
+    - um ano sozinho, mas so a menos de `janela_do_ano` caracteres da
+      palavra. A primeira versao desta regra aceitava um ano sozinho em
+      qualquer sitio da frase, e cortou uma emissao certa por causa de um
+      "revogado em 2005" que estava a 366 caracteres, a falar de outra
+      coisa. Era erro por excesso numa regra escrita para evitar erro por
+      excesso.
     """
+    regras = config.get("imprensa") or {}
     termos = tuple((config.get("marcadores_formato") or {}).get("entrevista") or ())
+    meses = "|".join(re.escape(normalizar(m)) for m in (regras.get("meses") or ()) if m)
+    janela = int(regras.get("janela_do_ano", 60))
+    ano = r"\b(19|20)\d{2}\b"
     for frase in re.split(r"[.!?\n]+", texto):
-        if contem_palavra(frase, termos) and re.search(r"\b(19|20)\d{2}\b", frase):
+        if not contem_palavra(frase, termos):
+            continue
+        plana = normalizar(frase)
+        if meses and re.search(rf"\b({meses})\b\s+de\s+{ano}", plana):
+            return True
+        onde = [m.start() for t in termos for m in re.finditer(re.escape(normalizar(t)), plana)]
+        if any(min(abs(m.start() - i) for i in onde) <= janela for m in re.finditer(ano, plana) if onde):
             return True
     return False
 

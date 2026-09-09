@@ -155,6 +155,17 @@ imprensa:
   anuncio: [vai estar, vai dar, dará, dá hoje, não perca, hora marcada, na próxima, será às, sera as, será transmitida]
   # Como a peca fixa o dia, lido contra a data de publicacao. A ordem de
   # leitura e esta: ontem, amanha, dia da semana, hoje.
+  # Meses, para reconhecer uma data escrita por extenso. Um mes seguido
+  # de ano na frase da entrevista data-a noutro periodo e tira a leitura
+  # do dia relativo. Um ano sozinho nao chega: "revogado em 2005" apareceu
+  # a 366 caracteres da mencao da entrevista, numa peca que dizia bem o
+  # dia, e cortava uma linha certa.
+  meses: [janeiro, fevereiro, março, abril, maio, junho, julho, agosto,
+          setembro, outubro, novembro, dezembro]
+  # Distancia, em caracteres, a que um ano sozinho ainda data a
+  # entrevista. Medido nas pecas reais: as que datam a entrevista tem o
+  # ano a 32 e a 93 caracteres da palavra; a que a data bem tem-no a 366.
+  janela_do_ano: 60
   ontem: [ontem, na noite de ontem, ontem à noite]
   amanha: [amanhã, amanhã à noite]
   # "em direto" e "agora" sairam a 2026-09-09: dizem como a emissao passou,
