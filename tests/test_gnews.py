@@ -692,6 +692,31 @@ class TestProvaDeImprensa(unittest.TestCase):
         self.assertIn("possivel duplicado", avisos[0])
         self.assertIn("2026-06-22 e 2026-06-23", avisos[0])
 
+    def test_sugestao_escrita_para_todas_as_linhas_e_nao_so_para_as_visitadas(self):
+        """A 2026-09-09 o `--verificar` so escrevia a sugestao das paginas
+        que visitou nessa corrida: as 150 ja verificadas antes e as 124 que
+        nao responderam ficaram sem coluna, e o `--emitir --imprensa`
+        devolveu zero sem ninguem perceber porque."""
+        antiga = self._linha(sujeito_na_pagina="sim", url_google="u1")
+        falhada = {"decisao": "", "prova_url": self.PECA, "titulo": "Pessoa Exemplo em entrevista", "url_google": "u2"}
+        do_canal = self._linha(sujeito_na_pagina="sim", prova_url="https://canalnoticias.exemplo/v", url_google="u3")
+        with tempfile.TemporaryDirectory() as tmp:
+            pasta = self._pasta(tmp, [antiga, falhada, do_canal])
+            resumo = gnews.sugerir_todas(self.CONFIG_I, pasta, self.CANAIS)
+            with (pasta / "triagem.csv").open(encoding="utf-8-sig", newline="") as f:
+                linhas = {l["url_google"]: l["sugestao"] for l in csv.DictReader(f)}
+        self.assertTrue(linhas["u1"].startswith("sim: canal-noticias a 2026-06-22"))
+        self.assertTrue(linhas["u2"].startswith("por ler"))
+        self.assertTrue(linhas["u3"].startswith("prova do canal"))
+        self.assertEqual((resumo["sim"], resumo["por_ler"], resumo["do_canal"]), (1, 1, 1))
+
+    def test_pagina_que_nao_respondeu_nao_e_um_nao(self):
+        """124 paginas nao responderam a 2026-09-09, umas a 403 e outras a
+        recusar a maquina. Escrever "nao" nessas era afirmar que a peca
+        nao prova nada quando ninguem a leu."""
+        linha = {"prova_url": self.PECA, "titulo": "Pessoa Exemplo em entrevista ao Canal Notícias"}
+        self.assertTrue(gnews.sugerir(self.CONFIG_I, linha, self.CANAIS).startswith("por ler"))
+
     def test_a_sugestao_e_o_que_a_emissao_faria(self):
         """A pessoa decide a partir da coluna `sugestao`. Se a sugestao
         dissesse sim e a emissao recusasse, a triagem estaria a mentir."""
@@ -702,7 +727,7 @@ class TestProvaDeImprensa(unittest.TestCase):
         sem_sujeito = {**linha, "sujeito_na_pagina": "nao"}
         self.assertTrue(gnews.sugerir(self.CONFIG_I, sem_sujeito, self.CANAIS).startswith("nao:"))
         do_canal = {**linha, "prova_url": "https://canalnoticias.exemplo/video"}
-        self.assertEqual(gnews.sugerir(self.CONFIG_I, do_canal, self.CANAIS), "")
+        self.assertEqual(gnews.sugerir(self.CONFIG_I, do_canal, self.CANAIS), "prova do canal: entra por --emitir")
 
     def test_anuncio_entra_se_uma_pessoa_escrever_a_data(self):
         linha = self._linha(

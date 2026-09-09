@@ -687,13 +687,64 @@ def sugerir(config: dict, linha: dict, canais_validos: set[str]) -> str:
     lado a lado.
     """
     if canal_da_prova(config, linha.get("prova_url") or ""):
-        return ""
-    if linha.get("sujeito_na_pagina") != "sim":
+        return "prova do canal: entra por --emitir"
+    if not linha.get("sujeito_na_pagina"):
+        # A pagina nunca foi lida: 124 das 851 nao responderam a 2026-09-09,
+        # umas a 403 e outras a recusar a maquina. Dizer "nao" aqui era
+        # afirmar que a peca nao prova nada quando o que se sabe e que
+        # ninguem a leu.
+        return "por ler: a pagina nao respondeu; abrir no browser"
+    if linha["sujeito_na_pagina"] != "sim":
         return "nao: a pagina nao nomeia o sujeito"
     novo, motivo = avaliar_peca(config, linha, canais_validos)
     if novo is None:
         return f"nao: {motivo}"
     return f"sim: {novo['canal']} a {novo['data']} ({novo['como']})"
+
+
+def sugerir_todas(config: dict, pasta: Path, canais_validos: set[str] | None = None) -> dict:
+    """Reescreve a coluna `sugestao` de todas as linhas da triagem.
+
+    Nao pede nada a rede: le so o que ja esta no CSV. Existe por duas
+    razoes, ambas vistas na corrida de 2026-09-09. A primeira e um defeito:
+    o `--verificar` so escrevia a sugestao das paginas que visitou nessa
+    corrida, e as 150 linhas ja verificadas numa sessao anterior e as 124
+    que nao responderam ficaram com a coluna vazia, precisamente as que
+    mais precisam de um motivo escrito. A segunda e o ciclo de trabalho:
+    depois de preencher `canal` ou `data_emissao` a mao no Excel, correr
+    isto diz logo se a linha passa a entrar, sem esperar por outra volta
+    de rede.
+    """
+    caminho = pasta / "triagem.csv"
+    if not caminho.exists():
+        raise SystemExit("nao ha triagem.csv: correr primeiro com --triar")
+    with caminho.open(encoding="utf-8-sig", newline="") as f:
+        linhas = list(csv.DictReader(f))
+    if canais_validos is None:
+        canais_validos = set(carregar_config().canais)
+    resumo = {"linhas": len(linhas), "sim": 0, "nao": 0, "por_ler": 0, "do_canal": 0, "ja_decididas": 0}
+    motivos: dict[str, int] = {}
+    for linha in linhas:
+        sugestao = sugerir(config, linha, canais_validos)
+        linha["sugestao"] = sugestao
+        if linha.get("decisao"):
+            resumo["ja_decididas"] += 1
+        if sugestao.startswith("sim"):
+            resumo["sim"] += 1
+        elif sugestao.startswith("por ler"):
+            resumo["por_ler"] += 1
+        elif sugestao.startswith("prova do canal"):
+            resumo["do_canal"] += 1
+        elif sugestao.startswith("nao"):
+            resumo["nao"] += 1
+            motivo = sugestao[5:].split(";")[0]
+            motivos[motivo] = motivos.get(motivo, 0) + 1
+    gravar_triagem(pasta, linhas)
+    # Os motivos ordenados dizem onde esta o trabalho: um motivo que domina
+    # e um sinal de que ha uma regra a cortar de mais, nao 600 pecas mas.
+    for motivo, quantas in sorted(motivos.items(), key=lambda p: -p[1]):
+        print(f"  {quantas:4d}  {motivo}", flush=True)
+    return resumo
 
 
 def verificar(config: dict, pasta: Path, sujeito=None, canais_validos: set[str] | None = None, obter=obter_texto, dormir=time.sleep) -> dict:
@@ -747,12 +798,15 @@ def verificar(config: dict, pasta: Path, sujeito=None, canais_validos: set[str] 
                 linha["nota"] = (linha.get("nota") or "") + " a pagina do canal nao nomeia o sujeito"
         if linha["duracao_na_pagina"]:
             resumo["com_duracao"] += 1
-        linha["sugestao"] = sugerir(config, linha, canais_validos)
         print(f"  {i}/{len(linhas)}  {linha['sujeito_na_pagina']:4s} {linha['duracao_na_pagina'] or '-':>6s}  {linha['titulo_na_pagina'][:60]}", flush=True)
         if i % 10 == 0:
             gravar_triagem(pasta, linhas)
         dormir(pausa)
     gravar_triagem(pasta, linhas)
+    # A sugestao escreve-se para todas as linhas, nao so para as visitadas
+    # agora: as de sessoes anteriores e as que nao responderam tambem
+    # precisam do motivo escrito.
+    resumo.update(sugerir_todas(config, pasta, canais_validos))
     return resumo
 
 
@@ -1127,6 +1181,7 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--emitir", action="store_true", help="escrever config/entrevistas.yml a partir das decisoes")
     parser.add_argument("--imprensa", action="store_true", help="com --emitir: escrever config/clipping.yml com as provas de imprensa")
     parser.add_argument("--verificar", action="store_true", help="ler a pagina do canal de cada candidato triado")
+    parser.add_argument("--sugerir", action="store_true", help="reescrever a coluna sugestao sem pedir nada a rede")
     parser.add_argument("--resolver", action="store_true", help="seguir as ligacoes dos candidatos triados ate ao destino")
     parser.add_argument("--limite", type=int, help="com --resolver: parar ao fim de N ligacoes, para sondar")
     parser.add_argument("--tudo", action="store_true", help="com --resolver: resolver a colheita inteira, nao so os triados")
@@ -1151,6 +1206,9 @@ def main(argv: list[str]) -> int:
     elif args.verificar:
         print(f"a verificar candidatos de {pasta}", flush=True)
         resumo = verificar(config, pasta)
+    elif args.sugerir:
+        print(f"a rever as sugestoes de {pasta}", flush=True)
+        resumo = sugerir_todas(config, pasta)
     elif args.triar:
         print(f"a triar {pasta}", flush=True)
         resumo = triar(config, pasta)
