@@ -20,34 +20,4 @@
 #
 # Campos: os mesmos do config/entrevistas.yml.
 
-entrevistas:
-- data: '2021-01-07'
-  canal: tvi
-  programa: Manuel Luís Goucha
-  prova: https://tviplayer.iol.pt/programa/goucha/5fe21c220cf2ec6e471a5d6b/video/5ff737920cf27e103fc93ae1
-  titulo: 'Manuel Luís Goucha: «O André Ventura tem quase uma ciganofobia»'
-  duracao_s: 288
-- data: '2021-01-09'
-  canal: tvi
-  programa: Era um dos debates presidenciais mais aguardados
-  prova: https://tviplayer.iol.pt/programa/jornal-das-8/53c6b3903004dc006243d0cf/video/5ffa0ae40cf27e103fc9b615
-  titulo: 'Era um dos debates presidenciais mais aguardados: o resumo do Ana Gomes vs André Ventura'
-  duracao_s: 175
-- data: '2022-01-12'
-  canal: tvi
-  programa: não apurado
-  prova: https://tviplayer.iol.pt/programa/legislativas-decisao-22/61d414ac0cf2cc58e7daf3b6/video/61df23290cf2cc58e7dcb968
-  titulo: Rodrigues dos Santos cita Papa para promover acolhimento de refugiados, Ventura diz “mete-os na tua casa”
-  duracao_s: 234
-- data: '2022-01-14'
-  canal: tvi
-  programa: não apurado
-  prova: https://tviplayer.iol.pt/programa/legislativas-decisao-22/61d414ac0cf2cc58e7daf3b6/video/61e1f62b0cf2c7ea0f13385d
-  titulo: Caça, touradas e a coelha Acácia. O debate entre André Ventura e Inês de Sousa Real em três minutos
-  duracao_s: 207
-- data: '2024-02-23'
-  canal: tvi
-  programa: André Ventura
-  prova: https://tviplayer.iol.pt/programa/dois-as-10/5fe219a40cf2cc9de7ef9590/video/65d8b8370cf2ee34566e1ed9
-  titulo: 'André Ventura: «Não sou machista»'
-  duracao_s: 91
+entrevistas: []
