@@ -640,6 +640,41 @@ def duracao_no_texto(config: dict, texto: str) -> int | None:
     return None
 
 
+def desescapar(texto: str) -> str:
+    """Desfaz entidades HTML ate o texto estabilizar, no maximo tres vezes.
+
+    Uma pagina real serve o nome com o `&` ja escapado (`Andr&amp;#233;`).
+    Uma passagem so devolve `Andr&#233;`, que foi parar ao registo curado
+    como nome de programa e se ve na pagina de Fontes. Pior do que feio:
+    o nome escapado nao e igual ao nome do sujeito, por isso a regra que
+    recusa usar o nome do convidado como nome do programa nao disparava,
+    e o programa entra na chave do bloco.
+
+    O limite de tres existe para que um texto construido para nunca
+    estabilizar nao prenda a ferramenta.
+    """
+    for _ in range(3):
+        desfeito = html.unescape(texto)
+        if desfeito == texto:
+            break
+        texto = desfeito
+    return texto
+
+
+def anotar(linha: dict, texto: str) -> None:
+    """Acrescenta uma nota a linha, uma vez so.
+
+    Cada corrida do `--verificar` acrescentava a nota outra vez: a mesma
+    mensagem de 403 apareceu seis vezes na mesma celula, que passou a ser
+    ilegivel precisamente nas linhas que mais precisam de explicacao. A
+    nota diz o que se sabe da linha, nao quantas vezes se tentou.
+    """
+    notas = [n for n in (linha.get("nota") or "").split(" | ") if n.strip()]
+    if texto not in notas:
+        notas.append(texto)
+    linha["nota"] = " | ".join(notas)
+
+
 def programa_do_titulo(config: dict, titulo: str) -> str:
     """Parte do titulo antes do primeiro separador. Os canais escrevem
     "Programa - Convidado - ep. N". Os separadores vivem em YAML, como no
@@ -659,18 +694,23 @@ def verificar_pagina(config: dict, html_texto: str, url: str, sujeito) -> dict:
     o extrator que ja existe, sem seletores de nenhum site.
     """
     dados = extracao.extrair(html_texto, url)
-    texto = f"{dados.get('titulo', '')} {dados.get('descricao', '')} {' '.join(dados.get('etiquetas') or [])}"
+    # Desescapar antes de tudo: o nome do programa deduz-se do titulo, e um
+    # titulo escapado da um nome de programa escapado, que entra na chave
+    # do bloco.
+    titulo_limpo = desescapar(dados.get("titulo") or "")
+    descricao_limpa = desescapar(dados.get("descricao") or "")
+    texto = f"{titulo_limpo} {descricao_limpa} {' '.join(dados.get('etiquetas') or [])}"
     duracao = dados.get("duracao_s") or duracao_no_texto(config, extracao.texto_visivel(html_texto))
     return {
         "sujeito_na_pagina": "sim" if sujeito.aparece_em(texto) else "nao",
         "duracao_na_pagina": "" if not duracao else str(duracao),
-        "programa_na_pagina": programa_do_titulo(config, dados.get("titulo") or ""),
+        "programa_na_pagina": programa_do_titulo(config, titulo_limpo),
         "data_na_pagina": dados.get("publicado_em", "") or "",
-        "titulo_na_pagina": " ".join(html.unescape(dados.get("titulo") or "").split())[:200],
+        "titulo_na_pagina": " ".join(titulo_limpo.split())[:200],
         # O lead da peca. Numa pagina de imprensa e onde esta escrito "esteve
         # ontem no <programa> do <canal> numa entrevista", que o titulo, quase
         # sempre uma citacao, nao diz. E o que `--emitir --imprensa` le.
-        "descricao_na_pagina": " ".join(html.unescape(dados.get("descricao") or "").split())[:400],
+        "descricao_na_pagina": " ".join(descricao_limpa.split())[:400],
     }
 
 
@@ -773,7 +813,7 @@ def verificar(config: dict, pasta: Path, sujeito=None, canais_validos: set[str] 
             continue
         url = linha.get("prova_url") or finais.get(linha["url_google"]) or resolver_url(linha["url_google"])
         if not url:
-            linha["nota"] = (linha.get("nota") or "") + " ligacao por resolver"
+            anotar(linha, "ligacao por resolver")
             resumo["sem_pagina"] += 1
             print(f"  {i}/{len(linhas)}  sem ligacao", flush=True)
             dormir(pausa)
@@ -782,7 +822,7 @@ def verificar(config: dict, pasta: Path, sujeito=None, canais_validos: set[str] 
         try:
             html_texto = obter(url)
         except ErroDeRede as exc:
-            linha["nota"] = (linha.get("nota") or "") + f" pagina nao respondeu: {exc}"
+            anotar(linha, f"pagina nao respondeu: {exc}")
             resumo["sem_pagina"] += 1
             print(f"  {i}/{len(linhas)}  falhou {url[:70]}", flush=True)
             dormir(pausa)
@@ -795,7 +835,7 @@ def verificar(config: dict, pasta: Path, sujeito=None, canais_validos: set[str] 
             resumo["sem_sujeito"] += 1
             if not linha.get("decisao"):
                 linha["decisao"] = "nao"
-                linha["nota"] = (linha.get("nota") or "") + " a pagina do canal nao nomeia o sujeito"
+                anotar(linha, "a pagina do canal nao nomeia o sujeito")
         if linha["duracao_na_pagina"]:
             resumo["com_duracao"] += 1
         print(f"  {i}/{len(linhas)}  {linha['sujeito_na_pagina']:4s} {linha['duracao_na_pagina'] or '-':>6s}  {linha['titulo_na_pagina'][:60]}", flush=True)

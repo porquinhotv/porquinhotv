@@ -765,6 +765,30 @@ class TestProvaDeImprensa(unittest.TestCase):
         self.assertEqual(saida, [])
         self.assertIn("noutro periodo", avisos[0])
 
+    def test_nome_duplamente_escapado_nao_vira_nome_de_programa(self):
+        """Entrada real: uma pagina do NOW serve o nome com o & escapado
+        (`Andr&amp;#233;`). Uma passagem so devolvia `Andr&#233;`, que
+        chegou ao registo como nome de programa e se ve na pagina de
+        Fontes. Como o nome escapado nao e igual ao do sujeito, a regra que
+        recusa usar o nome do convidado como programa nao disparava."""
+        pagina = ('<html><head><meta property="og:title" '
+                  'content="Pessoa Exemplo: primeira entrevista hoje no Canal Not&amp;#237;cias">'
+                  '</head><body></body></html>')
+        dados = gnews.verificar_pagina(CONFIG, pagina, "https://jornal.exemplo/p", self.SujeitoFalso())
+        self.assertNotIn("&#", dados["titulo_na_pagina"])
+        self.assertNotIn("&#", dados["programa_na_pagina"])
+
+    def test_a_mesma_nota_nao_se_repete_a_cada_corrida(self):
+        """A celula de uma linha do Expresso tinha a mesma mensagem de 403
+        seis vezes, uma por corrida do --verificar, e ficou ilegivel
+        precisamente onde o motivo escrito e mais preciso."""
+        linha = {}
+        for _ in range(6):
+            gnews.anotar(linha, "pagina nao respondeu: HTTP Error 403")
+        self.assertEqual(linha["nota"], "pagina nao respondeu: HTTP Error 403")
+        gnews.anotar(linha, "ligacao por resolver")
+        self.assertEqual(linha["nota"], "pagina nao respondeu: HTTP Error 403 | ligacao por resolver")
+
     def test_pagina_por_ler_nao_e_avaliada_pelo_titulo_do_indice(self):
         """Entrada real: a peca do Expresso de 2026-02-05, cuja pagina
         responde 403. Sem lead, a avaliacao lia so o titulo do indice e

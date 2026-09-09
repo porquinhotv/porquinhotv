@@ -13,3 +13,7 @@ kb/
 # Nunca versionados: tem caminhos locais e o ritmo de trabalho de uma pessoa.
 /gn*.xml
 *.csv
+
+# Patches entregues a mao. Ficam na pasta do repositorio e ja foi
+# assim que um deles acabou commitado por engano.
+*.patch
