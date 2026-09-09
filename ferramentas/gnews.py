@@ -511,21 +511,47 @@ def agrupar(config: dict, linhas: list[dict], sujeito) -> list[dict]:
     """
     retidas = []
     for linha in linhas:
-        formato = linha.get("formato_no_titulo", "")
-        tem_formato = "entrevista" in formato
-        tem_sujeito = sujeito.aparece_em(linha.get("titulo", ""))
-        tem_canal = bool(linha.get("canal_por_fonte") or linha.get("canal_no_titulo"))
-        pela_consulta = "entrevista" in normalizar(linha.get("consultas") or "")
-        if tem_formato and tem_sujeito and tem_canal:
-            grupo = "sujeito"
-        elif tem_formato and not tem_sujeito and linha.get("canal_por_fonte"):
-            grupo = "programa"
-        elif tem_sujeito and not linha.get("canal_por_fonte") and (tem_formato or pela_consulta):
-            grupo = "imprensa"
-        else:
+        grupo = grupo_da_linha(linha, sujeito)
+        if not grupo:
             continue
         retidas.append({**linha, "grupo": grupo})
     return sorted(retidas, key=lambda l: (l.get("data") or "9999", l.get("grupo") or "", l.get("fonte") or ""))
+
+
+def grupo_da_linha(linha: dict, sujeito) -> str:
+    """O grupo de uma linha da colheita, ou vazio se fica de fora.
+
+    Vive fora do `agrupar` para que o relatorio de rendimento decida com
+    esta regra e nao com uma copia dela: uma segunda copia diria numeros
+    que a triagem nao produz, e um numero que nao bate com o ficheiro e
+    pior do que numero nenhum.
+    """
+    tem_formato = "entrevista" in linha.get("formato_no_titulo", "")
+    tem_sujeito = sujeito.aparece_em(linha.get("titulo", ""))
+    tem_canal = bool(linha.get("canal_por_fonte") or linha.get("canal_no_titulo"))
+    pela_consulta = "entrevista" in normalizar(linha.get("consultas") or "")
+    if tem_formato and tem_sujeito and tem_canal:
+        return "sujeito"
+    if tem_formato and not tem_sujeito and linha.get("canal_por_fonte"):
+        return "programa"
+    if tem_sujeito and not linha.get("canal_por_fonte") and (tem_formato or pela_consulta):
+        return "imprensa"
+    return ""
+
+
+def falta_so_o_sinal_na_consulta(linha: dict, sujeito) -> bool:
+    """A linha ficaria no grupo da imprensa se a consulta que a trouxe
+    tivesse a palavra do formato.
+
+    Nomeia o sujeito, a fonte nao e um canal, e nem o titulo nem a
+    consulta dizem entrevista. Contar estas linhas mede o tecto do que
+    consultas novas podem recuperar da colheita que ja esta no disco: se
+    uma consulta nova trouxer o mesmo endereco, o `juntar` acrescenta-a a
+    coluna e a linha passa a entrar na triagem sem uma unica pagina nova.
+    """
+    if grupo_da_linha(linha, sujeito):
+        return False
+    return grupo_da_linha({**linha, "consultas": "entrevista"}, sujeito) == "imprensa"
 
 
 def fundir_triagem(retidas: list[dict], anteriores: list[dict]) -> list[dict]:
@@ -723,6 +749,107 @@ def triar(config: dict, pasta: Path) -> dict:
     for linha in retidas:
         contagem[linha["grupo"]] = contagem.get(linha["grupo"], 0) + 1
     return {"colhidas": len(linhas), "retidas": len(retidas), **contagem}
+
+
+# --- rendimento das consultas ----------------------------------------------
+
+
+def chave_de_prova(url: str) -> str:
+    """Endereco reduzido ao que identifica a peca, para casar a prova
+    publicada com a linha da triagem que a trouxe. O mesmo endereco
+    aparece com e sem `www`, com e sem barra final."""
+    valor = (url or "").strip().lower()
+    for prefixo in ("https://", "http://"):
+        if valor.startswith(prefixo):
+            valor = valor[len(prefixo):]
+    if valor.startswith("www."):
+        valor = valor[4:]
+    return valor.rstrip("/")
+
+
+def provas_do_registo(*caminhos: Path) -> set[str]:
+    provas = set()
+    for caminho in caminhos:
+        if not caminho.exists():
+            continue
+        dados = yaml.safe_load(caminho.read_text(encoding="utf-8")) or {}
+        for linha in dados.get("entrevistas") or []:
+            if linha.get("prova"):
+                provas.add(chave_de_prova(str(linha["prova"])))
+    return provas
+
+
+def rendimento(config: dict, pasta: Path, sujeito=None, provas: set[str] | None = None) -> dict:
+    """Quanto rende cada consulta, medido na colheita que ja existe.
+
+    Nao pede nada a rede. Existe para responder antes de gastar horas: uma
+    consulta nova so paga se trouxer linhas que nenhuma das outras traz, e
+    uma consulta apertada com os mesmos termos de uma consulta larga que ja
+    correu e um subconjunto dela, logo traz zero. A coluna que decide e a
+    das exclusivas: se uma consulta so repete o que as outras ja trouxeram,
+    tirar a consulta nao custa uma linha.
+
+    A ultima contagem e a que interessa para decidir consultas novas: as
+    linhas que ficaram de fora da triagem so porque a consulta que as
+    trouxe nao tinha a palavra do formato. Essas ja estao colhidas e
+    recuperam-se sem uma unica pagina nova.
+    """
+    linhas = list(ler_csv(pasta).values())
+    if not linhas:
+        raise SystemExit("nao ha candidatos.csv: correr primeiro a colheita")
+    if sujeito is None:
+        sujeito = carregar_config().sujeito
+    if provas is None:
+        provas = provas_do_registo(FICHEIRO_ENTREVISTAS, FICHEIRO_CLIPPING)
+
+    triadas: dict[str, dict] = {}
+    caminho = pasta / "triagem.csv"
+    if caminho.exists():
+        with caminho.open(encoding="utf-8-sig", newline="") as f:
+            triadas = {l["url_google"]: l for l in csv.DictReader(f) if l.get("url_google")}
+
+    campos = ("trazidas", "so_ela", "triadas", "so_ela_triadas", "publicadas", "so_ela_publicadas")
+    contas: dict[str, dict] = {}
+    fora_por_sinal = 0
+    for linha in linhas:
+        consultas = [c for c in (linha.get("consultas") or "").split(" | ") if c]
+        sozinha = len(consultas) == 1
+        triada = triadas.get(linha.get("url_google") or "")
+        publicada = bool(triada) and chave_de_prova(triada.get("prova_url", "")) in provas
+        if triada is None and falta_so_o_sinal_na_consulta(linha, sujeito):
+            fora_por_sinal += 1
+        for consulta in consultas:
+            conta = contas.setdefault(consulta, dict.fromkeys(campos, 0))
+            conta["trazidas"] += 1
+            conta["so_ela"] += sozinha
+            conta["triadas"] += triada is not None
+            conta["so_ela_triadas"] += triada is not None and sozinha
+            conta["publicadas"] += publicada
+            conta["so_ela_publicadas"] += publicada and sozinha
+
+    ordenadas = sorted(
+        contas.items(),
+        key=lambda p: (-p[1]["so_ela_publicadas"], -p[1]["so_ela_triadas"], -p[1]["so_ela"], p[0]),
+    )
+    print("  trazidas  so ela  triadas  so ela  provas  so ela  consulta", flush=True)
+    for consulta, c in ordenadas:
+        print(
+            f"  {c['trazidas']:8d}  {c['so_ela']:6d}  {c['triadas']:7d}  {c['so_ela_triadas']:6d}"
+            f"  {c['publicadas']:6d}  {c['so_ela_publicadas']:6d}  {consulta}",
+            flush=True,
+        )
+    mudas = [c for c in (config.get("consultas") or []) if c not in contas]
+    for consulta in mudas:
+        print(f"  nunca correu ou nunca trouxe nada: {consulta}", flush=True)
+    print(f"  fora do funil so por falta do sinal na consulta: {fora_por_sinal}", flush=True)
+    return {
+        "linhas": len(linhas),
+        "consultas": len(contas),
+        "mudas": len(mudas),
+        "triadas": len(triadas),
+        "provas_no_registo": len(provas),
+        "fora_por_sinal_da_consulta": fora_por_sinal,
+    }
 
 
 # --- verificacao na pagina do canal ----------------------------------------
@@ -1597,6 +1724,7 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--canal", action="store_true", help="com --emitir: escrever config/paginas_de_canal.yml com as provas de canal que ninguem leu")
     parser.add_argument("--verificar", action="store_true", help="ler a pagina do canal de cada candidato triado")
     parser.add_argument("--sugerir", action="store_true", help="reescrever a coluna sugestao sem pedir nada a rede")
+    parser.add_argument("--rendimento", action="store_true", help="quanto rende cada consulta na colheita que ja existe, sem pedir nada a rede")
     parser.add_argument("--resolver", action="store_true", help="seguir as ligacoes dos candidatos triados ate ao destino")
     parser.add_argument("--mapa", action="store_true", help="acrescentar a triagem as pecas cujo endereco nomeia o sujeito, pelos mapas de sitio")
     parser.add_argument("--limite", type=int, help="com --resolver ou --mapa: parar ao fim de N, para medir antes de gastar")
@@ -1634,6 +1762,9 @@ def main(argv: list[str]) -> int:
     elif args.sugerir:
         print(f"a rever as sugestoes de {pasta}", flush=True)
         resumo = sugerir_todas(config, pasta)
+    elif args.rendimento:
+        print(f"a medir o rendimento das consultas em {pasta}", flush=True)
+        resumo = rendimento(config, pasta)
     elif args.mapa:
         print(f"a colher os mapas de sitio para {pasta}", flush=True)
         resumo = colher_mapas(config, pasta, limite=args.limite)

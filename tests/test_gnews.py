@@ -5,7 +5,9 @@ duplicado por duas consultas contado duas vezes, e a pasta de saida a
 cair dentro do repositorio. O resto e leitura de XML.
 """
 
+import contextlib
 import csv
+import io
 import tempfile
 import unittest
 import unittest.mock
@@ -1272,6 +1274,87 @@ class TestTriagem(unittest.TestCase):
         self.assertEqual(resumo["imprensa"], 1)
         self.assertEqual(linhas[0]["decisao"], "sim")
         self.assertEqual(linhas[0]["prova_url"], "https://jornal.exemplo/p")
+
+
+class TestRendimento(unittest.TestCase):
+    """O relatorio que decide se vale a pena colher com uma consulta nova.
+
+    Sem ele, a escolha de consultas e feita por intuicao: foi assim que se
+    propos alargar a via da imprensa com consultas apertadas nos mesmos
+    termos de consultas largas que ja tinham corrido, que sao
+    subconjuntos delas e trazem zero linhas novas.
+    """
+
+    class SujeitoFalso:
+        def aparece_em(self, texto):
+            return "pessoa exemplo" in (texto or "").lower()
+
+    def _linha(self, url, titulo, consultas, fonte="Jornal Exemplo", canal_por_fonte="", formato=""):
+        return {
+            "data": "2026-06-24", "titulo": titulo, "fonte": fonte,
+            "dominio_fonte": "jornal.exemplo", "canal_por_fonte": canal_por_fonte,
+            "canal_no_titulo": "", "formato_no_titulo": formato,
+            "url_google": url, "url_final": "", "consultas": consultas, "janelas": "2026-06",
+        }
+
+    def _pasta(self, tmp, linhas, triagem=()):
+        pasta = Path(tmp)
+        gnews.gravar_csv(pasta, {l["url_google"]: l for l in linhas})
+        if triagem:
+            gnews.gravar_triagem(pasta, list(triagem))
+        return pasta
+
+    def test_prova_publicada_e_atribuida_a_consulta_que_so_ela_trouxe(self):
+        """A coluna que autoriza tirar uma consulta. Uma consulta com zero
+        exclusivas nao custa uma linha; com uma, custa essa."""
+        linhas = [self._linha("u1", "Pessoa Exemplo fala do pais", "consulta A")]
+        triagem = [{**linhas[0], "grupo": "imprensa", "prova_url": "https://jornal.exemplo/peca"}]
+        with tempfile.TemporaryDirectory() as tmp:
+            pasta = self._pasta(tmp, linhas, triagem)
+            resumo = gnews.rendimento(
+                CONFIG, pasta, sujeito=self.SujeitoFalso(),
+                provas={"jornal.exemplo/peca"},
+            )
+        self.assertEqual(resumo["consultas"], 1)
+        self.assertEqual(resumo["provas_no_registo"], 1)
+
+    def test_linha_trazida_por_duas_consultas_nao_e_exclusiva_de_nenhuma(self):
+        """Somar a mesma linha as duas consultas como exclusiva dava um
+        rendimento inventado: nenhuma das duas a traz sozinha."""
+        linhas = [self._linha("u1", "Pessoa Exemplo em entrevista", "consulta A | consulta B", formato="entrevista")]
+        with tempfile.TemporaryDirectory() as tmp:
+            pasta = self._pasta(tmp, linhas)
+            saida = io.StringIO()
+            with contextlib.redirect_stdout(saida):
+                gnews.rendimento(CONFIG, pasta, sujeito=self.SujeitoFalso(), provas=set())
+        for linha in saida.getvalue().splitlines():
+            if "consulta A" in linha or "consulta B" in linha:
+                self.assertEqual(linha.split()[:2], ["1", "0"])
+
+    def test_conta_as_linhas_que_so_o_sinal_na_consulta_deixou_de_fora(self):
+        """O tecto do que consultas novas recuperam sem pedir nada a rede:
+        a linha ja esta colhida e so nao entrou porque a consulta que a
+        trouxe nao trazia a palavra do formato."""
+        linhas = [
+            self._linha("u1", "Pessoa Exemplo diz que o pais precisa de mudanca", "consulta sem a palavra"),
+            self._linha("u2", "Outra gente qualquer", "consulta sem a palavra"),
+        ]
+        with tempfile.TemporaryDirectory() as tmp:
+            pasta = self._pasta(tmp, linhas)
+            with contextlib.redirect_stdout(io.StringIO()):
+                resumo = gnews.rendimento(CONFIG, pasta, sujeito=self.SujeitoFalso(), provas=set())
+        self.assertEqual(resumo["fora_por_sinal_da_consulta"], 1)
+
+    def test_consulta_da_configuracao_que_nunca_trouxe_nada_e_dita(self):
+        """Uma consulta muda e tempo de colheita gasto a cada corrida.
+        Fica escrita, para se poder tirar."""
+        linhas = [self._linha("u1", "Pessoa Exemplo em entrevista", "consulta A", formato="entrevista")]
+        config = {**CONFIG, "consultas": ["consulta A", "consulta que nunca trouxe nada"]}
+        with tempfile.TemporaryDirectory() as tmp:
+            pasta = self._pasta(tmp, linhas)
+            with contextlib.redirect_stdout(io.StringIO()):
+                resumo = gnews.rendimento(config, pasta, sujeito=self.SujeitoFalso(), provas=set())
+        self.assertEqual(resumo["mudas"], 1)
 
 
 
