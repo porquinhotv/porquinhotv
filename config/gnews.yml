@@ -24,32 +24,70 @@ parametros:
   gl: PT
   ceid: 'PT:pt-150'
 
-# Varias consultas por janela, unidas e deduplicadas. A primeira e a
-# solta que se sondou; as outras apertam com aspas. Uma consulta nova
+# Varias consultas por janela, unidas e deduplicadas. Uma consulta nova
 # junta-se aqui e a colheita repete-se so para ela: o estado guarda o que
-# ja foi pedido por consulta e por janela.
+# ja foi pedido por consulta e por janela, e uma corrida interrompida
+# retoma onde ficou.
+#
+# Rendimento medido a 2026-09-09 com `--rendimento`, sobre 3202 linhas
+# colhidas, 861 triadas e 45 provas publicadas. Tres coisas que a medicao
+# mostrou, e que explicam a forma desta lista:
+#
+# 1. Uma consulta apertada nos mesmos termos de uma consulta larga que ja
+#    correu NAO e redundante. O indice devolve uma amostra ordenada por
+#    relevancia, nao o conjunto todo: a consulta com a frase feita esta
+#    logicamente contida na consulta larga e mesmo assim trouxe 38 linhas
+#    que nenhuma outra trouxe, e a que junta o nome de um canal trouxe
+#    130. Cada consulta e uma amostra diferente do mesmo indice.
+# 2. O que nao paga e repetir os mesmos termos noutra ordem. As duas
+#    consultas que tinham os termos do programa de entrevistas trouxeram
+#    260 e 263 linhas e so 1 e 4 exclusivas: eram a mesma amostra. Uma
+#    saiu, e ha teste que impede que volte.
+# 3. Uma consulta sem a palavra do formato converte mal. As consultas com
+#    nome de programa retiveram 3% a 10% do que trouxeram; as que trazem
+#    a palavra retiveram 27% a 55%. E o `agrupar` a fazer o que deve: sem
+#    a palavra na consulta, so entra a linha que a tem no titulo. Por
+#    isso as consultas de programa aparecem aqui outra vez, agora com a
+#    palavra, sem que as antigas saiam: ja foram pedidas e nao custam
+#    nada a manter.
 consultas:
   # Consultas gerais. Apanham o que a imprensa e os canais titulam com a
   # palavra, que e a maioria das emissoes recentes.
   - 'André Ventura entrevista'
   - '"André Ventura" "entrevista exclusiva"'
-  - '"André Ventura" "grande entrevista"'
   - '"entrevista a André Ventura"'
   - '"André Ventura" entrevistado'
-  # Consultas por canal. A primeira colheita mostrou que os anos de 2019
-  # a 2023 quase nao trazem emissoes: 33 pecas de 2019 nomeiam o sujeito
-  # no titulo e nenhuma lhe chama entrevista. Amarrar a consulta ao nome
-  # do canal apanha os titulos que dizem "em entrevista a X" sem que a
-  # peca seja do proprio canal.
+  # Formas da palavra. Medido: `entrevistado` foi a consulta que mais
+  # linhas exclusivas poe na triagem, 129, e prova uma linha publicada que
+  # mais nenhuma prova. Uma forma diferente da palavra e uma amostra
+  # diferente; estas quatro nao tinham sido pedidas.
+  - '"André Ventura" entrevistou'
+  - '"André Ventura" entrevistas'
+  - '"André Ventura" "deu uma entrevista"'
+  - '"André Ventura" "numa entrevista"'
+  # Consultas por canal. Amarrar a consulta ao nome do canal apanha os
+  # titulos que dizem "em entrevista a X" sem que a peca seja do proprio
+  # canal. Medido: entre 28 e 162 linhas exclusivas cada.
   - '"André Ventura" entrevista RTP'
   - '"André Ventura" entrevista SIC'
   - '"André Ventura" entrevista TVI'
   - '"André Ventura" entrevista CNN'
   - '"André Ventura" entrevista CMTV'
   - '"André Ventura" entrevista NOW'
+  # As marcas por extenso e os leitores. O indice trata cada uma como um
+  # termo proprio, e nenhuma delas tinha sido pedida: uma peca que so
+  # escreve o nome comprido do canal nao entra por nenhuma das de cima.
+  - '"André Ventura" entrevista "SIC Notícias"'
+  - '"André Ventura" entrevista "CNN Portugal"'
+  - '"André Ventura" entrevista "RTP Play"'
+  - '"André Ventura" entrevista "TVI Player"'
+  - '"André Ventura" entrevista TVI24'
+  - '"André Ventura" entrevista "Correio da Manhã"'
   # Consultas por programa e por entrevistador. Um canal titula o
   # episodio pelo nome do programa e deixa o convidado so na sinopse, que
-  # o indice nao traz; sem estas, essas emissoes nunca aparecem.
+  # o indice nao traz; sem estas, essas emissoes nunca aparecem. Medido:
+  # convertem mal sozinhas, mas a do noticiario da noite prova duas
+  # linhas publicadas que mais nenhuma consulta prova.
   - '"Grande Entrevista" "André Ventura"'
   - '"Jornal Nacional" "André Ventura"'
   - '"Jornal da Noite" "André Ventura"'
@@ -58,6 +96,20 @@ consultas:
   - '"Dois às 10" "André Ventura"'
   - '"Alta Definição" "André Ventura"'
   - '"Casa Feliz" "André Ventura"'
+  # As mesmas com a palavra do formato, pela razao 3 acima, mais quatro
+  # programas que nunca foram pedidos.
+  - '"Grande Entrevista" "André Ventura" entrevista exclusiva'
+  - '"Jornal Nacional" "André Ventura" entrevista'
+  - '"Jornal da Noite" "André Ventura" entrevista'
+  - '"Grande Jornal" "André Ventura" entrevista'
+  - 'Goucha "André Ventura" entrevista'
+  - '"Dois às 10" "André Ventura" entrevista'
+  - '"Alta Definição" "André Ventura" entrevista'
+  - '"Casa Feliz" "André Ventura" entrevista'
+  - '"Jornal das 8" "André Ventura" entrevista'
+  - '"Diário da Manhã" "André Ventura" entrevista'
+  - '"Olá, Bom Dia" "André Ventura" entrevista'
+  - '"Bom Dia Portugal" "André Ventura" entrevista'
 
 # Janela de um mes. Quando uma consulta numa janela devolve `limiar_divisao`
 # itens ou mais, esta a bater no teto do RSS e a janela e dividida em duas

@@ -20,7 +20,7 @@ from tests.apoio import RAIZ, ler
 import yaml
 
 from ferramentas import gnews
-from recolha.modelos import ProvaDeFormato, Sujeito
+from recolha.modelos import ProvaDeFormato, Sujeito, carregar_config, normalizar
 from recolha.rede import ErroDeRede
 
 CONFIG = {
@@ -684,7 +684,7 @@ class TestMapasDeSitio(unittest.TestCase):
         detetar = ("Pessoa Exemplo",)
 
         def aparece_em(self, texto):
-            from recolha.modelos import ProvaDeFormato, Sujeito, contem_palavra
+            from recolha.modelos import ProvaDeFormato, Sujeito, carregar_config, normalizar, contem_palavra
             return contem_palavra(texto, self.detetar) is not None
 
     def _obter(self, url):
@@ -1355,6 +1355,37 @@ class TestRendimento(unittest.TestCase):
             with contextlib.redirect_stdout(io.StringIO()):
                 resumo = gnews.rendimento(config, pasta, sujeito=self.SujeitoFalso(), provas=set())
         self.assertEqual(resumo["mudas"], 1)
+
+
+class TestConsultasDaConfiguracaoReal(unittest.TestCase):
+    """As consultas sao a entrada do funil: um erro aqui nao da erro
+    nenhum, so faz a colheita gastar horas a trazer o que ja tinha."""
+
+    def setUp(self):
+        self.consultas = gnews.carregar().get("consultas") or []
+
+    def test_cada_consulta_nomeia_o_sujeito(self):
+        """Uma linha so entra na triagem se o titulo nomear o sujeito.
+        Uma consulta que nao o nomeia traz peças que o funil deita fora
+        todas, e paga-se na mesma o tempo de as pedir."""
+        sujeito = carregar_config().sujeito
+        for consulta in self.consultas:
+            with self.subTest(consulta=consulta):
+                self.assertTrue(sujeito.aparece_em(consulta))
+
+    def test_nao_ha_duas_consultas_com_o_mesmo_conjunto_de_termos(self):
+        """Medido a 2026-09-09: as duas consultas que tinham os mesmos
+        termos por ordens diferentes trouxeram 260 e 263 linhas e so 1 e
+        4 exclusivas. Sao a mesma amostra do indice e a segunda custa
+        cerca de 89 pedidos por corrida para repetir a primeira. Termos
+        diferentes, sim: a que junta o nome de um canal trouxe 130 linhas
+        que mais nenhuma trouxe."""
+        vistos: dict[frozenset, str] = {}
+        for consulta in self.consultas:
+            termos = frozenset(normalizar(consulta).split())
+            anterior = vistos.get(termos)
+            self.assertIsNone(anterior, f"{consulta!r} repete os termos de {anterior!r}")
+            vistos[termos] = consulta
 
 
 
