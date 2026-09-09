@@ -580,6 +580,11 @@ class TestProvaDeImprensa(unittest.TestCase):
         base = {
             "decisao": "sim",
             "prova_url": self.PECA,
+            # A pagina foi lida: e o que distingue uma peca avaliavel de
+            # uma que so tem o titulo do indice. Sem isto, todas as linhas
+            # destes testes eram "por ler", que e o estado real das 112
+            # que nao responderam.
+            "sujeito_na_pagina": "sim",
             "data_na_pagina": "2026-06-23",
             "titulo_na_pagina": "\"A idade da reforma tinha de descer\": Pessoa Exemplo justifica voto contra",
             "descricao_na_pagina": "Pessoa Exemplo esteve esta segunda-feira no Grande Programa do Canal Notícias numa entrevista exclusiva.",
@@ -759,6 +764,34 @@ class TestProvaDeImprensa(unittest.TestCase):
         saida, avisos = self._emitir([linha])
         self.assertEqual(saida, [])
         self.assertIn("noutro periodo", avisos[0])
+
+    def test_pagina_por_ler_nao_e_avaliada_pelo_titulo_do_indice(self):
+        """Entrada real: a peca do Expresso de 2026-02-05, cuja pagina
+        responde 403. Sem lead, a avaliacao lia so o titulo do indice e
+        recusava-a com um motivo que nao era o dela. Com um titulo do
+        genero de "primeira entrevista hoje na CMTV" teria feito pior:
+        publicava uma emissao a partir de uma pagina que ninguem abriu."""
+        linha = self._linha(
+            sujeito_na_pagina="",
+            titulo_na_pagina="",
+            descricao_na_pagina="",
+            data_na_pagina="",
+            data="2026-01-20",
+            titulo="Pessoa Exemplo: primeira entrevista hoje no Canal Notícias",
+        )
+        novo, motivo = gnews.avaliar_peca(self.CONFIG_I, linha, self.CANAIS)
+        self.assertIsNone(novo)
+        self.assertEqual(motivo, gnews.MOTIVO_POR_LER)
+        self.assertEqual(self._emitir([linha])[0], [])
+
+    def test_a_sugestao_e_a_emissao_leem_a_mesma_linha_da_mesma_maneira(self):
+        """A docstring do `avaliar_peca` prometia uma so leitura das
+        regras. Era falso para as 112 linhas por ler: o `sugerir` parava e
+        dizia "por ler", o `emitir_imprensa` avaliava e dizia outra coisa.
+        Uma promessa publicada tem de ser verdadeira."""
+        linha = self._linha(sujeito_na_pagina="", titulo_na_pagina="", descricao_na_pagina="")
+        self.assertEqual(gnews.sugerir(self.CONFIG_I, linha, self.CANAIS), gnews.MOTIVO_POR_LER)
+        self.assertEqual(gnews.avaliar_peca(self.CONFIG_I, linha, self.CANAIS)[1], gnews.MOTIVO_POR_LER)
 
     def test_ano_solto_e_longe_da_palavra_nao_trava_a_leitura(self):
         """Peca real de 2026-06-17: "Na entrevista a <canal>, ontem a noite

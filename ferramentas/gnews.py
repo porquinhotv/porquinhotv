@@ -688,12 +688,12 @@ def sugerir(config: dict, linha: dict, canais_validos: set[str]) -> str:
     """
     if canal_da_prova(config, linha.get("prova_url") or ""):
         return "prova do canal: entra por --emitir"
-    if not linha.get("sujeito_na_pagina"):
-        # A pagina nunca foi lida: 124 das 851 nao responderam a 2026-09-09,
-        # umas a 403 e outras a recusar a maquina. Dizer "nao" aqui era
-        # afirmar que a peca nao prova nada quando o que se sabe e que
-        # ninguem a leu.
-        return "por ler: a pagina nao respondeu; abrir no browser"
+    if pagina_por_ler(linha):
+        # Dizer "nao" aqui era afirmar que a peca nao prova nada quando o
+        # que se sabe e que ninguem a leu. O `avaliar_peca` para no mesmo
+        # sitio, pela mesma guarda, para que as duas leituras nao voltem a
+        # discordar.
+        return MOTIVO_POR_LER
     if linha["sujeito_na_pagina"] != "sim":
         return "nao: a pagina nao nomeia o sujeito"
     novo, motivo = avaliar_peca(config, linha, canais_validos)
@@ -811,6 +811,30 @@ def verificar(config: dict, pasta: Path, sujeito=None, canais_validos: set[str] 
 
 
 # --- geracao do registo curado ---------------------------------------------
+
+
+# Motivo unico para uma peca cuja pagina nunca foi lida. E uma constante
+# porque e escrito em dois sitios, a sugestao e a emissao, e foram esses
+# dois sitios a discordar: ver `pagina_por_ler`.
+MOTIVO_POR_LER = "por ler: a pagina nao respondeu; abrir no browser"
+
+
+def pagina_por_ler(linha: dict) -> bool:
+    """A pagina da peca nunca foi lida, logo nao ha lead para avaliar.
+
+    124 das 851 linhas de 2026-09-09 nao responderam, umas a 403 e outras
+    a recusar a maquina. Ate 2026-09-09 a noite o `sugerir` parava aqui e
+    devolvia "por ler", mas o `emitir_imprensa` avaliava a linha na mesma,
+    so com o titulo que o indice deu. As duas leituras discordavam sobre a
+    mesma linha, e a peca do Expresso de 2026-02-05 saiu recusada com um
+    motivo que nao era o dela.
+
+    Pior do que o motivo errado: um titulo de indice que dissesse o canal,
+    a palavra e o dia bastava para publicar uma emissao a partir de uma
+    pagina que ninguem abriu. "Nao sei" nao e "nao", mas tambem nao e
+    "sim".
+    """
+    return not (linha.get("sujeito_na_pagina") or "").strip()
 
 
 def canal_da_prova(config: dict, url: str) -> str:
@@ -1079,6 +1103,8 @@ def avaliar_peca(config: dict, linha: dict, canais_validos: set[str]) -> tuple[d
     decidir: uma so leitura das regras, para que a sugestao que a pessoa
     ve na triagem seja o que a emissao vai fazer.
 
+      0. ter sido lida. Uma peca cuja pagina nao respondeu nao se avalia
+         pelo titulo que o indice lhe deu: ver `pagina_por_ler`;
       1. nomear um canal, e um so. "Em entrevista a televisao" nao serve;
          duas emissoras no mesmo lead e a pessoa que escolhe (coluna
          `canal`);
@@ -1093,6 +1119,9 @@ def avaliar_peca(config: dict, linha: dict, canais_validos: set[str]) -> tuple[d
          para a frente. A peca que nem relata nem anuncia e que so fixa o
          dia por um nome de semana continua a esperar por uma pessoa.
     """
+    if pagina_por_ler(linha):
+        return None, MOTIVO_POR_LER
+
     prova = (linha.get("prova_url") or "").strip()
     titulo = html.unescape((linha.get("titulo_na_pagina") or linha.get("titulo") or "").strip())
     lead = html.unescape((linha.get("descricao_na_pagina") or "").strip())
