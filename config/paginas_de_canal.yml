@@ -20,4 +20,21 @@
 #
 # Campos: os mesmos do config/entrevistas.yml.
 
-entrevistas: []
+entrevistas:
+- data: '2024-10-12'
+  canal: cmtv
+  programa: não apurado
+  prova: https://www.cmjornal.pt/tv-media/detalhe/canal-now-lider-com-entrevista-a-andre-ventura
+  titulo: Canal NOW líder com entrevista a André Ventura
+- data: '2025-10-18'
+  canal: tvi
+  programa: não apurado
+  prova: https://tviplayer.iol.pt/programa/cnn-sabado/619396070cf21a10a40fd15d/video/68f3f8ef0cf29d28d8296e09
+  titulo: Entrevista. Gabriel Mithá Ribeiro acusa Ventura de "caos narcísico"
+  duracao_s: 1371
+- data: '2026-06-03'
+  canal: tvi
+  programa: não apurado
+  prova: https://tviplayer.iol.pt/programa/cnn-20-horas/69a16fe7d34e28842c8125a9/video/6a1fd4390cf2d0ed34b86072
+  titulo: A entrevista a André Ventura na CNN Portugal na íntegra
+  duracao_s: 902
