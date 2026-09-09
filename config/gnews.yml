@@ -157,7 +157,10 @@ imprensa:
   # leitura e esta: ontem, amanha, dia da semana, hoje.
   ontem: [ontem, na noite de ontem, ontem à noite]
   amanha: [amanhã, amanhã à noite]
-  hoje: [hoje, esta noite, esta tarde, esta manhã, em direto, agora]
+  # "em direto" e "agora" sairam a 2026-09-09: dizem como a emissao passou,
+  # nao quando a peca foi escrita. Uma peca sobre uma entrevista abandonada
+  # "em direto" entrou com a data da peca, que era o dia seguinte.
+  hoje: [hoje, esta noite, esta tarde, esta manhã]
   # Dia da semana: numa peca que relata e o mais recente com esse nome ate
   # ao dia da publicacao, inclusive ("esteve esta segunda-feira" numa peca
   # de terca e a vespera); numa peca que anuncia e o proximo, tambem

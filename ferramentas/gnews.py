@@ -817,6 +817,25 @@ def canal_da_prova(config: dict, url: str) -> str:
     return canal_por_dominio(config, urllib.parse.urlsplit(url).hostname or "")
 
 
+def vetada(linha: dict) -> bool:
+    """Uma linha so fica de fora se alguem escrever uma recusa.
+
+    Ate 2026-09-09 era o contrario: so entrava o que dissesse `sim`, e com
+    a triagem a passar de 150 para 851 linhas isso queria dizer que
+    ninguem escrevia o `sim` e nada entrava. A avaliacao das quatro
+    condicoes passou a ser a decisao, e a coluna `decisao` passou a servir
+    para uma coisa so: travar uma linha que a avaliacao aceitaria. Vale
+    para o veto escrito a mao e para o que o `--verificar` escreve quando
+    a pagina nao nomeia o sujeito.
+
+    Isto vale so para a prova de imprensa. O registo do canal
+    (`--emitir`) continua a exigir `sim` escrito, porque a excecao que lhe
+    permite saltar a prova positiva de formato e as rondas e uma pessoa
+    ter aberto a pagina.
+    """
+    return bool((linha.get("decisao") or "").strip()) and not decidida_sim(linha)
+
+
 def decidida_sim(linha: dict) -> bool:
     """Aceita `sim` como for escrito, com ou sem acentos e maiusculas.
 
@@ -961,6 +980,27 @@ def canais_no_texto(config: dict, texto: str) -> list[str]:
     return encontrados
 
 
+def entrevista_datada_por_extenso(config: dict, texto: str) -> bool:
+    """A peca situa a entrevista noutro periodo, escrito por extenso.
+
+    "Disse em entrevista ao canal em dezembro de 2021 que (...), hoje um
+    novo militante diz outra coisa" tem a palavra do dia numa frase que
+    fala do presente e a entrevista datada a um ano de distancia. Lido
+    pelo marcador, entrava com a data da peca. Quando a frase que fala da
+    entrevista traz um ano, o marcador relativo nao se le: quem escreve
+    "ontem" e quem escreve "em 2021" nao esta a falar do mesmo dia.
+
+    So o ano conta. O nome do mes sozinho aparece nas pecas que datam bem
+    a emissao ("ontem a noite (16 de junho)") e cortar por ele deitava
+    fora linhas certas.
+    """
+    termos = tuple((config.get("marcadores_formato") or {}).get("entrevista") or ())
+    for frase in re.split(r"[.!?\n]+", texto):
+        if contem_palavra(frase, termos) and re.search(r"\b(19|20)\d{2}\b", frase):
+            return True
+    return False
+
+
 def data_de_emissao(config: dict, texto: str, publicado: str) -> tuple[str, str]:
     """O dia da emissao que a peca fixa, a partir do dia em que foi publicada.
 
@@ -990,6 +1030,8 @@ def data_de_emissao(config: dict, texto: str, publicado: str) -> tuple[str, str]
     if not dia:
         return "", ""
     publicado_em = date.fromisoformat(dia)
+    if entrevista_datada_por_extenso(config, texto):
+        return "", "a peca situa a entrevista noutro periodo, por extenso"
     if contem_palavra(texto, tuple(regras.get("ontem") or ())):
         return (publicado_em - timedelta(days=1)).isoformat(), "ontem"
     if contem_palavra(texto, tuple(regras.get("amanha") or ())):
@@ -1125,9 +1167,10 @@ def emitir_imprensa(config: dict, pasta: Path, canais_validos: set[str], ja_no_c
     ja_no_canal = ja_no_canal or set()
 
     avisos: list[str] = []
+    motivos: dict[str, int] = {}
     blocos: dict[tuple[str, str], dict] = {}
     for linha in linhas:
-        if not decidida_sim(linha):
+        if vetada(linha):
             continue
         prova = (linha.get("prova_url") or "").strip()
         if not prova.startswith("http") or canal_da_prova(config, prova):
@@ -1135,7 +1178,15 @@ def emitir_imprensa(config: dict, pasta: Path, canais_validos: set[str], ja_no_c
         novo, motivo = avaliar_peca(config, linha, canais_validos)
         rotulo_linha = html.unescape((linha.get("titulo_na_pagina") or linha.get("titulo") or "").strip())[:60]
         if novo is None:
-            avisos.append(f"{rotulo_linha}: {motivo}")
+            # Uma linha que alguem marcou `sim` e a avaliacao recusa e um
+            # desacordo e sai por inteiro. As outras sao centenas e saem
+            # contadas por motivo: 571 linhas no ecra escondem as que
+            # interessam.
+            if decidida_sim(linha):
+                avisos.append(f"{rotulo_linha}: {motivo}")
+            else:
+                chave_motivo = motivo.split(";")[0]
+                motivos[chave_motivo] = motivos.get(chave_motivo, 0) + 1
             continue
         novo.pop("como", None)
         if (novo["canal"], novo["data"]) in ja_no_canal:
@@ -1150,6 +1201,8 @@ def emitir_imprensa(config: dict, pasta: Path, canais_validos: set[str], ja_no_c
         if antigo is None or _distancia_ao_dia(novo) < _distancia_ao_dia(antigo):
             blocos[chave] = novo
 
+    for motivo, quantas in sorted(motivos.items(), key=lambda p: -p[1]):
+        avisos.append(f"{quantas} pecas: {motivo}")
     avisos.extend(duplicados_provaveis(blocos))
     ordenadas = sorted(blocos.values(), key=lambda l: (l["data"], l["canal"]))
     por_data: dict[str, int] = {}

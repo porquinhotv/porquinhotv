@@ -35,7 +35,8 @@ tema:
   # dataset publicado. Protege de um erro transitorio da recolha (pagina
   # truncada, JSON-LD malformado nesse dia); nao protege de a fonte estar
   # errada, e a Metodologia diz isso por palavras. O registo curado e o
-  # clipping, que sao verificados a mao, entram sem esperar.
+  # clipping entram sem esperar: sao ficheiros do repositorio, lidos
+  # iguais em todas as rondas, e uma segunda ronda so os leria outra vez.
   rondas_para_confirmar: 2
 
 sujeito:
@@ -98,8 +99,11 @@ exclusoes:
 # para a quarentena como `formato_nao_apurado`, que e um motivo
 # verdadeiro: nao se sabe o formato, e nao se publica o que nao se sabe.
 #
-# O registo curado e o clipping nao passam por aqui: uma pessoa leu a
-# pagina e decidiu. Tambem nao passa uma fonte cuja configuracao ja
+# O registo curado nao passa por aqui: uma pessoa leu a pagina e decidiu.
+# O clipping tambem nao, por outra razao: desde 2026-09-09 e gerado
+# automaticamente, e a prova de formato dele e mais exigente do que esta,
+# porque le o titulo e o lead da peca e exige ainda um canal nomeado e um
+# dia fixado. Tambem nao passa uma fonte cuja configuracao ja
 # declare `formato: entrevista` para o programa inteiro (um feed de um
 # programa de entrevistas), porque essa declaracao e a decisao editorial.
 prova_de_formato:

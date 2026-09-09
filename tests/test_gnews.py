@@ -717,6 +717,68 @@ class TestProvaDeImprensa(unittest.TestCase):
         linha = {"prova_url": self.PECA, "titulo": "Pessoa Exemplo em entrevista ao Canal Notícias"}
         self.assertTrue(gnews.sugerir(self.CONFIG_I, linha, self.CANAIS).startswith("por ler"))
 
+    def test_linha_sem_decisao_entra_pela_avaliacao(self):
+        """Ate 2026-09-09 so entrava o que uma pessoa marcasse `sim`. Com a
+        triagem a passar de 150 para 851 linhas ninguem escreve 851 sins, e
+        o `--emitir --imprensa` devolvia zero com a suite toda a passar."""
+        saida, avisos = self._emitir([self._linha(decisao="")])
+        self.assertEqual(avisos, [])
+        self.assertEqual(saida[0]["data"], "2026-06-22")
+
+    def test_recusa_escrita_a_mao_trava_a_linha(self):
+        """A coluna `decisao` deixou de mandar entrar e passou a mandar
+        ficar de fora. Uma recusa e a unica forma de travar uma peca que a
+        avaliacao aceitaria, e vale escrita como for."""
+        for recusa in ("nao", "não", "n"):
+            saida, avisos = self._emitir([self._linha(decisao=recusa)])
+            self.assertEqual((saida, avisos), ([], []), recusa)
+
+    def test_recusas_nao_decididas_saem_contadas_e_nao_uma_a_uma(self):
+        """571 das 851 linhas sao recusadas. Escrever uma linha por cada
+        no ecra escondia o desacordo, que e a peca marcada `sim` a ser
+        recusada pela avaliacao."""
+        muda = [self._linha(decisao="", prova_url=f"https://jornal.exemplo/{i}",
+                            descricao_na_pagina="Pessoa Exemplo esteve esta segunda-feira em entrevista na televisão.")
+                for i in range(3)]
+        explicita = self._linha(decisao="sim", prova_url="https://jornal.exemplo/x",
+                                descricao_na_pagina="Pessoa Exemplo esteve esta segunda-feira em entrevista na televisão.")
+        saida, avisos = self._emitir(muda + [explicita])
+        self.assertEqual(saida, [])
+        self.assertEqual(len(avisos), 2)
+        self.assertTrue(any(a.startswith("3 pecas: nao nomeia o canal") for a in avisos))
+
+    def test_peca_que_data_a_entrevista_a_um_ano_de_distancia_fica_de_fora(self):
+        """Peca real de 2023-03-10: "disse em entrevista ao canal em
+        dezembro de 2021 (...), hoje um novo militante diz outra coisa".
+        O "hoje" fala do presente, nao da entrevista, e a linha entrava com
+        a data da peca. Um ano na frase da entrevista tira a leitura."""
+        linha = self._linha(
+            titulo_na_pagina="O partido perdeu militantes",
+            descricao_na_pagina='Pessoa Exemplo disse em entrevista ao Canal Notícias em dezembro de 2021 que tinha 40.000 militantes, hoje um novo militante diz outra coisa.',
+        )
+        saida, avisos = self._emitir([linha])
+        self.assertEqual(saida, [])
+        self.assertIn("noutro periodo", avisos[0])
+
+    def test_ano_noutra_frase_nao_trava_a_leitura(self):
+        """"Em entrevista, esta noite, ao canal (...). Recicla uma
+        declaracao de 2019" e uma peca certa: o ano esta na frase da
+        declaracao antiga, nao na da entrevista."""
+        linha = self._linha(
+            descricao_na_pagina="Em entrevista, esta noite, ao Canal Notícias, Pessoa Exemplo disse que os presos ganham mais. Recicla uma declaração de 2019 que já foi verificada.",
+        )
+        saida, avisos = self._emitir([linha])
+        self.assertEqual(avisos, [])
+        self.assertEqual(saida[0]["data"], "2026-06-23")
+
+    def test_em_direto_nao_diz_em_que_dia_a_peca_foi_escrita(self):
+        """"Abandonou a entrevista em direto" descreve como a emissao
+        passou, nao quando a peca foi escrita. Como marcador de "hoje",
+        punha a emissao no dia da peca, que era o dia seguinte."""
+        config = gnews.carregar()
+        texto = "Pessoa Exemplo abandonou a entrevista em direto. Os comentadores participavam na entrevista que o canal fez ao candidato."
+        self.assertEqual(gnews.data_de_emissao(config, texto, "2025-11-02"), ("", ""))
+
     def test_a_sugestao_e_o_que_a_emissao_faria(self):
         """A pessoa decide a partir da coluna `sugestao`. Se a sugestao
         dissesse sim e a emissao recusasse, a triagem estaria a mentir."""

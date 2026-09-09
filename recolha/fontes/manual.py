@@ -1,8 +1,10 @@
-"""Registos verificados a mao: config/entrevistas.yml e config/clipping.yml.
+"""Registos em ficheiro: config/entrevistas.yml e config/clipping.yml.
 
-A fonte principal deste projeto. Cada linha e uma emissao verificada por
-uma pessoa, com o URL onde qualquer outra pessoa a pode ver ou ler. Sem
-prova nao entra: a carga da prova esta do lado de quem publica o numero.
+A fonte principal deste projeto. Cada linha traz o URL onde qualquer
+pessoa a pode ver ou ler. Sem prova nao entra: a carga da prova esta do
+lado de quem publica o numero. No registo do canal quem verificou foi uma
+pessoa; no clipping, desde 2026-09-09, quem verificou foi a ferramenta,
+contra condicoes que quem abrir a peca confirma.
 
 Os dois ficheiros usam o mesmo formato e o mesmo plugin. O que muda e a
 `origem`, declarada na fonte em config/fontes.yml:
