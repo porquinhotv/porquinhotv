@@ -8,6 +8,7 @@ cair dentro do repositorio. O resto e leitura de XML.
 import csv
 import tempfile
 import unittest
+import unittest.mock
 from datetime import date
 from pathlib import Path
 
@@ -538,18 +539,20 @@ class TestEmitir(unittest.TestCase):
 
 
 class TestProvaDeImprensa(unittest.TestCase):
-    """O clipping deixou de ser ultimo recurso a 2026-09-08. O que estes
-    testes travam: uma peca que so anuncia a entrevista a contar como se
-    tivesse acontecido, a data da peca a passar por data da emissao, e o
-    canal do grupo trocado quando o lead nomeia dois."""
+    """O clipping deixou de ser ultimo recurso a 2026-09-08 e os anuncios
+    contam desde 2026-09-09. O que estes testes travam: a data da peca a
+    passar por data da emissao, um anuncio lido para tras e um relato
+    lido para a frente, o canal do grupo trocado quando o lead nomeia
+    dois, e a mesma entrevista a contar duas vezes por ter duas pecas."""
 
     CANAIS = {"canal-generalista", "canal-noticias"}
     CONFIG_I = {
         **CONFIG,
         "imprensa": {
             "relato": ["esteve", "disse", "garantiu", "justifica"],
-            "anuncio": ["vai estar", "não perca", "será às"],
+            "anuncio": ["vai estar", "não perca", "será às", "dá hoje"],
             "ontem": ["ontem"],
+            "amanha": ["amanhã"],
             "hoje": ["hoje", "esta noite"],
             "dias_da_semana": {"segunda-feira": 0, "terça-feira": 1, "quarta-feira": 2, "quinta-feira": 3, "sexta-feira": 4, "sábado": 5, "domingo": 6},
         },
@@ -633,16 +636,73 @@ class TestProvaDeImprensa(unittest.TestCase):
         self.assertEqual(avisos, [])
         self.assertEqual(saida[0]["data"], "2026-06-20")
 
-    def test_anuncio_nao_e_relato(self):
-        """"Da hoje entrevista, sera as 19h" e um anuncio. Contar um anuncio
-        e afirmar que aconteceu o que ainda nao tinha acontecido."""
+    def test_anuncio_conta_no_dia_que_anuncia(self):
+        """"Da hoje entrevista, sera as 19h" e um anuncio. Ate 2026-09-09
+        ficava de fora; conta desde entao por decisao do autor, no dia que
+        a peca fixa, e nao no dia em que se leu."""
         linha = self._linha(
             titulo_na_pagina="Pessoa Exemplo: primeira entrevista hoje no Canal Notícias",
             descricao_na_pagina="Pessoa Exemplo dá hoje a primeira entrevista. Será às 19 horas no Grande Programa do Canal Notícias.",
         )
         saida, avisos = self._emitir([linha])
-        self.assertEqual(saida, [])
-        self.assertIn("anuncia", avisos[0])
+        self.assertEqual(avisos, [])
+        self.assertEqual(saida[0]["data"], "2026-06-23")
+        self.assertNotIn("publicado_em", saida[0])
+        self.assertNotIn("como", saida[0])
+
+    def test_amanha_avanca_um_dia(self):
+        """Uma peca de segunda que diz "amanha" fala da entrevista de
+        terca. Ler a data da peca punha a emissao um dia antes de existir."""
+        linha = self._linha(descricao_na_pagina="Pessoa Exemplo dá amanhã uma entrevista ao Canal Notícias.")
+        saida, _ = self._emitir([linha])
+        self.assertEqual(saida[0]["data"], "2026-06-24")
+        self.assertEqual(saida[0]["publicado_em"], "2026-06-23")
+
+    def test_dia_da_semana_num_anuncio_le_se_para_a_frente(self):
+        """"Nao perca, esta segunda-feira" numa peca de terca e a segunda
+        seguinte, nao a vespera. Lida para tras, a emissao ficava uma
+        semana antes de acontecer."""
+        linha = self._linha(descricao_na_pagina="Não perca: Pessoa Exemplo em entrevista ao Canal Notícias esta segunda-feira.")
+        saida, avisos = self._emitir([linha])
+        self.assertEqual(avisos, [])
+        self.assertEqual(saida[0]["data"], "2026-06-29")
+
+    def test_relato_ganha_a_anuncio_sobre_a_mesma_emissao(self):
+        """Duas pecas para a mesma (canal, data), uma de vespera a anunciar
+        e outra do dia seguinte a relatar, ambas a um dia de distancia.
+        Fica o relato: prova que aconteceu, o anuncio so que ia acontecer."""
+        anuncio = self._linha(data_na_pagina="2026-06-21", prova_url="https://jornal.exemplo/antes",
+                              descricao_na_pagina="Pessoa Exemplo dá amanhã uma entrevista ao Canal Notícias.")
+        relato = self._linha(data_na_pagina="2026-06-23", prova_url="https://jornal.exemplo/depois",
+                             descricao_na_pagina="Pessoa Exemplo esteve ontem no Canal Notícias em entrevista.")
+        saida, avisos = self._emitir([anuncio, relato])
+        self.assertEqual(len(saida), 1)
+        self.assertEqual(saida[0]["prova"], "https://jornal.exemplo/depois")
+        self.assertEqual(avisos, [])
+
+    def test_duas_datas_a_um_dia_no_mesmo_canal_saem_como_aviso(self):
+        """Um jornal diz "ontem" e outro "esta noite" depois da meia-noite,
+        e a mesma entrevista fica com duas datas. Fundir era adivinhar
+        qual esta certa; ficar calado era contar uma como duas."""
+        a = self._linha(prova_url="https://jornal.exemplo/a", descricao_na_pagina="Pessoa Exemplo esteve ontem no Canal Notícias em entrevista.")
+        b = self._linha(prova_url="https://jornal.exemplo/b", data_na_pagina="2026-06-24", descricao_na_pagina="Pessoa Exemplo esteve ontem no Canal Notícias em entrevista.")
+        saida, avisos = self._emitir([a, b])
+        self.assertEqual(len(saida), 2)
+        self.assertEqual(len(avisos), 1)
+        self.assertIn("possivel duplicado", avisos[0])
+        self.assertIn("2026-06-22 e 2026-06-23", avisos[0])
+
+    def test_a_sugestao_e_o_que_a_emissao_faria(self):
+        """A pessoa decide a partir da coluna `sugestao`. Se a sugestao
+        dissesse sim e a emissao recusasse, a triagem estaria a mentir."""
+        linha = {**self._linha(), "sujeito_na_pagina": "sim"}
+        self.assertEqual(gnews.sugerir(self.CONFIG_I, linha, self.CANAIS), "sim: canal-noticias a 2026-06-22 (segunda-feira)")
+        sem_canal = {**linha, "descricao_na_pagina": "Pessoa Exemplo esteve esta segunda-feira em entrevista na televisão."}
+        self.assertTrue(gnews.sugerir(self.CONFIG_I, sem_canal, self.CANAIS).startswith("nao: nao nomeia o canal"))
+        sem_sujeito = {**linha, "sujeito_na_pagina": "nao"}
+        self.assertTrue(gnews.sugerir(self.CONFIG_I, sem_sujeito, self.CANAIS).startswith("nao:"))
+        do_canal = {**linha, "prova_url": "https://canalnoticias.exemplo/video"}
+        self.assertEqual(gnews.sugerir(self.CONFIG_I, do_canal, self.CANAIS), "")
 
     def test_anuncio_entra_se_uma_pessoa_escrever_a_data(self):
         linha = self._linha(
@@ -653,17 +713,26 @@ class TestProvaDeImprensa(unittest.TestCase):
         self.assertEqual(avisos, [])
         self.assertEqual(saida[0]["data"], "2026-06-23")
 
-    def test_sem_verbo_de_relato_a_linha_espera(self):
+    def test_dia_da_semana_sem_verbo_a_linha_espera(self):
         """"Pessoa Exemplo em entrevista ao Canal esta segunda-feira" tanto
         pode ser a legenda de um video como a chamada para o que vem a
-        seguir. Sem um verbo que relate, a linha espera por uma pessoa."""
+        seguir. Sem um verbo que diga para que lado se le, a segunda que
+        passou e a que vem sao a mesma frase e errar e errar uma semana."""
         linha = self._linha(
             titulo_na_pagina="Pessoa Exemplo em entrevista ao Canal Notícias",
             descricao_na_pagina="Pessoa Exemplo em entrevista ao Canal Notícias esta segunda-feira.",
         )
         saida, avisos = self._emitir([linha])
         self.assertEqual(saida, [])
-        self.assertIn("nao relata", avisos[0])
+        self.assertIn("sem verbo", avisos[0])
+
+    def test_ontem_sem_verbo_nao_e_ambiguo(self):
+        """"Ontem" so tem um lado. Exigir um verbo aqui deixava de fora
+        legendas como "Pessoa Exemplo ontem em entrevista ao canal"."""
+        linha = self._linha(descricao_na_pagina="Pessoa Exemplo ontem em entrevista ao Canal Notícias.")
+        saida, avisos = self._emitir([linha])
+        self.assertEqual(avisos, [])
+        self.assertEqual(saida[0]["data"], "2026-06-22")
 
     def test_peca_que_nao_nomeia_o_canal_fica_de_fora(self):
         linha = self._linha(descricao_na_pagina="Pessoa Exemplo esteve esta segunda-feira em entrevista na televisão.")
@@ -734,9 +803,77 @@ class TestProvaDeImprensa(unittest.TestCase):
 
     def test_configuracao_real_tem_as_regras_de_imprensa(self):
         config = gnews.carregar()
-        for chave in ("relato", "anuncio", "ontem", "hoje", "dias_da_semana"):
+        for chave in ("relato", "anuncio", "ontem", "amanha", "hoje", "dias_da_semana"):
             self.assertIn(chave, config["imprensa"])
         self.assertEqual(len(config["imprensa"]["dias_da_semana"]), 7)
+
+
+class TestTriagem(unittest.TestCase):
+    """O que estes testes travam: a via da imprensa a ficar sem linhas por
+    causa do titulo, e uma nova triagem a apagar decisoes ja tomadas."""
+
+    class SujeitoFalso:
+        def aparece_em(self, texto):
+            return "pessoa exemplo" in texto.lower()
+
+    def _linha(self, **campos):
+        base = {"data": "2026-06-23", "titulo": "Pessoa Exemplo: \"A idade da reforma tinha de descer\"", "fonte": "Jornal Exemplo",
+                "canal_por_fonte": "", "canal_no_titulo": "", "formato_no_titulo": "", "url_google": "u1",
+                "consultas": "\"Pessoa Exemplo\" entrevista Canal"}
+        return {**base, **campos}
+
+    def _grupos(self, linhas):
+        return {l["url_google"]: l["grupo"] for l in gnews.agrupar(CONFIG, linhas, self.SujeitoFalso())}
+
+    def test_peca_de_jornal_titulada_com_a_citacao_entra_como_imprensa(self):
+        """Sete das doze entrevistas da CMTV encontradas a 2026-09-08 nao
+        tinham "entrevista" no titulo, e o clipping ficou vazio porque
+        nenhuma linha chegava ao passo que le o lead. A consulta que a
+        trouxe tem a palavra: e o sinal que o indice da de graca."""
+        self.assertEqual(self._grupos([self._linha()]), {"u1": "imprensa"})
+
+    def test_peca_sem_entrevista_no_titulo_nem_na_consulta_fica_de_fora(self):
+        """Uma peca que cita o sujeito vinda de uma consulta sem a palavra e
+        o ruido de sempre; retirar-lo era mandar milhares de linhas a uma
+        pessoa."""
+        self.assertEqual(self._grupos([self._linha(consultas="Goucha \"Pessoa Exemplo\"")]), {})
+
+    def test_pagina_de_canal_nunca_e_imprensa(self):
+        """Os grupos `sujeito` e `programa` nao mudam: uma pagina do canal
+        com a citacao no titulo continua de fora, porque a prova do canal
+        vai pelo criterio do titulo, nao pelo lead."""
+        self.assertEqual(self._grupos([self._linha(canal_por_fonte="canal-generalista")]), {})
+        self.assertEqual(self._grupos([self._linha(canal_por_fonte="canal-generalista", formato_no_titulo="entrevista")]), {"u1": "sujeito"})
+
+    def test_nova_triagem_guarda_as_decisoes_anteriores(self):
+        """A 2026-09-09 a triagem tinha 150 decisoes e o grupo `imprensa`
+        ia acrescentar 666 linhas. O `--triar` gravava por cima e as 150
+        desapareciam."""
+        retidas = [self._linha(url_google="u1", grupo="sujeito"), self._linha(url_google="u2", grupo="imprensa")]
+        anteriores = [{"url_google": "u1", "decisao": "sim", "prova_url": "https://canal.exemplo/e1", "sujeito_na_pagina": "sim", "grupo": "sujeito", "titulo": "antigo"}]
+        fundidas = {l["url_google"]: l for l in gnews.fundir_triagem(retidas, anteriores)}
+        self.assertEqual(fundidas["u1"]["decisao"], "sim")
+        self.assertEqual(fundidas["u1"]["prova_url"], "https://canal.exemplo/e1")
+        self.assertEqual(fundidas["u1"]["titulo"], "antigo")
+        self.assertNotIn("decisao", fundidas["u2"])
+
+    def test_linha_que_a_regra_deixou_de_reter_nao_desaparece(self):
+        anteriores = [{"url_google": "u9", "decisao": "nao", "grupo": "programa", "titulo": "x"}]
+        fundidas = gnews.fundir_triagem([self._linha()], anteriores)
+        self.assertEqual([l["url_google"] for l in fundidas], ["u1", "u9"])
+
+    def test_triar_funde_com_o_ficheiro_existente(self):
+        with tempfile.TemporaryDirectory() as tmp, unittest.mock.patch.object(gnews, "carregar_config") as cfg:
+            cfg.return_value.sujeito = self.SujeitoFalso()
+            pasta = Path(tmp)
+            gnews.gravar_csv(pasta, {"u1": self._linha()})
+            gnews.gravar_triagem(pasta, [{**self._linha(), "grupo": "imprensa", "decisao": "sim", "prova_url": "https://jornal.exemplo/p"}])
+            resumo = gnews.triar(CONFIG, pasta)
+            with (pasta / "triagem.csv").open(encoding="utf-8-sig", newline="") as f:
+                linhas = list(csv.DictReader(f))
+        self.assertEqual(resumo["imprensa"], 1)
+        self.assertEqual(linhas[0]["decisao"], "sim")
+        self.assertEqual(linhas[0]["prova_url"], "https://jornal.exemplo/p")
 
 
 

@@ -147,17 +147,23 @@ imprensa:
            critica, criticou, justifica, justificou, respondeu, responde, recusa, recusou,
            deu, concedeu, falou, fala, reconhece, reconheceu, lamenta, lamentou]
   # Marcas de anuncio. Uma peca com uma destas fala de uma entrevista que
-  # ainda nao aconteceu quando foi escrita. So entra se uma pessoa
-  # escrever `data_emissao`, que e a forma de dizer que confirmou.
-  anuncio: [vai estar, vai dar, dará, não perca, amanhã, hora marcada, na próxima, será às, sera as]
+  # ainda nao tinha acontecido quando foi escrita. Conta desde 2026-09-09,
+  # por decisao do autor: uma entrevista anunciada a um canal raramente se
+  # cancela ou adia. A marca decide para que lado se le um dia da semana:
+  # "nao perca esta segunda-feira" e a que vem, "esteve esta segunda-feira"
+  # e a que passou. Uma pessoa pode sempre corrigir em `data_emissao`.
+  anuncio: [vai estar, vai dar, dará, dá hoje, não perca, hora marcada, na próxima, será às, sera as, será transmitida]
   # Como a peca fixa o dia, lido contra a data de publicacao. A ordem de
-  # leitura e esta: ontem, dia da semana, hoje.
+  # leitura e esta: ontem, amanha, dia da semana, hoje.
   ontem: [ontem, na noite de ontem, ontem à noite]
+  amanha: [amanhã, amanhã à noite]
   hoje: [hoje, esta noite, esta tarde, esta manhã, em direto, agora]
-  # Dia da semana e o mais recente com esse nome ate ao dia da publicacao,
-  # inclusive: "esteve esta segunda-feira" numa peca de terca e a vespera;
-  # numa peca de segunda e o proprio dia. Indice como o de Python, segunda
-  # a zero.
+  # Dia da semana: numa peca que relata e o mais recente com esse nome ate
+  # ao dia da publicacao, inclusive ("esteve esta segunda-feira" numa peca
+  # de terca e a vespera); numa peca que anuncia e o proximo, tambem
+  # inclusive. Sem verbo de relato nem marca de anuncio nao se le, porque
+  # errar o lado e errar uma semana. Indice como o de Python, segunda a
+  # zero.
   dias_da_semana:
     segunda-feira: 0
     terça-feira: 1

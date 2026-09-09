@@ -477,7 +477,7 @@ def resolver(config: dict, pasta: Path, so_triados: bool = True, limite: int | N
 # --- triagem ---------------------------------------------------------------
 
 COLUNAS_TRIAGEM = [
-    "decisao", "prova_url", "duracao", "programa", "canal", "data_emissao", "nota",
+    "decisao", "prova_url", "duracao", "programa", "canal", "data_emissao", "nota", "sugestao",
     "sujeito_na_pagina", "duracao_na_pagina", "programa_na_pagina", "data_na_pagina", "titulo_na_pagina", "descricao_na_pagina",
     "grupo", "data", "titulo", "fonte", "formato_no_titulo", "url_google",
 ]
@@ -493,26 +493,66 @@ def agrupar(config: dict, linhas: list[dict], sujeito) -> list[dict]:
                episodios com o nome do programa e a data, e o convidado
                fica so na sinopse, que o indice nao traz. Sem este grupo
                perdiam-se todas as emissoes desse canal.
+    `imprensa` o titulo nomeia o sujeito, a fonte nao e um canal, e a
+               linha veio de uma consulta com a palavra "entrevista". E o
+               grupo das pecas de jornal, que titulam com a citacao e
+               deixam "em entrevista a X" para o lead, que o indice nao
+               traz. A consulta e o unico sinal barato: o indice casou-a
+               com o corpo da peca, logo a palavra esta la. Ate
+               2026-09-09 estas linhas ficavam de fora e a via da
+               imprensa nunca recebia nada: o clipping estava vazio por
+               isso, nao por falta de pecas. So o `--verificar`, que le
+               o lead, diz se a peca prova alguma coisa.
 
     O que fica de fora e o ruido: pecas que citam o sujeito sem que nada
-    no titulo sugira entrevista. Fica no `candidatos.csv`, que nao se
-    apaga, para se poder voltar atras sem repetir a colheita.
+    no titulo nem na consulta sugira entrevista. Fica no `candidatos.csv`,
+    que nao se apaga, para se poder voltar atras sem repetir a colheita.
     """
     retidas = []
     for linha in linhas:
         formato = linha.get("formato_no_titulo", "")
-        if "entrevista" not in formato:
-            continue
+        tem_formato = "entrevista" in formato
         tem_sujeito = sujeito.aparece_em(linha.get("titulo", ""))
         tem_canal = bool(linha.get("canal_por_fonte") or linha.get("canal_no_titulo"))
-        if tem_sujeito and tem_canal:
+        pela_consulta = "entrevista" in normalizar(linha.get("consultas") or "")
+        if tem_formato and tem_sujeito and tem_canal:
             grupo = "sujeito"
-        elif not tem_sujeito and linha.get("canal_por_fonte"):
+        elif tem_formato and not tem_sujeito and linha.get("canal_por_fonte"):
             grupo = "programa"
+        elif tem_sujeito and not linha.get("canal_por_fonte") and (tem_formato or pela_consulta):
+            grupo = "imprensa"
         else:
             continue
         retidas.append({**linha, "grupo": grupo})
     return sorted(retidas, key=lambda l: (l.get("data") or "9999", l.get("grupo") or "", l.get("fonte") or ""))
+
+
+def fundir_triagem(retidas: list[dict], anteriores: list[dict]) -> list[dict]:
+    """Uma nova triagem nunca apaga o que uma pessoa ja escreveu.
+
+    O `--triar` reconstroi a lista a partir da colheita, e ate 2026-09-09
+    gravava-a por cima da anterior: as decisoes, as provas e as colunas
+    lidas nas paginas desapareciam. Nao doeu porque so tinha corrido uma
+    vez. Com o grupo `imprensa` a acrescentar centenas de linhas a uma
+    triagem com 150 decisoes tomadas, doia. A chave e o URL do indice,
+    que e estavel por artigo; o que a pessoa ou o `--verificar` escreveram
+    ganha ao que a colheita traz de novo.
+    """
+    por_url = {l.get("url_google"): l for l in anteriores if l.get("url_google")}
+    fundidas = []
+    for linha in retidas:
+        anterior = por_url.get(linha.get("url_google"))
+        if anterior is None:
+            fundidas.append(linha)
+            continue
+        preenchido = {c: v for c, v in anterior.items() if v}
+        fundidas.append({**linha, **preenchido, "grupo": linha["grupo"]})
+    # Uma linha que a regra de agrupamento deixou de reter continua na
+    # triagem: a decisao que uma pessoa tomou sobre ela nao caduca porque
+    # a regra mudou.
+    novas = {l.get("url_google") for l in retidas}
+    fundidas.extend(l for l in anteriores if l.get("url_google") and l["url_google"] not in novas)
+    return fundidas
 
 
 def gravar_triagem(pasta: Path, retidas: list[dict]) -> None:
@@ -560,6 +600,10 @@ def urls_triados(pasta: Path) -> set[str]:
 def triar(config: dict, pasta: Path) -> dict:
     linhas = list(ler_csv(pasta).values())
     retidas = agrupar(config, linhas, carregar_config().sujeito)
+    caminho = pasta / "triagem.csv"
+    if caminho.exists():
+        with caminho.open(encoding="utf-8-sig", newline="") as f:
+            retidas = fundir_triagem(retidas, list(csv.DictReader(f)))
     gravar_triagem(pasta, retidas)
     contagem = {}
     for linha in retidas:
@@ -630,12 +674,35 @@ def verificar_pagina(config: dict, html_texto: str, url: str, sujeito) -> dict:
     }
 
 
-def verificar(config: dict, pasta: Path, sujeito=None, obter=obter_texto, dormir=time.sleep) -> dict:
-    """Visita cada candidato triado e escreve o que a pagina do canal diz.
+def sugerir(config: dict, linha: dict, canais_validos: set[str]) -> str:
+    """O que `--emitir --imprensa` faria com esta linha se a decisao fosse
+    sim, escrito para a pessoa ler antes de decidir.
+
+    Com centenas de pecas de imprensa na triagem, pedir a uma pessoa que
+    leia cada lead e aplique as quatro condicoes de cabeca e pedir-lhe que
+    repita o que a ferramenta ja sabe fazer. A sugestao diz "sim" com a
+    data e como foi lida, ou o motivo pelo qual a peca nao prova nada; a
+    decisao continua a ser escrita a mao. Uma sugestao de sim com a data
+    a vista e tambem a forma de ver duas pecas sobre a mesma entrevista
+    lado a lado.
+    """
+    if canal_da_prova(config, linha.get("prova_url") or ""):
+        return ""
+    if linha.get("sujeito_na_pagina") != "sim":
+        return "nao: a pagina nao nomeia o sujeito"
+    novo, motivo = avaliar_peca(config, linha, canais_validos)
+    if novo is None:
+        return f"nao: {motivo}"
+    return f"sim: {novo['canal']} a {novo['data']} ({novo['como']})"
+
+
+def verificar(config: dict, pasta: Path, sujeito=None, canais_validos: set[str] | None = None, obter=obter_texto, dormir=time.sleep) -> dict:
+    """Visita cada candidato triado e escreve o que a pagina diz.
 
     Nao decide nada: preenche colunas e, quando a pagina nao nomeia o
-    sujeito, propoe `nao` na decisao com o motivo. A decisao continua a
-    ser de uma pessoa, e uma decisao ja escrita nunca e substituida.
+    sujeito, propoe `nao` na decisao com o motivo. Numa peca de imprensa
+    escreve ainda a coluna `sugestao` (ver `sugerir`). A decisao continua
+    a ser de uma pessoa, e uma decisao ja escrita nunca e substituida.
     """
     caminho = pasta / "triagem.csv"
     if not caminho.exists():
@@ -643,7 +710,10 @@ def verificar(config: dict, pasta: Path, sujeito=None, obter=obter_texto, dormir
     with caminho.open(encoding="utf-8-sig", newline="") as f:
         linhas = list(csv.DictReader(f))
     finais = {l["url_google"]: l.get("url_final", "") for l in ler_csv(pasta).values()}
-    sujeito = sujeito or carregar_config().sujeito
+    if sujeito is None or canais_validos is None:
+        editorial = carregar_config()
+        sujeito = sujeito or editorial.sujeito
+        canais_validos = canais_validos if canais_validos is not None else set(editorial.canais)
     pausa = float(config.get("pausa_resolucao_s", 2))
     resumo = {"visitadas": 0, "com_sujeito": 0, "sem_sujeito": 0, "com_duracao": 0, "sem_pagina": 0}
 
@@ -677,6 +747,7 @@ def verificar(config: dict, pasta: Path, sujeito=None, obter=obter_texto, dormir
                 linha["nota"] = (linha.get("nota") or "") + " a pagina do canal nao nomeia o sujeito"
         if linha["duracao_na_pagina"]:
             resumo["com_duracao"] += 1
+        linha["sugestao"] = sugerir(config, linha, canais_validos)
         print(f"  {i}/{len(linhas)}  {linha['sujeito_na_pagina']:4s} {linha['duracao_na_pagina'] or '-':>6s}  {linha['titulo_na_pagina'][:60]}", flush=True)
         if i % 10 == 0:
             gravar_triagem(pasta, linhas)
@@ -839,11 +910,22 @@ def canais_no_texto(config: dict, texto: str) -> list[str]:
 def data_de_emissao(config: dict, texto: str, publicado: str) -> tuple[str, str]:
     """O dia da emissao que a peca fixa, a partir do dia em que foi publicada.
 
-    Devolve (data, como). "Ontem" recua um dia; um dia da semana e o mais
-    recente com esse nome ate ao dia da publicacao, inclusive; "hoje" e os
-    seus equivalentes sao o proprio dia. Sem nenhum destes, a data fica
-    vazia e a linha espera por uma pessoa: a data de publicacao de uma
-    peca nao e a data da emissao, e escreve-la seria inventar um dia.
+    Devolve (data, como). "Ontem" recua um dia, "amanha" avanca um, "hoje"
+    e os seus equivalentes sao o proprio dia. Um dia da semana precisa de
+    saber para que lado se le: numa peca que anuncia ("nao perca", "sera
+    as 21h") e o proximo com esse nome, publicacao inclusive; numa peca
+    que relata ("esteve", "disse") e o mais recente. Sem verbo de relato
+    nem marca de anuncio, "esta segunda-feira" tanto e a que passou como
+    a que vem, e a data fica vazia: adivinhar o lado era errar uma semana.
+
+    Sem nenhum destes, a data fica vazia e a linha espera por uma pessoa:
+    a data de publicacao de uma peca nao e a data da emissao, e escreve-la
+    seria inventar um dia.
+
+    Os anuncios contam desde 2026-09-09, por decisao do autor: uma
+    entrevista anunciada a um canal raramente se cancela ou adia. O que
+    muda para o leitor e visivel na linha, porque `publicado_em` fica
+    anterior a `data`.
 
     Limite conhecido: a publicacao le-se em UTC e uma peca escrita depois
     da meia-noite sobre "esta noite" cai no dia seguinte. E por isso que a
@@ -856,21 +938,33 @@ def data_de_emissao(config: dict, texto: str, publicado: str) -> tuple[str, str]
     publicado_em = date.fromisoformat(dia)
     if contem_palavra(texto, tuple(regras.get("ontem") or ())):
         return (publicado_em - timedelta(days=1)).isoformat(), "ontem"
+    if contem_palavra(texto, tuple(regras.get("amanha") or ())):
+        return (publicado_em + timedelta(days=1)).isoformat(), "amanhã"
+    anuncia = bool(contem_palavra(texto, tuple(regras.get("anuncio") or ())))
+    relata = bool(contem_palavra(texto, tuple(regras.get("relato") or ())))
     for nome, indice in (regras.get("dias_da_semana") or {}).items():
         if contem_palavra(texto, (nome,)):
-            recuo = (publicado_em.weekday() - int(indice)) % 7
-            return (publicado_em - timedelta(days=recuo)).isoformat(), nome
+            if anuncia:
+                avanco = (int(indice) - publicado_em.weekday()) % 7
+                return (publicado_em + timedelta(days=avanco)).isoformat(), f"{nome}, anúncio"
+            if relata:
+                recuo = (publicado_em.weekday() - int(indice)) % 7
+                return (publicado_em - timedelta(days=recuo)).isoformat(), nome
+            return "", "dia da semana sem verbo que diga se ja foi ou vai ser"
     if contem_palavra(texto, tuple(regras.get("hoje") or ())):
-        return dia, "hoje"
+        return dia, "hoje, anúncio" if anuncia and not relata else "hoje"
     return "", ""
 
 
-def emitir_imprensa(config: dict, pasta: Path, canais_validos: set[str], ja_no_canal: set[tuple[str, str]] | None = None) -> tuple[list[dict], list[str]]:
-    """Converte as decisoes da triagem em linhas do clipping de imprensa.
+def avaliar_peca(config: dict, linha: dict, canais_validos: set[str]) -> tuple[dict | None, str]:
+    """Aplica a uma peca de imprensa as quatro condicoes para contar.
 
-    Le as mesmas linhas de `--emitir`, mas so as cuja prova NAO e uma
-    pagina de um canal: as do canal pertencem ao outro modo e aqui sao
-    ignoradas em silencio, nao e um erro. Para entrar, uma peca tem de:
+    Devolve (linha do clipping, "") quando a peca prova a emissao, ou
+    (None, motivo) quando nao prova, com o motivo escrito para a pessoa
+    saber o que falta. E a mesma funcao que o `--verificar` usa para
+    escrever a coluna `sugestao` e que o `--emitir --imprensa` usa para
+    decidir: uma so leitura das regras, para que a sugestao que a pessoa
+    ve na triagem seja o que a emissao vai fazer.
 
       1. nomear um canal, e um so. "Em entrevista a televisao" nao serve;
          duas emissoras no mesmo lead e a pessoa que escolhe (coluna
@@ -881,17 +975,99 @@ def emitir_imprensa(config: dict, pasta: Path, canais_validos: set[str], ja_no_c
          citacao e deixam "numa entrevista exclusiva" para a primeira frase;
       3. fixar o dia da emissao (ver `data_de_emissao`), ou ter o dia
          escrito a mao em `data_emissao`;
-      4. relatar e nao anunciar. "Da hoje entrevista as 19h" e um anuncio
-         e so entra se uma pessoa escrever a data, que e a forma de dizer
-         que confirmou que aconteceu.
+      4. relatar ou anunciar. Ate 2026-09-09 so o relato contava; o
+         anuncio passou a contar por decisao do autor, com a data lida
+         para a frente. A peca que nem relata nem anuncia e que so fixa o
+         dia por um nome de semana continua a esperar por uma pessoa.
+    """
+    prova = (linha.get("prova_url") or "").strip()
+    titulo = html.unescape((linha.get("titulo_na_pagina") or linha.get("titulo") or "").strip())
+    lead = html.unescape((linha.get("descricao_na_pagina") or "").strip())
+    texto = f"{titulo} {lead}"
+
+    a_mao = (linha.get("canal") or "").strip()
+    nomeados = canais_no_texto(config, texto)
+    canal = a_mao or (nomeados[0] if len(nomeados) == 1 else "")
+    if not canal:
+        motivo = "nomeia mais de um canal" if len(nomeados) > 1 else "nao nomeia o canal"
+        return None, f"{motivo}; escrever o canal a mao"
+    if canal not in canais_validos:
+        return None, f"canal fora dos nove ({canal})"
+
+    formato_titulo = formato_no_titulo(config, titulo)
+    if "entrevista" not in formato_no_titulo(config, texto):
+        return None, "a peca nao diz entrevista"
+    if any(f != "entrevista" for f in formato_titulo.split("+") if f):
+        return None, f"o titulo diz {formato_titulo}, nao e entrevista a solo"
+
+    publicado = extracao.data_para_iso(linha.get("data_na_pagina") or "") or extracao.data_para_iso(linha.get("data") or "")
+    data_a_mao = extracao.data_para_iso(linha.get("data_emissao") or "")
+    if data_a_mao:
+        data, como = data_a_mao, "a mao"
+    else:
+        data, como = data_de_emissao(config, texto, publicado)
+        if not data:
+            motivo = como or "a peca nao fixa o dia da emissao"
+            return None, f"{motivo}; escrever data_emissao"
+
+    novo = {
+        "data": data,
+        "canal": canal,
+        "programa": (linha.get("programa") or "").strip() or "não apurado",
+        "prova": prova,
+        "titulo": titulo,
+        "mesma_entrevista": data,
+        "como": como,
+    }
+    if publicado and publicado != data:
+        novo["publicado_em"] = publicado
+    return novo, ""
+
+
+def duplicados_provaveis(blocos: dict[tuple[str, str], dict]) -> list[str]:
+    """Duas pecas sobre o mesmo canal com um dia de intervalo.
+
+    Varios jornais escrevem sobre a mesma entrevista e nem todos fixam o
+    dia da mesma maneira: um diz "ontem", outro "esta noite" numa peca
+    publicada depois da meia-noite, e a mesma emissao fica com duas datas.
+    Fundir as duas seria adivinhar qual esta certa; deixar as duas seria
+    contar uma entrevista como duas. Fica o aviso, e a pessoa decide com
+    as duas pecas abertas.
+    """
+    avisos = []
+    por_canal: dict[str, list[str]] = {}
+    for canal, data in blocos:
+        por_canal.setdefault(canal, []).append(data)
+    for canal, datas in por_canal.items():
+        datas.sort()
+        for a, b in zip(datas, datas[1:]):
+            if (date.fromisoformat(b) - date.fromisoformat(a)).days == 1:
+                avisos.append(f"{a} e {b} em {canal}: um dia de intervalo, possivel duplicado; confirmar com as duas pecas abertas")
+    return avisos
+
+
+def _distancia_ao_dia(linha: dict) -> tuple[int, int]:
+    publicado = date.fromisoformat(linha.get("publicado_em") or linha["data"])
+    emissao = date.fromisoformat(linha["data"])
+    return abs((publicado - emissao).days), 1 if publicado < emissao else 0
+
+
+def emitir_imprensa(config: dict, pasta: Path, canais_validos: set[str], ja_no_canal: set[tuple[str, str]] | None = None) -> tuple[list[dict], list[str]]:
+    """Converte as decisoes da triagem em linhas do clipping de imprensa.
+
+    Le as mesmas linhas de `--emitir`, mas so as cuja prova NAO e uma
+    pagina de um canal: as do canal pertencem ao outro modo e aqui sao
+    ignoradas em silencio, nao e um erro. As condicoes para entrar estao
+    em `avaliar_peca`, que e tambem o que escreve a coluna `sugestao`.
 
     Uma emissao que ja esteja no registo do canal nao se repete aqui: a
-    prova do canal e melhor, e o coletor poria esta na quarentena.
+    prova do canal e melhor, e o coletor poria esta na quarentena. Entre
+    varias pecas sobre a mesma emissao fica uma, e as que ficam a um dia
+    de distancia no mesmo canal saem como aviso, nao como duas linhas.
     """
     caminho = pasta / "triagem.csv"
     with caminho.open(encoding="utf-8-sig", newline="") as f:
         linhas = list(csv.DictReader(f))
-    regras = config.get("imprensa") or {}
     ja_no_canal = ja_no_canal or set()
 
     avisos: list[str] = []
@@ -902,67 +1078,25 @@ def emitir_imprensa(config: dict, pasta: Path, canais_validos: set[str], ja_no_c
         prova = (linha.get("prova_url") or "").strip()
         if not prova.startswith("http") or canal_da_prova(config, prova):
             continue
-        titulo = html.unescape((linha.get("titulo_na_pagina") or linha.get("titulo") or "").strip())
-        lead = html.unescape((linha.get("descricao_na_pagina") or "").strip())
-        texto = f"{titulo} {lead}"
-        rotulo_linha = titulo[:60]
-
-        a_mao = (linha.get("canal") or "").strip()
-        nomeados = canais_no_texto(config, texto)
-        canal = a_mao or (nomeados[0] if len(nomeados) == 1 else "")
-        if not canal:
-            motivo = "nomeia mais de um canal" if len(nomeados) > 1 else "nao nomeia o canal"
-            avisos.append(f"{rotulo_linha}: {motivo}; escrever o canal a mao")
+        novo, motivo = avaliar_peca(config, linha, canais_validos)
+        rotulo_linha = html.unescape((linha.get("titulo_na_pagina") or linha.get("titulo") or "").strip())[:60]
+        if novo is None:
+            avisos.append(f"{rotulo_linha}: {motivo}")
             continue
-        if canal not in canais_validos:
-            avisos.append(f"{rotulo_linha}: canal fora dos nove ({canal})")
+        novo.pop("como", None)
+        if (novo["canal"], novo["data"]) in ja_no_canal:
+            avisos.append(f"{novo['data']} {rotulo_linha}: ja no registo do canal")
             continue
-
-        formato_titulo = formato_no_titulo(config, titulo)
-        if "entrevista" not in formato_no_titulo(config, texto):
-            avisos.append(f"{rotulo_linha}: a peca nao diz entrevista")
-            continue
-        if any(f != "entrevista" for f in formato_titulo.split("+") if f):
-            avisos.append(f"{rotulo_linha}: o titulo diz {formato_titulo}, nao e entrevista a solo")
-            continue
-
-        publicado = extracao.data_para_iso(linha.get("data_na_pagina") or "") or extracao.data_para_iso(linha.get("data") or "")
-        data_a_mao = extracao.data_para_iso(linha.get("data_emissao") or "")
-        if data_a_mao:
-            data, como = data_a_mao, "a mao"
-        else:
-            if contem_palavra(texto, tuple(regras.get("anuncio") or ())):
-                avisos.append(f"{rotulo_linha}: anuncia a entrevista, nao a relata; escrever data_emissao se aconteceu")
-                continue
-            if not contem_palavra(texto, tuple(regras.get("relato") or ())):
-                avisos.append(f"{rotulo_linha}: nao relata a entrevista (sem verbo de relato); escrever data_emissao se aconteceu")
-                continue
-            data, como = data_de_emissao(config, texto, publicado)
-            if not data:
-                avisos.append(f"{rotulo_linha}: a peca nao fixa o dia da emissao; escrever data_emissao")
-                continue
-
-        if (canal, data) in ja_no_canal:
-            avisos.append(f"{data} {rotulo_linha}: ja no registo do canal")
-            continue
-
-        novo = {
-            "data": data,
-            "canal": canal,
-            "programa": (linha.get("programa") or "").strip() or "não apurado",
-            "prova": prova,
-            "titulo": titulo,
-            "mesma_entrevista": data,
-        }
-        if publicado and publicado != data:
-            novo["publicado_em"] = publicado
-        chave = (canal, data)
+        chave = (novo["canal"], novo["data"])
         antigo = blocos.get(chave)
         # Duas pecas sobre a mesma emissao: fica a publicada mais perto do
-        # dia, que e a que menos depende de memoria.
-        if antigo is None or (novo.get("publicado_em") or data) < (antigo.get("publicado_em") or data):
+        # dia, que e a que menos depende de memoria. A distancia igual
+        # ganha a que relata, porque prova que aconteceu, sobre a que so
+        # anunciava.
+        if antigo is None or _distancia_ao_dia(novo) < _distancia_ao_dia(antigo):
             blocos[chave] = novo
 
+    avisos.extend(duplicados_provaveis(blocos))
     ordenadas = sorted(blocos.values(), key=lambda l: (l["data"], l["canal"]))
     por_data: dict[str, int] = {}
     for linha in ordenadas:

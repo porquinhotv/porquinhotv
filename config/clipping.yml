@@ -7,9 +7,12 @@
 #   1. nomeia o canal ("em entrevista a CMTV", nao "a televisao");
 #   2. diz entrevista, e nao debate nem declaracoes;
 #   3. fixa o dia da emissao (data, "ontem", "esta segunda-feira");
-#   4. relata a entrevista, nao a anuncia. Um anuncio ("da hoje
-#      entrevista as 19h") so serve com uma segunda peca ou a pagina do
-#      canal a confirmar que aconteceu.
+#   4. relata a entrevista ou anuncia-a com o dia fixado. O anuncio ("da
+#      hoje entrevista as 19h") conta desde 2026-09-09, por decisao do
+#      autor: uma entrevista anunciada a um canal raramente se cancela ou
+#      adia. Ve-se que a prova e um anuncio porque `publicado_em` fica
+#      anterior a `data`. Uma segunda peca, ou a pagina do canal, continua
+#      a ser a melhor confirmacao, e ganha a esta quando existe.
 #
 # Ate 2026-09-08 esta fonte era o ultimo recurso, para o que o canal nao
 # publicara. Deixou de ser: seis dos nove canais nao respondem a uma
