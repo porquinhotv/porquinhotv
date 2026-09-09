@@ -538,6 +538,90 @@ class TestEmitir(unittest.TestCase):
 
 
 
+class TestPaginasDeCanal(unittest.TestCase):
+    """As 150 provas em dominio de canal que estavam paradas a espera de um
+    `sim` escrito a mao, padrao que o projeto abandonou a 2026-09-09."""
+
+    CANAIS = {"canal-noticias", "outro-canal"}
+
+    def _linha(self, **campos):
+        base = {
+            "prova_url": "https://canal.exemplo/entrevista",
+            "sujeito_na_pagina": "sim",
+            "data_na_pagina": "2026-06-23",
+            "titulo_na_pagina": "Grande Entrevista - Pessoa Exemplo",
+            "programa_na_pagina": "Grande Entrevista",
+            "duracao_na_pagina": "3060",
+            "canal": "canal-noticias",
+            "decisao": "",
+        }
+        return {**base, **campos}
+
+    def _emitir(self, linhas, ja=None):
+        with tempfile.TemporaryDirectory() as tmp:
+            pasta = Path(tmp)
+            gnews.gravar_triagem(pasta, linhas)
+            return gnews.emitir_paginas_de_canal(CONFIG, pasta, self.CANAIS, ja or set())
+
+    def test_entra_sem_ninguem_escrever_sim(self):
+        """Eram 150 linhas paradas so porque o registo do canal exige uma
+        aprovacao escrita por linha. Com a triagem em 851 linhas, exigir
+        isso e nao publicar nada."""
+        entrevistas, _ = self._emitir([self._linha()])
+        self.assertEqual(len(entrevistas), 1)
+        self.assertEqual(entrevistas[0]["duracao_s"], 3060)
+
+    def test_uma_recusa_escrita_trava_a_linha(self):
+        """A avaliacao decide, a pessoa veta. E a unica intervencao humana
+        que o processo pede."""
+        entrevistas, avisos = self._emitir([self._linha(decisao="nao")])
+        self.assertEqual(entrevistas, [])
+        self.assertIn("1 paginas: vetada a mao", avisos)
+
+    def test_uma_pagina_por_ler_nao_entra(self):
+        """Nao sei nao e sim: uma pagina que nao respondeu nao prova nada,
+        e o titulo do indice nao substitui a leitura."""
+        entrevistas, avisos = self._emitir([self._linha(sujeito_na_pagina="", titulo_na_pagina="")])
+        self.assertEqual(entrevistas, [])
+        self.assertIn("1 paginas: por ler: a pagina nao respondeu", avisos)
+
+    def test_o_registo_verificado_a_mao_ganha(self):
+        """Quando uma pessoa ja leu a pagina daquela emissao, a linha dela
+        e melhor prova e esta nao se repete."""
+        entrevistas, avisos = self._emitir([self._linha()], ja={("canal-noticias", "2026-06-23")})
+        self.assertEqual(entrevistas, [])
+        self.assertIn("1 paginas: ja no registo verificado a mao", avisos)
+
+    def test_prova_de_imprensa_e_ignorada_em_silencio(self):
+        """Uma peca de jornal pertence ao --emitir --imprensa. Sao centenas
+        e contá-las aqui enchia o ecra com o que nao e erro."""
+        entrevistas, avisos = self._emitir([self._linha(prova_url="https://jornal.exemplo/peca", canal="")])
+        self.assertEqual(entrevistas, [])
+        self.assertEqual([a for a in avisos if "jornal" in a], [])
+
+    def test_duas_linhas_do_mesmo_dia_e_canal_sao_uma_emissao(self):
+        """Os canais publicam o video integral e os recortes em paginas
+        diferentes. Fica a que tem duracao apurada, e entre duas com
+        duracao a mais longa: e a mesma regra de desempate do coletor."""
+        entrevistas, _ = self._emitir([
+            self._linha(prova_url="https://canal.exemplo/recorte", duracao_na_pagina="120"),
+            self._linha(prova_url="https://canal.exemplo/integral", duracao_na_pagina="3060"),
+        ])
+        self.assertEqual(len(entrevistas), 1)
+        self.assertEqual(entrevistas[0]["duracao_s"], 3060)
+
+    def test_o_ecra_diz_quantas_ficam_sem_duracao(self):
+        """Sem duracao apurada estas linhas caem na quarentena como
+        `por_confirmar`, porque a fonte nao tem a isencao do registo
+        curado. Quantas sao decide se a regra se mantem, e por isso o
+        numero sai medido e nao suposto."""
+        _, avisos = self._emitir([
+            self._linha(),
+            self._linha(prova_url="https://canal.exemplo/outra", data_na_pagina="2026-06-24", duracao_na_pagina=""),
+        ])
+        self.assertIn("1 de 2 com duracao apurada", avisos)
+
+
 class TestMapasDeSitio(unittest.TestCase):
     """A via que chega ao arquivo do jornal pela porta da frente."""
 

@@ -62,6 +62,7 @@ from recolha.rede import CABECALHOS, ErroDeRede, TEMPO_LIMITE, obter_texto
 
 FICHEIRO = RAIZ / "config" / "gnews.yml"
 FICHEIRO_CLIPPING = RAIZ / "config" / "clipping.yml"
+FICHEIRO_PAGINAS_DE_CANAL = RAIZ / "config" / "paginas_de_canal.yml"
 COLUNAS = [
     "data",
     "titulo",
@@ -1140,6 +1141,100 @@ def emitir(config: dict, pasta: Path, canais_validos: set[str]) -> tuple[list[di
     return ordenadas, avisos
 
 
+def emitir_paginas_de_canal(config: dict, pasta: Path, canais_validos: set[str],
+                            ja_no_registo: set[tuple[str, str]] | None = None) -> tuple[list[dict], list[str]]:
+    """As provas em dominio de canal que ninguem escreveu `sim`.
+
+    Eram 150 a 2026-09-09, ja colhidas e verificadas, paradas so porque o
+    `--emitir` exige uma aprovacao escrita linha a linha. Esse padrao foi
+    abandonado no clipping por nao escalar, e nao ha razao para o manter
+    aqui: a avaliacao decide e uma pessoa veta.
+
+    O que muda em relacao ao `--emitir` nao e o crivo desta funcao, e o
+    destino. Estas linhas vao para uma fonte que **nao** tem a isencao do
+    registo curado, por isso e o coletor que lhes aplica a prova positiva
+    de formato e as rondas. Aqui so se recusa o que nem sequer e
+    candidato: sem data legivel, sem prova, ou prova que nao e de um canal.
+    As que nao tiverem duracao apurada vao parar a quarentena como
+    `por_confirmar`, com o motivo escrito, e o numero sai no ecra.
+
+    Uma emissao que o registo verificado a mao ja tenha nao se repete: a
+    leitura humana ganha, e o coletor poria esta na quarentena de qualquer
+    maneira.
+    """
+    caminho = pasta / "triagem.csv"
+    with caminho.open(encoding="utf-8-sig", newline="") as f:
+        linhas = list(csv.DictReader(f))
+    ja_no_registo = ja_no_registo or set()
+
+    avisos: list[str] = []
+    motivos: dict[str, int] = {}
+    blocos: dict[tuple[str, str], dict] = {}
+    for linha in linhas:
+        prova = (linha.get("prova_url") or "").strip()
+        if not prova.startswith("http"):
+            continue
+        canal = (linha.get("canal") or "").strip() or canal_da_prova(config, prova)
+        # Sem canal a prova e de imprensa e pertence ao outro modo. Nao e
+        # erro nem se conta: sao centenas e ja tem o seu proprio ecra.
+        if not canal or canal not in canais_validos:
+            continue
+        if vetada(linha):
+            motivos["vetada a mao"] = motivos.get("vetada a mao", 0) + 1
+            continue
+        if pagina_por_ler(linha):
+            motivos["por ler: a pagina nao respondeu"] = motivos.get("por ler: a pagina nao respondeu", 0) + 1
+            continue
+        if (linha.get("sujeito_na_pagina") or "").strip() != "sim":
+            motivos["a pagina nao nomeia o sujeito"] = motivos.get("a pagina nao nomeia o sujeito", 0) + 1
+            continue
+        data = (
+            extracao.data_para_iso(linha.get("data_emissao") or "")
+            or extracao.data_para_iso(linha.get("data_na_pagina") or "")
+            or extracao.data_para_iso(linha.get("data") or "")
+        )
+        if not data:
+            motivos["data ilegivel"] = motivos.get("data ilegivel", 0) + 1
+            continue
+        rotulo = html.unescape((linha.get("titulo_na_pagina") or linha.get("titulo") or "").strip())
+        if (canal, data) in ja_no_registo:
+            motivos["ja no registo verificado a mao"] = motivos.get("ja no registo verificado a mao", 0) + 1
+            continue
+        programa = (linha.get("programa") or linha.get("programa_na_pagina") or "").strip()
+        novo = {
+            "data": data,
+            "canal": canal,
+            "programa": programa or "não apurado",
+            "prova": prova,
+            "titulo": rotulo,
+            "mesma_entrevista": data,
+        }
+        duracao = (linha.get("duracao") or linha.get("duracao_na_pagina") or "").strip()
+        if duracao.isdigit() and int(duracao) > 0:
+            novo["duracao_s"] = int(duracao)
+
+        chave = (canal, data)
+        antigo = blocos.get(chave)
+        # A mesma regra de desempate do coletor: com duracao ganha a sem
+        # duracao, e entre duas com duracao ganha a mais longa, porque a
+        # curta e tipicamente um recorte da mesma emissao.
+        if antigo is None or novo.get("duracao_s", 0) > antigo.get("duracao_s", 0):
+            blocos[chave] = novo
+
+    for motivo, quantas in sorted(motivos.items(), key=lambda p: -p[1]):
+        avisos.append(f"{quantas} paginas: {motivo}")
+    ordenadas = sorted(blocos.values(), key=lambda l: (l["data"], l["canal"]))
+    com_duracao = sum(1 for l in ordenadas if l.get("duracao_s"))
+    avisos.append(f"{com_duracao} de {len(ordenadas)} com duracao apurada")
+    por_data: dict[str, int] = {}
+    for linha in ordenadas:
+        por_data[linha["data"]] = por_data.get(linha["data"], 0) + 1
+    for linha in ordenadas:
+        if por_data[linha["data"]] < 2:
+            linha.pop("mesma_entrevista", None)
+    return ordenadas, avisos
+
+
 def escrever_registo(entrevistas: list[dict], caminho: Path) -> None:
     """Reescreve config/entrevistas.yml, preservando o cabecalho.
 
@@ -1456,6 +1551,7 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--triar", action="store_true", help="reduzir a colheita a uma lista para decidir")
     parser.add_argument("--emitir", action="store_true", help="escrever config/entrevistas.yml a partir das decisoes")
     parser.add_argument("--imprensa", action="store_true", help="com --emitir: escrever config/clipping.yml com as provas de imprensa")
+    parser.add_argument("--canal", action="store_true", help="com --emitir: escrever config/paginas_de_canal.yml com as provas de canal que ninguem leu")
     parser.add_argument("--verificar", action="store_true", help="ler a pagina do canal de cada candidato triado")
     parser.add_argument("--sugerir", action="store_true", help="reescrever a coluna sugestao sem pedir nada a rede")
     parser.add_argument("--resolver", action="store_true", help="seguir as ligacoes dos candidatos triados ate ao destino")
@@ -1466,7 +1562,16 @@ def main(argv: list[str]) -> int:
 
     config = carregar()
     pasta = pasta_de_saida(args.saida)
-    if args.emitir and args.imprensa:
+    if args.emitir and args.canal:
+        editorial = carregar_config()
+        entrevistas, avisos = emitir_paginas_de_canal(
+            config, pasta, set(editorial.canais), emissoes_do_registo(FICHEIRO_ENTREVISTAS)
+        )
+        for aviso in avisos:
+            print(f"  {aviso}", flush=True)
+        escrever_registo(entrevistas, FICHEIRO_PAGINAS_DE_CANAL)
+        resumo = {"paginas_de_canal": len(entrevistas)}
+    elif args.emitir and args.imprensa:
         editorial = carregar_config()
         entrevistas, avisos = emitir_imprensa(config, pasta, set(editorial.canais), emissoes_do_registo(FICHEIRO_ENTREVISTAS))
         for aviso in avisos:

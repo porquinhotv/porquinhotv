@@ -99,3 +99,28 @@ class FonteManual(PluginDeFonte):
         for item in itens:
             item.origem = self.fonte.origem
         return itens
+
+
+@registar
+class FonteRegistoAutomatico(FonteManual):
+    """O mesmo ficheiro, sem a isencao que so uma pessoa justifica.
+
+    A fonte `manual` salta a prova positiva de formato e as rondas de
+    confirmacao, e a justificacao escrita dessa isencao e uma pessoa ter
+    aberto a pagina. Este tipo le exatamente o mesmo formato, mas o
+    criterio trata-o como qualquer fonte automatica: o titulo tem de
+    provar que e uma entrevista, e o bloco tem de ser visto nas rondas
+    normais antes de ser publicado.
+
+    Existe porque havia 150 provas em dominio de canal ja colhidas e
+    verificadas, paradas so porque o registo do canal exige um `sim`
+    escrito linha a linha, que e o padrao que este projeto abandonou a
+    2026-09-09. Aqui a avaliacao decide e uma pessoa veta, como no
+    clipping, e o que compensa a falta da leitura humana e o rigor do
+    criterio, nao a confianca na fonte.
+
+    O que se perde e sabido: as emissoes que o canal titula com a citacao
+    em vez da palavra ficam de fora, em `formato_nao_apurado`.
+    """
+
+    tipo = "registo_automatico"

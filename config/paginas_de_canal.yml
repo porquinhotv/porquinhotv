@@ -1,0 +1,23 @@
+---
+# Paginas de canal colhidas e verificadas pela ferramenta.
+#
+# Escrito por `python -m ferramentas.gnews --emitir --canal`. Nao editar a
+# mao: a proxima corrida reescreve o ficheiro. Para travar uma linha,
+# escrever a recusa na coluna `decisao` da triagem, que e onde a decisao
+# humana vive.
+#
+# A diferenca para o config/entrevistas.yml nao esta no formato, que e o
+# mesmo, nem na prova, que tambem e uma pagina de canal. Esta em quem
+# verificou: ali foi uma pessoa que abriu a pagina, e por isso a fonte
+# salta a prova positiva de formato e as rondas de confirmacao; aqui foi a
+# ferramenta, e por isso a fonte nao salta nada. O titulo tem de dizer que
+# e uma entrevista e o bloco tem de ser visto em duas rondas.
+#
+# O que isso deixa de fora, e sabido: as emissoes que o canal titula com a
+# citacao em vez da palavra ficam na quarentena como `formato_nao_apurado`.
+# Aparecem la com o motivo escrito, para quem as quiser passar a mao para
+# o registo verificado.
+#
+# Campos: os mesmos do config/entrevistas.yml.
+
+entrevistas: []

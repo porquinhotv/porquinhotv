@@ -11,6 +11,12 @@
 #                 linhas. Prova o evento e a data mas raramente a duracao,
 #                 e por isso corre depois. Quando as duas cobrem a mesma
 #                 emissao, fica a do canal.
+#   registo_automatico
+#                 o mesmo ficheiro e o mesmo formato do `manual`, mas sem
+#                 a isencao: o criterio trata-o como fonte automatica, com
+#                 prova positiva de formato e rondas de confirmacao. E o
+#                 que permite publicar provas de canal que a ferramenta
+#                 colheu sozinha, sem afirmar que alguem as leu.
 #   podcast_rss   feed RSS de podcast: da duracao e data. Entra sozinho se
 #                 o criterio deixar. Usar `segmentos` quando o feed mistura
 #                 programas; `formato` diferente de "entrevista" exclui.
@@ -34,6 +40,32 @@ fontes:
     # Verificado a mao, com prova: pode registar uma emissao cuja duracao
     # nao foi possivel apurar. O evento conta, o tempo nao.
     duracao_opcional: true
+
+  # Paginas de canal que a ferramenta colheu e verificou, sem ninguem ter
+  # aberto a pagina. Corre depois do registo verificado a mao, que ganha
+  # sempre, e antes do clipping, porque uma pagina do canal e melhor prova
+  # do que uma peca de jornal.
+  #
+  # `tipo: registo_automatico` le o mesmo formato do registo curado mas
+  # nao tem a isencao dele: a prova positiva de formato e as rondas de
+  # confirmacao aplicam-se, porque a isencao existe para quando uma pessoa
+  # leu a pagina e aqui ninguem leu.
+  #
+  # Sem `duracao_opcional`, ao contrario das duas fontes verificadas a
+  # mao. Numa fonte automatica a falta de duracao significa "ainda nao
+  # verificado" e nao "sem duracao", e ha teste que o guarda. As linhas
+  # sem duracao apurada entram na quarentena como `por_confirmar`, com o
+  # motivo escrito e visiveis na pagina de Fontes, de onde podem passar a
+  # mao para o registo verificado. Quantas sao mede-se na primeira
+  # corrida, que o escreve no ecra; se forem muitas, a decisao de as
+  # contar como evento sem tempo e do autor e muda esta linha e a
+  # justificacao do teste, nao so esta linha.
+  - id: paginas-de-canal
+    tipo: registo_automatico
+    ativa: true
+    ficheiro: config/paginas_de_canal.yml
+    origem: canal
+    confianca: media
 
   # Clipping de imprensa escrita. Prova de que a emissao existiu e de
   # quando: uma peca que diga que no dia X houve entrevista ao sujeito no
