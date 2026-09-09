@@ -210,3 +210,28 @@ grupos:
       - https://poligrafo.sapo.pt/robots.txt
       - https://poligrafo.sapo.pt/blog/tag/andre-ventura/
       - https://poligrafo.sapo.pt/fact-checks/politica/
+
+  - nome: Paginacao do arquivo de etiqueta do jornal de fact-checking
+    # Terceira volta, 2026-09-09. A segunda respondeu duas coisas:
+    #
+    # - `post-sitemap.xml` existe e traz 374 KB de enderecos. As zero
+    #   ligacoes nao sao uma falha: um mapa de sitio escreve `<loc>` e nao
+    #   `href`, e a sonda conta ligacoes de HTML;
+    # - `/blog/tag/andre-ventura/` responde. O 404 da volta anterior era do
+    #   prefixo tentado, nao da falta de arquivo por pessoa.
+    #
+    # O arquivo de etiqueta e a via mais barata de todas, se paginar: em
+    # vez de treze mil pecas ou de filtrar um mapa pelo endereco, o funil
+    # comeca ja filtrado pelo proprio jornal. Falta saber duas coisas, e as
+    # duas se veem aqui: qual e a forma da pagina dois, e ate onde vai.
+    #
+    # Duas paginas com as mesmas ligacoes nao sao paginacao. Uma que
+    # responda 200 com o numero de ligacoes de uma pagina vazia tambem nao.
+    dominio_alvo: poligrafo.sapo.pt
+    hipoteses:
+      - https://poligrafo.sapo.pt/blog/tag/andre-ventura/
+      - https://poligrafo.sapo.pt/blog/tag/andre-ventura/page/2/
+      - https://poligrafo.sapo.pt/blog/tag/andre-ventura/2/
+      - https://poligrafo.sapo.pt/blog/tag/andre-ventura/page/5/
+      - https://poligrafo.sapo.pt/blog/tag/andre-ventura/page/20/
+      - https://poligrafo.sapo.pt/blog/tag/andre-ventura/page/60/
