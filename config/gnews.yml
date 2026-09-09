@@ -72,6 +72,42 @@ pausa_s: 6
 # poucas centenas, e nao sobre a colheita inteira.
 pausa_resolucao_s: 2
 
+# Pausa por dominio, em segundos, para quando o proprio sitio diz o ritmo
+# que quer. Sobrepoe-se a `pausa_resolucao_s`.
+#
+# Verificado a 2026-09-09: o `robots.txt` do jornal de verificacao pede
+# `Crawl-Delay: 300`. Nao ha bloqueio nenhum, as paginas respondem a
+# qualquer ritmo; o numero e o que o sitio pede e o projeto respeita-o,
+# pela mesma razao por que ja recusou uma fonte cujo `robots.txt` bloqueia
+# maquinas. O custo esta assumido: uma corrida sobre este dominio passa a
+# medir-se em horas.
+pausa_por_dominio:
+  poligrafo.sapo.pt: 300
+
+# Mapas de sitio, para chegar as pecas pela porta da frente.
+#
+# Verificado a 2026-09-09: o indice deste jornal declara 13 mapas de
+# verificacoes, com cerca de 12.100 enderecos. No mais antigo, 10 em 1001
+# nomeiam o sujeito no proprio endereco; no mais recente, 3 em 117. Sao 1%
+# e 2,6%, o que aponta para 120 a 315 pecas no arquivo todo.
+#
+# O que o mapa da e um endereco, mais nada: nem titulo, nem data, nem
+# lead. Por isso estas linhas entram direitas na triagem, ja com a prova
+# resolvida, e e o `--verificar` que vai buscar o resto, com o mesmo
+# extrator e as mesmas quatro condicoes de qualquer outra peca.
+#
+# Limitacao conhecida: filtrar pelo endereco perde as verificacoes cujo
+# endereco nao nomeia o sujeito. As nove pecas deste jornal que ja provam
+# linhas publicadas nomeiam-no todas, mas nove casos nao dizem nada sobre
+# 12.100.
+mapas:
+  - nome: Polígrafo
+    indice: https://poligrafo.sapo.pt/sitemap_index.xml
+    # So as verificacoes. O mapa de artigos (`post-sitemap`) foi medido a
+    # 2026-09-09 e deu zero em 21: sao debates, discursos e pecas sobre
+    # redes sociais, nenhuma prova uma emissao.
+    prefixos: [fact_check-sitemap]
+
 # Duracao escrita no corpo, para as paginas que nao a declaram para
 # maquinas. Sondado em 2026-09-08: uma pagina de um dos canais escreve
 # "Duracao: 51min" ao lado do leitor e nao publica schema.org nenhum.

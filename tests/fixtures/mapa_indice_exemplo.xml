@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<sitemap><loc>https://jornal.exemplo/post-sitemap.xml</loc></sitemap>
+<sitemap><loc>https://jornal.exemplo/fact_check-sitemap.xml</loc></sitemap>
+<sitemap><loc>https://jornal.exemplo/fact_check-sitemap2.xml</loc></sitemap>
+<sitemap><loc>https://jornal.exemplo/author-sitemap.xml</loc></sitemap>
+</sitemapindex>

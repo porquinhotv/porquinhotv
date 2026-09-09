@@ -597,6 +597,119 @@ def urls_triados(pasta: Path) -> set[str]:
         return {linha["url_google"] for linha in csv.DictReader(f) if linha.get("url_google")}
 
 
+LOC = re.compile(r"<loc>\s*(.*?)\s*</loc>", re.IGNORECASE | re.DOTALL)
+
+
+def enderecos_do_mapa(xml: str) -> list[str]:
+    """Os `<loc>` de um mapa de sitio, seja indice ou lista de paginas.
+
+    Um mapa nao e HTML e nao tem `href`: a funcao que colhe ligacoes de
+    uma pagina devolve zero aqui, o que na primeira sondagem se leu como
+    falha e nao era.
+    """
+    return [html.unescape(u) for u in LOC.findall(xml) if u.strip()]
+
+
+def mapas_a_usar(indice_xml: str, prefixos: list[str]) -> list[str]:
+    """Do indice, so os mapas que interessam, pelo nome do ficheiro."""
+    escolhidos = []
+    for url in enderecos_do_mapa(indice_xml):
+        nome = url.rsplit("/", 1)[-1]
+        if any(nome.startswith(p) for p in prefixos) and url not in escolhidos:
+            escolhidos.append(url)
+    return escolhidos
+
+
+def linha_do_mapa(url: str, fonte: str) -> dict:
+    """Uma linha de triagem feita so de um endereco.
+
+    O mapa nao da titulo, data nem lead, por isso estas colunas ficam
+    vazias e e o `--verificar` que as preenche, com o mesmo extrator de
+    qualquer outra peca. A chave e o proprio endereco: nao ha URL de
+    indice porque nao se passou por indice nenhum, e o `prova_url` ja fica
+    resolvido, o que dispensa o `--resolver`.
+    """
+    return {
+        "url_google": url,
+        "prova_url": url,
+        "fonte": fonte,
+        "grupo": "imprensa",
+        "data": "",
+        "titulo": "",
+        "formato_no_titulo": "",
+        "nota": "vinda do mapa do sitio",
+    }
+
+
+def colher_mapas(config: dict, pasta: Path, sujeito=None, limite: int | None = None,
+                 obter=obter_texto, dormir=time.sleep) -> dict:
+    """Acrescenta a triagem as pecas cujo endereco nomeia o sujeito.
+
+    Existe porque o indice de noticias nao traz tudo o que existe, coisa
+    verificada a 2026-09-08, e o arquivo deste jornal recua ate 2019, que e
+    onde faltam linhas. O que o mapa da e barato: um pedido por mil
+    enderecos, em vez de uma pagina de listagem por cada 24 pecas.
+
+    Nao apaga nem reescreve nada: uma linha que ja esteja na triagem fica
+    como esta, com a decisao e as colunas que uma pessoa ou o
+    `--verificar` escreveram.
+
+    O `limite` existe para medir antes de gastar: as pecas do mapa mais
+    antigo caem em 2019 a 2021 e dizem, em menos de uma hora, se a corrida
+    completa se paga.
+    """
+    pasta.mkdir(parents=True, exist_ok=True)
+    if sujeito is None:
+        sujeito = carregar_config().sujeito
+    caminho = pasta / "triagem.csv"
+    anteriores: list[dict] = []
+    if caminho.exists():
+        with caminho.open(encoding="utf-8-sig", newline="") as f:
+            anteriores = list(csv.DictReader(f))
+    conhecidos = {l.get("url_google") for l in anteriores if l.get("url_google")}
+    conhecidos |= {l.get("prova_url") for l in anteriores if l.get("prova_url")}
+
+    resumo = {"mapas": 0, "enderecos": 0, "com_o_nome": 0, "novas": 0, "falhas": 0}
+    novas: list[dict] = []
+    for mapa in config.get("mapas") or []:
+        indice = mapa.get("indice") or ""
+        pausa = pausa_do_dominio(config, indice, float(config.get("pausa_resolucao_s", 2)))
+        try:
+            indice_xml = obter(indice)
+        except ErroDeRede as exc:
+            print(f"  indice nao respondeu: {exc}", flush=True)
+            resumo["falhas"] += 1
+            continue
+        alvos = mapas_a_usar(indice_xml, list(mapa.get("prefixos") or []))
+        print(f"  {mapa.get('nome', '')}: {len(alvos)} mapas, pausa de {pausa:.0f}s entre pedidos", flush=True)
+        for i, alvo in enumerate(alvos, 1):
+            if limite is not None and len(novas) >= limite:
+                break
+            dormir(pausa)
+            try:
+                xml = obter(alvo)
+            except ErroDeRede as exc:
+                print(f"  {i}/{len(alvos)}  falhou {alvo}: {exc}", flush=True)
+                resumo["falhas"] += 1
+                continue
+            resumo["mapas"] += 1
+            enderecos = enderecos_do_mapa(xml)
+            resumo["enderecos"] += len(enderecos)
+            do_sujeito = [u for u in enderecos if sujeito.aparece_em(u)]
+            resumo["com_o_nome"] += len(do_sujeito)
+            for url in do_sujeito:
+                if url in conhecidos or limite is not None and len(novas) >= limite:
+                    continue
+                conhecidos.add(url)
+                novas.append(linha_do_mapa(url, str(mapa.get("nome") or "")))
+            print(f"  {i}/{len(alvos)}  {len(enderecos):4d} enderecos, {len(do_sujeito):3d} com o nome, {len(novas):3d} novas ate agora", flush=True)
+
+    resumo["novas"] = len(novas)
+    if novas:
+        gravar_triagem(pasta, anteriores + novas)
+    return resumo
+
+
 def triar(config: dict, pasta: Path) -> dict:
     linhas = list(ler_csv(pasta).values())
     retidas = agrupar(config, linhas, carregar_config().sujeito)
@@ -805,13 +918,17 @@ def verificar(config: dict, pasta: Path, sujeito=None, canais_validos: set[str] 
         editorial = carregar_config()
         sujeito = sujeito or editorial.sujeito
         canais_validos = canais_validos if canais_validos is not None else set(editorial.canais)
-    pausa = float(config.get("pausa_resolucao_s", 2))
+    omissao = float(config.get("pausa_resolucao_s", 2))
     resumo = {"visitadas": 0, "com_sujeito": 0, "sem_sujeito": 0, "com_duracao": 0, "sem_pagina": 0}
 
     for i, linha in enumerate(linhas, 1):
         if linha.get("sujeito_na_pagina"):
             continue
         url = linha.get("prova_url") or finais.get(linha["url_google"]) or resolver_url(linha["url_google"])
+        # A pausa e a do dominio que se vai pedir, nao uma so para todos: um
+        # dominio que pede 300 segundos nao pode arrastar os outros, nem ser
+        # arrastado por eles.
+        pausa = pausa_do_dominio(config, url or "", omissao)
         if not url:
             anotar(linha, "ligacao por resolver")
             resumo["sem_pagina"] += 1
@@ -838,7 +955,8 @@ def verificar(config: dict, pasta: Path, sujeito=None, canais_validos: set[str] 
                 anotar(linha, "a pagina do canal nao nomeia o sujeito")
         if linha["duracao_na_pagina"]:
             resumo["com_duracao"] += 1
-        print(f"  {i}/{len(linhas)}  {linha['sujeito_na_pagina']:4s} {linha['duracao_na_pagina'] or '-':>6s}  {linha['titulo_na_pagina'][:60]}", flush=True)
+        espera = f"  (a esperar {pausa:.0f}s)" if pausa > omissao else ""
+        print(f"  {i}/{len(linhas)}  {linha['sujeito_na_pagina']:4s} {linha['duracao_na_pagina'] or '-':>6s}  {linha['titulo_na_pagina'][:60]}{espera}", flush=True)
         if i % 10 == 0:
             gravar_triagem(pasta, linhas)
         dormir(pausa)
@@ -857,6 +975,25 @@ def verificar(config: dict, pasta: Path, sujeito=None, canais_validos: set[str] 
 # porque e escrito em dois sitios, a sugestao e a emissao, e foram esses
 # dois sitios a discordar: ver `pagina_por_ler`.
 MOTIVO_POR_LER = "por ler: a pagina nao respondeu; abrir no browser"
+
+
+def pausa_do_dominio(config: dict, url: str, omissao: float) -> float:
+    """O ritmo que o proprio sitio pede, quando pede algum.
+
+    Um `robots.txt` pode declarar `Crawl-Delay`, e um dos dominios de onde
+    vem a maior parte da prova de imprensa pede 300 segundos. Nao ha
+    bloqueio: as paginas respondem a qualquer ritmo. O numero cumpre-se
+    porque o projeto ja recusou uma fonte cujo `robots.txt` bloqueia
+    maquinas, e as duas coisas nao podem valer ao mesmo tempo.
+
+    Os dominios e os segundos vivem em YAML, com a medicao ao lado.
+    """
+    dominio = (urllib.parse.urlsplit(url).hostname or "").lower()
+    por_dominio = config.get("pausa_por_dominio") or {}
+    for nome, segundos in por_dominio.items():
+        if dominio == nome or dominio.endswith("." + nome):
+            return float(segundos)
+    return omissao
 
 
 def pagina_por_ler(linha: dict) -> bool:
@@ -1322,7 +1459,8 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--verificar", action="store_true", help="ler a pagina do canal de cada candidato triado")
     parser.add_argument("--sugerir", action="store_true", help="reescrever a coluna sugestao sem pedir nada a rede")
     parser.add_argument("--resolver", action="store_true", help="seguir as ligacoes dos candidatos triados ate ao destino")
-    parser.add_argument("--limite", type=int, help="com --resolver: parar ao fim de N ligacoes, para sondar")
+    parser.add_argument("--mapa", action="store_true", help="acrescentar a triagem as pecas cujo endereco nomeia o sujeito, pelos mapas de sitio")
+    parser.add_argument("--limite", type=int, help="com --resolver ou --mapa: parar ao fim de N, para medir antes de gastar")
     parser.add_argument("--tudo", action="store_true", help="com --resolver: resolver a colheita inteira, nao so os triados")
     args = parser.parse_args(argv)
 
@@ -1348,6 +1486,9 @@ def main(argv: list[str]) -> int:
     elif args.sugerir:
         print(f"a rever as sugestoes de {pasta}", flush=True)
         resumo = sugerir_todas(config, pasta)
+    elif args.mapa:
+        print(f"a colher os mapas de sitio para {pasta}", flush=True)
+        resumo = colher_mapas(config, pasta, limite=args.limite)
     elif args.triar:
         print(f"a triar {pasta}", flush=True)
         resumo = triar(config, pasta)

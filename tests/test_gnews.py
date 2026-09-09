@@ -538,6 +538,102 @@ class TestEmitir(unittest.TestCase):
 
 
 
+class TestMapasDeSitio(unittest.TestCase):
+    """A via que chega ao arquivo do jornal pela porta da frente."""
+
+    CONFIG_M = {
+        **CONFIG,
+        "pausa_por_dominio": {"jornal.exemplo": 300},
+        "mapas": [{"nome": "Jornal Exemplo", "indice": "https://jornal.exemplo/sitemap_index.xml",
+                   "prefixos": ["fact_check-sitemap"]}],
+    }
+
+    class SujeitoFalso:
+        detetar = ("Pessoa Exemplo",)
+
+        def aparece_em(self, texto):
+            from recolha.modelos import contem_palavra
+            return contem_palavra(texto, self.detetar) is not None
+
+    def _obter(self, url):
+        if url.endswith("sitemap_index.xml"):
+            return ler("mapa_indice_exemplo.xml")
+        return ler("mapa_pecas_exemplo.xml")
+
+    def test_do_indice_so_se_usam_os_mapas_das_pecas(self):
+        """O indice real declara 37 mapas, de artigos a notificacoes push.
+        O de artigos foi medido a 2026-09-09 e deu zero em 21: sao debates
+        e pecas sobre redes sociais, nenhuma prova uma emissao."""
+        alvos = gnews.mapas_a_usar(ler("mapa_indice_exemplo.xml"), ["fact_check-sitemap"])
+        self.assertEqual(alvos, ["https://jornal.exemplo/fact_check-sitemap.xml",
+                                 "https://jornal.exemplo/fact_check-sitemap2.xml"])
+
+    def test_um_mapa_nao_tem_href_e_por_isso_le_se_por_loc(self):
+        """Na primeira sondagem o mapa apareceu com zero ligacoes e isso
+        leu-se como falha. Nao era: um mapa escreve <loc> e a funcao que
+        colhe ligacoes procura href."""
+        self.assertEqual(len(gnews.enderecos_do_mapa(ler("mapa_pecas_exemplo.xml"))), 4)
+
+    def test_nome_dentro_de_outra_palavra_nao_conta(self):
+        """Entrada real: um endereco do mapa de artigos era sobre outra
+        pessoa cujo apelido contem o do sujeito. A deteccao e por palavra
+        inteira e nao o apanha, mas o caso fica travado."""
+        with tempfile.TemporaryDirectory() as tmp:
+            resumo = gnews.colher_mapas(self.CONFIG_M, Path(tmp), sujeito=self.SujeitoFalso(),
+                                        obter=self._obter, dormir=lambda s: None)
+        self.assertEqual(resumo["com_o_nome"], 4)
+        self.assertEqual(resumo["novas"], 2)
+
+    def test_linhas_do_mapa_entram_com_a_prova_resolvida_e_sem_titulo(self):
+        """Um mapa da um endereco e mais nada. As colunas do titulo e da
+        data ficam vazias de proposito: quem as preenche e o --verificar,
+        com o mesmo extrator de qualquer outra peca."""
+        with tempfile.TemporaryDirectory() as tmp:
+            pasta = Path(tmp)
+            gnews.colher_mapas(self.CONFIG_M, pasta, sujeito=self.SujeitoFalso(),
+                               obter=self._obter, dormir=lambda s: None)
+            with (pasta / "triagem.csv").open(encoding="utf-8-sig", newline="") as f:
+                linhas = list(csv.DictReader(f))
+        self.assertEqual([l["grupo"] for l in linhas], ["imprensa", "imprensa"])
+        self.assertTrue(all(l["prova_url"] == l["url_google"] for l in linhas))
+        self.assertTrue(all(l["titulo"] == "" and l["data"] == "" for l in linhas))
+
+    def test_uma_linha_ja_na_triagem_nao_se_repete_nem_se_reescreve(self):
+        """O ficheiro de trabalho funde, nunca grava por cima: a decisao
+        que uma pessoa escreveu nao se perde porque a colheita passou
+        outra vez pelo mesmo endereco."""
+        url = "https://jornal.exemplo/fact-check/entrevista-a-pessoa-exemplo-no-canal/"
+        with tempfile.TemporaryDirectory() as tmp:
+            pasta = Path(tmp)
+            gnews.gravar_triagem(pasta, [{"url_google": url, "prova_url": url, "decisao": "nao",
+                                          "grupo": "imprensa", "nota": "vetada a mao"}])
+            resumo = gnews.colher_mapas(self.CONFIG_M, pasta, sujeito=self.SujeitoFalso(),
+                                        obter=self._obter, dormir=lambda s: None)
+            with (pasta / "triagem.csv").open(encoding="utf-8-sig", newline="") as f:
+                linhas = list(csv.DictReader(f))
+        self.assertEqual(resumo["novas"], 1)
+        antiga = [l for l in linhas if l["url_google"] == url]
+        self.assertEqual(len(antiga), 1)
+        self.assertEqual(antiga[0]["decisao"], "nao")
+
+    def test_limite_para_a_corrida_para_se_medir_antes_de_gastar(self):
+        """A corrida completa sobre o dominio real leva cerca de 18 horas.
+        Uma amostra do primeiro mapa custa menos de uma hora e diz se as
+        18 se pagam."""
+        with tempfile.TemporaryDirectory() as tmp:
+            resumo = gnews.colher_mapas(self.CONFIG_M, Path(tmp), sujeito=self.SujeitoFalso(),
+                                        limite=1, obter=self._obter, dormir=lambda s: None)
+        self.assertEqual(resumo["novas"], 1)
+
+    def test_pausa_e_a_que_o_dominio_pede_e_nao_arrasta_os_outros(self):
+        """O robots.txt de um dos dominios pede 300 segundos. Uma pausa so
+        para todos os dominios ou desrespeita esse, ou faz os outros
+        esperar por nada."""
+        self.assertEqual(gnews.pausa_do_dominio(self.CONFIG_M, "https://jornal.exemplo/peca", 2), 300)
+        self.assertEqual(gnews.pausa_do_dominio(self.CONFIG_M, "https://www.jornal.exemplo/peca", 2), 300)
+        self.assertEqual(gnews.pausa_do_dominio(self.CONFIG_M, "https://outro.exemplo/peca", 2), 2)
+
+
 class TestProvaDeImprensa(unittest.TestCase):
     """O clipping deixou de ser ultimo recurso a 2026-09-08 e os anuncios
     contam desde 2026-09-09. O que estes testes travam: a data da peca a
