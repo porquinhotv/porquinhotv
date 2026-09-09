@@ -9,6 +9,7 @@ import csv
 import tempfile
 import unittest
 import unittest.mock
+from types import SimpleNamespace
 from datetime import date
 from pathlib import Path
 
@@ -17,6 +18,7 @@ from tests.apoio import RAIZ, ler
 import yaml
 
 from ferramentas import gnews
+from recolha.modelos import ProvaDeFormato, Sujeito
 from recolha.rede import ErroDeRede
 
 CONFIG = {
@@ -542,7 +544,14 @@ class TestPaginasDeCanal(unittest.TestCase):
     """As 150 provas em dominio de canal que estavam paradas a espera de um
     `sim` escrito a mao, padrao que o projeto abandonou a 2026-09-09."""
 
-    CANAIS = {"canal-noticias", "outro-canal"}
+    # Configuracao editorial de exemplo, com as mesmas classes reais: o
+    # passo de emissao le os termos daqui, como o criterio do coletor.
+    EDITORIAL = SimpleNamespace(
+        canais={"canal-noticias": None, "outro-canal": None},
+        sujeito=Sujeito(id="p", nome="Pessoa Exemplo", detetar=("Pessoa Exemplo",)),
+        exclusoes={"debate": ("debate", "frente a frente")},
+        prova_de_formato=ProvaDeFormato(termos=("entrevista",), programas=("Grande Entrevista",)),
+    )
 
     def _linha(self, **campos):
         base = {
@@ -561,7 +570,44 @@ class TestPaginasDeCanal(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             pasta = Path(tmp)
             gnews.gravar_triagem(pasta, linhas)
-            return gnews.emitir_paginas_de_canal(CONFIG, pasta, self.CANAIS, ja or set())
+            return gnews.emitir_paginas_de_canal(CONFIG, pasta, self.EDITORIAL, ja or set())
+
+    def test_um_resumo_de_debate_nao_se_escreve_como_entrevista(self):
+        """Entrada real, primeira corrida: das cinco linhas escritas, tres
+        eram resumos de debates ("o debate entre X e Y em tres minutos") e
+        entraram porque a prova de formato so era aplicada no coletor. Um
+        ficheiro do repositorio nao pode contar com o passo seguinte para
+        limpar o que este escreveu."""
+        entrevistas, avisos = self._emitir([self._linha(
+            titulo_na_pagina="Caça, touradas e a coelha. O debate entre Pessoa Exemplo e Outra Gente em três minutos",
+            programa_na_pagina="",
+        )])
+        self.assertEqual(entrevistas, [])
+        self.assertTrue(any("formato nao elegivel" in a for a in avisos), avisos)
+
+    def test_entrevista_a_outra_pessoa_no_mesmo_programa_nao_conta(self):
+        """Entrada real: "Grande Entrevista - Outra Gente - ep. 11" prova o
+        formato e nomeia um programa de entrevistas, e a pagina nomeia o
+        sujeito nas etiquetas. A entrevista nao e a ele. Das 108 linhas
+        vetadas a 2026-09-09, 74 eram deste tipo."""
+        entrevistas, avisos = self._emitir([self._linha(
+            titulo_na_pagina="Grande Entrevista - Outra Gente - ep. 11",
+            programa_na_pagina="Grande Entrevista",
+        )])
+        self.assertEqual(entrevistas, [])
+        self.assertIn("1 paginas: o titulo nao nomeia o sujeito", avisos)
+
+    def test_um_recorte_sem_a_palavra_no_titulo_nao_conta(self):
+        """Entrada real: um recorte de 91 segundos entrou como entrevista
+        exclusiva. E o mesmo erro que a correcao d767742 travou nas fontes
+        automaticas, repetido aqui por o passo nao aplicar a mesma regra."""
+        entrevistas, avisos = self._emitir([self._linha(
+            titulo_na_pagina="Pessoa Exemplo: «Não sou machista»",
+            programa_na_pagina="Dois às 10",
+            duracao_na_pagina="91",
+        )])
+        self.assertEqual(entrevistas, [])
+        self.assertIn("1 paginas: o canal nao lhe chama entrevista", avisos)
 
     def test_entra_sem_ninguem_escrever_sim(self):
         """Eram 150 linhas paradas so porque o registo do canal exige uma
@@ -636,7 +682,7 @@ class TestMapasDeSitio(unittest.TestCase):
         detetar = ("Pessoa Exemplo",)
 
         def aparece_em(self, texto):
-            from recolha.modelos import contem_palavra
+            from recolha.modelos import ProvaDeFormato, Sujeito, contem_palavra
             return contem_palavra(texto, self.detetar) is not None
 
     def _obter(self, url):

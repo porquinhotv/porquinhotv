@@ -1141,7 +1141,30 @@ def emitir(config: dict, pasta: Path, canais_validos: set[str]) -> tuple[list[di
     return ordenadas, avisos
 
 
-def emitir_paginas_de_canal(config: dict, pasta: Path, canais_validos: set[str],
+def motivo_de_formato(editorial, titulo: str, programa: str) -> str:
+    """Porque e que este titulo nao pode ser escrito como entrevista.
+
+    Le a mesma configuracao editorial que o criterio do coletor: os termos
+    de exclusao, os termos que provam o formato e os programas de
+    entrevista. Devolve texto vazio quando a linha passa.
+
+    A verificacao do sujeito no titulo nao existe no coletor, que o
+    procura tambem na sinopse e nas etiquetas. Aqui e no titulo e so no
+    titulo, porque a pagina de um programa de entrevistas nomeia o sujeito
+    nas etiquetas mesmo quando o convidado do dia e outra pessoa: das 108
+    linhas vetadas a 2026-09-09, 74 eram isso.
+    """
+    if not editorial.sujeito.aparece_em(titulo):
+        return "o titulo nao nomeia o sujeito"
+    for motivo, termos in editorial.exclusoes.items():
+        if contem_palavra(titulo, termos):
+            return f"formato nao elegivel ({motivo})"
+    if not editorial.prova_de_formato.cobre(titulo, programa):
+        return "o canal nao lhe chama entrevista"
+    return ""
+
+
+def emitir_paginas_de_canal(config: dict, pasta: Path, editorial,
                             ja_no_registo: set[tuple[str, str]] | None = None) -> tuple[list[dict], list[str]]:
     """As provas em dominio de canal que ninguem escreveu `sim`.
 
@@ -1161,11 +1184,27 @@ def emitir_paginas_de_canal(config: dict, pasta: Path, canais_validos: set[str],
     Uma emissao que o registo verificado a mao ja tenha nao se repete: a
     leitura humana ganha, e o coletor poria esta na quarentena de qualquer
     maneira.
+
+    A prova de formato aplica-se **aqui**, e nao so no coletor. Deixa-la
+    toda para o passo seguinte escreveu, na primeira corrida, cinco linhas
+    das quais tres eram resumos de debates, uma era outra pessoa a falar
+    do sujeito e a ultima um recorte de 91 segundos. O coletor apanharia
+    parte delas na quarentena, mas um ficheiro do repositorio nao pode
+    depender de o passo a seguir limpar o que este escreveu: quem o abrir
+    le linhas que dizem ser entrevistas.
+
+    Sao os mesmos termos do criterio, lidos da mesma configuracao: o
+    titulo nao pode ter um termo de exclusao, e tem de conter um termo de
+    prova de formato ou pertencer a um programa de entrevistas. Alem
+    disso, e ao contrario do coletor, o titulo tem de nomear o sujeito:
+    "Grande Entrevista - Outra Pessoa" prova o formato e nomeia um
+    programa de entrevistas, mas a entrevista nao e a ele.
     """
     caminho = pasta / "triagem.csv"
     with caminho.open(encoding="utf-8-sig", newline="") as f:
         linhas = list(csv.DictReader(f))
     ja_no_registo = ja_no_registo or set()
+    canais_validos = set(editorial.canais)
 
     avisos: list[str] = []
     motivos: dict[str, int] = {}
@@ -1197,14 +1236,18 @@ def emitir_paginas_de_canal(config: dict, pasta: Path, canais_validos: set[str],
             motivos["data ilegivel"] = motivos.get("data ilegivel", 0) + 1
             continue
         rotulo = html.unescape((linha.get("titulo_na_pagina") or linha.get("titulo") or "").strip())
+        programa_lido = (linha.get("programa") or linha.get("programa_na_pagina") or "").strip()
+        recusa = motivo_de_formato(editorial, rotulo, programa_lido)
+        if recusa:
+            motivos[recusa] = motivos.get(recusa, 0) + 1
+            continue
         if (canal, data) in ja_no_registo:
             motivos["ja no registo verificado a mao"] = motivos.get("ja no registo verificado a mao", 0) + 1
             continue
-        programa = (linha.get("programa") or linha.get("programa_na_pagina") or "").strip()
         novo = {
             "data": data,
             "canal": canal,
-            "programa": programa or "não apurado",
+            "programa": programa_lido or "não apurado",
             "prova": prova,
             "titulo": rotulo,
             "mesma_entrevista": data,
@@ -1565,7 +1608,7 @@ def main(argv: list[str]) -> int:
     if args.emitir and args.canal:
         editorial = carregar_config()
         entrevistas, avisos = emitir_paginas_de_canal(
-            config, pasta, set(editorial.canais), emissoes_do_registo(FICHEIRO_ENTREVISTAS)
+            config, pasta, editorial, emissoes_do_registo(FICHEIRO_ENTREVISTAS)
         )
         for aviso in avisos:
             print(f"  {aviso}", flush=True)
