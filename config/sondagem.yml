@@ -176,3 +176,37 @@ grupos:
       - https://poligrafo.sapo.pt/wp-json/wp/v2/search?search=ventura&per_page=5
       - https://poligrafo.sapo.pt/tag/andre-ventura/
       - https://poligrafo.sapo.pt/autor/poligrafo/
+
+  - nome: Caminho barato para as pecas do jornal de fact-checking
+    # Segunda volta, depois da primeira sondagem a 2026-09-09:
+    #
+    # - a listagem responde e pagina a serio, do primeiro ao ultimo dos
+    #   561 numeros, com 24 pecas por pagina. Cerca de 13.500 pecas;
+    # - a API de leitura do WordPress responde 401 nas tres formas
+    #   tentadas: esta fechada e nao ha por onde insistir sem conta;
+    # - `/tag/andre-ventura/` da 404, mas o sitio poe as categorias sob
+    #   `/blog/category/`, por isso o caminho das etiquetas pode ser outro.
+    #
+    # Percorrer 561 paginas para chegar a algumas dezenas de pecas e caro e
+    # so se faz se nao houver melhor. Duas vias mais baratas por sondar:
+    #
+    # 1. o mapa do sitio. Um WordPress publica-o num destes caminhos e ele
+    #    lista os enderecos todos com a data da ultima alteracao. Um
+    #    endereco por peca, sem HTML de pagina a volta;
+    # 2. o arquivo por etiqueta, se existir com outro prefixo.
+    #
+    # Porque o mapa do sitio pode chegar: as nove pecas deste jornal que
+    # ja provam linhas publicadas tem todas o nome do sujeito no proprio
+    # endereco. Se isso se confirmar em escala, filtra-se pelo endereco e
+    # abrem-se algumas centenas de paginas em vez de treze mil. E uma
+    # hipotese medida em nove casos, o que nao autoriza conclusao nenhuma
+    # sobre o arquivo inteiro: e por isso que se sonda o mapa primeiro.
+    dominio_alvo: poligrafo.sapo.pt
+    hipoteses:
+      - https://poligrafo.sapo.pt/sitemap_index.xml
+      - https://poligrafo.sapo.pt/wp-sitemap.xml
+      - https://poligrafo.sapo.pt/sitemap.xml
+      - https://poligrafo.sapo.pt/post-sitemap.xml
+      - https://poligrafo.sapo.pt/robots.txt
+      - https://poligrafo.sapo.pt/blog/tag/andre-ventura/
+      - https://poligrafo.sapo.pt/fact-checks/politica/
