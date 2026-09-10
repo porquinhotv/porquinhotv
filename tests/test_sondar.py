@@ -202,6 +202,17 @@ class TestCorrida(unittest.TestCase):
             for nome in ("sondagem.json", "SONDAGEM.md"):
                 self.assertNotIn(b"\r\n", (Path(pasta) / nome).read_bytes())
 
+    def test_nomes_de_grupo_nao_se_repetem(self):
+        """Dois grupos com o mesmo nome tornam --grupo ambiguo.
+
+        O nome do grupo e o que a pessoa escreve na consola e o que a
+        fusao usa para saber o que substituir. Dois iguais fariam o
+        --grupo correr um deles sem dizer qual, e a fusao apagar o outro.
+        """
+        nomes = sondar.nomes_dos_grupos(sondar.carregar())
+        repetidos = sorted({n for n in nomes if nomes.count(n) > 1})
+        self.assertEqual(repetidos, [], "grupos com nome repetido")
+
     def test_configuracao_real_carrega(self):
         cfg = sondar.carregar()
         self.assertTrue(cfg["grupos"])

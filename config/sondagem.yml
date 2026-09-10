@@ -248,6 +248,24 @@ grupos:
   # ==================================================================
 
   - nome: Arquivo da web, o indice
+    # RESULTADO DA SEGUNDA VOLTA, 2026-09-10: o filtro corrigido esta
+    # certo e o indice deixou de responder. Sete de onze consultas
+    # devolveram 504 do lado do arquivo, que e o servidor a desistir de
+    # montar a resposta, nao um limite de tempo nosso: chegam em poucos
+    # segundos. As que responderam mostram que o filtro passou a servir,
+    # e ao mesmo tempo que o rendimento e baixo onde interessa: 12
+    # enderecos num dominio de canal ao longo de cinco anos, e 1000
+    # (outra vez o tecto do limite) no dominio de um jornal, quase todos
+    # de noticias sobre o sujeito e nao de entrevistas.
+    #
+    # Um dominio de canal deu zero numa janela inteira, o que e uma
+    # resposta e nao uma falha.
+    #
+    # A via nao esta fechada, esta cara: uma consulta com curinga e
+    # filtro sobre um dominio grande e o que o servidor recusa. O grupo
+    # seguinte tenta janelas de um ano so, que e a unica coisa por
+    # experimentar antes de a arrumar.
+    #
     # Segunda volta, 2026-09-10, depois de a primeira ter medido mal por
     # duas razoes, ambas verificadas na amostra que a sonda guardou:
     #
@@ -491,3 +509,84 @@ grupos:
       - https://www.rtp.pt/play/bg_l_ep/?listProgram=16214&page=20&type=all
       - https://www.rtp.pt/play/p11017/grande-entrevista
       - https://www.rtp.pt/play/p9822/grande-entrevista
+
+  - nome: Arquivo da web, uma janela de um ano de cada vez
+    # As consultas de duas e cinco janelas devolveram 504 a 2026-09-10.
+    # Um ano de cada vez e a unica variacao que falta antes de dar a via
+    # por cara demais: se um ano responder e cinco nao, a colheita faz-se
+    # ano a ano e o custo e conhecido; se um ano tambem devolver 504, o
+    # indice nao serve para dominios deste tamanho e a via arruma-se com
+    # o motivo escrito.
+    #
+    # So o dominio que mais interessa, porque e o canal com uma linha no
+    # site e o que nenhuma outra via alcanca.
+    dominio_alvo: ''
+    mostrar: true
+    tempo_limite_s: 180
+    hipoteses:
+      - https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2020&to=2020&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000
+      - https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2021&to=2021&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000
+      - https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2022&to=2022&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000
+      - https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2023&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000
+
+  - nome: SIC, o mapa do dia
+    # A sondagem de 2026-09-10 respondeu o essencial e abriu isto.
+    #
+    # O que ficou sabido: os tres mapas que o site declara respondem a
+    # esta maquina (104 KB, 139 KB e 40 KB), o mapa de indice lista 1331
+    # mapas diarios com o nome do dia no proprio endereco, e o mapa de
+    # videos traz o endereco, o titulo e o resumo de cada peca, com o
+    # nome do sujeito la dentro. As tres paginas de artigo continuam a
+    # responder 403, tambem de casa: o 403 nao era da maquina de
+    # datacenter, e desta parte do site para qualquer programa.
+    #
+    # A consequencia e melhor do que parece. Se o mapa do dia trouxer o
+    # titulo, como o de videos traz, entao o proprio canal declara, num
+    # formato para maquinas e sem pedir nada a ninguem, o titulo e o dia
+    # de cada peca que publicou. Isso chega para detetar uma entrevista
+    # e para provar o dia, e a prova publicada e o endereco do artigo,
+    # que qualquer pessoa abre no browser. A duracao fica por apurar,
+    # como ja acontece com a prova de imprensa.
+    #
+    # 1331 mapas diarios sao cerca de tres anos e meio. Estas hipoteses
+    # perguntam tres coisas: se o mapa de um dia com entrevista conhecida
+    # traz o titulo, ate onde para tras existe mapa, e qual e a forma
+    # exata do nome do ficheiro.
+    #
+    # Atencao a forma: no mapa de indice o dia NAO leva zero a esquerda
+    # (`2026-09-9.xml`) mas o mes leva (`/09/`). Duas hipoteses testam as
+    # duas formas para o mesmo dia, porque escrever o nome errado devolve
+    # um 404 que se leria como "nao ha mapa desse dia".
+    dominio_alvo: sicnoticias.pt
+    mostrar: true
+    hipoteses:
+      - https://sicnoticias.pt/sitemap/2025/08/2025-08-28.xml
+      - https://sicnoticias.pt/sitemap/2025/10/2025-10-24.xml
+      - https://sicnoticias.pt/sitemap/2023/11/2023-11-13.xml
+      - https://sicnoticias.pt/sitemap/2022/01/2022-01-5.xml
+      - https://sicnoticias.pt/sitemap/2022/01/2022-01-05.xml
+      - https://sicnoticias.pt/sitemap/2021/01/2021-01-13.xml
+      - https://sicnoticias.pt/sitemap/2019/10/2019-10-25.xml
+
+  - nome: RTP Play, ate onde vai a lista de episodios
+    # Verificado a 2026-09-10: `bg_l_ep` com o identificador do programa
+    # (nao o da temporada) devolve doze episodios e traz o nome do
+    # sujeito ja na primeira pagina; os identificadores de temporada
+    # devolvem doze sem o nome; e a pagina 5 de uma temporada devolve
+    # vazio, ou seja, a paginacao acaba antes disso.
+    #
+    # Falta so uma coisa para esta via ficar pronta a configurar: ate
+    # que pagina vai a lista do programa inteiro. Se acabar a pagina 8,
+    # sao 96 episodios por oito pedidos, e o programa de entrevistas da
+    # RTP fica coberto de uma ponta a outra, com data e duracao, que e
+    # exatamente o que falta nos anos de 2019 a 2023.
+    #
+    # Uma pagina vazia e o fim da lista, nao uma falha.
+    dominio_alvo: rtp.pt
+    hipoteses:
+      - https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=2&type=all
+      - https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=4&type=all
+      - https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=8&type=all
+      - https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=12&type=all
+      - https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=20&type=all
+      - https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=40&type=all
