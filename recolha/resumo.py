@@ -9,12 +9,11 @@ Unidades, para nao haver confusao:
 - emissoes: entrevistas emitidas, uma por canal e dia. A mesma entrevista
   em dois canais sao duas emissoes.
 - entrevistas_distintas: emissoes agrupadas pela chave `entrevista`.
-- tempo_s: soma das duracoes das emissoes que tem duracao apurada. Com um
-  so interveniente, tempo de emissao e tempo de pessoa sao a mesma coisa.
-- sem_duracao: emissoes provadas cuja duracao nao foi possivel apurar.
-  Contam como evento e nao contam no tempo. Este campo existe para que
-  ninguem leia `tempo_s` como se fosse o tempo de todas as emissoes: sem
-  ele, um total baixo pareceria uma medicao em vez de uma lacuna.
+
+Nao ha tempo. Ate 2026-09-10 cada balde somava `tempo_s` e contava
+`sem_duracao`; o autor retirou a duracao do projeto e o site passou a
+contar so existencias. `esquema` subiu para 2 para que um site antigo
+nao leia um resumo novo como se tivesse os campos de tempo.
 """
 
 from __future__ import annotations
@@ -34,26 +33,22 @@ def semana_iso(iso: str) -> str:
     return f"{ano}-W{semana:02d}"
 
 
+ESQUEMA = 2
+
+
 def _balde() -> dict:
-    return {"emissoes": 0, "tempo_s": 0, "sem_duracao": 0, "entrevistas": set()}
+    return {"emissoes": 0, "entrevistas": set()}
 
 
 def _fechar(balde: dict) -> dict:
     return {
         "emissoes": balde["emissoes"],
         "entrevistas_distintas": len(balde["entrevistas"]),
-        "tempo_s": balde["tempo_s"],
-        "sem_duracao": balde["sem_duracao"],
     }
 
 
 def _somar(balde: dict, linha: dict) -> None:
     balde["emissoes"] += 1
-    duracao = linha.get("duracao_s")
-    if duracao is None:
-        balde["sem_duracao"] += 1
-    else:
-        balde["tempo_s"] += int(duracao)
     balde["entrevistas"].add(linha["entrevista"])
 
 
@@ -90,7 +85,7 @@ def construir(linhas: list[dict], config: Config) -> dict:
     por_mes: dict = defaultdict(_balde)
     por_ano: dict = defaultdict(_balde)
     por_canal: dict = defaultdict(_balde)
-    canal_por_dia: dict = defaultdict(lambda: defaultdict(lambda: {**_balde(), "declaradas": 0, "parciais": 0}))
+    canal_por_dia: dict = defaultdict(lambda: defaultdict(lambda: {**_balde(), "declaradas": 0}))
     por_origem: dict = defaultdict(_balde)
 
     for linha in linhas:
@@ -106,13 +101,11 @@ def construir(linhas: list[dict], config: Config) -> dict:
         _somar(celula, linha)
         if linha.get("data_origem") == "declarada":
             celula["declaradas"] += 1
-        if linha.get("parcial"):
-            celula["parciais"] += 1
 
     datas = sorted(por_dia)
     tema = config.tema
     return {
-        "esquema": 1,
+        "esquema": ESQUEMA,
         "gerado_em": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "tema": {
             "id": tema.id,
@@ -145,11 +138,7 @@ def construir(linhas: list[dict], config: Config) -> dict:
             {
                 "data": d,
                 "canais": {
-                    canal: {
-                        **_fechar(celula),
-                        "declaradas": celula["declaradas"],
-                        "parciais": celula["parciais"],
-                    }
+                    canal: {**_fechar(celula), "declaradas": celula["declaradas"]}
                     for canal, celula in canal_por_dia[d].items()
                 },
             }

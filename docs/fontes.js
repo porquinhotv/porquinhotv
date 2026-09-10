@@ -8,26 +8,16 @@
 
   function tabela(linhas, nomeDe) {
     var t = el("table", { class: "tabela" });
-    t.appendChild(el("thead", {}, [el("tr", {}, ["Data", "Canal", "Programa", "Duração", "Prova"].map(function (h) { return el("th", { text: h }); }))]));
+    t.appendChild(el("thead", {}, [el("tr", {}, ["Data", "Canal", "Programa", "Prova"].map(function (h) { return el("th", { text: h }); }))]));
     var corpo = el("tbody");
     linhas.forEach(function (l) {
       var canal = el("td", { class: "canal", text: nomeDe[l.canal] || l.canal });
       canal.style.setProperty("--cor", PTVDOM.corDoCanal(l.canal));
-      var duracao;
-      if (l.duracao_s === null || l.duracao_s === undefined) {
-        // Nunca escrever zero nem deixar a celula vazia: a lacuna e um
-        // facto sobre a fonte e tem de se ler como tal.
-        duracao = el("td", {}, [el("span", { class: "parcial", text: "não apurada" })]);
-      } else {
-        duracao = el("td", { text: PTV.duracaoLegivel(l.duracao_s) });
-        if (l.parcial) { duracao.appendChild(el("span", { class: "parcial", text: " (incompleta, só recortes)" })); }
-      }
       var data = el("td", { text: l.data });
       if (l.data_origem !== "declarada") { data.appendChild(el("span", { class: "parcial", text: " (publicação)" })); }
       corpo.appendChild(el("tr", {}, [
         data, canal,
         el("td", { text: l.programa + (l.titulo ? ": " + l.titulo : "") }),
-        duracao,
         el("td", {}, [
           el("a", { href: l.prova_url, rel: "noopener noreferrer", target: "_blank", text: l.origem === "imprensa" ? "notícia" : "ver" }),
           l.origem === "imprensa" ? el("span", { class: "parcial", text: " (imprensa)" }) : el("span", {})
@@ -49,13 +39,9 @@
         alvo.appendChild(el("div", { class: "cartao vazio" }, [el("h2", { text: "Ainda sem dados" }), el("p", { text: "Ainda não há emissões registadas." })]));
         return;
       }
-      var semDuracao = emissoes.filter(function (e) { return e.duracao_s === null || e.duracao_s === undefined; }).length;
       var daImprensa = emissoes.filter(function (e) { return e.origem === "imprensa"; }).length;
-      if (semDuracao || daImprensa) {
-        var notas = [];
-        if (daImprensa) { notas.push(daImprensa + " " + (daImprensa === 1 ? "emissão está provada" : "emissões estão provadas") + " por peças de imprensa que relatam ou anunciam a entrevista, e não pela página do canal; provam que existiu e quando, não a duração"); }
-        if (semDuracao) { notas.push("em " + semDuracao + " " + (semDuracao === 1 ? "delas" : "casos") + " não foi possível apurar a duração, e por isso não contam no tempo"); }
-        alvo.appendChild(el("p", { class: "legenda-secao", text: notas.join("; ") + "." }));
+      if (daImprensa) {
+        alvo.appendChild(el("p", { class: "legenda-secao", text: daImprensa + " " + (daImprensa === 1 ? "emissão está provada" : "emissões estão provadas") + " por peças de imprensa que relatam ou anunciam a entrevista, e não pela página do canal. Uma prova vale o mesmo que a outra: a peça diz que a entrevista existiu e em que dia, e é isso que se conta." }));
       }
       var porAno = {};
       emissoes.forEach(function (e) { (porAno[e.data.slice(0, 4)] = porAno[e.data.slice(0, 4)] || []).push(e); });

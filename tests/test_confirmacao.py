@@ -17,7 +17,7 @@ def emissao(bloco="b1", fonte="busca-rtp1", **campos):
     base = dict(
         id=f"{fonte}:{bloco}", bloco=bloco, entrevista=bloco, data="2021-03-15",
         data_origem="declarada", publicado_em="2021-03-15", canal="rtp1",
-        programa="Programa", duracao_s=1800, parcial=False, origem="canal",
+        programa="Programa", origem="canal",
         fonte=fonte, confianca="media", prova_url="https://exemplo.pt/a",
         titulo="Entrevista",
     )
@@ -81,8 +81,6 @@ class TestIntegracaoComAsFontes(unittest.TestCase):
         self.assertEqual(a_mao, {"registo-curado", "clipping-imprensa"})
         automaticas = [f for f in config.fontes if f.tipo != "manual"]
         self.assertTrue(automaticas, "sem fontes automaticas o site nunca se povoa sozinho")
-        for fonte in automaticas:
-            self.assertFalse(fonte.duracao_opcional, f"{fonte.id}: fonte automatica nao regista duracao por apurar")
 
 
 class TestSegundaRondaNoMesmoDia(unittest.TestCase):

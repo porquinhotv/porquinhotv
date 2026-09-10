@@ -1,6 +1,7 @@
 /* Pagina principal. Le dados/resumo.json e textos.json, e desenha.
    Nao calcula agregados novos: soma periodos a partir das reparticoes
-   diarias e divide tempos pelas comparacoes. Tudo o resto vem feito. */
+   diarias. Tudo o resto vem feito. Conta emissoes e entrevistas; nao ha
+   tempo em lado nenhum desde 2026-09-10. */
 
 (function () {
   "use strict";
@@ -34,14 +35,15 @@
 
   function plural(n, um, varios) { return n === 1 ? "1 " + um : n + " " + varios; }
 
-  /* Um periodo em que nenhuma emissao tem duracao apurada tem tempo zero,
-     e escrever "menos de um minuto" ali seria publicar uma medicao que
-     nao existe. Ver METODOLOGIA, seccao 6. */
-  function tempoDe(bucket) {
-    if (bucket.tempo_s > 0) {
-      return PTV.duracaoLegivel(bucket.tempo_s) + (bucket.sem_duracao ? ", mais " + bucket.sem_duracao + " sem duração apurada" : "");
+  /* "3 emissões, 2 entrevistas distintas": o segundo numero so aparece
+     quando difere do primeiro, ou seja, quando houve simulcast. */
+  function contagemDe(bucket) {
+    var texto = plural(bucket.emissoes, "emissão", "emissões");
+    var distintas = bucket.entrevistas_distintas;
+    if (distintas !== undefined && distintas !== bucket.emissoes) {
+      texto += ", " + plural(distintas, "entrevista distinta", "entrevistas distintas");
     }
-    return bucket.sem_duracao ? "duração não apurada" : PTV.duracaoLegivel(0);
+    return texto;
   }
 
   // ---- porquinho ---------------------------------------------------------
@@ -109,41 +111,12 @@
     var numero = el("p", { class: "numero-grande" });
     numero.appendChild(document.createTextNode(plural(t.entrevistas, "entrevista exclusiva", "entrevistas exclusivas")));
     var partes = [];
+    // A mesma entrevista em dois canais sao duas emissoes e uma
+    // entrevista; o segundo numero so se escreve quando difere.
     if (t.emissoes !== t.entrevistas) { partes.push(plural(t.emissoes, "emissão", "emissões")); }
-    // Quando todas as emissoes do periodo estao sem duracao apurada, o
-    // tempo e zero e dizer "0 minutos no ar" seria uma medicao falsa.
-    if (t.tempo_s > 0) { partes.push(PTV.duracaoLegivel(t.tempo_s) + " no ar"); }
     partes.push(p.frase);
     numero.appendChild(el("small", { text: partes.join(", ") }));
     cartao.appendChild(numero);
-
-    if (t.sem_duracao > 0) {
-      cartao.appendChild(el("p", {
-        class: "nota-parcial",
-        text: t.sem_duracao === t.emissoes
-          ? "Não foi possível apurar a duração de nenhuma destas emissões. Estão provadas e contadas como entrevistas; o tempo no ar não é conhecido."
-          : plural(t.sem_duracao, "emissão está", "emissões estão") + " sem duração apurada e não entra" + (t.sem_duracao === 1 ? "" : "m") + " no tempo acima. O tempo real é maior."
-      }));
-    }
-
-    var comp = PTV.escolherComparacao(t.tempo_s, estado.textos.comparacoes, PTV.sementeDe(estado.periodo + intervalo.de));
-    if (t.tempo_s > 0) { cartao.appendChild(el("p", {
-      class: "comparacao",
-      text: PTV.preencher(estado.textos.frases.periodo, {
-        tempo: PTV.duracaoLegivel(t.tempo_s).charAt(0).toUpperCase() + PTV.duracaoLegivel(t.tempo_s).slice(1),
-        periodo: p.frase,
-        comparacao: PTV.comparar(t.tempo_s, comp, estado.textos.frases)
-      })
-    })); }
-
-    var canais = PTV.somarCanais(estado.resumo.canal_por_dia, intervalo.de, intervalo.ate);
-    var parciais = Object.keys(canais).reduce(function (n, id) { return n + canais[id].parciais; }, 0);
-    if (parciais > 0) {
-      cartao.appendChild(el("p", {
-        class: "nota-parcial",
-        text: plural(parciais, "emissão tem", "emissões têm") + " duração incompleta: só existem recortes online, e contou-se o que existe. O tempo real é maior."
-      }));
-    }
     painel.appendChild(cartao);
   }
 
@@ -152,25 +125,25 @@
   function desenharCanais(painel, intervalo) {
     var canais = PTV.somarCanais(estado.resumo.canal_por_dia, intervalo.de, intervalo.ate);
     var lista = estado.resumo.por_canal.map(function (c) {
-      var s = canais[c.canal] || { emissoes: 0, tempo_s: 0, parciais: 0, sem_duracao: 0 };
-      return { id: c.canal, nome: c.nome, emissoes: s.emissoes, tempo_s: s.tempo_s, sem_duracao: s.sem_duracao };
+      var s = canais[c.canal] || { emissoes: 0 };
+      return { id: c.canal, nome: c.nome, emissoes: s.emissoes };
     });
-    var total = lista.reduce(function (n, c) { return n + c.tempo_s; }, 0);
-    var ordenada = lista.slice().sort(function (a, b) { return b.tempo_s - a.tempo_s || a.nome.localeCompare(b.nome); });
+    var total = lista.reduce(function (n, c) { return n + c.emissoes; }, 0);
+    var ordenada = lista.slice().sort(function (a, b) { return b.emissoes - a.emissoes || a.nome.localeCompare(b.nome); });
     var p = periodoAtual();
 
     var secao = el("section", {}, [
       el("h2", { text: "Em que canais" }),
       el("p", { class: "legenda-secao", text: total > 0
-        ? "Como se reparte o tempo de entrevistas exclusivas " + p.frase + ". A mesma entrevista emitida em dois canais conta nos dois."
+        ? "Como se repartem as emissões de entrevistas exclusivas " + p.frase + ". A mesma entrevista emitida em dois canais conta nos dois."
         : "Sem entrevistas registadas " + p.frase + "." })
     ]);
 
     if (total > 0) {
-      var empilhada = el("div", { class: "empilhada", role: "img", "aria-label": "Quota de tempo por canal" });
-      ordenada.filter(function (c) { return c.tempo_s > 0; }).forEach(function (c) {
-        var f = el("span", { title: c.nome + ": " + Math.round(c.tempo_s / total * 100) + "%" });
-        f.style.width = (c.tempo_s / total * 100).toFixed(2) + "%";
+      var empilhada = el("div", { class: "empilhada", role: "img", "aria-label": "Quota de emissões por canal" });
+      ordenada.filter(function (c) { return c.emissoes > 0; }).forEach(function (c) {
+        var f = el("span", { title: c.nome + ": " + Math.round(c.emissoes / total * 100) + "%" });
+        f.style.width = (c.emissoes / total * 100).toFixed(2) + "%";
         f.style.background = cor(c.id);
         empilhada.appendChild(f);
       });
@@ -180,17 +153,11 @@
     var ul = el("ul", { class: "canais" });
     ordenada.forEach(function (c) {
       var ponto = el("span", { class: "ponto" }); ponto.style.background = cor(c.id);
-      var enchimento = el("span"); enchimento.style.width = (total ? c.tempo_s / total * 100 : 0).toFixed(1) + "%"; enchimento.style.background = cor(c.id);
-      var valor;
-      if (c.tempo_s > 0) {
-        valor = plural(c.emissoes, "emissão", "emissões") + ", " + PTV.duracaoLegivel(c.tempo_s) + " (" + Math.round(c.tempo_s / total * 100) + "%)";
-        if (c.sem_duracao > 0) { valor += ", mais " + c.sem_duracao + " sem duração apurada"; }
-      } else if (c.emissoes > 0) {
-        valor = plural(c.emissoes, "emissão", "emissões") + ", duração não apurada";
-      } else {
-        valor = "nada registado";
-      }
-      ul.appendChild(el("li", { class: c.tempo_s > 0 ? "" : "zero" }, [
+      var enchimento = el("span"); enchimento.style.width = (total ? c.emissoes / total * 100 : 0).toFixed(1) + "%"; enchimento.style.background = cor(c.id);
+      var valor = c.emissoes > 0
+        ? plural(c.emissoes, "emissão", "emissões") + " (" + Math.round(c.emissoes / total * 100) + "%)"
+        : "nada registado";
+      ul.appendChild(el("li", { class: c.emissoes > 0 ? "" : "zero" }, [
         ponto,
         el("span", { class: "nome", text: c.nome }),
         el("span", { class: "pista" }, [enchimento]),
@@ -198,19 +165,6 @@
       ]));
     });
     secao.appendChild(ul);
-
-    if (total > 0 && ordenada[0].tempo_s > 0) {
-      var topo = ordenada[0];
-      var comp = PTV.escolherComparacao(topo.tempo_s, estado.textos.comparacoes, PTV.sementeDe(topo.id + estado.periodo));
-      secao.appendChild(el("p", {
-        class: "comparacao",
-        text: PTV.preencher(estado.textos.frases.canal, {
-          canal: topo.nome,
-          tempo: PTV.duracaoLegivel(topo.tempo_s),
-          comparacao: PTV.comparar(topo.tempo_s, comp, estado.textos.frases)
-        })
-      }));
-    }
     painel.appendChild(secao);
   }
 
@@ -228,7 +182,7 @@
     if (escala.id === "semana" && serie.length > 78) { serie = serie.slice(-78); }
     var secao = el("section", {}, [
       el("h2", { text: "Como tem evoluído" }),
-      el("p", { class: "legenda-secao", text: "Cada barra é o tempo de entrevistas exclusivas nesse período. Passe o rato ou use o teclado para ler os valores." })
+      el("p", { class: "legenda-secao", text: "Cada barra é o número de emissões de entrevistas exclusivas nesse período. Passe o rato ou use o teclado para ler os valores." })
     ]);
     desenharSeletor(secao, ESCALAS, estado.escala, function (id) { estado.escala = id; desenharPainel(); }, "Escala");
 
@@ -241,13 +195,13 @@
     var largura = 1000, altura = 220, baixo = 30, cima = 6;
     var area = altura - baixo - cima;
     var passo = largura / serie.length;
-    var max = Math.max.apply(null, serie.map(function (s) { return s.tempo_s; })) || 1;
-    var svg = '<svg class="grafico" viewBox="0 0 ' + largura + ' ' + altura + '" role="group" aria-label="Tempo por período">';
+    var max = Math.max.apply(null, serie.map(function (s) { return s.emissoes; })) || 1;
+    var svg = '<svg class="grafico" viewBox="0 0 ' + largura + ' ' + altura + '" role="group" aria-label="Emissões por período">';
     var anosVistos = {};
     serie.forEach(function (s, i) {
-      var h = s.tempo_s / max * area;
+      var h = s.emissoes / max * area;
       var x = i * passo;
-      var rotulo = rotuloDoPeriodo(escala.campo, s[escala.campo]) + ": " + plural(s.emissoes, "emissão", "emissões") + ", " + tempoDe(s);
+      var rotulo = rotuloDoPeriodo(escala.campo, s[escala.campo]) + ": " + contagemDe(s);
       svg += '<g class="coluna" data-i="' + i + '" tabindex="0" role="img" aria-label="' + PTVDOM.escapar(rotulo) + '">';
       svg += '<rect x="' + x.toFixed(1) + '" y="0" width="' + passo.toFixed(1) + '" height="' + (altura - baixo) + '" fill="transparent"></rect>';
       svg += '<rect class="barra" x="' + (x + passo * 0.15).toFixed(1) + '" y="' + (altura - baixo - h).toFixed(1) + '" width="' + (passo * 0.7).toFixed(1) + '" height="' + h.toFixed(1) + '" rx="2"></rect></g>';
@@ -267,7 +221,7 @@
     var suporte = el("div", { html: svg });
     function mostrar(i) {
       var s = serie[i];
-      leitura.textContent = rotuloDoPeriodo(escala.campo, s[escala.campo]) + ": " + plural(s.emissoes, "emissão", "emissões") + ", " + tempoDe(s);
+      leitura.textContent = rotuloDoPeriodo(escala.campo, s[escala.campo]) + ": " + contagemDe(s);
       Array.prototype.forEach.call(suporte.querySelectorAll("g.coluna"), function (g) {
         g.classList.toggle("ativa", Number(g.getAttribute("data-i")) === i);
       });

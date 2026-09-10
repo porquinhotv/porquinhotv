@@ -22,10 +22,7 @@ Formato de cada linha:
       canal: id-do-canal        # id de config/porquinho.yml, obrigatorio
       programa: Jornal da Noite # obrigatorio
       prova: https://...        # onde se ve ou le, obrigatorio
-      duracao_s: 2880           # segundos declarados; omitir se nao foi
-                                # possivel apurar. Procurar sempre primeiro.
       titulo: ...               # opcional
-      parcial: false            # true se so existem recortes online
       publicado_em: 2026-09-05  # opcional; por omissao igual a data
       mesma_entrevista: chave   # opcional; agrupa simulcast e repeticoes
 """
@@ -41,6 +38,8 @@ from ..modelos import FICHEIRO_ENTREVISTAS, RAIZ, ItemBruto, id_estavel
 from .base import PluginDeFonte, registar
 
 OBRIGATORIOS = ("data", "canal", "programa", "prova")
+# Retirados a 2026-09-10 com a duracao. Ver recolha/criterio.py.
+CAMPOS_RETIRADOS = ("duracao_s", "parcial")
 
 
 def validar_linha(linha: dict, posicao: int) -> None:
@@ -50,11 +49,11 @@ def validar_linha(linha: dict, posicao: int) -> None:
     prova = str(linha["prova"])
     if not prova.startswith(("https://", "http://")):
         raise ValueError(f"linha {posicao}: prova tem de ser um URL")
-    duracao = linha.get("duracao_s")
-    if duracao is not None and int(duracao) <= 0:
-        # Zero nao e "sem duracao": sem duracao escreve-se omitindo o campo,
-        # para que a diferenca entre "nao apurada" e "apurada" seja explicita.
-        raise ValueError(f"linha {posicao}: duracao_s tem de ser positiva ou omitida")
+    for campo in CAMPOS_RETIRADOS:
+        if campo in linha:
+            # Um campo que o modelo deixou de ter nao pode ficar no ficheiro
+            # a fingir que conta: quem o le acreditava que o site o usava.
+            raise ValueError(f"linha {posicao}: '{campo}' deixou de existir a 2026-09-10; apagar a linha")
 
 
 def ler_registo(caminho: Path) -> list[ItemBruto]:
@@ -67,19 +66,16 @@ def ler_registo(caminho: Path) -> list[ItemBruto]:
             raise ValueError(f"{caminho.name}: {exc}") from None
         data = str(linha["data"])
         prova = str(linha["prova"])
-        duracao = linha.get("duracao_s")
         itens.append(
             ItemBruto(
                 id_nativo=id_estavel(data, str(linha["canal"]), str(linha["programa"]), prova),
                 publicado_em=str(linha.get("publicado_em") or data),
                 titulo=str(linha.get("titulo") or ""),
                 url=prova,
-                duracao_s=None if duracao is None else int(duracao),
                 descricao="",
                 canal=str(linha["canal"]),
                 programa=str(linha["programa"]),
                 data_declarada=data,
-                parcial=bool(linha.get("parcial", False)),
                 mesma_entrevista=str(linha.get("mesma_entrevista") or ""),
                 prova_url=prova,
             )

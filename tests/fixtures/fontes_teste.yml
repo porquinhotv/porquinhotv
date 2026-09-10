@@ -4,13 +4,11 @@ fontes:
     ficheiro: tests/fixtures/entrevistas_exemplo.yml
     origem: canal
     confianca: alta
-    duracao_opcional: true
   - id: clipping-imprensa
     tipo: manual
     ficheiro: tests/fixtures/clipping_exemplo.yml
     origem: imprensa
     confianca: media
-    duracao_opcional: true
   - id: podcast-exemplo
     tipo: podcast_rss
     url: https://exemplo.pt/feed.rss

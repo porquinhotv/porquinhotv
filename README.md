@@ -1,15 +1,14 @@
 # Porquinho TV
 
-Quantas entrevistas exclusivas deu André Ventura na televisão portuguesa, e quanto tempo ocuparam. Um site estático, uma contagem pública, uma fonte por linha.
+Quantas entrevistas exclusivas deu André Ventura na televisão portuguesa. Um site estático, uma contagem pública, uma fonte por linha.
 
-O site publica, por período (semana, mês, ano, desde sempre): entrevistas exclusivas, emissões (uma por canal e dia), tempo no ar e quantas emissões estão provadas mas sem duração apurada. Mostra a repartição pelos nove canais generalistas e de informação, a evolução por semana, mês e ano, um calendário dia a dia e a lista completa de fontes. A mascote reage ao número de dias desde a última entrevista.
+O site publica, por período (semana, mês, ano, desde sempre): entrevistas exclusivas e emissões (uma por canal e dia). Não conta tempo: desde 2026-09-10 conta só a existência de cada entrevista. Mostra a repartição pelos nove canais generalistas e de informação, a evolução por semana, mês e ano, um calendário dia a dia e a lista completa de fontes. A mascote reage ao número de dias desde a última entrevista.
 
 ## Como funciona
 
-- `config/entrevistas.yml` é o registo do canal: uma linha por emissão, com data, canal, programa, URL de prova e a duração declarada sempre que exista. É a fonte principal.
-- `config/clipping.yml` são as emissões provadas por peças de imprensa: a peça nomeia o canal, diz entrevista e fixa o dia, relatando a entrevista ou anunciando-a. Provam que a emissão existiu e quando, raramente a duração. Entram identificadas como tal e nunca deslocam um registo do canal.
-- Uma emissão sem duração apurada conta como entrevista e nunca como tempo. O site escreve "duração não apurada"; não escreve zero nem estima.
-- `config/fontes.yml` declara as fontes automáticas. A principal é a pesquisa do próprio site de cada canal: pede a pesquisa do canal por cada forma do nome, recolhe os endereços de artigo desse domínio e lê de cada página o que ela publica em schema.org e OpenGraph, incluindo a duração quando existe. Não há seletores de HTML de nenhum site, e por isso a leitura sobrevive a uma remodelação em vez de passar a devolver zero em silêncio.
+- `config/entrevistas.yml` é o registo do canal: uma linha por emissão, com data, canal, programa e URL de prova. É a fonte principal.
+- `config/clipping.yml` são as emissões provadas por peças de imprensa: a peça nomeia o canal, diz entrevista e fixa o dia, relatando a entrevista ou anunciando-a. Provam que a emissão existiu e quando, que é tudo o que se conta, e valem o mesmo que a página do canal. Entram identificadas como tal e nunca deslocam um registo do canal.
+- `config/fontes.yml` declara as fontes automáticas. A principal é a pesquisa do próprio site de cada canal: pede a pesquisa do canal por cada forma do nome, recolhe os endereços de artigo desse domínio e lê de cada página o que ela publica em schema.org e OpenGraph. Não há seletores de HTML de nenhum site, e por isso a leitura sobrevive a uma remodelação em vez de passar a devolver zero em silêncio.
 - Uma emissão vinda de fonte automática não entra na primeira vez que é vista: só entra depois de o mesmo bloco aparecer em rondas distintas. O registo de avistamentos está em `docs/dados/candidatos.json`, e ao lado de cada linha ficam as rondas e o número de fontes distintas que a viram. Ver a Metodologia para o que isto protege e o que não protege.
 - `recolha/` aplica o critério em `config/porquinho.yml`, escreve `docs/dados/emissoes.json` (append-only), `docs/dados/quarentena.json` (tudo o que ficou de fora, com motivo) e `docs/dados/resumo.json` (os agregados).
 - `docs/` é o site. Zero dependências externas: sem CDN, sem fontes remotas, sem analytics. A fonte tipográfica é servida localmente, licença OFL ao lado.
@@ -35,7 +34,7 @@ Antes de ativar uma fonte nova, `python -m ferramentas.descobrir <url>` mostra o
 
 ## Contribuir com uma emissão
 
-Acrescentar uma linha a `config/entrevistas.yml` com os campos obrigatórios (`data`, `canal`, `programa`, `prova`) e, sempre que for possível apurá-la, `duracao_s` em segundos, tal como a página do canal a declara. Procurar a duração primeiro; omitir o campo só quando não existir forma pública de a saber. Se a prova for uma peça de imprensa e não o canal, a linha vai para `config/clipping.yml`. Sem URL de prova a linha é rejeitada pela suite de testes.
+Acrescentar uma linha a `config/entrevistas.yml` com os campos obrigatórios (`data`, `canal`, `programa`, `prova`). Não há campo de duração: uma linha que traga `duracao_s` ou `parcial` é recusada pelo coletor. Se a prova for uma peça de imprensa e não o canal, a linha vai para `config/clipping.yml`. Sem URL de prova a linha é rejeitada pela suite de testes.
 
 ## Licenças
 

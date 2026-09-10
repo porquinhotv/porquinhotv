@@ -17,11 +17,10 @@
 # Ate 2026-09-08 esta fonte era o ultimo recurso, para o que o canal nao
 # publicara. Deixou de ser: seis dos nove canais nao respondem a uma
 # maquina e titulam as pecas com a citacao, e a imprensa e muitas vezes o
-# unico rasto publico de que a entrevista existiu. O que nao mudou: a
-# peca prova o evento, nao a duracao. Se a peca ou o canal a declararem,
-# escreve-se; senao omite-se o campo, a emissao conta como evento e nunca
-# como tempo, e o site escreve "duração não apurada" e "(imprensa)" ao
-# lado. A reparticao entre provas do canal e da imprensa e publicada.
+# unico rasto publico de que a entrevista existiu. Desde 2026-09-10 e
+# exatamente isso que o site conta: a existencia, nunca o tempo. O site
+# escreve "(imprensa)" ao lado da linha e publica a reparticao entre
+# provas do canal e da imprensa.
 #
 # `data` e o dia da emissao; `publicado_em` e o dia da peca, quando e
 # outro. Confundir os dois desloca a emissao um dia.
@@ -39,7 +38,6 @@
 #     prova: https://exemplo.pt/noticia-que-relata-a-entrevista
 #     titulo: Entrevista relatada pela imprensa
 #     publicado_em: 2021-03-16   # so se for outro dia
-#     duracao_s: 1500            # so se a peca ou o canal a declararem
 
 entrevistas:
 - data: '2020-11-16'

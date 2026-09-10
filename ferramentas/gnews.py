@@ -477,9 +477,12 @@ def resolver(config: dict, pasta: Path, so_triados: bool = True, limite: int | N
 
 # --- triagem ---------------------------------------------------------------
 
+# Sem colunas de duracao desde 2026-09-10: um `triagem.csv` antigo que as
+# tenha e lido na mesma (o leitor vai por nome de coluna) e a proxima
+# gravacao deixa-as cair.
 COLUNAS_TRIAGEM = [
-    "decisao", "prova_url", "duracao", "programa", "canal", "data_emissao", "nota", "sugestao",
-    "sujeito_na_pagina", "duracao_na_pagina", "programa_na_pagina", "data_na_pagina", "titulo_na_pagina", "descricao_na_pagina",
+    "decisao", "prova_url", "programa", "canal", "data_emissao", "nota", "sugestao",
+    "sujeito_na_pagina", "programa_na_pagina", "data_na_pagina", "titulo_na_pagina", "descricao_na_pagina",
     "grupo", "data", "titulo", "fonte", "formato_no_titulo", "url_google",
 ]
 
@@ -855,32 +858,6 @@ def rendimento(config: dict, pasta: Path, sujeito=None, provas: set[str] | None 
 # --- verificacao na pagina do canal ----------------------------------------
 
 
-def duracao_no_texto(config: dict, texto: str) -> int | None:
-    """Duracao declarada no corpo, quando a pagina nao a publica para
-    maquinas. Os padroes vivem em config/gnews.yml, cada um com as suas
-    unidades.
-
-    As unidades sao declaradas e nao deduzidas do numero de grupos. Uma
-    primeira versao multiplicava tudo por sessenta a partir da direita e
-    lia "1h 12min" como 72 segundos: um erro que ninguem veria, porque o
-    numero sai plausivel. Zero nunca e duracao, aqui como em todo o
-    projeto.
-    """
-    fatores = {"h": 3600, "min": 60, "s": 1}
-    for regra in config.get("padroes_duracao") or []:
-        achado = re.search(regra["padrao"], texto, re.IGNORECASE)
-        if not achado:
-            continue
-        unidades = regra["unidades"]
-        grupos = achado.groups()
-        if len(grupos) != len(unidades):
-            continue
-        segundos = sum(int(g) * fatores[u] for g, u in zip(grupos, unidades) if g)
-        if segundos > 0:
-            return segundos
-    return None
-
-
 def desescapar(texto: str) -> str:
     """Desfaz entidades HTML ate o texto estabilizar, no maximo tres vezes.
 
@@ -930,9 +907,9 @@ def verificar_pagina(config: dict, html_texto: str, url: str, sujeito) -> dict:
     """O que a pagina do canal diz, que e o unico sitio onde esta a verdade.
 
     O indice de noticias da o dia e o titulo da peca; nao diz quem foi o
-    convidado quando o canal titula o episodio pelo nome do programa, e
-    nunca da duracao. Ler a propria pagina responde as duas perguntas com
-    o extrator que ja existe, sem seletores de nenhum site.
+    convidado quando o canal titula o episodio pelo nome do programa. Ler
+    a propria pagina responde a isso com o extrator que ja existe, sem
+    seletores de nenhum site.
     """
     dados = extracao.extrair(html_texto, url)
     # Desescapar antes de tudo: o nome do programa deduz-se do titulo, e um
@@ -941,10 +918,8 @@ def verificar_pagina(config: dict, html_texto: str, url: str, sujeito) -> dict:
     titulo_limpo = desescapar(dados.get("titulo") or "")
     descricao_limpa = desescapar(dados.get("descricao") or "")
     texto = f"{titulo_limpo} {descricao_limpa} {' '.join(dados.get('etiquetas') or [])}"
-    duracao = dados.get("duracao_s") or duracao_no_texto(config, extracao.texto_visivel(html_texto))
     return {
         "sujeito_na_pagina": "sim" if sujeito.aparece_em(texto) else "nao",
-        "duracao_na_pagina": "" if not duracao else str(duracao),
         "programa_na_pagina": programa_do_titulo(config, titulo_limpo),
         "data_na_pagina": dados.get("publicado_em", "") or "",
         "titulo_na_pagina": " ".join(titulo_limpo.split())[:200],
@@ -1047,7 +1022,7 @@ def verificar(config: dict, pasta: Path, sujeito=None, canais_validos: set[str] 
         sujeito = sujeito or editorial.sujeito
         canais_validos = canais_validos if canais_validos is not None else set(editorial.canais)
     omissao = float(config.get("pausa_resolucao_s", 2))
-    resumo = {"visitadas": 0, "com_sujeito": 0, "sem_sujeito": 0, "com_duracao": 0, "sem_pagina": 0}
+    resumo = {"visitadas": 0, "com_sujeito": 0, "sem_sujeito": 0, "sem_pagina": 0}
 
     for i, linha in enumerate(linhas, 1):
         if linha.get("sujeito_na_pagina"):
@@ -1081,10 +1056,8 @@ def verificar(config: dict, pasta: Path, sujeito=None, canais_validos: set[str] 
             if not linha.get("decisao"):
                 linha["decisao"] = "nao"
                 anotar(linha, "a pagina do canal nao nomeia o sujeito")
-        if linha["duracao_na_pagina"]:
-            resumo["com_duracao"] += 1
         espera = f"  (a esperar {pausa:.0f}s)" if pausa > omissao else ""
-        print(f"  {i}/{len(linhas)}  {linha['sujeito_na_pagina']:4s} {linha['duracao_na_pagina'] or '-':>6s}  {linha['titulo_na_pagina'][:60]}{espera}", flush=True)
+        print(f"  {i}/{len(linhas)}  {linha['sujeito_na_pagina']:4s}  {linha['titulo_na_pagina'][:60]}{espera}", flush=True)
         if i % 10 == 0:
             gravar_triagem(pasta, linhas)
         dormir(pausa)
@@ -1191,9 +1164,9 @@ def emitir(config: dict, pasta: Path, canais_validos: set[str]) -> tuple[list[di
       - prova fora dos nove canais, fica de fora com aviso. Uma peca de
         imprensa sobre a entrevista nao e a pagina do canal e nao entra no
         registo do canal; e material para `--emitir --imprensa`, que a
-        escreve no clipping com as suas proprias regras;
-      - sem duracao, a linha entra sem `duracao_s`. Conta como emissao e
-        nunca como tempo. Nunca zero, nunca estimativa.
+        escreve no clipping com as suas proprias regras.
+
+    Nao escreve duracao: o campo saiu do projeto a 2026-09-10.
     """
     caminho = pasta / "triagem.csv"
     with caminho.open(encoding="utf-8-sig", newline="") as f:
@@ -1227,7 +1200,6 @@ def emitir(config: dict, pasta: Path, canais_validos: set[str]) -> tuple[list[di
         if not prova.startswith("http"):
             avisos.append(f"{data} {linha.get('titulo', '')[:60]}: sem prova")
             continue
-        duracao = (linha.get("duracao") or linha.get("duracao_na_pagina") or "").strip()
         programa = (linha.get("programa") or linha.get("programa_na_pagina") or "").strip()
         novo = {
             "data": data,
@@ -1240,19 +1212,10 @@ def emitir(config: dict, pasta: Path, canais_validos: set[str]) -> tuple[list[di
             "titulo": html.unescape((linha.get("titulo_na_pagina") or linha.get("titulo") or "").strip()),
             "mesma_entrevista": data,
         }
-        if duracao.isdigit() and int(duracao) > 0:
-            novo["duracao_s"] = int(duracao)
-
-        chave = (canal, data)
-        antigo = blocos.get(chave)
-        if antigo is None:
-            blocos[chave] = novo
-            continue
-        # Entre duas linhas do mesmo bloco fica a que tem duracao apurada,
-        # e entre duas com duracao a mais longa: a curta e tipicamente um
-        # recorte da mesma emissao. E a mesma regra do coletor.
-        if novo.get("duracao_s", 0) > antigo.get("duracao_s", 0):
-            blocos[chave] = novo
+        # Entre duas linhas do mesmo bloco fica a primeira: sem duracao
+        # nao ha melhor prova de existencia do que outra, e a ordem da
+        # triagem e a mesma em todas as corridas.
+        blocos.setdefault((canal, data), novo)
 
     # Por data e depois por canal: o ficheiro le-se como uma cronologia,
     # que e como quem contesta um numero o vai percorrer.
@@ -1305,8 +1268,6 @@ def emitir_paginas_de_canal(config: dict, pasta: Path, editorial,
     registo curado, por isso e o coletor que lhes aplica a prova positiva
     de formato e as rondas. Aqui so se recusa o que nem sequer e
     candidato: sem data legivel, sem prova, ou prova que nao e de um canal.
-    As que nao tiverem duracao apurada vao parar a quarentena como
-    `por_confirmar`, com o motivo escrito, e o numero sai no ecra.
 
     Uma emissao que o registo verificado a mao ja tenha nao se repete: a
     leitura humana ganha, e o coletor poria esta na quarentena de qualquer
@@ -1379,23 +1340,12 @@ def emitir_paginas_de_canal(config: dict, pasta: Path, editorial,
             "titulo": rotulo,
             "mesma_entrevista": data,
         }
-        duracao = (linha.get("duracao") or linha.get("duracao_na_pagina") or "").strip()
-        if duracao.isdigit() and int(duracao) > 0:
-            novo["duracao_s"] = int(duracao)
-
-        chave = (canal, data)
-        antigo = blocos.get(chave)
-        # A mesma regra de desempate do coletor: com duracao ganha a sem
-        # duracao, e entre duas com duracao ganha a mais longa, porque a
-        # curta e tipicamente um recorte da mesma emissao.
-        if antigo is None or novo.get("duracao_s", 0) > antigo.get("duracao_s", 0):
-            blocos[chave] = novo
+        # Fica a primeira do bloco, como no `emitir`.
+        blocos.setdefault((canal, data), novo)
 
     for motivo, quantas in sorted(motivos.items(), key=lambda p: -p[1]):
         avisos.append(f"{quantas} paginas: {motivo}")
     ordenadas = sorted(blocos.values(), key=lambda l: (l["data"], l["canal"]))
-    com_duracao = sum(1 for l in ordenadas if l.get("duracao_s"))
-    avisos.append(f"{com_duracao} de {len(ordenadas)} com duracao apurada")
     por_data: dict[str, int] = {}
     for linha in ordenadas:
         por_data[linha["data"]] = por_data.get(linha["data"], 0) + 1
@@ -1421,7 +1371,7 @@ def escrever_registo(entrevistas: list[dict], caminho: Path) -> None:
 # --- prova de imprensa -----------------------------------------------------
 #
 # Uma peca de imprensa prova que a entrevista existiu e em que dia, e mais
-# nada. Nao prova a duracao, e raramente a duracao lhe interessa. Vai para
+# nada. E e tudo o que o projeto conta. Vai para
 # config/clipping.yml, com `origem: imprensa` declarada na fonte, e o site
 # mostra-a assim. As quatro condicoes abaixo sao as que qualquer pessoa
 # consegue verificar abrindo a peca; cada recusa fica escrita com o motivo.

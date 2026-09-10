@@ -253,40 +253,12 @@ class TestResolver(unittest.TestCase):
 
 
 
-class TestDuracaoNoTexto(unittest.TestCase):
-    CONFIG_D = {
-        "padroes_duracao": [
-            {"padrao": r"dura[çc][ãa]o(?:\s+total)?\s*:?\s*(\d{1,2})\s*h(?:oras?)?\s*(\d{1,2})\s*min", "unidades": ["h", "min"]},
-            {"padrao": r"dura[çc][ãa]o(?:\s+total)?\s*:?\s*(\d{1,3})\s*min", "unidades": ["min"]},
-            {"padrao": r"\b(\d{1,2}):([0-5]\d):([0-5]\d)\b", "unidades": ["h", "min", "s"]},
-        ]
-    }
-
-    def test_horas_e_minutos_nao_sao_lidos_como_minutos_e_segundos(self):
-        """A primeira versao dobrava tudo por sessenta a partir da direita
-        e lia uma hora e doze minutos como 72 segundos. O numero sai
-        plausivel, por isso o erro passaria despercebido no site."""
-        self.assertEqual(gnews.duracao_no_texto(self.CONFIG_D, "duração total 1h 12min"), 4320)
-
-    def test_minutos_sozinhos(self):
-        self.assertEqual(gnews.duracao_no_texto(self.CONFIG_D, "Ep. 19 Duração: 51min Género: Informação"), 3060)
-
-    def test_relogio(self):
-        self.assertEqual(gnews.duracao_no_texto(self.CONFIG_D, "vídeo 00:47:42 fim"), 2862)
-
-    def test_zero_nunca_e_duracao(self):
-        self.assertIsNone(gnews.duracao_no_texto(self.CONFIG_D, "Duração: 0min"))
-
-    def test_sem_padrao_fica_por_apurar(self):
-        self.assertIsNone(gnews.duracao_no_texto(self.CONFIG_D, "uma pagina sem duracao nenhuma"))
-
-
 class TestVerificacao(unittest.TestCase):
     class SujeitoFalso:
         def aparece_em(self, texto):
             return "pessoa exemplo" in texto.lower()
 
-    CONFIG_V = {**TestDuracaoNoTexto.CONFIG_D, "separadores_programa": [" - ", " | ", ": "], "pausa_resolucao_s": 0}
+    CONFIG_V = {"separadores_programa": [" - ", " | ", ": "], "pausa_resolucao_s": 0}
 
     PAGINA_COM = (
         '<html><head><meta property="og:title" content="Grande Entrevista - Pessoa Exemplo - ep. 41">'
@@ -304,8 +276,10 @@ class TestVerificacao(unittest.TestCase):
         pagina, 55 candidatos entravam na lista com o convidado errado."""
         r = gnews.verificar_pagina(self.CONFIG_V, self.PAGINA_COM, "https://canal.exemplo/e1", self.SujeitoFalso())
         self.assertEqual(r["sujeito_na_pagina"], "sim")
-        self.assertEqual(r["duracao_na_pagina"], "3060")
         self.assertEqual(r["programa_na_pagina"], "Grande Entrevista")
+        # A pagina escreve "Duração: 51min" no corpo e a leitura ignora-a:
+        # a duracao saiu do projeto a 2026-09-10.
+        self.assertNotIn("duracao_na_pagina", r)
 
     def test_episodio_de_outro_convidado_e_reprovado(self):
         r = gnews.verificar_pagina(self.CONFIG_V, self.PAGINA_SEM, "https://canal.exemplo/e2", self.SujeitoFalso())
@@ -388,14 +362,14 @@ class TestEmitir(unittest.TestCase):
 
     def test_so_entram_as_decididas_com_sim(self):
         linhas = [
-            {"decisao": "sim", "prova_url": "https://canal.exemplo/a", "data": "2026-06-24", "duracao_na_pagina": "3100", "programa_na_pagina": "Programa"},
-            {"decisao": "nao", "prova_url": "https://canal.exemplo/b", "data": "2026-06-25", "duracao_na_pagina": "900"},
+            {"decisao": "sim", "prova_url": "https://canal.exemplo/a", "data": "2026-06-24", "programa_na_pagina": "Programa"},
+            {"decisao": "nao", "prova_url": "https://canal.exemplo/b", "data": "2026-06-25"},
             {"decisao": "", "prova_url": "https://canal.exemplo/c", "data": "2026-06-26"},
         ]
         with tempfile.TemporaryDirectory() as tmp:
             saida, avisos = gnews.emitir(self.CONFIG_E, self._pasta(tmp, linhas), self.CANAIS)
         self.assertEqual(len(saida), 1)
-        self.assertEqual(saida[0]["duracao_s"], 3100)
+        self.assertEqual(saida[0]["prova"], "https://canal.exemplo/a")
 
     def test_prova_de_imprensa_nao_entra(self):
         """Uma peca de um jornal sobre a entrevista nao e a emissao. A
@@ -410,23 +384,25 @@ class TestEmitir(unittest.TestCase):
 
     def test_mesma_emissao_vista_por_duas_fontes_e_uma_linha(self):
         """Tres linhas da triagem para o mesmo canal e dia sao a mesma
-        emissao. Sem agrupar, o site contaria tres."""
+        emissao. Sem agrupar, o site contaria tres. Fica a primeira: sem
+        duracao nao ha prova melhor do que outra, e a ordem da triagem e a
+        mesma em todas as corridas."""
         linhas = [
-            {"decisao": "sim", "prova_url": "https://canal.exemplo/curto", "data": "2026-06-03", "duracao_na_pagina": "180"},
-            {"decisao": "sim", "prova_url": "https://canal.exemplo/integral", "data": "2026-06-03", "duracao_na_pagina": "951"},
-            {"decisao": "sim", "prova_url": "https://canal.exemplo/outro", "data": "2026-06-03", "duracao_na_pagina": ""},
+            {"decisao": "sim", "prova_url": "https://canal.exemplo/curto", "data": "2026-06-03"},
+            {"decisao": "sim", "prova_url": "https://canal.exemplo/integral", "data": "2026-06-03"},
+            {"decisao": "sim", "prova_url": "https://canal.exemplo/outro", "data": "2026-06-03"},
         ]
         with tempfile.TemporaryDirectory() as tmp:
             saida, _ = gnews.emitir(self.CONFIG_E, self._pasta(tmp, linhas), self.CANAIS)
         self.assertEqual(len(saida), 1)
-        self.assertEqual(saida[0]["prova"], "https://canal.exemplo/integral")
+        self.assertEqual(saida[0]["prova"], "https://canal.exemplo/curto")
 
     def test_simulcast_fica_agrupado_e_conta_duas_vezes(self):
         """Dois canais no mesmo dia sao duas emissoes, agrupadas por
         `mesma_entrevista`. E a decisao editorial 3."""
         linhas = [
-            {"decisao": "sim", "prova_url": "https://canal.exemplo/a", "data": "2026-06-03", "duracao_na_pagina": "951"},
-            {"decisao": "sim", "prova_url": "https://canalnoticias.exemplo/b", "data": "2026-06-03", "duracao_na_pagina": "902"},
+            {"decisao": "sim", "prova_url": "https://canal.exemplo/a", "data": "2026-06-03"},
+            {"decisao": "sim", "prova_url": "https://canalnoticias.exemplo/b", "data": "2026-06-03"},
         ]
         with tempfile.TemporaryDirectory() as tmp:
             saida, _ = gnews.emitir(self.CONFIG_E, self._pasta(tmp, linhas), self.CANAIS)
@@ -435,30 +411,27 @@ class TestEmitir(unittest.TestCase):
         self.assertEqual({l["canal"] for l in saida}, self.CANAIS)
 
     def test_emissao_sozinha_no_dia_nao_leva_chave_de_grupo(self):
-        linhas = [{"decisao": "sim", "prova_url": "https://canal.exemplo/a", "data": "2026-06-24", "duracao_na_pagina": "900"}]
+        linhas = [{"decisao": "sim", "prova_url": "https://canal.exemplo/a", "data": "2026-06-24"}]
         with tempfile.TemporaryDirectory() as tmp:
             saida, _ = gnews.emitir(self.CONFIG_E, self._pasta(tmp, linhas), self.CANAIS)
         self.assertNotIn("mesma_entrevista", saida[0])
 
-    def test_sem_duracao_a_linha_entra_sem_o_campo(self):
-        """Zero seria um numero publicado que nao veio de uma medicao."""
-        linhas = [{"decisao": "sim", "prova_url": "https://canal.exemplo/a", "data": "2026-06-24", "duracao_na_pagina": ""}]
+    def test_uma_triagem_antiga_com_colunas_de_duracao_nao_escreve_duracao(self):
+        """O triagem.csv do autor ainda tem as colunas `duracao` e
+        `duracao_na_pagina` da colheita de setembro. Le-se na mesma, e o
+        que se escreve no registo nao traz o campo: se trouxesse, o
+        coletor recusava a fonte inteira."""
+        linhas = [{"decisao": "sim", "prova_url": "https://canal.exemplo/a", "data": "2026-06-24", "duracao": "1740"}]
         with tempfile.TemporaryDirectory() as tmp:
             saida, _ = gnews.emitir(self.CONFIG_E, self._pasta(tmp, linhas), self.CANAIS)
         self.assertNotIn("duracao_s", saida[0])
-
-    def test_duracao_escrita_a_mao_ganha_a_da_pagina(self):
-        """Quando a pagina nao responde, a duracao lida no leitor e uma
-        medicao e entra; e a unica forma de a SIC ter tempo no site."""
-        linhas = [{"decisao": "sim", "prova_url": "https://canal.exemplo/a", "data": "2026-06-24", "duracao": "1740", "duracao_na_pagina": "60"}]
-        with tempfile.TemporaryDirectory() as tmp:
-            saida, _ = gnews.emitir(self.CONFIG_E, self._pasta(tmp, linhas), self.CANAIS)
-        self.assertEqual(saida[0]["duracao_s"], 1740)
+        self.assertNotIn("duracao", gnews.COLUNAS_TRIAGEM)
+        self.assertNotIn("duracao_na_pagina", gnews.COLUNAS_TRIAGEM)
 
     def test_data_reescrita_pela_folha_de_calculo_e_lida(self):
         """O Excel devolve 20/03/2024 onde estava 2024-03-20. Cortar dez
         caracteres escrevia essa forma no registo publicado."""
-        linhas = [{"decisao": "sim", "prova_url": "https://canal.exemplo/a", "data": "20/03/2024", "data_na_pagina": "20/03/2024", "duracao_na_pagina": "900"}]
+        linhas = [{"decisao": "sim", "prova_url": "https://canal.exemplo/a", "data": "20/03/2024", "data_na_pagina": "20/03/2024"}]
         with tempfile.TemporaryDirectory() as tmp:
             saida, avisos = gnews.emitir(self.CONFIG_E, self._pasta(tmp, linhas), self.CANAIS)
         self.assertEqual(saida[0]["data"], "2024-03-20")
@@ -474,7 +447,7 @@ class TestEmitir(unittest.TestCase):
         self.assertEqual(saida[0]["data"], "2026-06-23")
 
     def test_data_ilegivel_fica_de_fora_com_aviso(self):
-        linhas = [{"decisao": "sim", "prova_url": "https://canal.exemplo/a", "data": "marco de 2024", "duracao_na_pagina": "900"}]
+        linhas = [{"decisao": "sim", "prova_url": "https://canal.exemplo/a", "data": "marco de 2024"}]
         with tempfile.TemporaryDirectory() as tmp:
             saida, avisos = gnews.emitir(self.CONFIG_E, self._pasta(tmp, linhas), self.CANAIS)
         self.assertEqual(saida, [])
@@ -482,7 +455,7 @@ class TestEmitir(unittest.TestCase):
 
     def test_sim_com_acentos_ou_maiusculas(self):
         for escrito in ("sim", "SIM", " Sim "):
-            linhas = [{"decisao": escrito, "prova_url": "https://canal.exemplo/a", "data": "2026-06-24", "duracao_na_pagina": "900"}]
+            linhas = [{"decisao": escrito, "prova_url": "https://canal.exemplo/a", "data": "2026-06-24"}]
             with tempfile.TemporaryDirectory() as tmp:
                 saida, _ = gnews.emitir(self.CONFIG_E, self._pasta(tmp, linhas), self.CANAIS)
             self.assertEqual(len(saida), 1, escrito)
@@ -491,21 +464,21 @@ class TestEmitir(unittest.TestCase):
         """So entra o que diz sim. As formas de dizer nao sao muitas e
         nao se preveem todas; erro por defeito e a regra do projeto."""
         for escrito in ("nao", "não", "n", "NÃO", "talvez", ""):
-            linhas = [{"decisao": escrito, "prova_url": "https://canal.exemplo/a", "data": "2026-06-24", "duracao_na_pagina": "900"}]
+            linhas = [{"decisao": escrito, "prova_url": "https://canal.exemplo/a", "data": "2026-06-24"}]
             with tempfile.TemporaryDirectory() as tmp:
                 saida, _ = gnews.emitir(self.CONFIG_E, self._pasta(tmp, linhas), self.CANAIS)
             self.assertEqual(saida, [], escrito)
 
     def test_titulo_com_entidades_html_e_desfeito(self):
-        linhas = [{"decisao": "sim", "prova_url": "https://canal.exemplo/a", "data": "2026-06-24", "titulo_na_pagina": "Andr&#233; e a entrevista", "duracao_na_pagina": "900"}]
+        linhas = [{"decisao": "sim", "prova_url": "https://canal.exemplo/a", "data": "2026-06-24", "titulo_na_pagina": "Andr&#233; e a entrevista"}]
         with tempfile.TemporaryDirectory() as tmp:
             saida, _ = gnews.emitir(self.CONFIG_E, self._pasta(tmp, linhas), self.CANAIS)
         self.assertEqual(saida[0]["titulo"], "André e a entrevista")
 
     def test_saida_ordenada_por_data(self):
         linhas = [
-            {"decisao": "sim", "prova_url": "https://canal.exemplo/b", "data": "2026-08-01", "duracao_na_pagina": "900"},
-            {"decisao": "sim", "prova_url": "https://canalnoticias.exemplo/a", "data": "2026-02-01", "duracao_na_pagina": "900"},
+            {"decisao": "sim", "prova_url": "https://canal.exemplo/b", "data": "2026-08-01"},
+            {"decisao": "sim", "prova_url": "https://canalnoticias.exemplo/a", "data": "2026-02-01"},
         ]
         with tempfile.TemporaryDirectory() as tmp:
             saida, _ = gnews.emitir(self.CONFIG_E, self._pasta(tmp, linhas), self.CANAIS)
@@ -516,7 +489,7 @@ class TestEmitir(unittest.TestCase):
         declarar o dominio do leitor, uma prova legitima era recusada
         como se fosse imprensa."""
         config = {"canais_por_dominio": {"canal-generalista": ["canal.exemplo", "leitor.exemplo"]}}
-        linhas = [{"decisao": "sim", "prova_url": "https://leitor.exemplo/programa/x/video/1", "data": "2026-06-03", "duracao_na_pagina": "951"}]
+        linhas = [{"decisao": "sim", "prova_url": "https://leitor.exemplo/programa/x/video/1", "data": "2026-06-03"}]
         with tempfile.TemporaryDirectory() as tmp:
             saida, avisos = gnews.emitir(config, self._pasta(tmp, linhas), self.CANAIS)
         self.assertEqual(avisos, [])
@@ -525,7 +498,7 @@ class TestEmitir(unittest.TestCase):
     def test_canal_escrito_a_mao_ganha_ao_dominio(self):
         """Um dominio serve mais do que um canal do mesmo grupo. Quando a
         pessoa escreve o canal, e essa a decisao."""
-        linhas = [{"decisao": "sim", "canal": "canal-noticias", "prova_url": "https://canal.exemplo/a", "data": "2026-06-24", "duracao_na_pagina": "900"}]
+        linhas = [{"decisao": "sim", "canal": "canal-noticias", "prova_url": "https://canal.exemplo/a", "data": "2026-06-24"}]
         with tempfile.TemporaryDirectory() as tmp:
             saida, _ = gnews.emitir(self.CONFIG_E, self._pasta(tmp, linhas), self.CANAIS)
         self.assertEqual(saida[0]["canal"], "canal-noticias")
@@ -562,7 +535,6 @@ class TestPaginasDeCanal(unittest.TestCase):
             "data_na_pagina": "2026-06-23",
             "titulo_na_pagina": "Grande Entrevista - Pessoa Exemplo",
             "programa_na_pagina": "Grande Entrevista",
-            "duracao_na_pagina": "3060",
             "canal": "canal-noticias",
             "decisao": "",
         }
@@ -606,7 +578,6 @@ class TestPaginasDeCanal(unittest.TestCase):
         entrevistas, avisos = self._emitir([self._linha(
             titulo_na_pagina="Pessoa Exemplo: «Não sou machista»",
             programa_na_pagina="Dois às 10",
-            duracao_na_pagina="91",
         )])
         self.assertEqual(entrevistas, [])
         self.assertIn("1 paginas: o canal nao lhe chama entrevista", avisos)
@@ -617,7 +588,7 @@ class TestPaginasDeCanal(unittest.TestCase):
         isso e nao publicar nada."""
         entrevistas, _ = self._emitir([self._linha()])
         self.assertEqual(len(entrevistas), 1)
-        self.assertEqual(entrevistas[0]["duracao_s"], 3060)
+        self.assertNotIn("duracao_s", entrevistas[0])
 
     def test_uma_recusa_escrita_trava_a_linha(self):
         """A avaliacao decide, a pessoa veta. E a unica intervencao humana
@@ -649,25 +620,14 @@ class TestPaginasDeCanal(unittest.TestCase):
 
     def test_duas_linhas_do_mesmo_dia_e_canal_sao_uma_emissao(self):
         """Os canais publicam o video integral e os recortes em paginas
-        diferentes. Fica a que tem duracao apurada, e entre duas com
-        duracao a mais longa: e a mesma regra de desempate do coletor."""
+        diferentes. Fica a primeira, como no `emitir`: sem duracao nao ha
+        forma de dizer qual e o integral, e as duas provam a emissao."""
         entrevistas, _ = self._emitir([
-            self._linha(prova_url="https://canal.exemplo/recorte", duracao_na_pagina="120"),
-            self._linha(prova_url="https://canal.exemplo/integral", duracao_na_pagina="3060"),
+            self._linha(prova_url="https://canal.exemplo/recorte"),
+            self._linha(prova_url="https://canal.exemplo/integral"),
         ])
         self.assertEqual(len(entrevistas), 1)
-        self.assertEqual(entrevistas[0]["duracao_s"], 3060)
-
-    def test_o_ecra_diz_quantas_ficam_sem_duracao(self):
-        """Sem duracao apurada estas linhas caem na quarentena como
-        `por_confirmar`, porque a fonte nao tem a isencao do registo
-        curado. Quantas sao decide se a regra se mantem, e por isso o
-        numero sai medido e nao suposto."""
-        _, avisos = self._emitir([
-            self._linha(),
-            self._linha(prova_url="https://canal.exemplo/outra", data_na_pagina="2026-06-24", duracao_na_pagina=""),
-        ])
-        self.assertIn("1 de 2 com duracao apurada", avisos)
+        self.assertEqual(entrevistas[0]["prova"], "https://canal.exemplo/recorte")
 
 
 class TestMapasDeSitio(unittest.TestCase):

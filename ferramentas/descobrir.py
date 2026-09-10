@@ -9,7 +9,7 @@ Dado o URL de uma pagina: lista os feeds RSS/Atom anunciados na pagina
 de YouTube (UC...) que aparecem no HTML.
 
 Dado o URL de um feed: le a primeira pagina e resume, itens, intervalo de
-datas, se tem duracoes, se pagina, e os dez titulos mais recentes. E com
+datas, se pagina, e os dez titulos mais recentes. E com
 isto que se verifica um feed antes de o configurar, em vez de assumir.
 
 Dado um id de canal de YouTube: le o feed publico e mostra os titulos.
@@ -66,23 +66,20 @@ def analisar_feed(url: str) -> None:
             entradas = []
         if entradas:
             print(f"feed Atom: {url}")
-            print(f"itens: {len(entradas)} (sem duracao, o feed nao a expoe)")
+            print(f"itens: {len(entradas)}")
             for e in entradas[:10]:
                 print(f"  {e.publicado_em}  {e.titulo}")
             return
-        print("sem itens legiveis, ou sem duracao e data em todos os itens")
+        print("sem itens legiveis, ou sem data em todos os itens")
         return
     datas = sorted(i.publicado_em for i in itens)
-    duracoes = [i.duracao_s for i in itens if i.duracao_s]
     print(f"feed: {url}")
     print(f"itens nesta pagina: {len(itens)}")
     print(f"datas: {datas[0]} a {datas[-1]}")
-    if duracoes:
-        print(f"duracoes: {min(duracoes)//60} a {max(duracoes)//60} minutos")
     print(f"pagina seguinte: {'sim, ' + seguinte if seguinte else 'nao'}")
     print("titulos mais recentes:")
     for i in sorted(itens, key=lambda x: x.publicado_em, reverse=True)[:10]:
-        print(f"  {i.publicado_em}  {i.duracao_s//60:>3} min  {i.titulo}")
+        print(f"  {i.publicado_em}  {i.titulo}")
 
 
 def main(argv: list[str]) -> int:

@@ -63,7 +63,6 @@ META_ATRIB = re.compile(r'(name|property|content)=(["\'])(.*?)\2', re.IGNORECASE
 JSONLD = re.compile(r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>', re.IGNORECASE | re.DOTALL)
 ETIQUETAS = re.compile(r"<[^>]+>")
 SCRIPTS = re.compile(r"<(script|style)[^>]*>.*?</\1>", re.IGNORECASE | re.DOTALL)
-DURACAO_ISO = re.compile(r"^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$")
 
 
 def carregar(caminho: Path = FICHEIRO_CONFIG) -> dict:
@@ -104,14 +103,6 @@ def _jsonld(html: str) -> list[dict]:
     return blocos
 
 
-def _duracao_iso(valor: str) -> int | None:
-    m = DURACAO_ISO.match(valor or "")
-    if not m:
-        return None
-    h, mi, s = (int(x) if x else 0 for x in m.groups())
-    return h * 3600 + mi * 60 + s
-
-
 def _texto_visivel(html: str) -> str:
     sem_scripts = SCRIPTS.sub(" ", html)
     return html_mod.unescape(ETIQUETAS.sub(" ", sem_scripts))
@@ -130,8 +121,8 @@ def analisar_html(html: str, termos: list[str]) -> dict:
     """O que uma pagina expoe sem JavaScript.
 
     Devolve onde os termos aparecem (titulo, metadados, JSON-LD, corpo),
-    se ha JSON-LD de video e se esse video declara duracao, os feeds
-    anunciados e os ids de canal de YouTube presentes no HTML. E isto que
+    se ha JSON-LD de video, os feeds anunciados e os ids de canal de
+    YouTube presentes no HTML. E isto que
     decide se um adaptador pode ler a pagina tal como o servidor a envia.
     """
     titulo = html_mod.unescape(TITULO.search(html).group(1)).strip() if TITULO.search(html) else ""
@@ -141,14 +132,11 @@ def analisar_html(html: str, termos: list[str]) -> dict:
     texto_meta = " ".join(metadados.values())
     campos_jsonld: list[str] = []
     videos = 0
-    com_duracao = 0
     for bloco in blocos:
         tipo = bloco.get("@type", "")
         tipos = tipo if isinstance(tipo, list) else [tipo]
         if any("Video" in str(t) for t in tipos):
             videos += 1
-            if _duracao_iso(str(bloco.get("duration", ""))) is not None:
-                com_duracao += 1
         for chave in ("name", "headline", "description", "keywords", "about", "articleSection"):
             valor = bloco.get(chave)
             if isinstance(valor, list):
@@ -172,7 +160,6 @@ def analisar_html(html: str, termos: list[str]) -> dict:
         "meta_keywords": bool(metadados.get("keywords") or metadados.get("news_keywords")),
         "jsonld_blocos": len(blocos),
         "jsonld_videos": videos,
-        "jsonld_videos_com_duracao": com_duracao,
         "feeds": feeds[:20],
         "ids_youtube": sorted(set(CANAL_YT.findall(html))),
         # Um corpo quase vazio com muitos scripts e o sintoma de pagina
@@ -290,9 +277,9 @@ def relatorio(resultado: dict) -> str:
         "",
         "Cada linha e um canal. \"Paginas\" conta as que responderam sobre as sondadas.",
         "\"Servidor\" diz se algum termo ja vem no HTML sem JavaScript (titulo, metadados, JSON-LD ou corpo).",
-        "\"Video com duracao\" e o numero de blocos JSON-LD de video com duration declarada.",
+        "\"Videos\" e o numero de blocos JSON-LD de video, que e onde um canal declara a pagina de uma emissao.",
         "",
-        "| Canal | Paginas | Servidor | Metadados | Video com duracao | Feeds | YouTube |",
+        "| Canal | Paginas | Servidor | Metadados | Videos | Feeds | YouTube |",
         "|---|---|---|---|---|---|---|",
     ]
     for c in resultado["canais"]:
@@ -300,7 +287,7 @@ def relatorio(resultado: dict) -> str:
         respondem = [p for p in paginas if p.get("responde")]
         servidor = any(p.get("termos_no_titulo") or p.get("termos_nos_metadados") or p.get("termos_no_jsonld") or p.get("termos_no_corpo") for p in respondem)
         metadados = any(p.get("termos_nos_metadados") or p.get("termos_no_jsonld") for p in respondem)
-        videos = sum(p.get("jsonld_videos_com_duracao", 0) for p in respondem)
+        videos = sum(p.get("jsonld_videos", 0) for p in respondem)
         feeds = sum(len(p.get("feeds") or []) for p in respondem)
         ids = [y["channel_id"] for y in c["youtube"] if y.get("channel_id")]
         linhas.append(
@@ -318,7 +305,7 @@ def relatorio(resultado: dict) -> str:
             onde = [n for n, chave in (("titulo", "termos_no_titulo"), ("metadados", "termos_nos_metadados"), ("jsonld", "termos_no_jsonld"), ("corpo", "termos_no_corpo")) if p.get(chave)]
             linhas.append(
                 f"- {p['url']}: termos em {', '.join(onde) or 'lado nenhum'}; JSON-LD {p['jsonld_blocos']} blocos, "
-                f"{p['jsonld_videos']} videos, {p['jsonld_videos_com_duracao']} com duracao; {len(p['feeds'])} feeds; "
+                f"{p['jsonld_videos']} videos; {len(p['feeds'])} feeds; "
                 f"texto {p['bytes_texto']} de {p['bytes_html']} bytes"
             )
         for y in c["youtube"]:

@@ -3,12 +3,11 @@
     https://www.youtube.com/feeds/videos.xml?channel_id=UC...
 
 Devolve os ultimos 15 videos com titulo, data de publicacao e descricao.
-Nao devolve duracao. Por isso estes itens nunca entram no dataset por
-esta via: os que tem o nome e a prova de formato no titulo vao para a
-quarentena como `por_confirmar`, com o URL, e os que nao dizem que sao
-uma entrevista ficam como `formato_nao_apurado`. A duracao e confirmada
-a mao no registo curado, onde cada linha leva prova. E um detetor, nao
-um medidor.
+Os itens passam pelo criterio como qualquer fonte automatica: precisam de
+prova positiva de formato no titulo e de serem vistos em rondas
+distintas. Ate 2026-09-10 ficavam sempre na quarentena por nao trazerem
+duracao; sem duracao no projeto, um video que o canal titula como
+entrevista e prova da emissao.
 """
 
 from __future__ import annotations
@@ -43,7 +42,6 @@ def ler_feed(xml: str) -> list[ItemBruto]:
                 publicado_em=publicado,
                 titulo=entrada.findtext(f"{ATOM}title") or "",
                 url=url,
-                duracao_s=None,
                 descricao=descricao or "",
                 prova_url=url,
             )

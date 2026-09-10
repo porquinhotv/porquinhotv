@@ -8,24 +8,24 @@
 #                 pagina, e o clipping de imprensa (config/clipping.yml),
 #                 que desde 2026-09-09 e gerado pela ferramenta a partir
 #                 das quatro condicoes, com uma pessoa a poder vetar
-#                 linhas. Prova o evento e a data mas raramente a duracao,
-#                 e por isso corre depois. Quando as duas cobrem a mesma
-#                 emissao, fica a do canal.
+#                 linhas. Corre depois do registo do canal: quando os dois
+#                 cobrem a mesma emissao, fica a do canal.
 #   registo_automatico
 #                 o mesmo ficheiro e o mesmo formato do `manual`, mas sem
 #                 a isencao: o criterio trata-o como fonte automatica, com
 #                 prova positiva de formato e rondas de confirmacao. E o
 #                 que permite publicar provas de canal que a ferramenta
 #                 colheu sozinha, sem afirmar que alguem as leu.
-#   podcast_rss   feed RSS de podcast: da duracao e data. Entra sozinho se
+#   podcast_rss   feed RSS de podcast: da titulo e data. Entra sozinho se
 #                 o criterio deixar. Usar `segmentos` quando o feed mistura
 #                 programas; `formato` diferente de "entrevista" exclui.
 #   youtube_feed  feed Atom publico de um canal de YouTube, sem conta nem
-#                 chave. Nao da duracao: os itens em que o nome e a prova
-#                 de formato aparecem vao para a quarentena como
-#                 `por_confirmar`, para passar a mao ao registo curado;
-#                 os que nao dizem que sao entrevista ficam como
-#                 `formato_nao_apurado`. E um detetor, nao um medidor.
+#                 chave. Passa pelo criterio como qualquer fonte
+#                 automatica: prova de formato no titulo e rondas.
+#
+# Nao ha duracao em fonte nenhuma desde 2026-09-10: o site conta a
+# existencia de cada entrevista, nao o tempo. O campo `duracao_opcional`
+# deixou de existir.
 #
 # Antes de ativar uma fonte nova: --dry-run, ler a quarentena, contar os
 # motivos, ler dez titulos aceites a mao contra o criterio. Depois ativar.
@@ -37,9 +37,6 @@ fontes:
     ficheiro: config/entrevistas.yml
     origem: canal
     confianca: alta
-    # Verificado a mao, com prova: pode registar uma emissao cuja duracao
-    # nao foi possivel apurar. O evento conta, o tempo nao.
-    duracao_opcional: true
 
   # Paginas de canal que a ferramenta colheu e verificou, sem ninguem ter
   # aberto a pagina. Corre depois do registo verificado a mao, que ganha
@@ -51,15 +48,6 @@ fontes:
   # confirmacao aplicam-se, porque a isencao existe para quando uma pessoa
   # leu a pagina e aqui ninguem leu.
   #
-  # Sem `duracao_opcional`, ao contrario das duas fontes verificadas a
-  # mao. Numa fonte automatica a falta de duracao significa "ainda nao
-  # verificado" e nao "sem duracao", e ha teste que o guarda. As linhas
-  # sem duracao apurada entram na quarentena como `por_confirmar`, com o
-  # motivo escrito e visiveis na pagina de Fontes, de onde podem passar a
-  # mao para o registo verificado. Quantas sao mede-se na primeira
-  # corrida, que o escreve no ecra; se forem muitas, a decisao de as
-  # contar como evento sem tempo e do autor e muda esta linha e a
-  # justificacao do teste, nao so esta linha.
   - id: paginas-de-canal
     tipo: registo_automatico
     ativa: true
@@ -69,16 +57,15 @@ fontes:
 
   # Clipping de imprensa escrita. Prova de que a emissao existiu e de
   # quando: uma peca que diga que no dia X houve entrevista ao sujeito no
-  # canal Y. Raramente traz duracao, e por isso corre depois do registo do
-  # canal, que quando existe e a melhor prova. Deixou de ser ultimo recurso
-  # a 2026-09-08 (ver o cabecalho de config/clipping.yml).
+  # canal Y. Vale o mesmo que a pagina do canal (decisao do autor,
+  # 2026-09-10); corre depois so para que, quando as duas provam a mesma
+  # emissao, fique a do canal e a emissao conte uma vez.
   - id: clipping-imprensa
     tipo: manual
     ativa: true
     ficheiro: config/clipping.yml
     origem: imprensa
     confianca: media
-    duracao_opcional: true
 
   # ------------------------------------------------------------------
   # Pesquisa do proprio site. A fonte automatica principal.
@@ -148,8 +135,7 @@ fontes:
   # de noticias e de 0 candidatos em 2019, 3 em 2020, 1 em 2021, 13 em
   # 2022 e 1 em 2023, e este programa emitiu durante esses anos todos. E
   # a primeira via que entra direita nesse buraco, com a pagina do
-  # proprio canal como prova e com a duracao declarada na pagina do
-  # episodio.
+  # proprio canal como prova.
   #
   # O `programa` esta escrito aqui de proposito, e nao deduzido do
   # titulo: um episodio deste programa e um episodio deste programa, o

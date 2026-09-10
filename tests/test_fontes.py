@@ -12,19 +12,17 @@ from recolha.modelos import carregar_config
 
 
 class TestPodcast(unittest.TestCase):
-    def test_le_itens_com_data_e_duracao(self):
+    def test_le_itens_com_data(self):
+        """Ate 2026-09-10 o item sem `itunes:duration` nem chegava a
+        candidato. Sem duracao no projeto, um item com data e candidato
+        como os outros: sao 7, nao 6."""
         itens, seguinte = podcast_rss.ler_feed(ler("podcast_exemplo.xml"))
-        self.assertEqual(len(itens), 6)  # o item sem duracao nem e candidato
+        self.assertEqual(len(itens), 7)
         self.assertIsNone(seguinte)
         primeiro = next(i for i in itens if i.id_nativo == "ep-100")
-        self.assertEqual((primeiro.duracao_s, primeiro.publicado_em), (2900, "2025-09-05"))
+        self.assertEqual(primeiro.publicado_em, "2025-09-05")
         self.assertNotIn("<p>", primeiro.descricao)
-
-    def test_formatos_de_duracao(self):
-        self.assertEqual(podcast_rss.duracao_em_segundos("01:02:03"), 3723)
-        self.assertEqual(podcast_rss.duracao_em_segundos("45:00"), 2700)
-        self.assertEqual(podcast_rss.duracao_em_segundos("2700"), 2700)
-        self.assertEqual(podcast_rss.duracao_em_segundos("lixo"), 0)
+        self.assertIn("ep-sem-duracao", [i.id_nativo for i in itens])
 
     def test_corrida_completa_sobre_o_fixture(self):
         config = config_teste()
@@ -35,8 +33,9 @@ class TestPodcast(unittest.TestCase):
         aceites = [e for e in (criterio.avaliar(i, f, config, q) for i in itens) if e]
         aceites = criterio.resolver_blocos(aceites, q)
         self.assertEqual([e.id_nativo for e in itens].count("ep-100"), 1)
-        self.assertEqual(len(aceites), 1)
-        self.assertEqual(aceites[0].data, "2025-09-04")
+        # Duas emissoes: a de ep-100 (declarada a 2025-09-04) e a do item
+        # que so nao entrava por nao ter duracao, publicado a 2025-09-10.
+        self.assertEqual(sorted(e.data for e in aceites), ["2025-09-04", "2025-09-10"])
         motivos = sorted(e["motivo"].split(" (")[0] for e in q)
         self.assertEqual(
             motivos,
@@ -45,22 +44,25 @@ class TestPodcast(unittest.TestCase):
 
 
 class TestYouTubeFeed(unittest.TestCase):
-    def test_le_entradas_sem_duracao(self):
+    def test_le_entradas(self):
         itens = youtube_feed.ler_feed(ler("youtube_exemplo.xml"))
         self.assertEqual(len(itens), 2)
-        self.assertIsNone(itens[0].duracao_s)
         self.assertEqual(itens[0].url, "https://www.youtube.com/watch?v=abc123DEF45")
         self.assertEqual(itens[0].publicado_em, "2025-09-06")
 
-    def test_vai_para_por_confirmar_quando_tem_o_nome(self):
+    def test_o_video_titulado_como_entrevista_e_candidato(self):
+        """Ate 2026-09-10 o feed de YouTube era so um detetor: tudo morria
+        em `por_confirmar` por nao trazer duracao. Sem duracao, o video que
+        o canal titula como entrevista passa o criterio (as rondas vem
+        depois, em recolha/confirmacao.py) e o outro continua sem sujeito."""
         config = config_teste()
         f = fonte(config, "yt-exemplo")
         with patch("recolha.fontes.youtube_feed.obter_texto", return_value=ler("youtube_exemplo.xml")):
             itens = list(youtube_feed.FonteYouTubeFeed(f).obter())
         q = []
-        for i in itens:
-            self.assertIsNone(criterio.avaliar(i, f, config, q))
-        self.assertEqual(sorted(e["motivo"] for e in q), ["por_confirmar", "sem_sujeito"])
+        aceites = [e for e in (criterio.avaliar(i, f, config, q) for i in itens) if e]
+        self.assertEqual([e.titulo for e in aceites], ["Entrevista a André Ventura na íntegra"])
+        self.assertEqual([e["motivo"] for e in q], ["sem_sujeito"])
 
     def test_sem_channel_id_devolve_nada(self):
         config = config_teste()
@@ -74,30 +76,34 @@ class TestRegistoCurado(unittest.TestCase):
         itens = manual.ler_registo(FIXTURES / "entrevistas_exemplo.yml")
         self.assertEqual(len(itens), 4)
         self.assertEqual(itens[0].data_declarada, "2025-09-04")
-        self.assertTrue(itens[2].parcial)
         self.assertEqual(itens[0].mesma_entrevista, itens[1].mesma_entrevista)
-
-    def test_linha_sem_duracao_e_valida_e_fica_sem_duracao(self):
-        itens = manual.ler_registo(FIXTURES / "entrevistas_exemplo.yml")
-        self.assertIsNone(itens[3].duracao_s)
 
     def test_le_o_clipping(self):
         itens = manual.ler_registo(FIXTURES / "clipping_exemplo.yml")
         self.assertEqual(len(itens), 2)
-        self.assertIsNone(itens[0].duracao_s)
 
     def test_sem_prova_falha(self):
         with self.assertRaises(ValueError):
-            manual.validar_linha({"data": "2025-01-01", "canal": "sic", "programa": "x", "duracao_s": 900}, 1)
+            manual.validar_linha({"data": "2025-01-01", "canal": "sic", "programa": "x"}, 1)
 
     def test_prova_tem_de_ser_url(self):
         with self.assertRaises(ValueError):
-            manual.validar_linha({"data": "2025-01-01", "canal": "sic", "programa": "x", "duracao_s": 900, "prova": "vi na televisao"}, 1)
+            manual.validar_linha({"data": "2025-01-01", "canal": "sic", "programa": "x", "prova": "vi na televisao"}, 1)
 
-    def test_duracao_zero_e_erro_e_nao_ausencia(self):
-        """Sem duracao escreve-se omitindo o campo. Zero seria uma medicao."""
-        with self.assertRaises(ValueError):
-            manual.validar_linha({"data": "2025-01-01", "canal": "sic", "programa": "x", "duracao_s": 0, "prova": "https://x"}, 1)
+    def test_um_campo_retirado_e_recusado_e_nao_ignorado(self):
+        """`duracao_s` e `parcial` sairam a 2026-09-10. Ler a linha e deitar
+        o campo fora em silencio deixava no ficheiro um numero que quem o
+        abre acreditava que o site usava; a recusa obriga a apaga-lo."""
+        for campo, valor in (("duracao_s", 900), ("parcial", True)):
+            with self.subTest(campo=campo), self.assertRaises(ValueError):
+                manual.validar_linha({"data": "2025-01-01", "canal": "sic", "programa": "x", "prova": "https://x", campo: valor}, 1)
+
+    def test_os_registos_reais_nao_trazem_campos_retirados(self):
+        """Os 26 `duracao_s` do registo curado foram apagados nesse dia; se
+        alguem os voltar a escrever, o coletor recusa a fonte inteira."""
+        for nome in ("entrevistas.yml", "clipping.yml", "paginas_de_canal.yml"):
+            with self.subTest(ficheiro=nome):
+                manual.ler_registo(RAIZ / "config" / nome)
 
     def test_os_registos_reais_sao_validos_e_usam_canais_conhecidos(self):
         """Falha em CI antes de publicar se alguem escrever um canal a mais."""

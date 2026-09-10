@@ -140,15 +140,6 @@ class Fonte:
     # publicar, "imprensa" quando e clipping de imprensa escrita. So muda
     # o que o site mostra ao lado de cada linha, nunca o que conta.
     origem: str = "canal"
-    # Uma fonte com duracao_opcional pode registar uma emissao sem
-    # duracao apurada: o evento conta, o tempo nao. So faz sentido em
-    # fontes verificadas por uma pessoa, com prova. Numa fonte automatica
-    # a falta de duracao significa "ainda nao verificado", nao "sem
-    # duracao", e por isso vai para a quarentena.
-    duracao_opcional: bool = False
-    # Uma fonte que so publica recortes marca tudo como parcial. O numero
-    # publicado passa a ser um limite inferior declarado, nao uma adivinha.
-    assumir_parcial: bool = False
     # Fonte do tipo busca_site: modelos de URL da pesquisa do proprio
     # site, com {termo} e opcionalmente {pagina}; dominio a que os
     # candidatos tem de pertencer; expressao regular opcional para
@@ -187,22 +178,19 @@ class Config:
 class ItemBruto:
     """O que uma fonte devolve antes de qualquer decisao editorial.
 
-    duracao_s a None significa que a fonte nao a conhece. O que acontece
-    a seguir depende da fonte: numa fonte verificada a mao (registo
-    curado, clipping) a emissao entra com duracao por apurar; numa fonte
-    automatica vai para a quarentena como `por_confirmar`.
+    Nao ha duracao: desde 2026-09-10 o projeto conta a existencia de cada
+    entrevista e nunca o tempo. Uma fonte que a conheca deita-a fora, e
+    nenhum campo a transporta ate ao site.
     """
 
     id_nativo: str
     publicado_em: str
     titulo: str
     url: str
-    duracao_s: int | None = None
     descricao: str = ""
     canal: str = ""
     programa: str = ""
     data_declarada: str = ""
-    parcial: bool = False
     mesma_entrevista: str = ""
     prova_url: str = ""
     origem: str = ""
@@ -220,9 +208,9 @@ class Emissao:
     `entrevista` agrupa emissoes da mesma entrevista para que o site possa
     tambem contar entrevistas distintas.
 
-    duracao_s a None quer dizer que a entrevista aconteceu e esta provada,
-    mas que a duracao nao foi possivel apurar. Conta como evento e nunca
-    como tempo. O site diz isso por palavras em vez de inventar um numero.
+    Uma emissao e um facto de existencia: houve, ou vai haver, uma
+    entrevista neste canal, neste dia, e a prova e um endereco publico. O
+    que se conta e a emissao, nunca o tempo que ocupou.
     """
 
     id: str
@@ -233,8 +221,6 @@ class Emissao:
     publicado_em: str
     canal: str
     programa: str
-    duracao_s: int | None
-    parcial: bool
     origem: str
     fonte: str
     confianca: str
@@ -296,8 +282,6 @@ def carregar_config(
             ficheiro=f.get("ficheiro", ""),
             channel_id=f.get("channel_id", ""),
             origem=f.get("origem", "canal"),
-            duracao_opcional=bool(f.get("duracao_opcional", False)),
-            assumir_parcial=bool(f.get("assumir_parcial", False)),
             busca=tuple(f.get("busca", []) or []),
             termos_busca=tuple(f.get("termos_busca", []) or []),
             dominio=f.get("dominio", ""),

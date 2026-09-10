@@ -164,7 +164,6 @@ section h2 { margin: 0 0 6px; font-size: 1.35rem; font-weight: 700; letter-spaci
 .numero-grande { margin: 0; font-size: clamp(2rem, 7vw, 3.4rem); font-weight: 700; line-height: 1.05; color: var(--lama); }
 .numero-grande small { display: block; font-size: 0.42em; color: var(--tinta); font-weight: 600; margin-top: 4px; }
 .comparacao { margin: 12px 0 0; font-size: 1.08rem; }
-.nota-parcial { margin: 8px 0 0; font-size: 0.92rem; color: var(--tinta-suave); }
 
 /* barra empilhada das quotas */
 .empilhada { display: flex; height: 26px; border: 3px solid var(--tinta); border-radius: 999px; overflow: hidden; background: var(--branco); margin: 6px 0 12px; }

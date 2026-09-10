@@ -1,7 +1,8 @@
 """Feeds RSS de podcast.
 
-Trazem duracao declarada pelo publicador (`itunes:duration`) e data de
-publicacao (`pubDate`), sem scraping. Seguem paginacao Atom
+Trazem data de publicacao (`pubDate`) sem scraping. A duracao que o
+feed declara (`itunes:duration`) e ignorada desde 2026-09-10: o projeto
+conta existencias, nao tempo. Seguem paginacao Atom
 (`<atom:link rel="next">`) quando o feed a expoe; verificar sempre no
 feed concreto com --dry-run em vez de assumir limites de documentacao.
 """
@@ -21,22 +22,6 @@ from .base import PluginDeFonte, registar
 ITUNES = "{http://www.itunes.com/dtds/podcast-1.0.dtd}"
 ATOM = "{http://www.w3.org/2005/Atom}"
 MAX_PAGINAS = 20
-
-
-def duracao_em_segundos(valor: str | None) -> int:
-    """'HH:MM:SS', 'MM:SS' ou segundos. Zero se ilegivel."""
-    if not valor:
-        return 0
-    valor = valor.strip()
-    if valor.isdigit():
-        return int(valor)
-    partes = valor.split(":")
-    if not all(p.strip().isdigit() for p in partes if p.strip()):
-        return 0
-    total = 0
-    for parte in partes:
-        total = total * 60 + int(parte or 0)
-    return total
 
 
 def data_rfc822(valor: str | None) -> str:
@@ -76,11 +61,10 @@ def ler_feed(xml: str) -> tuple[list[ItemBruto], str | None]:
     itens: list[ItemBruto] = []
     for item in raiz.iter("item"):
         guid = _texto(item, "guid") or _texto(item, "link")
-        duracao = duracao_em_segundos(_texto(item, f"{ITUNES}duration"))
         publicado = data_rfc822(_texto(item, "pubDate"))
-        if not guid or not publicado or duracao <= 0:
-            # Sem data ou sem duracao nao ha medicao. Fica de fora aqui,
-            # antes do criterio, porque nem sequer e um candidato.
+        if not guid or not publicado:
+            # Sem data nao ha emissao. Fica de fora aqui, antes do
+            # criterio, porque nem sequer e um candidato.
             continue
         itens.append(
             ItemBruto(
@@ -88,7 +72,6 @@ def ler_feed(xml: str) -> tuple[list[ItemBruto], str | None]:
                 publicado_em=publicado,
                 titulo=_texto(item, "title"),
                 url=_texto(item, "link"),
-                duracao_s=duracao,
                 descricao=sem_html(_texto(item, "description") or _texto(item, f"{ITUNES}summary")),
                 prova_url=_texto(item, "link"),
             )
@@ -113,7 +96,6 @@ class FontePodcastRss(PluginDeFonte):
                 vistos.add(item.id_nativo)
                 item.canal = self.fonte.canal
                 item.programa = self.fonte.programa
-                item.parcial = self.fonte.assumir_parcial
             todos.extend(novos)
             if not seguinte or not novos:
                 break

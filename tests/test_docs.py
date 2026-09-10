@@ -36,10 +36,34 @@ class TestArtefactosGerados(unittest.TestCase):
     def test_validacao_dos_textos_apanha_erros(self):
         mau = {"humores": [{"id": "a", "ate_dias": 3, "frases": ["{x}"]}, {"id": "b", "ate_dias": None, "frases": []}]}
         with self.assertRaises(ValueError):
-            gerar_textos.validar(mau, {"comparacoes": []})
+            gerar_textos.validar(mau)
         desordem = {"humores": [{"id": "a", "ate_dias": 3, "frases": []}, {"id": "b", "ate_dias": 2, "frases": []}, {"id": "c", "ate_dias": None, "frases": []}]}
         with self.assertRaises(ValueError):
-            gerar_textos.validar(desordem, {"comparacoes": []})
+            gerar_textos.validar(desordem)
+
+    def test_o_site_nao_le_campos_de_tempo(self):
+        """A duracao saiu a 2026-09-10 e o resumo deixou de ter `tempo_s` e
+        `sem_duracao`. Um JavaScript que ainda os lesse somava `undefined` e
+        escrevia NaN no site sem nenhum teste dar por isso."""
+        alvos = sorted((RAIZ / "docs").glob("*.js")) + sorted((RAIZ / "docs").glob("*.css")) + [RAIZ / "docs" / "textos.json"]
+        alvos += [c for c in sorted((RAIZ / "docs").glob("*.html")) if c.name != "metodologia.html"]
+        for caminho in alvos:
+            texto = caminho.read_text(encoding="utf-8")
+            with self.subTest(ficheiro=caminho.name):
+                for marca in ("tempo_s", "sem_duracao", "duracao_s", "duracaoLegivel", "parciais", "comparacoes", "unidade_s"):
+                    self.assertFalse(marca in texto, f"{caminho.name} ainda usa {marca!r}")
+
+    def test_nenhum_documento_versionado_promete_tempo(self):
+        """Uma suposicao que cai tem de cair em todas as suas copias. As
+        frases que o site e a Metodologia usavam para prometer tempo nao
+        podem sobreviver em documento nenhum, e os campos de configuracao
+        que a duracao exigia nao podem voltar a ser declarados."""
+        marcas = ("quanto tempo ocuparam", "duração não apurada", "duracao_opcional:", "assumir_parcial:", "tempo no ar", "sem duração apurada")
+        for caminho in TEXTO_VERSIONADO + sorted((RAIZ / "recolha").rglob("*.py")):
+            texto = caminho.read_text(encoding="utf-8")
+            with self.subTest(ficheiro=caminho.name):
+                for marca in marcas:
+                    self.assertFalse(marca in texto, f"{caminho.name} ainda diz {marca!r}")
 
 
 class TestConvencoes(unittest.TestCase):

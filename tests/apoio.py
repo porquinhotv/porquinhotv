@@ -26,7 +26,6 @@ def item(**campos) -> ItemBruto:
         publicado_em="2025-09-05",
         titulo="Entrevista a André Ventura",
         url="https://exemplo.pt/x1",
-        duracao_s=1800,
         descricao="",
         prova_url="https://exemplo.pt/x1",
     )

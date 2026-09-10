@@ -17,16 +17,13 @@ Duas fases, ambas genericas:
    sujeito e por pagina de resultados, e colher os URL candidatos do
    mesmo dominio (ver extracao.ligacoes);
 2. pedir cada candidato e ler os dados estruturados que a pagina publica
-   (ver extracao.extrair), que e de onde vem a duracao.
+   (ver extracao.extrair): titulo, data, sinopse e etiquetas.
 
 Nao ha um unico seletor CSS de nenhum site em lado nenhum. O que se le e
 schema.org e OpenGraph, que os sites mantem por causa dos motores de
 busca e das redes sociais, e que por isso sobrevive as remodelacoes.
 
-Um candidato cuja pagina nao declare duracao entra na mesma: o criterio
-decide se conta como evento sem tempo apurado ou se vai para a
-quarentena, conforme a fonte. O que esta fonte nunca faz e inventar um
-numero.
+Esta fonte nao decide nada: o criterio e que diz se o candidato conta.
 """
 
 from __future__ import annotations
@@ -118,7 +115,6 @@ class FonteBuscaSite(PluginDeFonte):
                     publicado_em=dados["publicado_em"],
                     titulo=dados["titulo"],
                     url=alvo,
-                    duracao_s=dados["duracao_s"],
                     descricao=dados["descricao"] or dados["excerto"],
                     canal=self.fonte.canal,
                     programa=self.fonte.programa,
@@ -129,6 +125,6 @@ class FonteBuscaSite(PluginDeFonte):
             time.sleep(self.fonte.pausa_s)
 
         if registo is not None:
-            com_duracao = sum(1 for i in itens if i.duracao_s)
-            registo.append(f"{self.fonte.id}: {len(itens)} paginas lidas, {com_duracao} com duracao declarada")
+            com_data = sum(1 for i in itens if i.publicado_em)
+            registo.append(f"{self.fonte.id}: {len(itens)} paginas lidas, {com_data} com data declarada")
         return itens

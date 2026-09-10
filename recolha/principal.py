@@ -133,13 +133,16 @@ def correr(so_fonte: str | None = None, dry_run: bool = False, paginas: int = 0,
     print(f"{prefixo}+{adicionadas} novas, {atualizadas} atualizadas, {len(fundidas)} no total")
     print(f"{prefixo}{len(quarentena)} itens em quarentena nesta corrida")
     _contar_recusas(quarentena, prefixo)
-    por_confirmar = sum(1 for e in quarentena if e["motivo"] == "por_confirmar")
+    # `por_confirmar` e o que ficou a aguardar rondas, e e o que o
+    # workflow diario le para decidir se corre uma segunda ronda. Ate
+    # 2026-09-10 esta variavel era reescrita aqui com a contagem do
+    # motivo de quarentena `por_confirmar` (fonte automatica sem
+    # duracao), que era outra coisa: com esse motivo a zero, a segunda
+    # ronda nunca corria mesmo havendo blocos a espera. O motivo deixou
+    # de existir com a duracao, e a variavel passou a dizer o que o nome
+    # diz.
     if por_confirmar:
-        print(f"{prefixo}{por_confirmar} por confirmar no registo curado (ver quarentena)")
-
-    aguardam = sum(1 for e in quarentena if e["motivo"].startswith("aguarda_confirmacao"))
-    if aguardam:
-        print(f"{prefixo}{aguardam} a aguardar confirmacao noutra ronda")
+        print(f"{prefixo}{por_confirmar} a aguardar confirmacao noutra ronda")
 
     if not dry_run:
         armazem.guardar(fundidas)

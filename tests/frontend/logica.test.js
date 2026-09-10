@@ -22,11 +22,12 @@ test("dias entre datas", () => {
   assert.equal(PTV.diasEntre("2025-12-31", "2026-01-01"), 1);
 });
 
-test("duracao legivel", () => {
-  assert.equal(PTV.duracaoLegivel(30), "menos de um minuto");
-  assert.equal(PTV.duracaoLegivel(60), "1 minuto");
-  assert.equal(PTV.duracaoLegivel(3600), "1 hora");
-  assert.equal(PTV.duracaoLegivel(9660), "2 horas e 41 minutos");
+test("o site nao tem funcoes de tempo", () => {
+  // Sairam a 2026-09-10 com a duracao. Se voltarem, e porque alguem
+  // reintroduziu tempo num site que so conta existencias.
+  for (const nome of ["duracaoLegivel", "comparar", "escolherComparacao", "sementeDe"]) {
+    assert.equal(PTV[nome], undefined, nome);
+  }
 });
 
 test("intervalo de periodos", () => {
@@ -40,36 +41,36 @@ test("intervalo de periodos", () => {
 });
 
 const porDia = [
-  { data: "2026-09-01", emissoes: 2, tempo_s: 3600, sem_duracao: 0, chaves: ["k1"] },
-  { data: "2026-09-03", emissoes: 1, tempo_s: 900, sem_duracao: 0, chaves: ["k2"] },
-  { data: "2026-09-05", emissoes: 1, tempo_s: 0, sem_duracao: 1, chaves: ["k4"] },
-  { data: "2026-09-20", emissoes: 1, tempo_s: 1200, sem_duracao: 0, chaves: ["k3"] },
+  { data: "2026-09-01", emissoes: 2, entrevistas_distintas: 1, chaves: ["k1"] },
+  { data: "2026-09-03", emissoes: 1, entrevistas_distintas: 1, chaves: ["k2"] },
+  { data: "2026-09-05", emissoes: 1, entrevistas_distintas: 1, chaves: ["k4"] },
+  { data: "2026-09-20", emissoes: 1, entrevistas_distintas: 1, chaves: ["k3"] },
 ];
 
 test("somar um periodo conta simulcast como uma entrevista", () => {
   const t = PTV.somar(porDia, "2026-09-01", "2026-09-04");
-  assert.deepEqual(t, { emissoes: 3, tempo_s: 4500, entrevistas: 2, sem_duracao: 0 });
+  assert.deepEqual(t, { emissoes: 3, entrevistas: 2 });
 });
 
-test("uma emissao sem duracao apurada conta como evento e nao como tempo", () => {
+test("somar um periodo maior", () => {
   const t = PTV.somar(porDia, "2026-09-01", "2026-09-10");
-  assert.deepEqual(t, { emissoes: 4, tempo_s: 4500, entrevistas: 3, sem_duracao: 1 });
+  assert.deepEqual(t, { emissoes: 4, entrevistas: 3 });
 });
 
 test("somar fora do intervalo da zero", () => {
-  assert.deepEqual(PTV.somar(porDia, "2027-01-01", "2027-12-31"), { emissoes: 0, tempo_s: 0, entrevistas: 0, sem_duracao: 0 });
+  assert.deepEqual(PTV.somar(porDia, "2027-01-01", "2027-12-31"), { emissoes: 0, entrevistas: 0 });
 });
 
 test("somar canais", () => {
   const cpd = [
-    { data: "2026-09-01", canais: { sic: { emissoes: 1, tempo_s: 1800, parciais: 0, sem_duracao: 0 }, "sic-noticias": { emissoes: 1, tempo_s: 1800, parciais: 1, sem_duracao: 0 } } },
-    { data: "2026-09-03", canais: { sic: { emissoes: 1, tempo_s: 900, parciais: 0, sem_duracao: 0 } } },
-    { data: "2026-09-05", canais: { cmtv: { emissoes: 1, tempo_s: 0, parciais: 0, sem_duracao: 1 } } },
+    { data: "2026-09-01", canais: { sic: { emissoes: 1, declaradas: 1 }, "sic-noticias": { emissoes: 1, declaradas: 1 } } },
+    { data: "2026-09-03", canais: { sic: { emissoes: 1, declaradas: 1 } } },
+    { data: "2026-09-05", canais: { cmtv: { emissoes: 1, declaradas: 0 } } },
   ];
   const m = PTV.somarCanais(cpd, "2026-09-01", "2026-09-30");
-  assert.deepEqual(m.sic, { emissoes: 2, tempo_s: 2700, parciais: 0, sem_duracao: 0 });
-  assert.deepEqual(m["sic-noticias"], { emissoes: 1, tempo_s: 1800, parciais: 1, sem_duracao: 0 });
-  assert.deepEqual(m.cmtv, { emissoes: 1, tempo_s: 0, parciais: 0, sem_duracao: 1 });
+  assert.deepEqual(m.sic, { emissoes: 2 });
+  assert.deepEqual(m["sic-noticias"], { emissoes: 1 });
+  assert.deepEqual(m.cmtv, { emissoes: 1 });
 });
 
 test("humor nos limites", () => {
@@ -97,28 +98,7 @@ test("nenhuma frase fica com placeholder por preencher", () => {
   assert.match(PTV.cabecalhoDias(5, textos), /5 dias/);
 });
 
-test("comparacoes sao uma divisao inteira", () => {
-  const futebol = textos.comparacoes.find((c) => c.id === "futebol");
-  assert.equal(PTV.comparar(5399, futebol, textos.frases), "nem um jogo de futebol de 90 minutos");
-  assert.equal(PTV.comparar(5400, futebol, textos.frases), "um jogo de futebol de 90 minutos");
-  assert.equal(PTV.comparar(16200, futebol, textos.frases), "3 jogos de futebol de 90 minutos");
-  const voo = textos.comparacoes.find((c) => c.id === "voo");
-  assert.equal(PTV.comparar(60000, voo, textos.frases), "cerca de 2 voos Lisboa a Nova Iorque");
-});
-
-test("escolha da comparacao da sempre um numero legivel quando existe", () => {
-  for (const segundos of [1300, 5400, 36000, 400000, 5000000]) {
-    for (let semente = 0; semente < 20; semente++) {
-      const c = PTV.escolherComparacao(segundos, textos.comparacoes, semente);
-      const n = Math.floor(segundos / c.unidade_s);
-      assert.ok(n >= 1 && n < 1000, `segundos=${segundos} semente=${semente} n=${n}`);
-    }
-  }
-  const pequena = PTV.escolherComparacao(10, textos.comparacoes, 3);
-  assert.equal(pequena.id, "sesta");
-});
-
-test("semente e determinista", () => {
-  assert.equal(PTV.sementeDe("rtp1"), PTV.sementeDe("rtp1"));
-  assert.notEqual(PTV.sementeDe("rtp1"), PTV.sementeDe("rtp2"));
+test("os textos nao trazem comparacoes de tempo", () => {
+  assert.equal(textos.comparacoes, undefined);
+  assert.equal(textos.frases, undefined);
 });

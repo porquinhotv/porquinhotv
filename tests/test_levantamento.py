@@ -1,6 +1,6 @@
 """Levantamento das fontes: tudo offline, com paginas e respostas fixas.
 
-- a analise de HTML diz onde os termos aparecem e se ha video com duracao;
+- a analise de HTML diz onde os termos aparecem e se ha video;
 - o id de YouTube vem do canonical, nao do primeiro UC... que apareca;
 - a resposta do arquivo.pt e contada por ano;
 - a corrida completa nao faz um unico pedido real e escreve um relatorio
@@ -30,11 +30,11 @@ class TestAnaliseDeHtml(unittest.TestCase):
         self.assertIn("Pessoa Exemplo", r["termos_no_corpo"])
         self.assertTrue(r["meta_keywords"])
 
-    def test_video_com_duracao_e_feeds(self):
+    def test_video_e_feeds(self):
         r = levantamento.analisar_html(ler("pagina_canal_exemplo.html"), TERMOS)
         self.assertEqual(r["jsonld_blocos"], 3)
         self.assertEqual(r["jsonld_videos"], 1)
-        self.assertEqual(r["jsonld_videos_com_duracao"], 1)
+        self.assertNotIn("jsonld_videos_com_duracao", r)
         self.assertEqual(r["feeds"], ["https://exemplo.pt/rss"])
         self.assertEqual(r["ids_youtube"], ["UCabcdefghijklmnopqrstuv"])
 
@@ -47,12 +47,6 @@ class TestAnaliseDeHtml(unittest.TestCase):
         self.assertEqual(r["termos_no_corpo"], [])
         self.assertEqual(r["jsonld_blocos"], 0)
         self.assertEqual(r["bytes_texto"], 0)
-
-    def test_duracao_iso(self):
-        self.assertEqual(levantamento._duracao_iso("PT1H12M30S"), 4350)
-        self.assertEqual(levantamento._duracao_iso("PT45M"), 2700)
-        self.assertIsNone(levantamento._duracao_iso("1:12:30"))
-        self.assertIsNone(levantamento._duracao_iso(""))
 
 
 class TestYouTube(unittest.TestCase):

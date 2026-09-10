@@ -2,24 +2,20 @@ entrevistas:
   - data: 2025-09-04
     canal: sic
     programa: Jornal da Noite
-    duracao_s: 1800
     prova: https://exemplo.pt/sic/jn-2025-09-04
     titulo: Entrevista no Jornal da Noite
     mesma_entrevista: jn-2025-09-04
   - data: 2025-09-04
     canal: sic-noticias
     programa: Jornal da Noite
-    duracao_s: 1800
     prova: https://exemplo.pt/sicn/jn-2025-09-04
     titulo: Simulcast do Jornal da Noite
     mesma_entrevista: jn-2025-09-04
   - data: 2025-09-10
     canal: rtp3
     programa: Grande Conversa
-    duracao_s: 900
     prova: https://exemplo.pt/rtp3/gc-2025-09-10
     titulo: Recorte de entrevista
-    parcial: true
   - data: 2025-09-12
     canal: tvi
     programa: Entrevista TVI

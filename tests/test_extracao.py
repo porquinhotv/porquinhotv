@@ -12,29 +12,6 @@ from tests.apoio import ler
 from recolha import extracao
 
 
-class TestDuracao(unittest.TestCase):
-    def test_iso(self):
-        self.assertEqual(extracao.duracao_para_segundos("PT1H12M30S"), 4350)
-        self.assertEqual(extracao.duracao_para_segundos("PT45M"), 2700)
-        self.assertEqual(extracao.duracao_para_segundos("PT90S"), 90)
-
-    def test_relogio(self):
-        self.assertEqual(extracao.duracao_para_segundos("01:12:30"), 4350)
-        self.assertEqual(extracao.duracao_para_segundos("12:30"), 750)
-
-    def test_numero(self):
-        self.assertEqual(extracao.duracao_para_segundos(4350), 4350)
-        self.assertEqual(extracao.duracao_para_segundos("4350"), 4350)
-
-    def test_zero_nunca_e_duracao(self):
-        """Zero seria um numero publicado que nao veio de uma medicao."""
-        self.assertIsNone(extracao.duracao_para_segundos(0))
-        self.assertIsNone(extracao.duracao_para_segundos("PT0S"))
-        self.assertIsNone(extracao.duracao_para_segundos(""))
-        self.assertIsNone(extracao.duracao_para_segundos("qualquer coisa"))
-        self.assertIsNone(extracao.duracao_para_segundos(None))
-
-
 class TestData(unittest.TestCase):
     def test_formas(self):
         self.assertEqual(extracao.data_para_iso("2021-03-15T21:30:00+00:00"), "2021-03-15")
@@ -48,9 +25,12 @@ class TestData(unittest.TestCase):
 
 
 class TestExtrair(unittest.TestCase):
-    def test_video_com_duracao(self):
+    def test_video(self):
+        """A pagina declara duracao em JSON-LD e o extrator nao a devolve:
+        a duracao saiu do projeto a 2026-09-10 e um campo que ninguem usa
+        e um campo que ninguem verifica."""
         r = extracao.extrair(ler("artigo_video.html"), "https://exemplo.pt/a")
-        self.assertEqual(r["duracao_s"], 4350)
+        self.assertNotIn("duracao_s", r)
         self.assertEqual(r["publicado_em"], "2021-03-15")
         self.assertTrue(r["e_video"])
         self.assertIn("Pessoa Exemplo", r["titulo"])
@@ -69,9 +49,8 @@ class TestExtrair(unittest.TestCase):
         self.assertEqual(m["og:description"], "Esteve esta segunda-feira no 'Grande Programa' numa entrevista exclusiva.")
         self.assertEqual(m["og:title"], 'Titulo com "aspas" duplas dentro')
 
-    def test_artigo_sem_duracao(self):
+    def test_artigo(self):
         r = extracao.extrair(ler("artigo_sem_duracao.html"), "https://exemplo.pt/b")
-        self.assertIsNone(r["duracao_s"])
         self.assertEqual(r["publicado_em"], "2021-03-15")
         self.assertFalse(r["e_video"])
 
@@ -94,7 +73,6 @@ class TestExtrair(unittest.TestCase):
 
     def test_pagina_sem_nada(self):
         r = extracao.extrair("<html><body>nada</body></html>", "https://exemplo.pt/c")
-        self.assertIsNone(r["duracao_s"])
         self.assertEqual(r["publicado_em"], "")
 
     def test_jsonld_malformado_nao_rebenta(self):

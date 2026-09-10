@@ -1,7 +1,7 @@
 """Contrato das fontes.
 
 Uma fonte devolve itens brutos: identificador, data de publicacao, titulo,
-URL e, quando os conhece, duracao e descricao. Nao decide nada. Toda a
+URL e, quando a conhece, descricao. Nao decide nada. Toda a
 decisao esta em recolha/criterio.py, num sitio so.
 """
 

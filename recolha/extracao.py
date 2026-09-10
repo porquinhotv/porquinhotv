@@ -18,8 +18,10 @@ diferenca entre uma recolha que se mantem sozinha e uma que exige
 manutencao a cada mes.
 
 Devolve sempre o que conseguiu apurar e nunca inventa: uma data que nao
-existe fica vazia, uma duracao que nao existe fica a None. Quem decide o
-que fazer com isso e recolha/criterio.py.
+existe fica vazia. Quem decide o que fazer com isso e
+recolha/criterio.py. A duracao deixou de ser lida a 2026-09-10: o
+projeto conta existencias e nao tempo, e um campo que ninguem usa e um
+campo que ninguem verifica.
 """
 
 from __future__ import annotations
@@ -42,11 +44,6 @@ TITULO = re.compile(r"<title[^>]*>(.*?)</title>", re.IGNORECASE | re.DOTALL)
 TEMPO = re.compile(r'<time[^>]+datetime=["\']([^"\']+)["\']', re.IGNORECASE)
 LIGACAO = re.compile(r'<a\s[^>]*href=["\']([^"\'#]+)["\']', re.IGNORECASE)
 
-# PT1H12M30S e a forma normalizada do schema.org.
-DURACAO_ISO = re.compile(r"^P(?:\d+D)?T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+(?:\.\d+)?)S)?$", re.IGNORECASE)
-# 01:12:30 e 12:30 aparecem em meta nao normalizadas de alguns players.
-DURACAO_RELOGIO = re.compile(r"^(?:(\d{1,2}):)?(\d{1,2}):(\d{2})$")
-
 CAMPOS_DATA = (
     "article:published_time",
     "og:published_time",
@@ -57,7 +54,6 @@ CAMPOS_DATA = (
     "pubdate",
     "sailthru.date",
 )
-CAMPOS_DURACAO = ("duration", "video:duration", "og:video:duration", "videoduration")
 CAMPOS_DESCRICAO = ("og:description", "description", "twitter:description")
 # Etiquetas e sinopses. Um canal marca a peca com o nome do convidado
 # muitas vezes sem o escrever no titulo: sem ler isto, a emissao era
@@ -72,37 +68,6 @@ CAMPOS_ETIQUETAS = (
     "subject",
 )
 CAMPOS_TITULO = ("og:title", "twitter:title", "title")
-
-
-def duracao_para_segundos(valor) -> int | None:
-    """Segundos a partir de PT#H#M#S, de HH:MM:SS, ou de um numero.
-
-    Devolve None quando nao consegue apurar. Nunca zero: zero seria um
-    numero publicado que nao veio de uma medicao, e isso e exatamente o
-    que o projeto nao faz.
-    """
-    if valor is None:
-        return None
-    if isinstance(valor, (int, float)):
-        segundos = int(valor)
-        return segundos if segundos > 0 else None
-    texto = str(valor).strip()
-    if not texto:
-        return None
-    if texto.isdigit():
-        segundos = int(texto)
-        return segundos if segundos > 0 else None
-    m = DURACAO_ISO.match(texto)
-    if m:
-        h, mi, s = m.groups()
-        segundos = int(h or 0) * 3600 + int(mi or 0) * 60 + int(float(s or 0))
-        return segundos if segundos > 0 else None
-    m = DURACAO_RELOGIO.match(texto)
-    if m:
-        h, mi, s = m.groups()
-        segundos = int(h or 0) * 3600 + int(mi) * 60 + int(s)
-        return segundos if segundos > 0 else None
-    return None
 
 
 # Meses em portugues, pelas tres primeiras letras e sem acentos, que e
@@ -200,7 +165,7 @@ def texto_visivel(html: str) -> str:
 
 
 def extrair(html: str, url: str = "") -> dict:
-    """Titulo, descricao, data e duracao de uma pagina, se existirem.
+    """Titulo, descricao, data e etiquetas de uma pagina, se existirem.
 
     A ordem de preferencia e sempre a mesma: JSON-LD primeiro, porque e o
     campo declarado para maquinas; depois os metadados; so depois o que se
@@ -213,7 +178,6 @@ def extrair(html: str, url: str = "") -> dict:
     titulo = ""
     descricao = ""
     data = ""
-    duracao = None
     e_video = False
     etiquetas: list[str] = []
 
@@ -221,7 +185,6 @@ def extrair(html: str, url: str = "") -> dict:
         tipos = _tipos(bloco)
         if any("video" in t for t in tipos):
             e_video = True
-            duracao = duracao or duracao_para_segundos(bloco.get("duration"))
         if any(t in ("newsarticle", "article", "videoobject", "tvepisode", "webpage", "mediaobject") for t in tipos) or e_video:
             titulo = titulo or str(bloco.get("name") or bloco.get("headline") or "")
             descricao = descricao or str(bloco.get("description") or "")
@@ -234,7 +197,6 @@ def extrair(html: str, url: str = "") -> dict:
                 valor = " ".join(str(v.get("name") if isinstance(v, dict) else v) for v in valor)
             if valor:
                 etiquetas.append(str(valor))
-        duracao = duracao or duracao_para_segundos(bloco.get("duration"))
 
     for campo in CAMPOS_TITULO:
         if not titulo and metas.get(campo):
@@ -245,9 +207,6 @@ def extrair(html: str, url: str = "") -> dict:
     for campo in CAMPOS_DATA:
         if not data and metas.get(campo):
             data = data_para_iso(metas[campo])
-    for campo in CAMPOS_DURACAO:
-        if duracao is None and metas.get(campo):
-            duracao = duracao_para_segundos(metas[campo])
     for campo in CAMPOS_ETIQUETAS:
         if metas.get(campo):
             etiquetas.append(metas[campo])
@@ -278,7 +237,6 @@ def extrair(html: str, url: str = "") -> dict:
         "titulo": " ".join(titulo.split())[:300],
         "descricao": " ".join(descricao.split())[:1000],
         "publicado_em": data,
-        "duracao_s": duracao,
         "etiquetas": " ".join(dict.fromkeys(" ".join(etiquetas).split()))[:600],
         "e_video": e_video,
         # Guardado para a quarentena poder mostrar contexto de uma

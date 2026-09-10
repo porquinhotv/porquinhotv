@@ -12,10 +12,10 @@
 #   Debates, painéis, declaracoes a imprensa e diretos de eventos nao
 #   contam.
 #
-#   Nao ha duracao minima: o que separa entrevista de declaracao e o
-#   formato, nao o relogio. A duracao procura-se sempre; quando nao foi
-#   possivel apurar, a emissao conta como evento e nao conta no tempo,
-#   e o site diz isso por palavras.
+#   O que se conta e a existencia da entrevista, provada por uma pagina
+#   publica: a do canal ou uma noticia que a relata ou anuncia. Nao ha
+#   duracao (retirada a 2026-09-10) nem duracao minima: o que separa
+#   entrevista de declaracao e o formato, nao o relogio.
 #
 # Unidade: a emissao. A mesma entrevista emitida em dois canais sao duas
 # emissoes (mostra presenca por canal). O campo `mesma_entrevista` no
@@ -26,7 +26,7 @@ versao: 1
 tema:
   id: entrevistas
   nome: Entrevistas exclusivas
-  pergunta: Quantas entrevistas exclusivas deu André Ventura na televisão portuguesa, e quanto tempo ocuparam?
+  pergunta: Quantas entrevistas exclusivas deu André Ventura na televisão portuguesa?
   # Data da publicacao em Diario da Republica da inscricao do partido
   # (2.a serie, n.o 94, 16 de maio de 2019). Nada anterior entra.
   desde: '2019-05-16'
@@ -88,7 +88,7 @@ exclusoes:
 # Antes desta regra o formato de um item era `entrevista` por omissao e
 # so os termos de exclusao acima o retiravam. Numa fonte automatica, em
 # que ninguem leu a pagina, isso fazia contar como entrevista exclusiva
-# qualquer peca com o nome do sujeito, com data e com duracao, desde que
+# qualquer peca com o nome do sujeito e com data, desde que
 # o titulo nao dissesse debate, declaracoes ou direto. Verificado no
 # dataset de 8 de setembro de 2026: sete pecas noticiosas curtas, uma de
 # 55 segundos, estavam publicadas como entrevistas.

@@ -36,13 +36,13 @@ class TestBuscaSite(unittest.TestCase):
         mock.patch.object(busca_site.time, "sleep", lambda s: None).start()
         self.addCleanup(mock.patch.stopall)
 
-    def test_le_candidatos_e_duracao(self):
+    def test_le_candidatos_com_data_e_canal(self):
         itens = list(busca_site.FonteBuscaSite(FONTE).obter(termos=["Pessoa Exemplo"]))
         self.assertEqual(len(itens), 2)
-        self.assertEqual(itens[0].duracao_s, 4350)
         self.assertEqual(itens[0].canal, "rtp1")
-        self.assertIsNone(itens[1].duracao_s)
         self.assertEqual(itens[1].publicado_em, "2021-03-15")
+        for item in itens:
+            self.assertFalse(hasattr(item, "duracao_s"), "a duracao saiu do modelo a 2026-09-10")
 
     def test_prova_e_o_url_do_canal(self):
         itens = list(busca_site.FonteBuscaSite(FONTE).obter(termos=["Pessoa Exemplo"]))

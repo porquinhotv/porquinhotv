@@ -1,4 +1,4 @@
-"""Gera docs/textos.json a partir de config/humor.yml e config/comparacoes.yml.
+"""Gera docs/textos.json a partir de config/humor.yml.
 
     python -m ferramentas.gerar_textos            escreve
     python -m ferramentas.gerar_textos --check    so verifica
@@ -6,8 +6,10 @@
 A camada satirica do site le este JSON e nunca os dados. Ha um teste que
 corre o --check, por isso um YAML alterado sem regenerar o JSON parte a
 suite antes de chegar ao site. Tambem valida o que o site vai assumir: um
-so placeholder por frase, limites de humor crescentes, referencias
-positivas.
+so placeholder por frase e limites de humor crescentes.
+
+As comparacoes de tempo (config/comparacoes.yml) sairam a 2026-09-10 com
+a duracao: sem tempo medido nao ha nada para dividir.
 """
 
 from __future__ import annotations
@@ -21,13 +23,12 @@ import yaml
 
 RAIZ = Path(__file__).resolve().parents[1]
 HUMOR = RAIZ / "config" / "humor.yml"
-COMPARACOES = RAIZ / "config" / "comparacoes.yml"
 ALVO = RAIZ / "docs" / "textos.json"
 
 PLACEHOLDER = re.compile(r"\{([a-z_]+)\}")
 
 
-def validar(humor: dict, comparacoes: dict) -> None:
+def validar(humor: dict) -> None:
     anterior = -1
     humores = humor["humores"]
     for i, h in enumerate(humores):
@@ -42,24 +43,15 @@ def validar(humor: dict, comparacoes: dict) -> None:
             extras = set(PLACEHOLDER.findall(frase)) - {"dias"}
             if extras:
                 raise ValueError(f"humor {h['id']}: placeholder desconhecido {extras}")
-    for c in comparacoes["comparacoes"]:
-        if int(c["unidade_s"]) <= 0:
-            raise ValueError(f"comparacao {c['id']}: unidade_s tem de ser positiva")
-        for campo in ("artigo", "um", "varios", "nota"):
-            if not c.get(campo):
-                raise ValueError(f"comparacao {c['id']}: falta '{campo}'")
 
 
 def construir() -> str:
     humor = yaml.safe_load(HUMOR.read_text(encoding="utf-8"))
-    comparacoes = yaml.safe_load(COMPARACOES.read_text(encoding="utf-8"))
-    validar(humor, comparacoes)
+    validar(humor)
     conteudo = {
         "cabecalho": humor["cabecalho"],
         "estado": humor["estado"],
         "humores": humor["humores"],
-        "frases": comparacoes["frases"],
-        "comparacoes": comparacoes["comparacoes"],
     }
     return json.dumps(conteudo, ensure_ascii=False, indent=1, sort_keys=True) + "\n"
 

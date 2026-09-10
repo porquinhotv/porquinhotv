@@ -17,12 +17,14 @@ Um item conta como emissao quando, por esta ordem:
    entrevista, ou o programa e um programa de entrevista, ou a propria
    fonte declara o formato na configuracao. No registo curado e no
    clipping foi uma pessoa que leu a pagina, e isso e a prova;
-6. o canal e um dos canais medidos;
-7. a duracao e conhecida, ou a fonte e verificada a mao e pode registar
-   uma emissao com a duracao por apurar.
+6. o canal e um dos canais medidos.
 
-Nao ha duracao minima. Uma entrevista curta e uma entrevista curta, e o
-que separa entrevista de declaracao e o formato, nao o relogio.
+A duracao nao entra em lado nenhum. Ate 2026-09-10 havia um passo 7 que
+exigia duracao conhecida numa fonte automatica, e o site somava tempo.
+Foi retirado por decisao do autor: o que se conta e a existencia da
+entrevista, provada por uma pagina publica, e o tempo que ocupou nao
+interessa. Uma peca curta que relate a entrevista prova-a tanto como o
+video integral. Nao ha duracao minima, nem nunca houve.
 
 O passo 5 existe porque o contrario ja aconteceu: com o formato a
 `entrevista` por omissao, bastava nao haver termo de exclusao para uma
@@ -43,9 +45,7 @@ desaparece em silencio. Os motivos, para quem le a quarentena:
                                 dizem. Nao e uma rejeicao do formato, e a
                                 ausencia dele
     canal_desconhecido          canal que nao esta em config/porquinho.yml
-    por_confirmar               fonte automatica sem duracao: e um candidato
-                                a verificar a mao, nao uma emissao
-    fragmento_ou_repetido       outro item do mesmo bloco tem melhor prova
+    fragmento_ou_repetido       outro item do mesmo bloco ja provou a emissao
     ja_registado                o registo curado ja tem esta prova
 """
 
@@ -188,10 +188,6 @@ def avaliar(
         rejeitar(quarentena, item, fonte, "canal_desconhecido")
         return None
 
-    if item.duracao_s is None and not fonte.duracao_opcional:
-        rejeitar(quarentena, item, fonte, "por_confirmar")
-        return None
-
     bloco = id_estavel(canal, programa, data)
     return Emissao(
         id=f"{fonte.id}:{id_estavel(fonte.id, item.id_nativo)}",
@@ -202,8 +198,6 @@ def avaliar(
         publicado_em=item.publicado_em,
         canal=canal,
         programa=programa,
-        duracao_s=None if item.duracao_s is None else int(item.duracao_s),
-        parcial=bool(item.parcial or fonte.assumir_parcial),
         origem=item.origem or fonte.origem,
         fonte=fonte.id,
         confianca=fonte.confianca,
@@ -213,29 +207,17 @@ def avaliar(
     )
 
 
-def _melhor(a: Emissao, b: Emissao) -> bool:
-    """True se `a` deve ficar no lugar de `b` no mesmo bloco.
-
-    Uma emissao com duracao apurada ganha sempre a uma sem duracao: e o
-    mesmo evento, com melhor prova. Entre duas com duracao ganha a mais
-    longa, porque a curta e tipicamente um recorte da longa. Entre duas
-    sem duracao ganha a que ja la estava, e as fontes correm pela ordem
-    de config/fontes.yml, com o canal a frente do clipping.
-    """
-    if (a.duracao_s is None) != (b.duracao_s is None):
-        return b.duracao_s is None
-    if a.duracao_s is None:
-        return False
-    return a.duracao_s > b.duracao_s
-
-
 def resolver_blocos(emissoes: list[Emissao], quarentena: list | None = None) -> list[Emissao]:
     """Um bloco (canal, programa, data) fica com uma so emissao.
 
     Os canais publicam a mesma entrevista como video integral mais varios
     recortes, e a imprensa noticia a mesma entrevista que o canal publica.
-    Contar cada item daria varias entrevistas onde houve uma. Ver _melhor
-    para o criterio de desempate.
+    Contar cada item daria varias entrevistas onde houve uma. Fica a
+    primeira que chegou: as fontes correm pela ordem de config/fontes.yml,
+    com o registo curado a frente de tudo e o canal a frente do clipping.
+    Ate 2026-09-10 a duracao desempatava (a mais longa ganhava ao
+    recorte); sem duracao no modelo, a ordem das fontes e o unico criterio,
+    e e um criterio que qualquer pessoa le no ficheiro de configuracao.
 
     Ha mais do que uma emissao por dia no mesmo canal com frequencia: uma
     entrevista de manha num programa de entretenimento e outra a noite num
@@ -256,8 +238,7 @@ def resolver_blocos(emissoes: list[Emissao], quarentena: list | None = None) -> 
             por_bloco[emissao.bloco] = emissao
             ordem.append(emissao.bloco)
             continue
-        vencedora, perdedora = (emissao, atual) if _melhor(emissao, atual) else (atual, emissao)
-        por_bloco[emissao.bloco] = vencedora
+        vencedora, perdedora = atual, emissao
         if quarentena is not None:
             quarentena.append(
                 {

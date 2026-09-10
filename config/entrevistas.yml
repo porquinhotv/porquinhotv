@@ -3,17 +3,16 @@
 #
 # Cada linha e uma entrevista exclusiva emitida num canal, verificada por
 # uma pessoa, com o URL onde qualquer outra pessoa a pode ver. Sem prova
-# nao entra. A duracao e a que a pagina declara, em segundos, nunca uma
-# estimativa.
+# nao entra. Nao ha duracao: desde 2026-09-10 o site conta a existencia
+# de cada entrevista e nunca o tempo, e o coletor recusa uma linha que
+# ainda traga `duracao_s` ou `parcial`.
 #
 # Campos:
 #   data             data de emissao (AAAA-MM-DD)            obrigatorio
 #   canal            id de config/porquinho.yml              obrigatorio
 #   programa         nome do programa ou noticiario           obrigatorio
-#   duracao_s        segundos declarados na pagina             obrigatorio
 #   prova            URL do video ou da pagina do canal        obrigatorio
 #   titulo           como o canal lhe chamou                   opcional
-#   parcial          true se so existem recortes online        opcional
 #   publicado_em     data de publicacao, se diferente          opcional
 #   mesma_entrevista chave livre; agrupa simulcast/repeticoes  opcional
 #
@@ -22,10 +21,8 @@
 #   - data: 2026-09-04
 #     canal: sic-noticias
 #     programa: Jornal da Noite
-#     duracao_s: 1740
 #     prova: https://sicnoticias.pt/.../entrevista-a-...
 #     titulo: Entrevista a André Ventura
-#     parcial: false
 #     mesma_entrevista: 2026-09-04-jornal-da-noite
 
 entrevistas:
@@ -34,19 +31,16 @@ entrevistas:
   programa: Grande Entrevista
   prova: https://www.rtp.pt/play/p12659/e756333/grande-entrevista
   titulo: Grande Entrevista - André Ventura - ep. 12
-  duracao_s: 3629
 - data: '2024-05-06'
   canal: cnn-portugal
   programa: não apurado
   prova: https://cnnportugal.iol.pt/videos/a-entrevista-a-andre-ventura-na-integra/663957160cf2a41c2ed4db99
   titulo: A entrevista a André Ventura na íntegra
-  duracao_s: 1784
 - data: '2024-10-10'
   canal: tvi
   programa: André Ventura
   prova: https://tviplayer.iol.pt/programa/noticias-cnn/6193fe4b0cf2c7ea0f090b1e/video/6708406b0cf23ab6553606d3
   titulo: 'André Ventura: a entrevista na íntegra'
-  duracao_s: 2125
 - data: '2025-04-09'
   canal: now
   programa: Legislativas 2025
@@ -59,27 +53,23 @@ entrevistas:
   prova: https://tvi.iol.pt/videos/goucha-entrevista-exclusiva-com-andre-ventura/67f684a50cf216cd3ad34a05
   titulo: Goucha - Entrevista exclusiva com André Ventura
   mesma_entrevista: '2025-04-09'
-  duracao_s: 2821
 - data: '2025-05-21'
   canal: cnn-portugal
   programa: não apurado
   prova: https://cnnportugal.iol.pt/videos/a-primeira-entrevista-a-andre-ventura-apos-as-eleicoes-na-integra/682e49960cf28cf88768061e
   titulo: A primeira entrevista a André Ventura após as eleições (na íntegra)
   mesma_entrevista: '2025-05-21'
-  duracao_s: 2460
 - data: '2025-05-21'
   canal: tvi
   programa: Entrevista exclusiva
   prova: https://tviplayer.iol.pt/programa/entrevista-exclusiva/67d46981d34ef72ee4437601/video/682e3ea00cf216cd3ad36a04
   titulo: 'Entrevista exclusiva: com André Ventura'
   mesma_entrevista: '2025-05-21'
-  duracao_s: 2466
 - data: '2025-06-04'
   canal: rtp3
   programa: Grande Entrevista
   prova: https://www.rtp.pt/play/p14350/e855325/grande-entrevista
   titulo: Grande Entrevista - André Ventura
-  duracao_s: 3470
 - data: '2025-08-28'
   canal: sic-noticias
   programa: não apurado
@@ -91,14 +81,12 @@ entrevistas:
   prova: https://cnnportugal.iol.pt/videos/entrevista-exclusiva-com-andre-ventura/68f164740cf285ab53a6139f
   titulo: Entrevista exclusiva com André Ventura
   mesma_entrevista: '2025-10-16'
-  duracao_s: 3388
 - data: '2025-10-16'
   canal: tvi
   programa: não apurado
   prova: https://tvi.iol.pt/noticias/videos/a-entrevista-exclusiva-a-andre-ventura-na-integra/68f163ca0cf29d28d828d75d
   titulo: A entrevista exclusiva a André Ventura na íntegra
   mesma_entrevista: '2025-10-16'
-  duracao_s: 3388
 - data: '2025-10-24'
   canal: sic-noticias
   programa: não apurado
@@ -110,14 +98,12 @@ entrevistas:
   prova: https://cnnportugal.iol.pt/videos/a-entrevista-a-andre-ventura-na-integra/690690050cf2c7eb24443f42
   titulo: A entrevista a André Ventura na íntegra
   mesma_entrevista: '2025-11-01'
-  duracao_s: 3506
 - data: '2025-11-01'
   canal: tvi
   programa: não apurado
   prova: https://tviplayer.iol.pt/programa/cnn-em-foco/66576e34d34e049892216643/video/690690050cf2c7eb24443f42
   titulo: A entrevista a André Ventura na íntegra
   mesma_entrevista: '2025-11-01'
-  duracao_s: 3506
 - data: '2025-11-04'
   canal: rtp3
   programa: não apurado
@@ -143,13 +129,11 @@ entrevistas:
   programa: Grande Entrevista
   prova: https://www.rtp.pt/play/p16214/e903851/grande-entrevista/1397371
   titulo: Grande Entrevista - André Ventura - ep. 2
-  duracao_s: 2123
 - data: '2026-01-30'
   canal: cnn-portugal
   programa: não apurado
   prova: https://cnnportugal.iol.pt/videos/a-entrevista-a-andre-ventura-na-integra/697d339c0cf22dd7c7f529a1
   titulo: A entrevista a André Ventura na íntegra
-  duracao_s: 2862
 - data: '2026-02-04'
   canal: sic-noticias
   programa: não apurado
@@ -160,7 +144,6 @@ entrevistas:
   programa: Teresa Morais, Passos e a guerra
   prova: https://cnnportugal.iol.pt/videos/teresa-morais-passos-e-a-guerra-a-entrevista-a-andre-ventura-na-integra/69aa18bf0cf27f6588a6351c
   titulo: 'Teresa Morais, Passos e a guerra: a entrevista a André Ventura na íntegra'
-  duracao_s: 1959
 - data: '2026-03-11'
   canal: now
   programa: não apurado
@@ -172,26 +155,22 @@ entrevistas:
   prova: https://cnnportugal.iol.pt/videos/a-entrevista-a-andre-ventura-na-integra/6a03acd40cf27f6588a6a772
   titulo: A entrevista a André Ventura na íntegra
   mesma_entrevista: '2026-05-12'
-  duracao_s: 3193
 - data: '2026-05-12'
   canal: tvi
   programa: não apurado
   prova: https://tvi.iol.pt/noticias/videos/a-entrevista-a-andre-ventura-na-integra/6a03acd40cf27f6588a6a772
   titulo: A entrevista a André Ventura na íntegra
   mesma_entrevista: '2026-05-12'
-  duracao_s: 3193
 - data: '2026-06-02'
   canal: tvi
   programa: não apurado
   prova: https://tvi.iol.pt/noticias/video/nao-quero-que-digam-a-alguem-que-nao-se-pode-reformar-a-entrevista-a-andre-ventura-na-integra/6a1f39f10cf2d0ed34b86048
   titulo: '"Não quero que digam a alguém que não se pode reformar". A entrevista a André Ventura na íntegra'
-  duracao_s: 951
 - data: '2026-06-03'
   canal: cnn-portugal
   programa: não apurado
   prova: https://cnnportugal.iol.pt/videos/a-entrevista-a-andre-ventura-na-cnn-portugal-na-integra/6a1fd4390cf2d0ed34b86072
   titulo: A entrevista a André Ventura na CNN Portugal na íntegra
-  duracao_s: 902
 - data: '2026-06-16'
   canal: sic-noticias
   programa: não apurado
@@ -202,38 +181,32 @@ entrevistas:
   programa: Grande Entrevista
   prova: https://www.rtp.pt/play/p16214/e938491/grande-entrevista
   titulo: Grande Entrevista - André Ventura - ep. 19
-  duracao_s: 3100
 - data: '2026-07-16'
   canal: cnn-portugal
   programa: não apurado
   prova: https://cnnportugal.iol.pt/videos/a-entrevista-a-andre-ventura-na-integra/6a5956770cf2f6a1a1e7102a
   titulo: A entrevista a André Ventura na íntegra
   mesma_entrevista: '2026-07-16'
-  duracao_s: 1551
 - data: '2026-07-16'
   canal: tvi
   programa: não apurado
   prova: https://tviplayer.iol.pt/programa/cnn-prime-time/6193932f0cf2cc58e7d362d6/video/6a5956770cf2f6a1a1e7102a
   titulo: A entrevista a André Ventura na íntegra
   mesma_entrevista: '2026-07-16'
-  duracao_s: 1551
 - data: '2026-07-29'
   canal: cnn-portugal
   programa: não apurado
   prova: https://cnnportugal.iol.pt/videos/a-entrevista-a-andre-ventura-na-integra/6a6a74e00cf2b42132dbc313
   titulo: A entrevista a André Ventura na íntegra
   mesma_entrevista: '2026-07-29'
-  duracao_s: 1903
 - data: '2026-07-29'
   canal: tvi
   programa: não apurado
   prova: https://tvi.iol.pt/noticias/videos/a-entrevista-a-andre-ventura-na-integra/6a6a74e00cf2b42132dbc313
   titulo: A entrevista a André Ventura na íntegra
   mesma_entrevista: '2026-07-29'
-  duracao_s: 1903
 - data: '2026-09-01'
   canal: cnn-portugal
   programa: Luís Neves e as "explicações absolutamente atrozes" do ministro
   prova: https://cnnportugal.iol.pt/videos/luis-neves-e-as-explicacoes-absolutamente-atrozes-do-ministro-entrevista-a-andre-ventura-na-integra/6a974b020cf2f6a1a1e760b7
   titulo: 'Luís Neves e as "explicações absolutamente atrozes" do ministro: entrevista a André Ventura na íntegra'
-  duracao_s: 1302

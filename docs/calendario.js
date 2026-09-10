@@ -15,9 +15,9 @@
     (resumo.canal_por_dia || []).forEach(function (dia) {
       var lista = Object.keys(dia.canais).map(function (id) {
         var c = dia.canais[id];
-        return { id: id, emissoes: c.emissoes, tempo_s: c.tempo_s, declarada: (c.declaradas || 0) >= c.emissoes, parciais: c.parciais || 0, sem_duracao: c.sem_duracao || 0 };
+        return { id: id, emissoes: c.emissoes, declarada: (c.declaradas || 0) >= c.emissoes };
       });
-      lista.sort(function (a, b) { return b.tempo_s - a.tempo_s; });
+      lista.sort(function (a, b) { return b.emissoes - a.emissoes || a.id.localeCompare(b.id); });
       idx[dia.data] = lista;
     });
     return idx;
@@ -31,9 +31,8 @@
 
   function rotuloDia(iso, dia, nomeDe) {
     var partes = dia.map(function (c) {
-      var tempo = c.tempo_s > 0 ? PTV.duracaoLegivel(c.tempo_s) : "duração não apurada";
-      if (c.tempo_s > 0 && c.sem_duracao) { tempo += ", mais " + c.sem_duracao + " sem duração apurada"; }
-      return nomeDe[c.id] + ", " + tempo + (c.declarada ? "" : ", data de publicação") + (c.parciais ? ", duração incompleta" : "");
+      var vezes = c.emissoes === 1 ? "1 emissão" : c.emissoes + " emissões";
+      return nomeDe[c.id] + ", " + vezes + (c.declarada ? "" : ", data de publicação");
     });
     var d = PTV.dataComDiaSemana(iso);
     return d.charAt(0).toUpperCase() + d.slice(1) + ": " + partes.join("; ");
@@ -81,16 +80,15 @@
     Object.keys(idx).forEach(function (iso) {
       if (iso.slice(0, 4) !== ano) { return; }
       idx[iso].forEach(function (c) {
-        var t = tot[c.id] || { emissoes: 0, tempo_s: 0 };
-        t.emissoes += c.emissoes; t.tempo_s += c.tempo_s; tot[c.id] = t;
+        var t = tot[c.id] || { emissoes: 0 };
+        t.emissoes += c.emissoes; tot[c.id] = t;
       });
     });
     var ul = el("ul", { class: "canais" });
-    Object.keys(tot).sort(function (a, b) { return tot[b].tempo_s - tot[a].tempo_s; }).forEach(function (id) {
+    Object.keys(tot).sort(function (a, b) { return tot[b].emissoes - tot[a].emissoes || a.localeCompare(b); }).forEach(function (id) {
       var ponto = el("span", { class: "ponto" }); ponto.style.background = cor(id);
       var vezes = tot[id].emissoes === 1 ? "1 emissão" : tot[id].emissoes + " emissões";
-      var tempo = tot[id].tempo_s > 0 ? PTV.duracaoLegivel(tot[id].tempo_s) : "duração não apurada";
-      ul.appendChild(el("li", {}, [ponto, el("span", { class: "nome", text: nomeDe[id] || id }), el("span", { class: "pista", style: "visibility:hidden" }), el("span", { class: "valor", text: vezes + ", " + tempo })]));
+      ul.appendChild(el("li", {}, [ponto, el("span", { class: "nome", text: nomeDe[id] || id }), el("span", { class: "pista", style: "visibility:hidden" }), el("span", { class: "valor", text: vezes })]));
     });
     return ul;
   }

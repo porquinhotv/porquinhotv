@@ -7,8 +7,7 @@
 # indexa a imprensa toda, incluindo os sites dos canais, e a sua porta RSS
 # responde sem conta, sem chave e sem JavaScript. E um detetor: diz que
 # no dia X houve entrevista no canal Y. Nao e prova. A prova de cada
-# linha continua a ser o URL do canal, procurado a mao a partir do que a
-# colheita apontou, e a duracao le-se la.
+# linha continua a ser o URL do canal ou da peca que a colheita apontou.
 #
 # Sondado em 2026-09-08: a janela `after:2024-01-01 before:2024-02-01`
 # devolveu 13 itens, todos de janeiro, um dos quais era uma entrevista
@@ -159,18 +158,6 @@ mapas:
     # 2026-09-09 e deu zero em 21: sao debates, discursos e pecas sobre
     # redes sociais, nenhuma prova uma emissao.
     prefixos: [fact_check-sitemap]
-
-# Duracao escrita no corpo, para as paginas que nao a declaram para
-# maquinas. Sondado em 2026-09-08: uma pagina de um dos canais escreve
-# "Duracao: 51min" ao lado do leitor e nao publica schema.org nenhum.
-# Um numero sozinho le-se como minutos; dois como minutos e segundos.
-padroes_duracao:
-  - padrao: 'dura[çc][ãa]o(?:\s+total)?\s*:?\s*(\d{1,2})\s*h(?:oras?)?\s*(\d{1,2})\s*min'
-    unidades: [h, min]
-  - padrao: 'dura[çc][ãa]o(?:\s+total)?\s*:?\s*(\d{1,3})\s*min'
-    unidades: [min]
-  - padrao: '\b(\d{1,2}):([0-5]\d):([0-5]\d)\b'
-    unidades: [h, min, s]
 
 # Separadores que separam o nome do programa do resto do titulo. Os
 # mesmos de config/porquinho.yml, repetidos aqui porque esta ferramenta

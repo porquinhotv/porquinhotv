@@ -80,32 +80,27 @@ class TestFormato(unittest.TestCase):
         self.assertEqual(r.canal, "sic-noticias")
 
 
-class TestDuracaoECanal(unittest.TestCase):
+class TestCanal(unittest.TestCase):
     def setUp(self):
         self.config = config_teste()
         self.fonte = fonte(self.config, "podcast-exemplo")
 
-    def test_fonte_automatica_sem_duracao_fica_por_confirmar(self):
-        """Numa fonte automatica, sem duracao quer dizer nao verificado."""
+    def test_fonte_automatica_sem_duracao_entra(self):
+        """Ate 2026-09-10 um item de fonte automatica sem duracao ia para a
+        quarentena como `por_confirmar`. A duracao saiu do projeto: um
+        video que o canal titula como entrevista e prova da emissao e
+        entra pelo criterio normal (rondas a parte)."""
         q = []
-        r = criterio.avaliar(item(duracao_s=None), fonte(self.config, "yt-exemplo"), self.config, q)
-        self.assertIsNone(r)
-        self.assertEqual(q[0]["motivo"], "por_confirmar")
-        self.assertTrue(q[0]["url"])
-
-    def test_fonte_verificada_sem_duracao_entra_com_duracao_por_apurar(self):
-        r = criterio.avaliar(
-            item(duracao_s=None, canal="sic", programa="JN", data_declarada="2025-09-04"),
-            fonte(self.config, "registo-curado"), self.config, [],
-        )
+        r = criterio.avaliar(item(), fonte(self.config, "yt-exemplo"), self.config, q)
         self.assertIsNotNone(r)
-        self.assertIsNone(r.duracao_s)
+        self.assertEqual(q, [])
 
-    def test_nao_ha_duracao_minima(self):
-        """Uma entrevista curta e uma entrevista curta. Ver METODOLOGIA 2."""
-        for segundos in (60, 300, 599, 600):
-            with self.subTest(segundos=segundos):
-                self.assertIsNotNone(criterio.avaliar(item(duracao_s=segundos), self.fonte, self.config, []))
+    def test_a_emissao_nao_transporta_duracao_nem_parcial(self):
+        """O ficheiro publicado nao pode ter um campo de tempo a fingir que
+        conta: quem o le acreditava que o site o usava."""
+        r = criterio.avaliar(item(), self.fonte, self.config, [])
+        self.assertNotIn("duracao_s", r.como_dict())
+        self.assertNotIn("parcial", r.como_dict())
 
     def test_origem_vem_da_fonte(self):
         do_canal = criterio.avaliar(item(canal="sic", programa="JN", data_declarada="2025-09-04"), fonte(self.config, "registo-curado"), self.config, [])
@@ -159,34 +154,28 @@ class TestIdentidadeEBlocos(unittest.TestCase):
         self.assertEqual(a.id, b.id)
         self.assertEqual(a.bloco, b.bloco)
 
-    def test_mesmo_bloco_fica_com_o_mais_longo(self):
+    def test_mesmo_bloco_fica_com_o_primeiro_e_o_outro_vai_para_a_quarentena(self):
+        """Sem duracao nao ha "melhor prova" dentro de um bloco: a ordem das
+        fontes decide, e o segundo item fica visivel na quarentena com o
+        motivo escrito, nunca descartado em silencio."""
         q = []
-        curto = criterio.avaliar(item(id_nativo="a", duracao_s=720, publicado_em="2025-09-05"), self.fonte, self.config, [])
-        longo = criterio.avaliar(item(id_nativo="b", duracao_s=2900, publicado_em="2025-09-05"), self.fonte, self.config, [])
-        ficam = criterio.resolver_blocos([curto, longo], q)
-        self.assertEqual([e.id for e in ficam], [longo.id])
+        a = criterio.avaliar(item(id_nativo="a", publicado_em="2025-09-05"), self.fonte, self.config, [])
+        b = criterio.avaliar(item(id_nativo="b", publicado_em="2025-09-05"), self.fonte, self.config, [])
+        ficam = criterio.resolver_blocos([a, b], q)
+        self.assertEqual([e.id for e in ficam], [a.id])
         self.assertTrue(q[0]["motivo"].startswith("fragmento_ou_repetido"))
-        self.assertEqual(q[0]["id_nativo"], curto.id)
+        self.assertEqual(q[0]["id_nativo"], b.id)
 
-    def test_com_duracao_ganha_a_sem_duracao(self):
-        """A mesma emissao provada duas vezes fica com a prova melhor,
-        seja qual for a ordem por que aparece."""
-        f = fonte(self.config, "registo-curado")
-        com = criterio.avaliar(item(id_nativo="a", duracao_s=1800, canal="sic", programa="JN", data_declarada="2025-09-04"), f, self.config, [])
-        sem = criterio.avaliar(item(id_nativo="b", duracao_s=None, canal="sic", programa="JN", data_declarada="2025-09-04"), f, self.config, [])
-        self.assertEqual([e.id for e in criterio.resolver_blocos([sem, com], [])], [com.id])
-        self.assertEqual([e.id for e in criterio.resolver_blocos([com, sem], [])], [com.id])
-
-    def test_duas_sem_duracao_fica_a_primeira(self):
-        f = fonte(self.config, "registo-curado")
-        a = criterio.avaliar(item(id_nativo="a", duracao_s=None, canal="sic", programa="JN", data_declarada="2025-09-04"), f, self.config, [])
-        b = criterio.avaliar(item(id_nativo="b", duracao_s=None, canal="sic", programa="JN", data_declarada="2025-09-04"), f, self.config, [])
+    def test_a_ordem_das_fontes_decide_o_bloco(self):
+        """O registo curado corre antes do clipping em config/fontes.yml, e
+        e por isso, e so por isso, que a prova do canal fica quando as duas
+        provam a mesma emissao. Trocar a ordem troca o vencedor."""
+        curado = fonte(self.config, "registo-curado")
+        clipping = fonte(self.config, "clipping-imprensa")
+        a = criterio.avaliar(item(id_nativo="a", canal="sic", programa="JN", data_declarada="2025-09-04"), curado, self.config, [])
+        b = criterio.avaliar(item(id_nativo="b", canal="sic", programa="JN", data_declarada="2025-09-04"), clipping, self.config, [])
         self.assertEqual([e.id for e in criterio.resolver_blocos([a, b], [])], [a.id])
-
-    def test_empate_fica_com_o_primeiro(self):
-        a = criterio.avaliar(item(id_nativo="a", duracao_s=1800), self.fonte, self.config, [])
-        b = criterio.avaliar(item(id_nativo="b", duracao_s=1800), self.fonte, self.config, [])
-        self.assertEqual([e.id for e in criterio.resolver_blocos([a, b], [])], [a.id])
+        self.assertEqual([e.id for e in criterio.resolver_blocos([b, a], [])], [b.id])
 
     def test_canais_diferentes_no_mesmo_dia_sao_blocos_diferentes(self):
         f = fonte(self.config, "registo-curado")
@@ -200,10 +189,6 @@ class TestIdentidadeEBlocos(unittest.TestCase):
         b = criterio.avaliar(item(id_nativo="b", canal="sic-noticias", programa="JN", data_declarada="2025-09-04", mesma_entrevista="k"), f, self.config, [])
         self.assertEqual(a.entrevista, b.entrevista)
         self.assertNotEqual(a.bloco, b.bloco)
-
-    def test_parcial_vem_do_item_ou_da_fonte(self):
-        self.assertTrue(criterio.avaliar(item(parcial=True), self.fonte, self.config, []).parcial)
-        self.assertFalse(criterio.avaliar(item(), self.fonte, self.config, []).parcial)
 
 
 class TestRecusasContadas(unittest.TestCase):
@@ -285,7 +270,6 @@ class TestEpisodioDeProgramaDeEntrevista(unittest.TestCase):
             # sem a sinopse, um episodio destes nao se distingue de outro.
             descricao=dados["descricao"].replace("Pessoa Exemplo", "André Ventura"),
             url="https://exemplo.pt/play/p1/e2/x",
-            duracao_s=3060,
             prova_url="https://exemplo.pt/play/p1/e2/x",
         )
         base.update(campos)
@@ -387,9 +371,9 @@ class TestVariasEmissoesNoMesmoDia(unittest.TestCase):
         self.config = config_teste()
         self.fonte = fonte(self.config, "registo-curado")
 
-    def _emissao(self, titulo, n, duracao=1800):
+    def _emissao(self, titulo, n):
         return criterio.avaliar(
-            item(titulo=titulo, canal="rtp1", duracao_s=duracao,
+            item(titulo=titulo, canal="rtp1",
                  url=f"https://exemplo.pt/{n}", prova_url=f"https://exemplo.pt/{n}"),
             self.fonte, self.config,
         )
@@ -402,18 +386,18 @@ class TestVariasEmissoesNoMesmoDia(unittest.TestCase):
 
     def test_recorte_do_mesmo_programa_nao_conta_duas_vezes(self):
         """O que a chave existe para juntar: o video integral e o recorte."""
-        integral = self._emissao("Jornal da Noite - Alguem", 1, duracao=1800)
-        recorte = self._emissao("Jornal da Noite - Alguem", 2, duracao=120)
+        integral = self._emissao("Jornal da Noite - Alguem", 1)
+        recorte = self._emissao("Jornal da Noite - Alguem", 2)
         q = []
         ficam = criterio.resolver_blocos([integral, recorte], q)
         self.assertEqual(len(ficam), 1)
-        self.assertEqual(ficam[0].duracao_s, 1800)
+        self.assertEqual(ficam[0].id, integral.id)
         self.assertIn("fragmento_ou_repetido", q[0]["motivo"])
 
     def test_programa_nao_apurado_fica_dito_na_quarentena(self):
         """O erro e por defeito, nunca por excesso, mas tem de se ver."""
-        a = self._emissao("Alguem em entrevista", 1, duracao=1800)
-        b = self._emissao("Alguem outra vez", 2, duracao=600)
+        a = self._emissao("Alguem em entrevista", 1)
+        b = self._emissao("Alguem outra vez", 2)
         self.assertEqual(a.programa, "")
         q = []
         self.assertEqual(len(criterio.resolver_blocos([a, b], q)), 1)
@@ -436,7 +420,6 @@ class TestProvaDeFormato(unittest.TestCase):
 
     def _avaliar(self, **campos):
         q = []
-        campos.setdefault("duracao_s", 55)
         r = criterio.avaliar(item(**campos), self.automatica, self.config, q)
         return r, q
 
@@ -459,7 +442,7 @@ class TestProvaDeFormato(unittest.TestCase):
     def test_concorrente_de_reality_show_nao_entra(self):
         """Ha um concorrente de reality show com o mesmo apelido. O nome
         passa a deteccao do sujeito; o formato e que o tem de travar."""
-        r, q = self._avaliar(titulo="Big Brother Ventura fica fora de si e grita com Tatiana", duracao_s=90)
+        r, q = self._avaliar(titulo="Big Brother Ventura fica fora de si e grita com Tatiana")
         self.assertIsNone(r)
         self.assertEqual(q[0]["motivo"], "formato_nao_apurado")
 
@@ -471,27 +454,28 @@ class TestProvaDeFormato(unittest.TestCase):
         self.assertEqual(q[0]["motivo"], "formato_nao_apurado")
 
     def test_titulo_que_diz_entrevista_prova(self):
-        """Titulo real da RTP: o canal chama-lhe entrevista, e isso conta,
-        seja qual for a duracao. Nao ha duracao minima."""
-        r, q = self._avaliar(titulo="Entrevista à RTP. Ventura assume que eleger menos de 50 deputados seria mau", duracao_s=145)
+        """Titulo real da RTP de uma peca de 145 segundos: o canal chama-lhe
+        entrevista, e isso conta. Nao ha duracao minima, e desde 2026-09-10
+        nem sequer ha duracao."""
+        r, q = self._avaliar(titulo="Entrevista à RTP. Ventura assume que eleger menos de 50 deputados seria mau")
         self.assertIsNotNone(r, q)
 
     def test_programa_de_entrevista_prova_sem_a_palavra(self):
         """Um canal titula o episodio pelo programa e deixa o convidado a
         seguir ao separador. Se o programa e de entrevista, e prova."""
-        r, q = self._avaliar(titulo="Programa de Entrevista - André Ventura - ep. 12", duracao_s=3000)
+        r, q = self._avaliar(titulo="Programa de Entrevista - André Ventura - ep. 12")
         self.assertIsNotNone(r, q)
         self.assertEqual(r.programa, "Programa de Entrevista")
 
     def test_programa_fora_da_lista_nao_prova(self):
-        r, q = self._avaliar(titulo="Programa da Manhã - André Ventura", duracao_s=3000)
+        r, q = self._avaliar(titulo="Programa da Manhã - André Ventura")
         self.assertIsNone(r)
         self.assertEqual(q[0]["motivo"], "formato_nao_apurado")
 
     def test_exclusao_ganha_a_falta_de_prova(self):
         """"Debate com o sujeito" e um debate. Dizer que o formato nao se
         apurou seria menos verdade, e a quarentena tem de dizer a verdade."""
-        r, q = self._avaliar(titulo="Debate com André Ventura", duracao_s=3000)
+        r, q = self._avaliar(titulo="Debate com André Ventura")
         self.assertIsNone(r)
         self.assertEqual(q[0]["motivo"], "formato_nao_elegivel (debate)")
 
@@ -507,15 +491,15 @@ class TestProvaDeFormato(unittest.TestCase):
         """Uma pessoa leu a pagina. O titulo do canal pode dizer o que quiser."""
         curado = fonte(self.config, "registo-curado")
         r = criterio.avaliar(
-            item(titulo="Jornal da Noite", canal="sic", programa="Jornal da Noite", data_declarada="2025-09-04", duracao_s=None),
+            item(titulo="Jornal da Noite", canal="sic", programa="Jornal da Noite", data_declarada="2025-09-04"),
             curado, self.config, [],
         )
         self.assertIsNotNone(r)
 
-    def test_sem_prova_nunca_chega_a_por_confirmar(self):
-        """Antes, uma peca sem duracao e sem prova de formato ficava como
-        `por_confirmar`, ou seja, como candidata a entrevista. Nao e
-        candidata a nada enquanto nao se souber o formato."""
-        r, q = self._avaliar(titulo="André Ventura centra-se na formação de governo sombra", duracao_s=None)
+    def test_sem_prova_de_formato_nao_entra_mesmo_sem_a_barreira_da_duracao(self):
+        """Ate 2026-09-10 uma peca sem duracao morria em `por_confirmar`
+        por sorte, antes de a prova de formato a olhar. Sem essa barreira,
+        e a prova de formato que a trava, e tem de travar."""
+        r, q = self._avaliar(titulo="André Ventura centra-se na formação de governo sombra")
         self.assertIsNone(r)
         self.assertEqual(q[0]["motivo"], "formato_nao_apurado")
