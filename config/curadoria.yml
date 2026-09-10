@@ -43,4 +43,6 @@
 
 entrevistas: []
 
-remover: []
+remover:
+  - prova: https://www.jm-madeira.pt/v%C3%ADdeo/regi-o/30004362/ventura-agarra-se-a-vice-presidente-da-camara-do-funchal.html
+    motivo: é a mesma entrevista da emissão de 2026-09-01 na CNN Portugal, já provada pela página do canal; a data desta peça é a da publicação, não a da emissão
