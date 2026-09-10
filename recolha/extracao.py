@@ -27,6 +27,7 @@ from __future__ import annotations
 import html as html_mod
 import json
 import re
+import unicodedata
 from datetime import datetime
 
 ETIQUETAS = re.compile(r"<[^>]+>")
@@ -104,6 +105,24 @@ def duracao_para_segundos(valor) -> int | None:
     return None
 
 
+# Meses em portugues, pelas tres primeiras letras e sem acentos, que e
+# como um site abrevia uma data escrita para pessoas ("24 jun 2026", "24
+# de junho de 2026"). Nao e configuracao editorial: e a lingua em que os
+# sitios escrevem, e nao nomeia canal, programa nem pessoa nenhuma.
+MESES_ABREVIADOS = ("jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez")
+# Dia, mes por palavra e ano, com "de" opcional dos dois lados e ponto
+# opcional na abreviatura. Exige os tres campos de proposito: sem o dia,
+# "Eleicoes 2024" numa lista de etiquetas passaria por data.
+DATA_POR_EXTENSO = re.compile(r"\b(\d{1,2})\s*(?:de\s+)?([^\W\d_]{3,9})\.?\s*(?:de\s+)?(\d{4})\b", re.IGNORECASE)
+
+
+def _sem_acentos(texto: str) -> str:
+    """Minusculas sem acentos. Aqui e nao em modelos.py para nao criar uma
+    dependencia circular entre a extracao e a configuracao."""
+    decomposto = unicodedata.normalize("NFKD", texto)
+    return "".join(c for c in decomposto if not unicodedata.combining(c)).lower()
+
+
 def data_para_iso(valor) -> str:
     """AAAA-MM-DD a partir das formas que os sites publicam. Vazio se nao."""
     if not valor:
@@ -120,6 +139,16 @@ def data_para_iso(valor) -> str:
             return datetime(int(ano), int(mes), int(dia)).strftime("%Y-%m-%d")
         except ValueError:
             return ""
+    # Data escrita por extenso. Procura-se em qualquer sitio do valor,
+    # ao contrario das formas numericas acima, porque esta aparece no
+    # meio de uma lista de etiquetas e nao sozinha num campo proprio.
+    for dia, mes, ano in DATA_POR_EXTENSO.findall(texto):
+        chave = _sem_acentos(mes)[:3]
+        if chave in MESES_ABREVIADOS:
+            try:
+                return datetime(int(ano), MESES_ABREVIADOS.index(chave) + 1, int(dia)).strftime("%Y-%m-%d")
+            except ValueError:
+                continue
     return ""
 
 
@@ -229,6 +258,18 @@ def extrair(html: str, url: str = "") -> dict:
     if not data:
         for bruto in TEMPO.findall(html):
             data = data_para_iso(bruto)
+            if data:
+                break
+    if not data:
+        # Ultimo recurso, e so depois de tudo o que e declarado como data
+        # ter falhado: o dia escrito no meio das etiquetas. Um leitor de
+        # um canal publica paginas de episodio sem schema.org e sem campo
+        # de data nenhum, com o dia so na lista de palavras-chave. Sem
+        # isto, 194 episodios de um programa de entrevistas foram para a
+        # quarentena como `sem_data` a 2026-09-10, todos lidos e todos com
+        # duracao apurada.
+        for etiqueta in etiquetas:
+            data = data_para_iso(etiqueta)
             if data:
                 break
 

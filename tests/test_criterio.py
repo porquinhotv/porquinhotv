@@ -2,7 +2,7 @@
 
 import unittest
 
-from tests.apoio import config_teste, fonte, item
+from tests.apoio import config_teste, fonte, item, ler
 
 from recolha import criterio
 
@@ -258,6 +258,54 @@ class TestRecusasContadas(unittest.TestCase):
 
     def test_quarentena_vazia_nao_escreve_nada(self):
         self.assertEqual(self._capturar([]), "")
+
+
+class TestEpisodioDeProgramaDeEntrevista(unittest.TestCase):
+    """Um episodio de um programa de entrevistas com o sujeito conta.
+
+    O caso real de 2026-09-10, ponta a ponta: a pagina do episodio nao
+    diz o nome do sujeito no titulo (o titulo e o nome do programa), diz
+    o dia so nas etiquetas, e nomeia o convidado na sinopse. As tres
+    coisas juntas fizeram com que 194 paginas nao dessem uma emissao.
+    """
+
+    def setUp(self):
+        self.config = config_teste()
+        self.fonte = fonte(self.config, "podcast-exemplo")
+
+    def _item(self, **campos):
+        from recolha import extracao
+
+        dados = extracao.extrair(ler("pagina_episodio_audio.html"), "https://exemplo.pt/play/p1/e2/x")
+        base = dict(
+            id_nativo="https://exemplo.pt/play/p1/e2/x",
+            publicado_em=dados["publicado_em"],
+            titulo=dados["titulo"],
+            # A sinopse nomeia o convidado e o titulo nao, que e o ponto:
+            # sem a sinopse, um episodio destes nao se distingue de outro.
+            descricao=dados["descricao"].replace("Pessoa Exemplo", "André Ventura"),
+            url="https://exemplo.pt/play/p1/e2/x",
+            duracao_s=3060,
+            prova_url="https://exemplo.pt/play/p1/e2/x",
+        )
+        base.update(campos)
+        return item(**base)
+
+    def test_conta_quando_a_fonte_declara_o_programa(self):
+        from dataclasses import replace
+
+        fonte_com_programa = replace(self.fonte, programa="Programa de Entrevista")
+        quarentena = []
+        emissao = criterio.avaliar(self._item(programa="Programa de Entrevista"), fonte_com_programa, self.config, quarentena)
+        self.assertIsNotNone(emissao, f"recusado: {quarentena}")
+        self.assertEqual(emissao.data, "2026-06-24")
+
+    def test_sem_o_sujeito_na_sinopse_nao_conta(self):
+        """Os outros convidados do mesmo programa saem, e e o que deve ser."""
+        quarentena = []
+        outro = self._item(descricao="Outra Pessoa - o convidado de hoje", programa="Programa de Entrevista")
+        self.assertIsNone(criterio.avaliar(outro, self.fonte, self.config, quarentena))
+        self.assertEqual(quarentena[0]["motivo"], "sem_sujeito")
 
 
 if __name__ == "__main__":

@@ -125,6 +125,64 @@ class TestLigacoes(unittest.TestCase):
         )
 
 
+class TestDataEscritaPorExtenso(unittest.TestCase):
+    """A pagina de episodio que nao declara data em campo nenhum.
+
+    Entrada real, 2026-09-10: a lista de episodios de um programa de
+    entrevistas trouxe 194 paginas, o coletor leu as 194, apurou a
+    duracao das 194, e as 194 foram para a quarentena como `sem_data`.
+    Nenhuma delas publica schema.org nem um campo de data: o dia aparece
+    so no meio das palavras-chave, escrito como se escreve para pessoas.
+    """
+
+    def test_le_o_dia_no_meio_das_etiquetas(self):
+        dados = extracao.extrair(ler("pagina_episodio_audio.html"), "https://exemplo.pt/play/p1/e2/x")
+        self.assertEqual(dados["publicado_em"], "2026-06-24")
+
+    def test_o_sujeito_continua_a_vir_da_descricao(self):
+        dados = extracao.extrair(ler("pagina_episodio_audio.html"), "https://exemplo.pt/play/p1/e2/x")
+        self.assertIn("Pessoa Exemplo", dados["descricao"])
+
+    def test_formas_que_os_sitios_escrevem(self):
+        for valor, esperado in (
+            ("Programa, Canal, Informação, 24 jun 2026, audio", "2026-06-24"),
+            ("24 jun. 2026", "2026-06-24"),
+            ("15 de março de 2021", "2021-03-15"),
+            ("1 dez 2019", "2019-12-01"),
+        ):
+            self.assertEqual(extracao.data_para_iso(valor), esperado, valor)
+
+    def test_um_ano_sozinho_nao_e_uma_data(self):
+        """Uma lista de etiquetas tem anos que nao datam nada.
+
+        Sem exigir dia, mes e ano, "Eleicoes 2024" ou "Euro 2024" numa
+        lista de palavras-chave passariam por data de emissao, e o erro
+        seria de um ano inteiro.
+        """
+        for valor in ("Euro 2024, Desporto", "Eleições 2024", "2026", "Ano 2021"):
+            self.assertEqual(extracao.data_para_iso(valor), "", valor)
+
+    def test_um_dia_que_nao_existe_nao_e_data(self):
+        self.assertEqual(extracao.data_para_iso("31 fev 2020"), "")
+
+    def test_uma_palavra_que_nao_e_mes_nao_e_data(self):
+        self.assertEqual(extracao.data_para_iso("12 episodios 2024"), "")
+
+    def test_o_campo_declarado_ganha_as_etiquetas(self):
+        """As etiquetas sao o ultimo recurso, nunca a primeira escolha.
+
+        Uma pagina que declare a data em campo proprio e que tenha outra
+        data nas etiquetas tem de ficar com a declarada.
+        """
+        html = (
+            '<html><head>'
+            '<meta property="article:published_time" content="2025-01-02">'
+            '<meta name="keywords" content="Programa, 24 jun 2026, audio">'
+            '</head><body></body></html>'
+        )
+        self.assertEqual(extracao.extrair(html, "https://exemplo.pt/x")["publicado_em"], "2025-01-02")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
 
