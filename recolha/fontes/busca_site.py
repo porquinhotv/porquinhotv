@@ -82,6 +82,7 @@ class FonteBuscaSite(PluginDeFonte):
                     registo.append(f"{self.fonte.id}: pesquisa falhou {url}: {exc}")
                 continue
             achados = extracao.ligacoes(html, url, self.fonte.dominio, self.fonte.padrao_artigo)
+            print(f"  {self.fonte.id}: {len(achados)} candidatos em {url}", flush=True)
             for alvo in achados:
                 if alvo not in candidatos:
                     candidatos.append(alvo)
@@ -97,8 +98,13 @@ class FonteBuscaSite(PluginDeFonte):
                 registo.append(f"{self.fonte.id}: {len(candidatos)} candidatos, limitado a {self.fonte.max_candidatos}")
             candidatos = candidatos[: self.fonte.max_candidatos]
 
+        # Um passo longo escreve progresso. Sem isto, uma corrida de
+        # historico faz centenas de pedidos sem uma linha no ecra, e quem
+        # espera nao distingue \"a trabalhar\" de \"encravado\".
         itens: list[ItemBruto] = []
-        for alvo in candidatos:
+        for indice, alvo in enumerate(candidatos, start=1):
+            if indice == 1 or indice % 20 == 0 or indice == len(candidatos):
+                print(f"  {self.fonte.id}: {indice}/{len(candidatos)} paginas", flush=True)
             try:
                 pagina = obter_texto(alvo)
             except ErroDeRede as exc:

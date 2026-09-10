@@ -17,6 +17,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from collections import Counter
 from dataclasses import replace
 from pathlib import Path
 
@@ -28,6 +29,33 @@ from .modelos import carregar_config, hoje_iso
 
 def _url_normalizado(url: str) -> str:
     return url.strip().rstrip("/").replace("http://", "https://").replace("www.", "")
+
+
+def _contar_recusas(quarentena: list[dict], prefixo: str = "") -> None:
+    """As recusas contadas por fonte e por motivo, com um exemplo cada.
+
+    Sem isto, uma fonte nova que devolva zero emissoes nao diz porque:
+    a 2026-09-10 uma lista de episodios trouxe 194 paginas, todas lidas
+    e todas com duracao, e a corrida terminou com \"194 itens em
+    quarentena\" e mais nada. O motivo estava escrito em cada linha da
+    quarentena e nao aparecia em lado nenhum, e o `--dry-run` nem sequer
+    a escreve em disco.
+
+    Uma linha por motivo, nunca uma por registo: sao centenas.
+    """
+    if not quarentena:
+        return
+    contagem: Counter = Counter()
+    exemplos: dict[tuple[str, str], str] = {}
+    for entrada in quarentena:
+        # O motivo leva um parentesis com o pormenor ("formato_nao_elegivel
+        # (debate)"). Agrupa-se pelo motivo inteiro, que e o que distingue
+        # um debate de um direto.
+        chave = (entrada.get("fonte", ""), entrada.get("motivo", ""))
+        contagem[chave] += 1
+        exemplos.setdefault(chave, (entrada.get("titulo") or entrada.get("url") or "")[:70])
+    for (fonte_id, motivo), quantos in contagem.most_common():
+        print(f"{prefixo}  {quantos:5d}  {fonte_id}: {motivo}  ex.: {exemplos[(fonte_id, motivo)]}")
 
 
 def correr(so_fonte: str | None = None, dry_run: bool = False, paginas: int = 0, ronda: str = "", estado: str = "") -> int:
@@ -104,6 +132,7 @@ def correr(so_fonte: str | None = None, dry_run: bool = False, paginas: int = 0,
     prefixo = "[dry-run] " if dry_run else ""
     print(f"{prefixo}+{adicionadas} novas, {atualizadas} atualizadas, {len(fundidas)} no total")
     print(f"{prefixo}{len(quarentena)} itens em quarentena nesta corrida")
+    _contar_recusas(quarentena, prefixo)
     por_confirmar = sum(1 for e in quarentena if e["motivo"] == "por_confirmar")
     if por_confirmar:
         print(f"{prefixo}{por_confirmar} por confirmar no registo curado (ver quarentena)")

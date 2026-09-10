@@ -206,6 +206,60 @@ class TestIdentidadeEBlocos(unittest.TestCase):
         self.assertFalse(criterio.avaliar(item(), self.fonte, self.config, []).parcial)
 
 
+class TestRecusasContadas(unittest.TestCase):
+    """As recusas saem contadas por motivo, nunca uma linha por registo.
+
+    A 2026-09-10 uma fonte nova trouxe 194 paginas, leu as 194, apurou a
+    duracao das 194 e publicou zero. A corrida terminou a dizer "194
+    itens em quarentena" e mais nada, e como era --dry-run a quarentena
+    nem sequer foi escrita em disco: o motivo existia em cada linha e nao
+    havia forma de o ver.
+    """
+
+    def _capturar(self, quarentena):
+        import io
+        from contextlib import redirect_stdout
+
+        from recolha import principal
+
+        saida = io.StringIO()
+        with redirect_stdout(saida):
+            principal._contar_recusas(quarentena)
+        return saida.getvalue()
+
+    def test_uma_linha_por_motivo_e_nao_por_registo(self):
+        quarentena = [
+            {"fonte": "f", "motivo": "sem_sujeito", "titulo": f"Episodio {i}"} for i in range(190)
+        ] + [
+            {"fonte": "f", "motivo": "sem_data", "titulo": "Sem data"},
+        ]
+        linhas = [l for l in self._capturar(quarentena).splitlines() if l.strip()]
+        self.assertEqual(len(linhas), 2, "uma linha por motivo, nao 191 linhas")
+        self.assertIn("190", linhas[0])
+        self.assertIn("sem_sujeito", linhas[0])
+
+    def test_o_pormenor_do_motivo_nao_se_perde(self):
+        quarentena = [
+            {"fonte": "f", "motivo": "formato_nao_elegivel (debate)", "titulo": "x"},
+            {"fonte": "f", "motivo": "formato_nao_elegivel (direto)", "titulo": "y"},
+        ]
+        texto = self._capturar(quarentena)
+        self.assertIn("(debate)", texto)
+        self.assertIn("(direto)", texto)
+
+    def test_a_fonte_aparece_para_se_saber_de_quem_e_a_recusa(self):
+        quarentena = [
+            {"fonte": "uma", "motivo": "sem_data", "titulo": "x"},
+            {"fonte": "outra", "motivo": "sem_data", "titulo": "y"},
+        ]
+        texto = self._capturar(quarentena)
+        self.assertIn("uma", texto)
+        self.assertIn("outra", texto)
+
+    def test_quarentena_vazia_nao_escreve_nada(self):
+        self.assertEqual(self._capturar([]), "")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
 
