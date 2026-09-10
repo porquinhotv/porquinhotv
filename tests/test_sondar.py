@@ -8,6 +8,7 @@ corrida inteira.
 
 import tempfile
 import unittest
+import unittest.mock
 from pathlib import Path
 
 from tests.apoio import ler
@@ -31,6 +32,110 @@ class TestAnalisar(unittest.TestCase):
         html = "<html><body>ventura entrevista exclusiva</body></html>"
         r = sondar.analisar(html, "https://x/y", ["ventura entrevista"], "")
         self.assertEqual(r["termos_presentes"], ["ventura entrevista"])
+
+
+class TestEnderecosDeclarados(unittest.TestCase):
+    """Uma resposta que declara enderecos sem os ligar nao pode contar zero.
+
+    A 2026-09-09 o `post-sitemap.xml` do jornal de verificacao, 374 KB,
+    leu-se como falha porque a sonda so contava `href`. O indice de um
+    arquivo da web responde em texto, um endereco por linha, e teria
+    contado zero pela mesma razao.
+    """
+
+    def test_mapa_de_sitio_conta_os_loc(self):
+        r = sondar.analisar(ler("mapa_pecas_exemplo.xml"), "https://jornal.exemplo/mapa.xml", [], "")
+        self.assertGreater(r["enderecos"], 0)
+        self.assertEqual(r["ligacoes"], 0, "um mapa nao tem href, e e por isso que a coluna dos enderecos existe")
+        self.assertTrue(all(e.startswith("http") for e in r["exemplos_enderecos"]))
+
+    def test_indice_em_texto_conta_uma_linha_por_endereco(self):
+        cdx = (
+            "20210112101500 https://exemplo.pt/pais/2021-01-12-entrevista-a-pessoa-exemplo 200\n"
+            "20220305221000 https://exemplo.pt/pais/2022-03-05-pessoa-exemplo-em-entrevista 200\n"
+        )
+        r = sondar.analisar(cdx, "https://arquivo.exemplo/cdx", ["Pessoa Exemplo"], "")
+        self.assertEqual(r["enderecos"], 2)
+        self.assertEqual(r["exemplos_enderecos"][0].split()[1], "https://exemplo.pt/pais/2021-01-12-entrevista-a-pessoa-exemplo")
+
+    def test_html_sem_loc_nao_declara_enderecos(self):
+        r = sondar.analisar(ler("pesquisa_resultados.html"), "https://exemplo.pt/p", [], "exemplo.pt")
+        self.assertEqual(r["enderecos"], 0)
+        self.assertEqual(r["ligacoes"], 2)
+
+    def test_amostra_guarda_o_inicio_do_texto(self):
+        robots = "User-agent: *\nCrawl-Delay: 300\nSitemap: https://exemplo.pt/mapa.xml\n"
+        r = sondar.analisar(robots, "https://exemplo.pt/robots.txt", [], "")
+        self.assertIn("Crawl-Delay: 300", r["amostra"])
+        self.assertLessEqual(len(r["amostra"]), sondar.AMOSTRA_CHARS)
+
+
+class TestFundir(unittest.TestCase):
+    """Uma corrida de um grupo so nao pode apagar as outras.
+
+    O commit 98fcc31 escreveu o resultado de `--grupo` por cima do
+    ficheiro e perdeu 632 linhas de sondagens do dia anterior.
+    """
+
+    def test_grupo_novo_junta_se_aos_antigos(self):
+        anterior = {"verificado_em": "2026-09-08T10:00:00+00:00", "termo": "x",
+                    "grupos": [{"nome": "A", "hipoteses": [{"url": "a"}]}]}
+        novo = {"verificado_em": "2026-09-10T10:00:00+00:00", "termo": "x",
+                "grupos": [{"nome": "B", "hipoteses": [{"url": "b"}]}]}
+        r = sondar.fundir(anterior, novo)
+        self.assertEqual([g["nome"] for g in r["grupos"]], ["A", "B"])
+        self.assertEqual(r["grupos"][0]["verificado_em"], "2026-09-08T10:00:00+00:00")
+        self.assertEqual(r["grupos"][1]["verificado_em"], "2026-09-10T10:00:00+00:00")
+
+    def test_grupo_com_o_mesmo_nome_e_substituido(self):
+        anterior = {"verificado_em": "2026-09-08T10:00:00+00:00", "termo": "x",
+                    "grupos": [{"nome": "A", "hipoteses": [{"url": "velho"}]}]}
+        novo = {"verificado_em": "2026-09-10T10:00:00+00:00", "termo": "x",
+                "grupos": [{"nome": "A", "hipoteses": [{"url": "novo"}]}]}
+        r = sondar.fundir(anterior, novo)
+        self.assertEqual(len(r["grupos"]), 1)
+        self.assertEqual(r["grupos"][0]["hipoteses"][0]["url"], "novo")
+
+    def test_escrever_funde_com_o_ficheiro_existente(self):
+        with tempfile.TemporaryDirectory() as pasta:
+            sondar.escrever({"verificado_em": "2026-09-08T10:00:00+00:00", "termo": "x",
+                             "grupos": [{"nome": "A", "hipoteses": [{"url": "a", "responde": False, "erro": "x"}]}]}, Path(pasta))
+            sondar.escrever({"verificado_em": "2026-09-10T10:00:00+00:00", "termo": "x",
+                             "grupos": [{"nome": "B", "hipoteses": [{"url": "b", "responde": False, "erro": "y"}]}]}, Path(pasta))
+            md = (Path(pasta) / "SONDAGEM.md").read_text(encoding="utf-8")
+            self.assertIn("## A", md)
+            self.assertIn("## B", md)
+
+
+class TestGrupoQueNaoExiste(unittest.TestCase):
+    """Um nome de grupo errado nao pode acabar em "escrito em ...".
+
+    A 2026-09-10 sete corridas seguidas pediram grupos que a
+    configuracao daquele momento nao tinha. Nenhuma pediu nada a lado
+    nenhum, todas imprimiram a linha de sucesso, e o relatorio ficou
+    vazio no lugar do que la estava. O codigo de saida e a lista dos
+    nomes existentes sao o que torna isso visivel na consola, que e a
+    interface deste projeto.
+    """
+
+    def setUp(self):
+        self.config = {"termo": "x", "grupos": [{"nome": "Grupo A", "hipoteses": ["https://x/"]}]}
+
+    def test_nome_errado_nao_corre_e_devolve_erro(self):
+        with tempfile.TemporaryDirectory() as pasta:
+            alvo = Path(pasta) / "sondagem.json"
+            with unittest.mock.patch.object(sondar, "carregar", lambda: self.config), \
+                 unittest.mock.patch.object(sondar, "PASTA", Path(pasta)), \
+                 unittest.mock.patch.object(sondar, "correr", self._nunca):
+                codigo = sondar.main(["--grupo", "Arquivo da web, o indice"])
+            self.assertEqual(codigo, 2)
+            self.assertFalse(alvo.exists(), "uma corrida que nao encontrou o grupo nao escreve por cima de nada")
+
+    def test_nome_certo_corre(self):
+        self.assertIn("Grupo A", sondar.nomes_dos_grupos(self.config))
+
+    def _nunca(self, *args, **kwargs):
+        raise AssertionError("nao se pede nada a rede quando o grupo nao existe")
 
 
 class TestCorrida(unittest.TestCase):

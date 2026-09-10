@@ -23,7 +23,7 @@ termo: 'ventura entrevista'
 # Dominios que contam como resultado util quando a hipotese e um motor
 # de busca. Vivem aqui e nao no codigo: nenhum modulo Python conhece o
 # dominio de um canal, e ha um teste que falha se conhecer.
-dominios_de_interesse: [rtp.pt, sic.pt, sicnoticias.pt, iol.pt, cmjornal.pt, now.pt]
+dominios_de_interesse: [rtp.pt, sic.pt, sicnoticias.pt, iol.pt, cmjornal.pt, nowcanal.pt, now.pt]
 
 grupos:
   - nome: Paginacao dos sites que ja respondem
@@ -235,3 +235,176 @@ grupos:
       - https://poligrafo.sapo.pt/blog/tag/andre-ventura/page/5/
       - https://poligrafo.sapo.pt/blog/tag/andre-ventura/page/20/
       - https://poligrafo.sapo.pt/blog/tag/andre-ventura/page/60/
+
+  # ==================================================================
+  # Quarta volta, 2026-09-10. Vias de acesso ao historico de 2019 a
+  # 2023, que e onde o indice de noticias nao chega (0 candidatos em
+  # 2019, 3 em 2020, 1 em 2021, 13 em 2022, 1 em 2023). Nenhuma destas
+  # foi ainda pedida a um servidor; sao hipoteses, e a sonda diz.
+  #
+  # Grupos com `mostrar: true` imprimem a amostra do texto na consola e
+  # guardam-na no relatorio: e para ler um robots.txt ou as primeiras
+  # linhas de um indice sem outro pedido.
+  # ==================================================================
+
+  - nome: Arquivo da web, o indice
+    # O arquivo da web (web.archive.org) guarda copias das paginas dos
+    # canais, colhidas de um endereco que os canais aceitaram, e serve o
+    # seu indice a maquinas por desenho: sem conta, sem chave, sem
+    # JavaScript. O indice (CDX) devolve, em texto, um endereco por
+    # linha com a data da captura, e aceita um filtro pelo endereco. Se
+    # os enderecos dos canais nomearem o sujeito no proprio caminho, o
+    # que a SIC Noticias e a CMTV fazem, isto e um detetor de anos
+    # inteiros num pedido por dominio, e cobre a SIC, que nenhuma outra
+    # via cobre.
+    #
+    # O que decide: o robots.txt do arquivo (primeira hipotese), e a
+    # coluna dos enderecos declarados por dominio. Zero enderecos num
+    # dominio quer dizer que o arquivo nao o cobre, ou que os enderecos
+    # desse canal nao nomeiam o sujeito; a amostra distingue as duas
+    # coisas. O limite de 200 esta la para medir sem descarregar o
+    # indice todo; a colheita a serio pagina.
+    #
+    # Nao verificado por quem escreveu isto: a sonda que o verifique.
+    dominio_alvo: ''
+    mostrar: true
+    hipoteses:
+      - https://web.archive.org/robots.txt
+      - https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200
+      - https://web.archive.org/cdx/search/cdx?url=sic.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200
+      - https://web.archive.org/cdx/search/cdx?url=cnnportugal.iol.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200
+      - https://web.archive.org/cdx/search/cdx?url=tvi.iol.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200
+      - https://web.archive.org/cdx/search/cdx?url=tviplayer.iol.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200
+      - https://web.archive.org/cdx/search/cdx?url=cmjornal.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200
+      - https://web.archive.org/cdx/search/cdx?url=nowcanal.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200
+      - https://web.archive.org/cdx/search/cdx?url=rtp.pt/play/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200
+      - https://web.archive.org/cdx/search/cdx?url=rtp.pt/noticias/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200
+
+  - nome: Arquivo da web, uma pagina que a maquina nao le
+    # As 233 linhas "por ler" sao paginas da SIC e do Expresso que
+    # recusam a maquina, tambem a partir de casa. O arquivo da web pode
+    # ter uma copia, e a copia com `id_` no carimbo e o HTML original
+    # sem a moldura do arquivo, com o schema.org e o OpenGraph intactos.
+    # Se a copia responder e trouxer os termos, o `--verificar` pode
+    # cair para o arquivo quando a pagina nao responde, e a prova
+    # publicada continua a ser o endereco original, que qualquer pessoa
+    # abre no browser.
+    #
+    # A primeira hipotese pergunta ao arquivo se tem copia e qual; as
+    # duas seguintes pedem a copia mais proxima de uma data. Os
+    # enderecos sao de paginas que a sonda de 2026-09-08 ja tinha
+    # listado ou que estao no registo curado.
+    dominio_alvo: ''
+    mostrar: true
+    hipoteses:
+      - https://archive.org/wayback/available?url=sicnoticias.pt/pais/2023-11-13-A-entrevista-a-Andre-Ventura-947f0b8a
+      - https://web.archive.org/web/2024id_/https://sicnoticias.pt/pais/2023-11-13-A-entrevista-a-Andre-Ventura-947f0b8a
+      - https://web.archive.org/web/2026id_/https://sicnoticias.pt/especiais/eleicoes-presidenciais/2025-10-24-andre-ventura-em-entrevista-exclusiva-a-sic-884d8388
+
+  - nome: Indice de etiqueta da CNN
+    # Verificado a 2026-09-09 que existe, pagina a serio, e servido pelo
+    # servidor, com ligacao, titulo, data e duracao por item, ate
+    # outubro de 2019. E a melhor via conhecida para 2019 a 2023 e nunca
+    # foi pedida por esta ferramenta. O que falta saber, e que se ve
+    # aqui: o que o robots.txt pede, se a primeira e a ultima pagina
+    # respondem a esta maquina com ligacoes de artigo, e se o mapa do
+    # sitio (que a 2026-09-08 respondeu com 4320 bytes e contou zero
+    # porque so se contavam `href`) declara enderecos.
+    #
+    # Atencao ao ler: uma pagina que responda 200 com zero ligacoes de
+    # artigo e montada por JavaScript, como a pesquisa deste sitio.
+    # E o canal nao se deduz do dominio (ver a KB, seccao 7): este
+    # indice mistura o arquivo da antiga TVI24 e videos servidos aos
+    # dois canais do grupo.
+    dominio_alvo: cnnportugal.iol.pt
+    mostrar: true
+    hipoteses:
+      - https://cnnportugal.iol.pt/robots.txt
+      - https://cnnportugal.iol.pt/noticias/Andre-ventura?pagina=1
+      - https://cnnportugal.iol.pt/noticias/Andre-ventura?pagina=2
+      - https://cnnportugal.iol.pt/noticias/Andre-ventura?pagina=146
+      - https://cnnportugal.iol.pt/sitemap.xml
+
+  - nome: SIC, o que o robots diz e onde vive o mapa
+    # A 2026-09-08 o robots.txt da SIC Noticias respondeu 200 com 2340
+    # bytes, e ninguem leu o que dizia. Um robots.txt costuma declarar
+    # onde esta o mapa do sitio, e o mapa pode responder onde a pesquisa
+    # e o RSS responderam 403. Ler primeiro, pedir depois.
+    dominio_alvo: ''
+    mostrar: true
+    hipoteses:
+      - https://sicnoticias.pt/robots.txt
+      - https://sic.pt/robots.txt
+
+  - nome: Motor com porta RSS
+    # O indice de noticias da Google tem uma porta RSS que responde a
+    # maquinas onde a pagina normal recusa, e foi essa porta que
+    # reconstruiu o historico. Um motor concorrente tem a mesma porta
+    # (`format=rss`), sem conta nem chave, e indexa os sitios dos canais
+    # que a Google indexa. Nunca foi pedido. Se responder com ligacoes
+    # dos dominios de interesse, e uma segunda amostra do mesmo tipo de
+    # indice, e a licao de 2026-09-10 diz que cada amostra traz linhas
+    # que a outra nao traz.
+    #
+    # Testar na dimensao em que se vai usar: sao dez pedidos seguidos,
+    # de proposito, para ver se o decimo responde como o primeiro.
+    dominio_alvo: ''
+    hipoteses:
+      - https://www.bing.com/search?q=site%3Asicnoticias.pt+{termo}&format=rss
+      - https://www.bing.com/search?q=site%3Asic.pt+{termo}&format=rss
+      - https://www.bing.com/search?q=site%3Acnnportugal.iol.pt+{termo}&format=rss
+      - https://www.bing.com/search?q=site%3Atvi.iol.pt+{termo}&format=rss
+      - https://www.bing.com/search?q=site%3Acmjornal.pt+{termo}&format=rss
+      - https://www.bing.com/search?q=site%3Anowcanal.pt+{termo}&format=rss
+      - https://www.bing.com/search?q=site%3Artp.pt+{termo}&format=rss
+      - https://www.bing.com/news/search?q={termo}&format=rss
+      - https://www.bing.com/search?q=site%3Asicnoticias.pt+{termo}+2021&format=rss
+      - https://www.bing.com/search?q=site%3Asicnoticias.pt+{termo}+2022&format=rss
+
+  - nome: DuckDuckGo na dimensao em que se usa
+    # A 2026-09-08 a versao leve deste motor respondeu com 10 ligacoes
+    # da SIC Noticias e, mais tarde na mesma corrida, com 305 bytes e
+    # zero: e o que faz um motor que aceita poucos pedidos e depois
+    # fecha. A KB diz "por esclarecer". Esclarece-se assim: dez pedidos
+    # seguidos, com o ritmo da sonda, e ver em qual deixa de responder.
+    # A partir de casa, que e onde a colheita corre, o resultado pode
+    # ser outro; correr esta sonda nos dois sitios.
+    dominio_alvo: ''
+    hipoteses:
+      - https://lite.duckduckgo.com/lite/?q=site%3Asicnoticias.pt+{termo}
+      - https://lite.duckduckgo.com/lite/?q=site%3Asicnoticias.pt+{termo}+2021
+      - https://lite.duckduckgo.com/lite/?q=site%3Asicnoticias.pt+{termo}+2022
+      - https://lite.duckduckgo.com/lite/?q=site%3Asic.pt+{termo}
+      - https://lite.duckduckgo.com/lite/?q=site%3Acnnportugal.iol.pt+{termo}
+      - https://lite.duckduckgo.com/lite/?q=site%3Atvi.iol.pt+{termo}
+      - https://lite.duckduckgo.com/lite/?q=site%3Acmjornal.pt+{termo}
+      - https://lite.duckduckgo.com/lite/?q=site%3Anowcanal.pt+{termo}
+      - https://lite.duckduckgo.com/lite/?q=site%3Artp.pt+{termo}
+      - https://lite.duckduckgo.com/lite/?q=site%3Asicnoticias.pt+{termo}+2020
+
+  - nome: RTP Play, a lista de episodios de um programa
+    # Verificado a 2026-09-10, a partir de fora da CI: a pagina do
+    # programa de entrevistas da RTP3 lista episodios com convidado,
+    # data e duracao, servidos pelo servidor, mas so os ultimos doze; e
+    # o feed de podcast do mesmo programa (`/play/itunes/<id>`) lista
+    # todos os episodios em duas paginas RSS, com data, duracao em
+    # segundos e a ligacao para a pagina do episodio no RTP Play. Esse
+    # feed vai para config/fontes.yml como fonte `podcast_rss`; aqui
+    # so se confirma que responde a esta maquina.
+    #
+    # O que falta saber: cada temporada televisiva tem um identificador
+    # proprio (p12659 em 2024, p14350 em 2025, p16214 em 2026), e a
+    # lista de uma temporada pode ter uma porta de paginacao propria. A
+    # ultima hipotese e um palpite sobre essa porta, escrito de memoria
+    # e por confirmar; se responder com ligacoes de episodio, e a via
+    # para as temporadas de 2019 a 2023, cujos identificadores ainda
+    # nao se conhecem.
+    dominio_alvo: rtp.pt
+    hipoteses:
+      - https://www.rtp.pt/play/itunes/10324
+      - https://www.rtp.pt/play/p10324/grande-entrevista
+      - https://www.rtp.pt/play/p16214/grande-entrevista
+      - https://www.rtp.pt/play/p14350/grande-entrevista
+      - https://www.rtp.pt/play/p12659/grande-entrevista
+      - https://www.rtp.pt/play/bg_l_ep/?listProgram=16214&page=1&type=all
+      - https://www.rtp.pt/play/bg_l_ep/?listProgram=16214&page=2&type=all

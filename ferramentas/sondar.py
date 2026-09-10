@@ -18,11 +18,25 @@ duas coisas para que a leitura nao se engane com o codigo de resposta.
 Nada do que esta aqui e configuracao de recolha. O que passar na
 sondagem e depois escrito a mao em config/fontes.yml, com os olhos
 postos no relatorio.
+
+Duas coisas que a sonda conta para alem das ligacoes, porque ler so as
+ligacoes ja enganou: os enderecos que uma resposta declara sem os ligar
+(`<loc>` de um mapa de sitio, ou uma linha por endereco numa resposta em
+texto, que e como o indice de um arquivo da web responde), e uma amostra
+do texto, para que um `robots.txt` ou um indice se leiam no relatorio
+sem outro pedido. Um mapa de 374 KB contou zero a 2026-09-09 porque a
+funcao que colhe ligacoes procura `href`.
+
+Uma corrida com `--grupo` funde o resultado no ficheiro que ja existe
+em vez de o substituir: o registo das sondagens de 8 de setembro, 632
+linhas, foi apagado por uma corrida de um grupo so (commit 98fcc31).
 """
 
 from __future__ import annotations
 
 import argparse
+import json
+import re
 import sys
 import time
 import urllib.parse
@@ -38,10 +52,32 @@ from recolha.rede import ErroDeRede, obter_texto
 FICHEIRO = RAIZ / "config" / "sondagem.yml"
 PASTA = RAIZ / "sondagem"
 PAUSA_S = 1.5
+# Enderecos declarados num mapa de sitio ou num indice de mapas.
+LOC = re.compile(r"<loc>\s*(https?://[^<\s]+)\s*</loc>", re.I)
+# Tamanho da amostra de texto guardada por hipotese. Basta para um
+# `robots.txt` inteiro ou para as primeiras linhas de um indice.
+AMOSTRA_CHARS = 400
 
 
 def carregar(caminho: Path = FICHEIRO) -> dict:
     return yaml.safe_load(caminho.read_text(encoding="utf-8")) or {}
+
+
+def enderecos_declarados(resposta: str) -> list[str]:
+    """Enderecos que a resposta declara sem os ligar por `href`.
+
+    Um mapa de sitio escreve `<loc>`; o indice de um arquivo da web
+    responde em texto, um endereco por linha. `extracao.ligacoes` procura
+    `href` e conta zero nas duas, e foi assim que um mapa de 374 KB se leu
+    como falha. Numa resposta com marcacao mas sem `<loc>` nao ha nada a
+    declarar: as ligacoes de HTML contam-se noutro sitio.
+    """
+    achados = LOC.findall(resposta)
+    if achados:
+        return achados
+    if "<" in resposta.lstrip()[:200]:
+        return []
+    return [linha.strip() for linha in resposta.splitlines() if "http" in linha]
 
 
 def analisar(html: str, url: str, termos: list[str], dominio_alvo: str, dominios_interesse: list[str] | None = None) -> dict:
@@ -49,6 +85,7 @@ def analisar(html: str, url: str, termos: list[str], dominio_alvo: str, dominios
     corpo = extracao.texto_visivel(html)
     palheiro = normalizar(corpo)
     presentes = [t for t in termos if normalizar(t) and normalizar(t) in palheiro]
+    enderecos = enderecos_declarados(html)
 
     if dominio_alvo:
         ligacoes = extracao.ligacoes(html, url, dominio_alvo)
@@ -67,7 +104,14 @@ def analisar(html: str, url: str, termos: list[str], dominio_alvo: str, dominios
         "termos_presentes": presentes,
         "ligacoes": len(ligacoes),
         "exemplos": ligacoes[:3],
+        "enderecos": len(enderecos),
+        "exemplos_enderecos": enderecos[:3],
+        "amostra": corpo[:AMOSTRA_CHARS],
     }
+
+
+def nomes_dos_grupos(config: dict) -> list[str]:
+    return [g.get("nome", "") for g in config.get("grupos") or []]
 
 
 def correr(config: dict, obter=obter_texto, so_grupo: str | None = None, dormir=time.sleep) -> dict:
@@ -83,7 +127,7 @@ def correr(config: dict, obter=obter_texto, so_grupo: str | None = None, dormir=
     for grupo in config.get("grupos") or []:
         if so_grupo and grupo.get("nome") != so_grupo:
             continue
-        linha = {"nome": grupo.get("nome", ""), "dominio_alvo": grupo.get("dominio_alvo", ""), "hipoteses": []}
+        linha = {"nome": grupo.get("nome", ""), "dominio_alvo": grupo.get("dominio_alvo", ""), "mostrar": bool(grupo.get("mostrar")), "hipoteses": []}
         for modelo in grupo.get("hipoteses") or []:
             url = modelo.replace("{termo}", urllib.parse.quote_plus(termo))
             print(f"  a sondar {url}", flush=True)
@@ -95,7 +139,9 @@ def correr(config: dict, obter=obter_texto, so_grupo: str | None = None, dormir=
             else:
                 dados = analisar(html, url, termos, linha["dominio_alvo"], config.get("dominios_de_interesse") or [])
                 linha["hipoteses"].append({"url": url, **dados})
-                print(f"    {dados['bytes_texto']} bytes de texto, {dados['ligacoes']} ligacoes, termos {dados['termos_presentes']}", flush=True)
+                print(f"    {dados['bytes_texto']} bytes de texto, {dados['ligacoes']} ligacoes, {dados['enderecos']} enderecos declarados, termos {dados['termos_presentes']}", flush=True)
+                if grupo.get("mostrar"):
+                    print(f"    | {dados['amostra']}", flush=True)
             dormir(PAUSA_S)
         resultado["grupos"].append(linha)
     return resultado
@@ -113,27 +159,60 @@ def relatorio(resultado: dict) -> str:
     ]
     for grupo in resultado["grupos"]:
         linhas += [f"## {grupo['nome']}", ""]
-        linhas += ["| Hipotese | Responde | Texto | Ligacoes | Termos |", "|---|---|---|---|---|"]
+        if grupo.get("verificado_em"):
+            linhas += [f"Verificado em {grupo['verificado_em']}.", ""]
+        linhas += ["| Hipotese | Responde | Texto | Ligacoes | Enderecos | Termos |", "|---|---|---|---|---|---|"]
         for h in grupo["hipoteses"]:
             if not h.get("responde"):
-                linhas.append(f"| {h['url']} | nao ({h.get('erro', '')[:60]}) | | | |")
+                linhas.append(f"| {h['url']} | nao ({h.get('erro', '')[:60]}) | | | | |")
             else:
                 linhas.append(
-                    f"| {h['url']} | sim | {h['bytes_texto']} | {h['ligacoes']} | {', '.join(h['termos_presentes']) or 'nenhum'} |"
+                    f"| {h['url']} | sim | {h['bytes_texto']} | {h['ligacoes']} | {h.get('enderecos', 0)} | {', '.join(h['termos_presentes']) or 'nenhum'} |"
                 )
         linhas.append("")
         for h in grupo["hipoteses"]:
-            for exemplo in h.get("exemplos") or []:
+            for exemplo in (h.get("exemplos") or []) + (h.get("exemplos_enderecos") or []):
                 linhas.append(f"- {h['url']} -> {exemplo}")
+        if grupo.get("mostrar"):
+            for h in grupo["hipoteses"]:
+                if h.get("amostra"):
+                    linhas.append(f"- {h['url']}: `{h['amostra'][:AMOSTRA_CHARS]}`")
         linhas.append("")
     return "\n".join(linhas).rstrip() + "\n"
 
 
-def escrever(resultado: dict, pasta: Path = PASTA) -> None:
-    import json
+def fundir(anterior: dict | None, novo: dict) -> dict:
+    """O resultado de hoje por cima do que ja estava, grupo a grupo.
 
+    Um grupo com o mesmo nome e substituido; os outros ficam como
+    estavam, com a sua data. Sem isto, uma corrida com `--grupo` apagava
+    o registo das sondagens anteriores (632 linhas a 2026-09-09), e saber
+    o que foi tentado faz parte do metodo.
+    """
+    if not anterior or not anterior.get("grupos"):
+        return novo
+    novos = {g["nome"]: g for g in novo.get("grupos") or []}
+    grupos = []
+    for grupo in anterior["grupos"]:
+        if grupo["nome"] in novos:
+            grupos.append({**novos.pop(grupo["nome"]), "verificado_em": novo["verificado_em"]})
+        else:
+            grupos.append({**grupo, "verificado_em": grupo.get("verificado_em", anterior.get("verificado_em", ""))})
+    grupos += [{**g, "verificado_em": novo["verificado_em"]} for g in novos.values()]
+    return {**novo, "grupos": grupos}
+
+
+def escrever(resultado: dict, pasta: Path = PASTA) -> None:
     pasta.mkdir(parents=True, exist_ok=True)
-    (pasta / "sondagem.json").write_text(json.dumps(resultado, ensure_ascii=False, indent=1, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
+    ficheiro = pasta / "sondagem.json"
+    anterior = None
+    if ficheiro.exists():
+        try:
+            anterior = json.loads(ficheiro.read_text(encoding="utf-8"))
+        except ValueError:
+            anterior = None
+    resultado = fundir(anterior, resultado)
+    ficheiro.write_text(json.dumps(resultado, ensure_ascii=False, indent=1, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
     (pasta / "SONDAGEM.md").write_text(relatorio(resultado), encoding="utf-8", newline="\n")
 
 
@@ -141,7 +220,22 @@ def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description="Sondagem de hipoteses")
     parser.add_argument("--grupo", help="so este grupo")
     args = parser.parse_args(argv)
-    resultado = correr(carregar(), so_grupo=args.grupo)
+    config = carregar()
+    if args.grupo and args.grupo not in nomes_dos_grupos(config):
+        # Uma corrida que nao encontra o grupo nao pode acabar a dizer
+        # "escrito em ...". A 2026-09-10 sete corridas seguidas correram
+        # com nomes que a configuracao daquele momento nao tinha, cada
+        # uma nao pediu nada a lado nenhum, e a ultima linha do ecra
+        # dizia o mesmo que diz uma corrida boa. O resultado foi um
+        # relatorio vazio publicado por cima do que la estava.
+        print(f"nao ha grupo chamado {args.grupo!r}. Os que existem:", flush=True)
+        for nome in nomes_dos_grupos(config):
+            print(f"  {nome}", flush=True)
+        return 2
+    resultado = correr(config, so_grupo=args.grupo)
+    if not resultado["grupos"]:
+        print("nenhum grupo correu: nada foi escrito", flush=True)
+        return 2
     escrever(resultado)
     print(f"escrito em {PASTA}", flush=True)
     return 0
