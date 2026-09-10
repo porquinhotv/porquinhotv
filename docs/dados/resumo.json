@@ -107,6 +107,11 @@
   },
   {
    "canais": {
+    "cnn-portugal": {
+     "declaradas": 1,
+     "emissoes": 1,
+     "entrevistas_distintas": 1
+    },
     "tvi": {
      "declaradas": 1,
      "emissoes": 1,
@@ -127,6 +132,26 @@
   },
   {
    "canais": {
+    "rtp1": {
+     "declaradas": 1,
+     "emissoes": 1,
+     "entrevistas_distintas": 1
+    }
+   },
+   "data": "2025-03-18"
+  },
+  {
+   "canais": {
+    "rtp3": {
+     "declaradas": 0,
+     "emissoes": 1,
+     "entrevistas_distintas": 1
+    }
+   },
+   "data": "2025-03-19"
+  },
+  {
+   "canais": {
     "now": {
      "declaradas": 1,
      "emissoes": 1,
@@ -139,6 +164,26 @@
     }
    },
    "data": "2025-04-09"
+  },
+  {
+   "canais": {
+    "rtp3": {
+     "declaradas": 1,
+     "emissoes": 1,
+     "entrevistas_distintas": 1
+    }
+   },
+   "data": "2025-04-11"
+  },
+  {
+   "canais": {
+    "rtp3": {
+     "declaradas": 0,
+     "emissoes": 1,
+     "entrevistas_distintas": 1
+    }
+   },
+   "data": "2025-05-12"
   },
   {
    "canais": {
@@ -489,25 +534,17 @@
     }
    },
    "data": "2026-09-01"
-  },
-  {
-   "canais": {
-    "cnn-portugal": {
-     "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
-    }
-   },
-   "data": "2026-09-02"
   }
  ],
  "esquema": 2,
  "fontes": [
   "busca-rtp1",
   "clipping-imprensa",
+  "curadoria",
+  "motor-rtp3",
   "registo-curado"
  ],
- "gerado_em": "2026-09-10T15:20:13+00:00",
+ "gerado_em": "2026-09-10T21:08:00+00:00",
  "por_ano": [
   {
    "ano": "2020",
@@ -531,25 +568,25 @@
   },
   {
    "ano": "2024",
-   "emissoes": 6,
+   "emissoes": 7,
    "entrevistas_distintas": 6
   },
   {
    "ano": "2025",
-   "emissoes": 21,
-   "entrevistas_distintas": 17
+   "emissoes": 25,
+   "entrevistas_distintas": 21
   },
   {
    "ano": "2026",
-   "emissoes": 23,
-   "entrevistas_distintas": 20
+   "emissoes": 22,
+   "entrevistas_distintas": 19
   }
  ],
  "por_canal": [
   {
    "canal": "rtp1",
-   "emissoes": 9,
-   "entrevistas_distintas": 9,
+   "emissoes": 10,
+   "entrevistas_distintas": 10,
    "nome": "RTP1"
   },
   {
@@ -578,8 +615,8 @@
   },
   {
    "canal": "rtp3",
-   "emissoes": 5,
-   "entrevistas_distintas": 5,
+   "emissoes": 8,
+   "entrevistas_distintas": 8,
    "nome": "RTP3"
   },
   {
@@ -685,10 +722,10 @@
   },
   {
    "chaves": [
-    "415ae7e6e6be"
+    "2024-10-10"
    ],
    "data": "2024-10-10",
-   "emissoes": 1,
+   "emissoes": 2,
    "entrevistas_distintas": 1
   },
   {
@@ -701,10 +738,42 @@
   },
   {
    "chaves": [
+    "2025-03-18"
+   ],
+   "data": "2025-03-18",
+   "emissoes": 1,
+   "entrevistas_distintas": 1
+  },
+  {
+   "chaves": [
+    "ba05f89988d7"
+   ],
+   "data": "2025-03-19",
+   "emissoes": 1,
+   "entrevistas_distintas": 1
+  },
+  {
+   "chaves": [
     "2025-04-09"
    ],
    "data": "2025-04-09",
    "emissoes": 2,
+   "entrevistas_distintas": 1
+  },
+  {
+   "chaves": [
+    "aa495e73ad08"
+   ],
+   "data": "2025-04-11",
+   "emissoes": 1,
+   "entrevistas_distintas": 1
+  },
+  {
+   "chaves": [
+    "1a3e06092d4d"
+   ],
+   "data": "2025-05-12",
+   "emissoes": 1,
    "entrevistas_distintas": 1
   },
   {
@@ -950,14 +1019,6 @@
    "data": "2026-09-01",
    "emissoes": 1,
    "entrevistas_distintas": 1
-  },
-  {
-   "chaves": [
-    "505f7cfea8b2"
-   ],
-   "data": "2026-09-02",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
   }
  ],
  "por_mes": [
@@ -1007,23 +1068,23 @@
    "mes": "2024-07"
   },
   {
-   "emissoes": 1,
+   "emissoes": 2,
    "entrevistas_distintas": 1,
    "mes": "2024-10"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "emissoes": 3,
+   "entrevistas_distintas": 3,
    "mes": "2025-03"
   },
   {
-   "emissoes": 2,
-   "entrevistas_distintas": 1,
+   "emissoes": 3,
+   "entrevistas_distintas": 2,
    "mes": "2025-04"
   },
   {
-   "emissoes": 2,
-   "entrevistas_distintas": 1,
+   "emissoes": 3,
+   "entrevistas_distintas": 2,
    "mes": "2025-05"
   },
   {
@@ -1087,15 +1148,15 @@
    "mes": "2026-07"
   },
   {
-   "emissoes": 2,
-   "entrevistas_distintas": 2,
+   "emissoes": 1,
+   "entrevistas_distintas": 1,
    "mes": "2026-09"
   }
  ],
  "por_origem": {
   "canal": {
-   "emissoes": 43,
-   "entrevistas_distintas": 36
+   "emissoes": 47,
+   "entrevistas_distintas": 40
   },
   "imprensa": {
    "emissoes": 13,
@@ -1154,7 +1215,7 @@
    "semana": "2024-W28"
   },
   {
-   "emissoes": 1,
+   "emissoes": 2,
    "entrevistas_distintas": 1,
    "semana": "2024-W41"
   },
@@ -1165,8 +1226,18 @@
   },
   {
    "emissoes": 2,
-   "entrevistas_distintas": 1,
+   "entrevistas_distintas": 2,
+   "semana": "2025-W12"
+  },
+  {
+   "emissoes": 3,
+   "entrevistas_distintas": 2,
    "semana": "2025-W15"
+  },
+  {
+   "emissoes": 1,
+   "entrevistas_distintas": 1,
+   "semana": "2025-W20"
   },
   {
    "emissoes": 2,
@@ -1289,8 +1360,8 @@
    "semana": "2026-W31"
   },
   {
-   "emissoes": 2,
-   "entrevistas_distintas": 2,
+   "emissoes": 1,
+   "entrevistas_distintas": 1,
    "semana": "2026-W36"
   }
  ],
@@ -1302,11 +1373,11 @@
    "dias": 350
   },
   "maior_maratona": {
-   "ate": "2026-01-21",
-   "de": "2026-01-20",
+   "ate": "2025-03-19",
+   "de": "2025-03-18",
    "dias": 2
   },
-  "ultima_data": "2026-09-02"
+  "ultima_data": "2026-09-01"
  },
  "sujeito": {
   "id": "ventura",
@@ -1320,8 +1391,8 @@
   "pergunta": "Quantas entrevistas exclusivas deu André Ventura na televisão portuguesa?"
  },
  "totais": {
-  "emissoes": 56,
-  "entrevistas_distintas": 49
+  "emissoes": 60,
+  "entrevistas_distintas": 52
  },
- "ultimo_registo": "2026-09-02"
+ "ultimo_registo": "2026-09-01"
 }

@@ -33,7 +33,7 @@
    "programa": "Presidenciais 2021",
    "prova_url": "https://www.rtp.pt/play/p8076/e512484/entrevistas-eleicoes-presidenciais-2021",
    "publicado_em": "2020-12-15",
-   "rondas": 3,
+   "rondas": 4,
    "titulo": "Presidenciais 2021 - Entrevistas"
   },
   {
@@ -51,7 +51,7 @@
    "programa": "Eleições Legislativas 2022",
    "prova_url": "https://www.rtp.pt/play/p9596/e585994/eleicoes-legislativas-2022-entrevistas-lideres-partidarios",
    "publicado_em": "2021-12-01",
-   "rondas": 3,
+   "rondas": 4,
    "titulo": "Eleições Legislativas 2022 - Entrevistas Líderes Partidários"
   },
   {
@@ -69,7 +69,7 @@
    "programa": "Grande Entrevista",
    "prova_url": "https://www.rtp.pt/play/p9766/e648005/grande-entrevista",
    "publicado_em": "2022-10-19",
-   "rondas": 3,
+   "rondas": 4,
    "titulo": "Grande Entrevista - André Ventura - ep. 41"
   },
   {
@@ -123,7 +123,7 @@
    "programa": "Eleições Legislativas 2024",
    "prova_url": "https://www.rtp.pt/play/p13071/e752537/eleicoes-legislativas-2024-entrevistas-lideres-partidarios",
    "publicado_em": "2024-03-04",
-   "rondas": 3,
+   "rondas": 4,
    "titulo": "Eleições Legislativas 2024 - Entrevistas Líderes Partidários - André Ventura - ep. 6"
   },
   {
@@ -141,7 +141,7 @@
    "programa": "",
    "prova_url": "https://www.rtp.pt/play/p10324/e756469/grande-entrevista",
    "publicado_em": "2024-03-20",
-   "rondas": 3,
+   "rondas": 4,
    "titulo": "Grande Entrevista"
   },
   {
@@ -199,12 +199,30 @@
    "titulo": "News Now anuncia entrevista com o presidente do Chega, André Ventura"
   },
   {
+   "bloco": "be3ccf00c039",
+   "canal": "cnn-portugal",
+   "confianca": "alta",
+   "data": "2024-10-10",
+   "data_origem": "declarada",
+   "entrevista": "2024-10-10",
+   "fonte": "curadoria",
+   "fontes_distintas": 0,
+   "id": "curadoria:2ff31ceca1b6",
+   "origem": "imprensa",
+   "primeira_vez": "2026-09-10",
+   "programa": "",
+   "prova_url": "https://www.dn.pt/ventura-diz-que-montenegro-propos-acordo-sobre-oe-com-promessa-de-integrar-governo-pm-desmente",
+   "publicado_em": "2024-10-10",
+   "rondas": 0,
+   "titulo": "Ventura diz que Montenegro propôs acordo sobre OE com promessa de integrar Governo. PM desmente"
+  },
+  {
    "bloco": "415ae7e6e6be",
    "canal": "tvi",
    "confianca": "alta",
    "data": "2024-10-10",
    "data_origem": "declarada",
-   "entrevista": "415ae7e6e6be",
+   "entrevista": "2024-10-10",
    "fonte": "registo-curado",
    "fontes_distintas": 0,
    "id": "registo-curado:dd6319de831f",
@@ -233,6 +251,42 @@
    "publicado_em": "2025-03-13",
    "rondas": 0,
    "titulo": "André Ventura: \"Todas as sondagens antes das legislativas de 2024 davam 13% ou 14% ao Chega, mas tivemos 18% dos votos\" - Polígrafo"
+  },
+  {
+   "bloco": "9a5d62d668cc",
+   "canal": "rtp1",
+   "confianca": "alta",
+   "data": "2025-03-18",
+   "data_origem": "declarada",
+   "entrevista": "2025-03-18",
+   "fonte": "curadoria",
+   "fontes_distintas": 0,
+   "id": "curadoria:6e0a66571c47",
+   "origem": "canal",
+   "primeira_vez": "2026-09-10",
+   "programa": "Telejornal",
+   "prova_url": "https://www.rtp.pt/noticias/politica/andre-ventura-diz-nunca-e-nunca-a-montenegro-e-assume-cada-vez-menos-esperanca-no-psd_n1641739",
+   "publicado_em": "2025-03-18",
+   "rondas": 0,
+   "titulo": "André Ventura diz \"nunca é nunca\" a Montenegro e assume \"cada vez menos esperança\" no PSD"
+  },
+  {
+   "bloco": "ba05f89988d7",
+   "canal": "rtp3",
+   "confianca": "media",
+   "data": "2025-03-19",
+   "data_origem": "publicacao",
+   "entrevista": "ba05f89988d7",
+   "fonte": "motor-rtp3",
+   "fontes_distintas": 1,
+   "id": "motor-rtp3:05261e0a3fbe",
+   "origem": "canal",
+   "primeira_vez": "2026-09-10",
+   "programa": "",
+   "prova_url": "https://www.rtp.pt/noticias/politica/entrevista-a-rtp-ventura-assume-que-eleger-menos-de-50-deputados-seria-derrota_v1641804",
+   "publicado_em": "2025-03-19",
+   "rondas": 2,
+   "titulo": "Entrevista à RTP. Ventura assume que eleger menos de 50 deputados seria derrota"
   },
   {
    "bloco": "6b76e93656cc",
@@ -269,6 +323,42 @@
    "publicado_em": "2025-04-09",
    "rondas": 0,
    "titulo": "Goucha - Entrevista exclusiva com André Ventura"
+  },
+  {
+   "bloco": "aa495e73ad08",
+   "canal": "rtp3",
+   "confianca": "alta",
+   "data": "2025-04-11",
+   "data_origem": "declarada",
+   "entrevista": "aa495e73ad08",
+   "fonte": "curadoria",
+   "fontes_distintas": 0,
+   "id": "curadoria:77d0b6cad58f",
+   "origem": "canal",
+   "primeira_vez": "2026-09-10",
+   "programa": "360",
+   "prova_url": "https://www.rtp.pt/noticias/pais/entrevista-rtp-ventura-quer-apoiar-jovens-com-corte-de-desperdicios-na-saude_v1647537",
+   "publicado_em": "2025-04-11",
+   "rondas": 0,
+   "titulo": "Entrevista RTP. Ventura quer apoiar jovens com corte de \"desperdícios\" na Saúde"
+  },
+  {
+   "bloco": "1a3e06092d4d",
+   "canal": "rtp3",
+   "confianca": "media",
+   "data": "2025-05-12",
+   "data_origem": "publicacao",
+   "entrevista": "1a3e06092d4d",
+   "fonte": "motor-rtp3",
+   "fontes_distintas": 1,
+   "id": "motor-rtp3:30b3cb2606d1",
+   "origem": "canal",
+   "primeira_vez": "2026-09-10",
+   "programa": "",
+   "prova_url": "https://www.rtp.pt/noticias/politica/entrevista-rtp-ventura-garante-que-o-chega-esta-na-corrida-para-vencer-as-eleicoes_v1654290",
+   "publicado_em": "2025-05-12",
+   "rondas": 2,
+   "titulo": "Entrevista RTP. Ventura garante que o Chega está na corrida para vencer as eleições"
   },
   {
    "bloco": "23ec0aec09c5",
@@ -321,7 +411,7 @@
    "programa": "",
    "prova_url": "https://www.rtp.pt/play/p10324/e855476/grande-entrevista",
    "publicado_em": "2025-06-04",
-   "rondas": 3,
+   "rondas": 4,
    "titulo": "Grande Entrevista"
   },
   {
@@ -537,7 +627,7 @@
    "programa": "Grande Entrevista",
    "prova_url": "https://www.rtp.pt/play/p15797/e887091/grande-entrevista-candidatos-a-presidencia-da-republica",
    "publicado_em": "2025-11-04",
-   "rondas": 3,
+   "rondas": 4,
    "titulo": "Grande Entrevista - Candidatos à Presidência da República - André Ventura - ep. 2"
   },
   {
@@ -627,7 +717,7 @@
    "programa": "Grande Entrevista",
    "prova_url": "https://www.rtp.pt/play/p16214/e903851/grande-entrevista",
    "publicado_em": "2026-01-21",
-   "rondas": 3,
+   "rondas": 4,
    "titulo": "Grande Entrevista - André Ventura - ep. 2"
   },
   {
@@ -879,7 +969,7 @@
    "programa": "",
    "prova_url": "https://www.rtp.pt/play/p10324/e938640/grande-entrevista",
    "publicado_em": "2026-06-24",
-   "rondas": 3,
+   "rondas": 4,
    "titulo": "Grande Entrevista"
   },
   {
@@ -989,26 +1079,8 @@
    "publicado_em": "2026-09-01",
    "rondas": 0,
    "titulo": "Luís Neves e as \"explicações absolutamente atrozes\" do ministro: entrevista a André Ventura na íntegra"
-  },
-  {
-   "bloco": "505f7cfea8b2",
-   "canal": "cnn-portugal",
-   "confianca": "media",
-   "data": "2026-09-02",
-   "data_origem": "declarada",
-   "entrevista": "505f7cfea8b2",
-   "fonte": "clipping-imprensa",
-   "fontes_distintas": 0,
-   "id": "clipping-imprensa:620470023923",
-   "origem": "imprensa",
-   "primeira_vez": "2026-09-10",
-   "programa": "não apurado",
-   "prova_url": "https://www.jm-madeira.pt/v%C3%ADdeo/regi-o/30004362/ventura-agarra-se-a-vice-presidente-da-camara-do-funchal.html",
-   "publicado_em": "2026-09-02",
-   "rondas": 0,
-   "titulo": "Ventura 'agarra-se' a vice-presidente da Câmara do Funchal"
   }
  ],
  "esquema": 1,
- "total": 56
+ "total": 60
 }
