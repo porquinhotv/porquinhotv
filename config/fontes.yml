@@ -133,6 +133,51 @@ fontes:
     max_candidatos: 300
     paginas_max: 1
 
+  # Lista de episodios de um programa de entrevistas, e nao uma pesquisa.
+  #
+  # Medido a 2026-09-10, de casa e sem nada de especial no pedido: a
+  # porta que monta a lista de episodios (`bg_l_ep`) responde com HTML
+  # servido pelo servidor, doze episodios por pagina, e pagina a serio.
+  # As paginas 2, 4, 8 e 12 trouxeram doze ligacoes cada e as paginas 20
+  # e 40 vieram vazias, por isso a lista acaba entre a 12 e a 20. O
+  # identificador que interessa e o do PROGRAMA, nao o da temporada: com
+  # o do programa o sujeito aparece logo na primeira pagina, e com os das
+  # temporadas nao aparece, porque cada temporada so mostra o que e dela.
+  #
+  # Porque isto importa mais do que parece: a cobertura por ano do indice
+  # de noticias e de 0 candidatos em 2019, 3 em 2020, 1 em 2021, 13 em
+  # 2022 e 1 em 2023, e este programa emitiu durante esses anos todos. E
+  # a primeira via que entra direita nesse buraco, com a pagina do
+  # proprio canal como prova e com a duracao declarada na pagina do
+  # episodio.
+  #
+  # O `programa` esta escrito aqui de proposito, e nao deduzido do
+  # titulo: um episodio deste programa e um episodio deste programa, o
+  # canal titula-os de formas diferentes ("Grande Entrevista - Fulano",
+  # so "Fulano"), e sem o nome do programa a prova positiva de formato
+  # recusaria metade deles. O nome consta da lista de programas de
+  # entrevista da configuracao editorial, que e onde essa decisao vive.
+  #
+  # `paginas_max` fica em 2 porque a corrida diaria so precisa dos
+  # episodios recentes: 24 episodios sao cerca de meio ano. A corrida de
+  # historico vai ao fundo com `--paginas 20`, que e um numero acima do
+  # fim medido da lista; uma pagina vazia nao custa nada.
+  - id: lista-rtp-grande-entrevista
+    tipo: busca_site
+    ativa: true
+    canal: rtp3
+    programa: Grande Entrevista
+    dominio: rtp.pt
+    confianca: alta
+    # Uma consulta so: o endereco nao usa {termo}, e sem isto a mesma
+    # pagina seria pedida uma vez por cada termo de deteccao.
+    termos_busca: ['André Ventura']
+    busca:
+      - https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page={pagina}&type=all
+    padrao_artigo: '/play/p[0-9]+/e[0-9]+/'
+    max_candidatos: 300
+    paginas_max: 2
+
   - id: busca-tvi
     tipo: busca_site
     ativa: true

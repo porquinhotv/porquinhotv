@@ -86,6 +86,44 @@ class TestBuscaSite(unittest.TestCase):
         self.assertEqual(list(busca_site.FonteBuscaSite(vazia).obter(termos=["Ventura"])), [])
 
 
+class TestListaDeEpisodiosNaConfiguracaoReal(unittest.TestCase):
+    """A lista de episodios do programa de entrevistas da RTP.
+
+    Tres coisas que, se mudarem, tiram valor a fonte sem partir nada, e
+    por isso passam sem se dar por elas:
+
+    1. sem o nome do programa escrito na fonte, a prova positiva de
+       formato recusa os episodios que o canal titula so com o nome do
+       convidado, que sao muitos;
+    2. sem `{pagina}` no endereco, a fonte pede sempre a primeira pagina
+       e a corrida de historico nao vai a lado nenhum. Medido a
+       2026-09-10: doze episodios por pagina, e a lista acaba entre a
+       pagina 12 e a 20;
+    3. o identificador tem de ser o do programa. Com o de uma temporada,
+       o sujeito nao aparece na lista.
+    """
+
+    def setUp(self):
+        from recolha.modelos import carregar_config
+
+        self.fonte = next(f for f in carregar_config().fontes if f.id == "lista-rtp-grande-entrevista")
+
+    def test_declara_o_programa(self):
+        self.assertTrue(self.fonte.programa, "sem programa, metade dos episodios cai na quarentena")
+
+    def test_o_programa_esta_na_lista_de_programas_de_entrevista(self):
+        from recolha.modelos import carregar_config
+
+        config = carregar_config()
+        self.assertIn(self.fonte.programa, config.prova_de_formato.programas)
+
+    def test_pagina_e_um_parametro_do_endereco(self):
+        self.assertTrue(any("{pagina}" in u for u in self.fonte.busca), "sem {pagina} a fonte le sempre a mesma")
+
+    def test_uma_consulta_so(self):
+        self.assertEqual(len(self.fonte.termos_busca), 1, "o endereco nao usa {termo}: mais termos so repetem o pedido")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
 

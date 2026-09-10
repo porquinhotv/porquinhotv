@@ -511,6 +511,13 @@ grupos:
       - https://www.rtp.pt/play/p9822/grande-entrevista
 
   - nome: Arquivo da web, uma janela de um ano de cada vez
+    # RESULTADO, 2026-09-10: um ano responde, as vezes. De quatro anos
+    # pedidos, um trouxe 220 enderecos com o nome no caminho, um trouxe
+    # zero, e dois deram 504. O 504 nao e do nosso limite de tempo:
+    # chega em poucos segundos e e o servidor a desistir. A via serve,
+    # com repeticao, e e a unica que chega a 2019 a 2022 neste canal,
+    # que e onde o mapa do dia ja nao vai.
+    #
     # As consultas de duas e cinco janelas devolveram 504 a 2026-09-10.
     # Um ano de cada vez e a unica variacao que falta antes de dar a via
     # por cara demais: se um ano responder e cinco nao, a colheita faz-se
@@ -530,6 +537,20 @@ grupos:
       - https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2023&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000
 
   - nome: SIC, o mapa do dia
+    # RESULTADO, 2026-09-10: o mapa do dia responde e traz entre 184 e
+    # 288 enderecos por dia, com o nome do sujeito presente nos dias em
+    # que houve entrevista. O que NAO traz e titulo: cada entrada e um
+    # endereco e um carimbo. Nao faz falta, porque o endereco da SIC leva
+    # a data e o titulo no proprio caminho, e e por isso que os termos
+    # aparecem no texto do mapa.
+    #
+    # Ate onde vai: 2023-11-13 responde, 2022-01-05 e 2021-01-13 dao 403.
+    # Bate certo com os 1331 mapas do indice, que sao cerca de tres anos
+    # e meio e chegam a janeiro de 2023. Antes disso a via e o arquivo.
+    # As duas formas do dia 5 deram 403 as duas, por isso a questao do
+    # zero a esquerda fica por responder e resolve-se lendo o indice em
+    # vez de construir o nome do ficheiro.
+    #
     # A sondagem de 2026-09-10 respondeu o essencial e abriu isto.
     #
     # O que ficou sabido: os tres mapas que o site declara respondem a
