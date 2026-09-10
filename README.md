@@ -34,7 +34,9 @@ Antes de ativar uma fonte nova, `python -m ferramentas.descobrir <url>` mostra o
 
 ## Contribuir com uma emissão
 
-Acrescentar uma linha a `config/entrevistas.yml` com os campos obrigatórios (`data`, `canal`, `programa`, `prova`). Não há campo de duração: uma linha que traga `duracao_s` ou `parcial` é recusada pelo coletor. Se a prova for uma peça de imprensa e não o canal, a linha vai para `config/clipping.yml`. Sem URL de prova a linha é rejeitada pela suite de testes.
+Para acrescentar ou retirar uma emissão à mão, usar `config/curadoria.yml`: a lista `entrevistas` precisa apenas de `data`, `canal` e `prova` (mais `origem: imprensa` se a prova for uma notícia), e a lista `remover` leva a `prova` e o `motivo`. Uma linha removida passa a aparecer na quarentena com o motivo, em vez de desaparecer.
+
+Para uma linha do registo principal, acrescentar a `config/entrevistas.yml` com os campos obrigatórios (`data`, `canal`, `prova`). Não há campo de duração: uma linha que traga `duracao_s` ou `parcial` é recusada pelo coletor. Se a prova for uma peça de imprensa e não o canal, a linha vai para `config/clipping.yml`. Sem URL de prova a linha é rejeitada pela suite de testes.
 
 ## Licenças
 

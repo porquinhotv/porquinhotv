@@ -78,7 +78,11 @@ class TestIntegracaoComAsFontes(unittest.TestCase):
 
         config = carregar_config()
         a_mao = {f.id for f in config.fontes if f.tipo == "manual"}
-        self.assertEqual(a_mao, {"registo-curado", "clipping-imprensa"})
+        # A lista e escrita a mao de proposito: uma fonte que passe a
+        # `manual` ganha a isencao de prova de formato e de rondas, e essa
+        # isencao so se justifica se uma pessoa tiver aberto a pagina.
+        # Acrescentar um id aqui e afirmar isso.
+        self.assertEqual(a_mao, {"curadoria", "registo-curado", "clipping-imprensa"})
         automaticas = [f for f in config.fontes if f.tipo != "manual"]
         self.assertTrue(automaticas, "sem fontes automaticas o site nunca se povoa sozinho")
 

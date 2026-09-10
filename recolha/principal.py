@@ -21,7 +21,7 @@ from collections import Counter
 from dataclasses import replace
 from pathlib import Path
 
-from . import armazem, confirmacao, criterio, resumo
+from . import armazem, confirmacao, criterio, curadoria, resumo
 from .fontes import base as fontes_base
 from .fontes import busca_site, manual, podcast_rss, youtube_feed  # noqa: F401  (registo dos plugins)
 from .modelos import carregar_config, hoje_iso
@@ -29,6 +29,43 @@ from .modelos import carregar_config, hoje_iso
 
 def _url_normalizado(url: str) -> str:
     return url.strip().rstrip("/").replace("http://", "https://").replace("www.", "")
+
+
+def _aplicar_vetos(fundidas: dict, remocoes: dict[str, str], quarentena: list[dict]) -> tuple[dict, int]:
+    """Retira do que vai ser publicado as emissoes vetadas a mao.
+
+    Corre depois do `fundir` e nao antes, porque o veto tem de apanhar
+    tambem as linhas que ja estavam no armazem de corridas anteriores.
+    Sem isto, remover uma linha ja publicada obrigava a uma corrida com
+    `repor`, que reescreve o `primeira_vez` de tudo por causa de uma
+    linha.
+
+    A linha retirada vai para a quarentena com o motivo que a pessoa
+    escreveu, e por isso continua visivel e explicada: **nada e
+    descartado em silencio**. Ver recolha/curadoria.py para o que isto
+    custa a regra do append-only.
+    """
+    if not remocoes:
+        return fundidas, 0
+    ficam, vetadas = {}, 0
+    for chave, linha in fundidas.items():
+        alvo = _url_normalizado(linha.get("prova_url") or "")
+        if alvo not in remocoes:
+            ficam[chave] = linha
+            continue
+        vetadas += 1
+        quarentena.append(
+            {
+                "fonte": linha.get("fonte", ""),
+                "id_nativo": linha.get("id", ""),
+                "publicado_em": linha.get("publicado_em", ""),
+                "titulo": linha.get("titulo", ""),
+                "url": linha.get("prova_url", ""),
+                "motivo": f"vetada_a_mao ({remocoes[alvo]})",
+                "excerto": "",
+            }
+        )
+    return ficam, vetadas
 
 
 def _contar_recusas(quarentena: list[dict], prefixo: str = "") -> None:
@@ -61,6 +98,11 @@ def _contar_recusas(quarentena: list[dict], prefixo: str = "") -> None:
 def correr(so_fonte: str | None = None, dry_run: bool = False, paginas: int = 0, ronda: str = "", estado: str = "") -> int:
     config = carregar_config()
     existentes = armazem.carregar()
+    # Vetos escritos a mao, aplicados em dois sitios: ao que as fontes
+    # devolvem agora, e ao que ja esta publicado. So o primeiro nao
+    # chegava: uma linha ja no armazem continuaria a ser publicada, e
+    # remover passaria a exigir uma corrida com `repor`.
+    remocoes = {_url_normalizado(url): motivo for url, motivo in curadoria.ler_remocoes().items()}
     aceites = []
     quarentena: list[dict] = []
     avisos: list[str] = []
@@ -85,6 +127,9 @@ def correr(so_fonte: str | None = None, dry_run: bool = False, paginas: int = 0,
         contadas = 0
         for item in itens:
             chave = _url_normalizado(item.prova_url or item.url)
+            if chave in remocoes:
+                criterio.rejeitar(quarentena, item, fonte, f"vetada_a_mao ({remocoes[chave]})")
+                continue
             anterior = provas_vistas.get(chave)
             if anterior and anterior != fonte.id:
                 criterio.rejeitar(quarentena, item, fonte, f"ja_registado ({anterior})")
@@ -127,10 +172,13 @@ def correr(so_fonte: str | None = None, dry_run: bool = False, paginas: int = 0,
     aceites = confirmacao.anotar(aceites, candidatos)
 
     fundidas, adicionadas, atualizadas = armazem.fundir(existentes, aceites)
+    fundidas, vetadas = _aplicar_vetos(fundidas, remocoes, quarentena)
     agregados = resumo.construir(list(fundidas.values()), config)
 
     prefixo = "[dry-run] " if dry_run else ""
     print(f"{prefixo}+{adicionadas} novas, {atualizadas} atualizadas, {len(fundidas)} no total")
+    if vetadas:
+        print(f"{prefixo}{vetadas} ja publicadas retiradas por veto escrito a mao")
     print(f"{prefixo}{len(quarentena)} itens em quarentena nesta corrida")
     _contar_recusas(quarentena, prefixo)
     # `por_confirmar` e o que ficou a aguardar rondas, e e o que o

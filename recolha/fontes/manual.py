@@ -20,11 +20,24 @@ Formato de cada linha:
 
     - data: 2026-09-04          # data de emissao, obrigatoria
       canal: id-do-canal        # id de config/porquinho.yml, obrigatorio
-      programa: Jornal da Noite # obrigatorio
       prova: https://...        # onde se ve ou le, obrigatorio
+      programa: Jornal da Noite # opcional desde 2026-09-10; ver abaixo
+      origem: imprensa          # opcional; "canal" por omissao da fonte
       titulo: ...               # opcional
       publicado_em: 2026-09-05  # opcional; por omissao igual a data
       mesma_entrevista: chave   # opcional; agrupa simulcast e repeticoes
+
+O `programa` passou a ser opcional a 2026-09-10, quando se acrescentou a
+curadoria a mao: para acrescentar uma emissao basta saber o dia, o canal
+e a prova, e obrigar a escrever o nome do programa punha uma pessoa a
+adivinha-lo ou a inventa-lo. Sem ele, a emissao nao abre bloco proprio
+num dia em que o canal ja tem outra emissao com programa apurado, o que e
+o comportamento certo: nao se sabe se foi a mesma, logo nao se afirma que
+foram duas. Ver recolha/criterio.py, _absorver_sem_programa.
+
+A `origem` por linha existe pela mesma razao: quem acrescenta a mao tanto
+pode ter a pagina do canal como a noticia que a relata, e o site diz qual
+das duas e. Sem ela, a linha herda a origem da fonte.
 """
 
 from __future__ import annotations
@@ -37,7 +50,7 @@ import yaml
 from ..modelos import FICHEIRO_ENTREVISTAS, RAIZ, ItemBruto, id_estavel
 from .base import PluginDeFonte, registar
 
-OBRIGATORIOS = ("data", "canal", "programa", "prova")
+OBRIGATORIOS = ("data", "canal", "prova")
 # Retirados a 2026-09-10 com a duracao. Ver recolha/criterio.py.
 CAMPOS_RETIRADOS = ("duracao_s", "parcial")
 
@@ -68,16 +81,17 @@ def ler_registo(caminho: Path) -> list[ItemBruto]:
         prova = str(linha["prova"])
         itens.append(
             ItemBruto(
-                id_nativo=id_estavel(data, str(linha["canal"]), str(linha["programa"]), prova),
+                id_nativo=id_estavel(data, str(linha["canal"]), str(linha.get("programa") or ""), prova),
                 publicado_em=str(linha.get("publicado_em") or data),
                 titulo=str(linha.get("titulo") or ""),
                 url=prova,
                 descricao="",
                 canal=str(linha["canal"]),
-                programa=str(linha["programa"]),
+                programa=str(linha.get("programa") or ""),
                 data_declarada=data,
                 mesma_entrevista=str(linha.get("mesma_entrevista") or ""),
                 prova_url=prova,
+                origem=str(linha.get("origem") or ""),
             )
         )
     return itens
@@ -93,7 +107,9 @@ class FonteManual(PluginDeFonte):
             return []
         itens = ler_registo(caminho)
         for item in itens:
-            item.origem = self.fonte.origem
+            # A origem escrita na linha ganha a da fonte: uma linha da
+            # curadoria pode ter prova de canal ou prova de imprensa.
+            item.origem = item.origem or self.fonte.origem
         return itens
 
 

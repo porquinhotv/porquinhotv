@@ -31,6 +31,24 @@
 # motivos, ler dez titulos aceites a mao contra o criterio. Depois ativar.
 
 fontes:
+  # Curadoria a mao: o autor acrescenta uma emissao com o dia, o canal e a
+  # prova, e nada mais. Corre a frente de tudo porque e a decisao mais
+  # informada que existe no projeto, e quando cobre a mesma emissao que
+  # outra fonte e a dela que fica. A isencao de prova de formato e de
+  # rondas e a mesma do registo curado e tem a mesma justificacao: uma
+  # pessoa abriu a pagina. A `origem` aqui e so a que vale por omissao; a
+  # linha pode escrever a sua, porque a prova tanto pode ser a pagina do
+  # canal como a noticia que a relata.
+  #
+  # O mesmo ficheiro tem a lista `remover`, que nao e uma fonte e nao e
+  # lida por aqui. Ver recolha/curadoria.py.
+  - id: curadoria
+    tipo: manual
+    ativa: true
+    ficheiro: config/curadoria.yml
+    origem: canal
+    confianca: alta
+
   - id: registo-curado
     tipo: manual
     ativa: true

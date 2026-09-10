@@ -127,7 +127,12 @@ class TestConfig(unittest.TestCase):
         config = carregar_config()
         self.assertEqual(len(config.canais), 9)
         self.assertEqual(config.tema.desde, "2019-05-16")
-        self.assertEqual(config.fontes[0].id, "registo-curado", "o registo do canal tem de ser a primeira fonte")
+        self.assertEqual(config.fontes[0].id, "curadoria", "a decisao a mao corre a frente de tudo")
+        self.assertLess(
+            [f.id for f in config.fontes].index("registo-curado"),
+            min(i for i, f in enumerate(config.fontes) if f.tipo != "manual"),
+            "o registo do canal tem de correr antes de qualquer fonte automatica",
+        )
         clipping = next(f for f in config.fontes if f.id == "clipping-imprensa")
         self.assertEqual(clipping.origem, "imprensa")
         self.assertGreater(

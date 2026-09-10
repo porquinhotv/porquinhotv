@@ -1,0 +1,14 @@
+entrevistas:
+  - data: 2021-03-15
+    canal: cmtv
+    prova: https://exemplo.pt/noticia-que-relata
+    origem: imprensa
+  - data: 2021-04-01
+    canal: sic
+    prova: https://exemplo.pt/pagina-do-canal
+    programa: Programa Exemplo
+    titulo: Entrevista a Pessoa Exemplo
+
+remover:
+  - prova: https://exemplo.pt/x1
+    motivo: e um debate, nao uma entrevista

@@ -1,0 +1,46 @@
+# Curadoria a mao. Duas listas, e as duas sao decisoes de uma pessoa que
+# abriu a pagina. E o unico sitio do projeto onde uma pessoa acrescenta ou
+# retira uma emissao diretamente.
+#
+# ------------------------------------------------------------------
+# entrevistas: acrescentar uma emissao
+# ------------------------------------------------------------------
+# Basta o dia, o canal e a prova. Tudo o resto e opcional.
+#
+#   - data: 2021-03-15         # dia da emissao, obrigatorio
+#     canal: cmtv              # id de config/porquinho.yml, obrigatorio
+#     prova: https://...       # pagina do canal OU noticia, obrigatorio
+#     origem: imprensa         # opcional: "imprensa" se a prova for uma
+#                              # noticia; por omissao "canal"
+#     programa: Grande Jornal  # opcional; sem ele fica "nao apurado"
+#     titulo: ...              # opcional
+#     publicado_em: 2021-03-16 # opcional; so se a peca for de outro dia
+#     mesma_entrevista: chave  # opcional; agrupa simulcast e repeticoes
+#
+# Esta fonte corre a frente de todas as outras e salta a prova positiva
+# de formato e as rondas de confirmacao, pela mesma razao que o registo
+# curado: uma pessoa leu a pagina. A isencao corresponde a justificacao.
+#
+# Nao ha campo de duracao. O site conta a existencia da entrevista.
+#
+# ------------------------------------------------------------------
+# remover: uma prova que nao conta
+# ------------------------------------------------------------------
+# Aplica-se ao que qualquer fonte devolver e tambem ao que ja esta
+# publicado. A linha removida vai para a quarentena com este motivo
+# escrito, e continua visivel la: **nada e descartado em silencio**.
+#
+#   - prova: https://...
+#     motivo: e um debate, nao uma entrevista
+#
+# O motivo e obrigatorio. Uma remocao sem motivo e indistinguivel de um
+# engano, e daqui a seis meses ninguem sabe qual das duas foi.
+#
+# Isto fura a regra do append-only de proposito: o dataset e append-only
+# para que uma linha nao desapareca quando a fonte deixa de a devolver, e
+# uma remocao a mao e o contrario, alguem a afirmar que a linha esta
+# errada. Esta escrito na Metodologia, na seccao das correcoes.
+
+entrevistas: []
+
+remover: []
