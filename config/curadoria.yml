@@ -41,7 +41,33 @@
 # uma remocao a mao e o contrario, alguem a afirmar que a linha esta
 # errada. Esta escrito na Metodologia, na seccao das correcoes.
 
-entrevistas: []
+entrevistas:
+  # Tres linhas da lista de referencia de 2026-09-10 (config/referencia.yml)
+  # com prova aberta e lida nesse dia. As restantes ficam para a colheita
+  # dirigida: uma pessoa nao le cinquenta paginas.
+  - data: 2024-10-10
+    canal: cnn-portugal
+    origem: imprensa
+    prova: https://www.dn.pt/ventura-diz-que-montenegro-propos-acordo-sobre-oe-com-promessa-de-integrar-governo-pm-desmente
+    titulo: 'Ventura diz que Montenegro propôs acordo sobre OE com promessa de integrar Governo. PM desmente'
+    # A peca, publicada as 19:56 desse dia, diz "esta quinta-feira, em
+    # entrevista à CNN". O registo curado tem a mesma noite na TVI, com a
+    # prova no leitor do grupo; a chave junta as duas como uma entrevista.
+    mesma_entrevista: '2024-10-10'
+  - data: 2025-03-18
+    canal: rtp1
+    programa: Telejornal
+    prova: https://www.rtp.pt/noticias/politica/andre-ventura-diz-nunca-e-nunca-a-montenegro-e-assume-cada-vez-menos-esperanca-no-psd_n1641739
+    titulo: 'André Ventura diz "nunca é nunca" a Montenegro e assume "cada vez menos esperança" no PSD'
+    # A lista dizia 19 de marco. A pagina do canal, publicada a 18 as
+    # 20:15, diz "o entrevistado da noite de terça-feira no Telejornal",
+    # e 18 de marco de 2025 foi terca-feira. Fica a data do canal.
+    mesma_entrevista: '2025-03-18'
+  - data: 2025-04-11
+    canal: rtp3
+    programa: '360'
+    prova: https://www.rtp.pt/noticias/pais/entrevista-rtp-ventura-quer-apoiar-jovens-com-corte-de-desperdicios-na-saude_v1647537
+    titulo: 'Entrevista RTP. Ventura quer apoiar jovens com corte de "desperdícios" na Saúde'
 
 remover:
   - prova: https://www.jm-madeira.pt/v%C3%ADdeo/regi-o/30004362/ventura-agarra-se-a-vice-presidente-da-camara-do-funchal.html

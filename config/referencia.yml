@@ -1,0 +1,85 @@
+---
+# Lista de referencia: emissoes que o autor sabe que existiram, por dia e
+# canal. Escrita a 2026-09-10, a partir de uma lista dele de janeiro de
+# 2024 a agosto de 2025, em que tem muita confianca.
+#
+# NAO E UMA FONTE. Nenhuma linha daqui entra no site: uma emissao so
+# conta com uma prova publica que qualquer pessoa abre. A lista serve
+# para duas coisas, as duas na ferramenta local:
+#
+#   python -m ferramentas.gnews --saida ... --dirigidas
+#       pede ao indice de noticias so os dias a volta de cada linha, com
+#       as consultas de `dirigidas` em config/gnews.yml. Uma janela de
+#       poucos dias com o nome do canal e outra amostra do indice, mais
+#       pequena, em que a peca certa tem mais hipotese de vir do que na
+#       colheita mensal, que a 2026-09-08 nao trouxe 14 de 16 entrevistas
+#       conhecidas.
+#   python -m ferramentas.gnews --saida ... --cobertura
+#       diz, linha a linha, se o site tem a emissao, se um registo em
+#       ficheiro a tem por publicar, se a triagem tem uma pista, ou se nao
+#       ha nada. E a reconciliacao desta lista contra o que se publica.
+#
+# A tolerancia de um dia existe porque a data de uma peca nao e a data
+# da emissao, e porque a propria lista pode estar um dia ao lado: a linha
+# "RTP 19 marco 2025" e a entrevista do Telejornal de terca-feira, 18,
+# pela pagina do canal.
+#
+# Onde a lista dizia "TVI/ CNN" ha duas linhas, porque a decisao
+# editorial 3 conta o simulcast nos dois canais. Onde dizia so "RTP"
+# ficou rtp1, que e onde o Telejornal e as entrevistas eleitorais passam;
+# a `busca-rtp1` e o registo tratam do rtp3 quando houver prova.
+tolerancia_dias: 1
+
+entrevistas:
+  - {data: 2024-01-25, canal: tvi}
+  - {data: 2024-02-19, canal: cmtv}
+  - {data: 2024-03-04, canal: rtp1}
+  - {data: 2024-03-11, canal: tvi}
+  - {data: 2024-03-14, canal: cmtv}
+  - {data: 2024-03-20, canal: rtp1}
+  - {data: 2024-03-21, canal: sic}
+  - {data: 2024-05-02, canal: sic}
+  - {data: 2024-05-06, canal: tvi, nota: o site tem esta data na CNN Portugal}
+  - {data: 2024-06-17, canal: sic}
+  - {data: 2024-08-01, canal: sic}
+  - {data: 2024-08-21, canal: tvi}
+  - {data: 2024-09-08, canal: cmtv}
+  - {data: 2024-09-27, canal: sic-noticias}
+  - {data: 2024-09-27, canal: tvi}
+  - {data: 2024-09-29, canal: cmtv}
+  - {data: 2024-10-10, canal: tvi}
+  - {data: 2024-10-11, canal: now}
+  - {data: 2024-10-21, canal: cmtv}
+  - {data: 2024-10-24, canal: now}
+  - {data: 2024-11-14, canal: now}
+  - {data: 2024-11-25, canal: sic-noticias}
+  - {data: 2024-12-02, canal: now}
+  - {data: 2024-12-27, canal: cmtv}
+  - {data: 2025-01-13, canal: tvi}
+  - {data: 2025-01-24, canal: sic}
+  - {data: 2025-01-31, canal: cmtv}
+  - {data: 2025-02-06, canal: tvi}
+  - {data: 2025-02-19, canal: now}
+  - {data: 2025-02-26, canal: now}
+  - {data: 2025-03-02, canal: cmtv}
+  - {data: 2025-03-04, canal: tvi}
+  - {data: 2025-03-10, canal: cmtv}
+  - {data: 2025-03-12, canal: sic}
+  - {data: 2025-03-17, canal: tvi}
+  - {data: 2025-03-19, canal: rtp1, nota: a pagina do canal data o Telejornal de 18}
+  - {data: 2025-03-27, canal: sic-noticias}
+  - {data: 2025-04-03, canal: cnn-portugal}
+  - {data: 2025-04-09, canal: tvi}
+  - {data: 2025-04-11, canal: rtp3}
+  - {data: 2025-05-21, canal: tvi}
+  - {data: 2025-05-21, canal: cnn-portugal}
+  - {data: 2025-05-22, canal: cmtv}
+  - {data: 2025-05-27, canal: sic}
+  - {data: 2025-05-29, canal: now}
+  - {data: 2025-06-04, canal: rtp3}
+  - {data: 2025-07-03, canal: now}
+  - {data: 2025-07-09, canal: tvi}
+  - {data: 2025-07-09, canal: cnn-portugal}
+  - {data: 2025-07-25, canal: sic-noticias}
+  - {data: 2025-08-01, canal: cnn-portugal}
+  - {data: 2025-08-05, canal: now}

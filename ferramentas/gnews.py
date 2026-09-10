@@ -7,9 +7,12 @@
     python -m ferramentas.gnews --saida D:\\porquinho-local --emitir --imprensa
     python -m ferramentas.gnews --saida D:\\porquinho-local --resolver
     python -m ferramentas.gnews --saida D:\\porquinho-local --desde 2024-01-01
+    python -m ferramentas.gnews --saida D:\\porquinho-local --dirigidas
+    python -m ferramentas.gnews --saida D:\\porquinho-local --cobertura
 
 Le config/gnews.yml, pede o RSS de cada consulta em janelas mensais desde
-o inicio do tema, e escreve na pasta de saida:
+o inicio do tema (ou, com `--dirigidas`, so os dias a volta de cada
+emissao de config/referencia.yml), e escreve na pasta de saida:
 
     bruto/<janela>__<n>.xml   cada resposta tal como veio, para auditoria
     estado.json               o que ja foi pedido, para retomar sem repetir
@@ -259,20 +262,208 @@ def juntar(linhas: dict[str, dict], item: dict, consulta: str, janela: str) -> N
             existente[campo] = " | ".join(vistos + [valor])
 
 
+# --- lista de referencia -----------------------------------------------------
+
+FICHEIRO_REFERENCIA = RAIZ / "config" / "referencia.yml"
+
+
+def carregar_referencia(caminho: Path | None = None) -> list[dict]:
+    """As emissoes que o autor sabe que existiram, por (data, canal).
+
+    Nao e uma fonte: nenhuma linha daqui entra no site. Serve para dirigir
+    a colheita e para medir a cobertura. O YAML le a data como objeto ou
+    como texto, conforme esteja escrita; aqui fica sempre em ISO.
+    """
+    caminho = caminho or FICHEIRO_REFERENCIA
+    if not caminho.exists():
+        return []
+    bruto = yaml.safe_load(caminho.read_text(encoding="utf-8")) or {}
+    linhas = []
+    for posicao, linha in enumerate(bruto.get("entrevistas") or [], start=1):
+        if not isinstance(linha, dict) or not linha.get("data") or not linha.get("canal"):
+            raise ValueError(f"{caminho.name}: entrevistas, linha {posicao}: tem de ter 'data' e 'canal'")
+        data = linha["data"].isoformat() if isinstance(linha["data"], date) else str(linha["data"]).strip()
+        try:
+            date.fromisoformat(data)
+        except ValueError as exc:
+            raise ValueError(f"{caminho.name}: entrevistas, linha {posicao}: data {data!r} nao e AAAA-MM-DD") from exc
+        linhas.append({"data": data, "canal": str(linha["canal"]).strip(), "nota": str(linha.get("nota") or "").strip()})
+    return linhas
+
+
+def tolerancia_de_referencia(caminho: Path | None = None) -> int:
+    caminho = caminho or FICHEIRO_REFERENCIA
+    if not caminho.exists():
+        return 1
+    bruto = yaml.safe_load(caminho.read_text(encoding="utf-8")) or {}
+    return int(bruto.get("tolerancia_dias", 1))
+
+
+def pedidos_de_referencia(config: dict, referencia: list[dict]) -> list[tuple[str, tuple[date, date]]]:
+    """Um pedido por (consulta, janela) para cada linha da referencia.
+
+    A janela vai de `folga_antes` dias antes a `folga_depois` dias depois
+    da emissao: uma peca anuncia a entrevista na vespera e relata-a no dia
+    seguinte ou dois depois. As consultas sao as gerais mais as do canal
+    da linha, todas da configuracao. Duas linhas no mesmo dia e no mesmo
+    canal dao os mesmos pedidos uma vez so.
+    """
+    dirigidas = config.get("dirigidas") or {}
+    antes = int(dirigidas.get("folga_antes", 2))
+    depois = int(dirigidas.get("folga_depois", 3))
+    gerais = list(dirigidas.get("consultas_gerais") or [])
+    por_canal = dirigidas.get("consultas_por_canal") or {}
+    pedidos: list[tuple[str, tuple[date, date]]] = []
+    vistos: set[tuple[str, tuple[date, date]]] = set()
+    for linha in referencia:
+        dia = date.fromisoformat(linha["data"])
+        janela = (dia - timedelta(days=antes), dia + timedelta(days=depois))
+        for consulta in gerais + list(por_canal.get(linha["canal"]) or []):
+            pedido = (consulta, janela)
+            if pedido not in vistos:
+                vistos.add(pedido)
+                pedidos.append(pedido)
+    return pedidos
+
+
+def _dias_entre(a: str, b: str) -> int:
+    return abs((date.fromisoformat(a) - date.fromisoformat(b)).days)
+
+
+def _sugestao_sim(sugestao: str) -> tuple[str, str] | None:
+    """(canal, data) de uma sugestao 'sim: <canal> a <data> (...)'."""
+    m = re.match(r"sim:\s*(\S+)\s+a\s+(\d{4}-\d{2}-\d{2})", sugestao or "")
+    return (m.group(1), m.group(2)) if m else None
+
+
+def pistas_da_triagem(config: dict, linhas: list[dict]) -> list[tuple[str, str, str, dict]]:
+    """(canal, data, estado, linha) por linha da triagem que aponte para
+    uma emissao. Tres origens, por esta ordem de confianca:
+
+      avaliada   a sugestao diz sim, com canal e data lidos da peca;
+      canal      a prova esta num dominio de canal: e prova, mas o canal e
+                 o do dominio, que pode ser o outro do mesmo grupo (ver a
+                 KB, 6.1), e a data e a da pagina ou a do indice;
+      por ler    a pagina nao respondeu, e a coluna `canal` ou o dominio
+                 dao um palpite. Nao prova nada; diz onde ir abrir.
+    """
+    pistas = []
+    for linha in linhas:
+        avaliada = _sugestao_sim(linha.get("sugestao") or "")
+        if avaliada:
+            pistas.append((avaliada[0], avaliada[1], "avaliada", linha))
+            continue
+        canal = canal_da_prova(config, linha.get("prova_url") or "") or (linha.get("canal") or "").strip()
+        data = (linha.get("data_emissao") or linha.get("data_na_pagina") or linha.get("data") or "").strip()[:10]
+        if not canal or not data:
+            continue
+        try:
+            date.fromisoformat(data)
+        except ValueError:
+            continue
+        estado = "por ler" if pagina_por_ler(linha) else "canal"
+        if estado == "canal" and not canal_da_prova(config, linha.get("prova_url") or ""):
+            # Canal escrito a mao numa peca de imprensa que a avaliacao
+            # recusou: nao e pista, a recusa tem o motivo escrito.
+            continue
+        pistas.append((canal, data, estado, linha))
+    return pistas
+
+
+def cobertura(config: dict, pasta: Path, referencia: list[dict], emissoes: set[tuple[str, str]],
+              registos: set[tuple[str, str]], tolerancia: int = 1) -> dict:
+    """Linha a linha da referencia: o site tem a emissao, o registo em
+    ficheiro tem-na por publicar, a triagem tem uma pista, ou nao ha nada.
+
+    E o relatorio a correr depois de qualquer colheita dirigida e antes de
+    dar uma emissao por perdida: diz onde esta o trabalho, e diz quantas
+    linhas da referencia o site ainda nao cobre. A tolerancia de um dia
+    existe porque a data de uma peca nao e a data da emissao e porque a
+    propria referencia pode estar um dia ao lado: a 2026-09-10 uma linha
+    dizia 19 e a pagina do canal dizia 18.
+    """
+    caminho = pasta / "triagem.csv"
+    linhas: list[dict] = []
+    if caminho.exists():
+        with caminho.open(encoding="utf-8-sig", newline="") as f:
+            linhas = list(csv.DictReader(f))
+    pistas = pistas_da_triagem(config, linhas)
+
+    def perto(pares, canal, data):
+        return sorted(p for p in pares if p[0] == canal and _dias_entre(p[1], data) <= tolerancia)
+
+    resumo = {"referencia": len(referencia), "no_site": 0, "no_registo": 0, "com_pista": 0, "sem_nada": 0}
+    sem_nada = []
+    for linha in referencia:
+        canal, data = linha["canal"], linha["data"]
+        site = perto(emissoes, canal, data)
+        registo = [] if site else perto(registos, canal, data)
+        proprias = [p for p in pistas if p[0] == canal and _dias_entre(p[1], data) <= tolerancia]
+        if site:
+            estado, resumo["no_site"] = f"site: {site[0][1]}", resumo["no_site"] + 1
+        elif registo:
+            estado, resumo["no_registo"] = f"registo por publicar: {registo[0][1]}", resumo["no_registo"] + 1
+        elif proprias:
+            resumo["com_pista"] += 1
+            contagem: dict[str, int] = {}
+            for _, _, tipo, _ in proprias:
+                contagem[tipo] = contagem.get(tipo, 0) + 1
+            estado = "pistas: " + ", ".join(f"{n} {tipo}" for tipo, n in sorted(contagem.items()))
+        else:
+            estado, resumo["sem_nada"] = "sem nada", resumo["sem_nada"] + 1
+            sem_nada.append(linha)
+        nota = f"  ({linha['nota']})" if linha.get("nota") else ""
+        print(f"  {data}  {canal:<13} {estado}{nota}", flush=True)
+        for _, pdata, tipo, plinha in proprias if not site else []:
+            print(f"      {tipo:<9} {pdata}  {plinha.get('prova_url') or plinha.get('url_google') or ''}", flush=True)
+    if sem_nada:
+        print("  sem nada, por ordem: " + ", ".join(f"{l['data']} {l['canal']}" for l in sem_nada), flush=True)
+    return resumo
+
+
+def emissoes_publicadas(caminho: Path | None = None) -> set[tuple[str, str]]:
+    """Os pares (canal, data) do dataset publicado."""
+    caminho = caminho or (RAIZ / "docs" / "dados" / "emissoes.json")
+    if not caminho.exists():
+        return set()
+    dados = json.loads(caminho.read_text(encoding="utf-8"))
+    lista = dados.get("emissoes") if isinstance(dados, dict) else dados
+    return {(str(e.get("canal") or ""), str(e.get("data") or "")) for e in (lista or [])}
+
+
 # --- colheita ----------------------------------------------------------------
 
 
 def colher(config: dict, pasta: Path, desde: date, ate: date, obter=obter_texto, dormir=time.sleep) -> dict:
+    consultas = config.get("consultas") or []
+    pendentes = [(consulta, janela) for janela in janelas_mensais(desde, ate) for consulta in consultas]
+    return _pedir(config, pasta, pendentes, obter=obter, dormir=dormir)
+
+
+def colher_dirigidas(config: dict, pasta: Path, referencia: list[dict], obter=obter_texto, dormir=time.sleep) -> dict:
+    """Colheita so dos dias a volta de cada emissao da lista de referencia.
+
+    A colheita mensal pede o indice inteiro e traz uma amostra ordenada por
+    relevancia, que nao e o conjunto todo: a 2026-09-08, 14 de 16
+    entrevistas conhecidas nao estavam nas 3202 linhas brutas. Uma janela
+    de poucos dias com o nome do canal e outra amostra, muito mais pequena,
+    em que a peca certa tem mais hipotese de vir. O estado e o CSV sao os
+    mesmos da colheita mensal: nada se repete e tudo se funde.
+    """
+    pendentes = pedidos_de_referencia(config, referencia)
+    return _pedir(config, pasta, pendentes, obter=obter, dormir=dormir)
+
+
+def _pedir(config: dict, pasta: Path, pendentes: list[tuple[str, tuple[date, date]]], obter=obter_texto, dormir=time.sleep) -> dict:
     pasta.mkdir(parents=True, exist_ok=True)
     (pasta / "bruto").mkdir(exist_ok=True)
     estado = ler_estado(pasta)
     linhas = ler_csv(pasta)
-    consultas = config.get("consultas") or []
     limiar = int(config.get("limiar_divisao", 90))
     pausa = float(config.get("pausa_s", 6))
     resumo = {"pedidos": 0, "itens": 0, "divisoes": 0, "falhas": 0}
 
-    pendentes = [(consulta, janela) for janela in janelas_mensais(desde, ate) for consulta in consultas]
+    pendentes = list(pendentes)
     while pendentes:
         consulta, janela = pendentes.pop(0)
         chave = f"{consulta} @ {rotulo(janela)}"
@@ -1679,6 +1870,8 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--mapa", action="store_true", help="acrescentar a triagem as pecas cujo endereco nomeia o sujeito, pelos mapas de sitio")
     parser.add_argument("--limite", type=int, help="com --resolver ou --mapa: parar ao fim de N, para medir antes de gastar")
     parser.add_argument("--tudo", action="store_true", help="com --resolver: resolver a colheita inteira, nao so os triados")
+    parser.add_argument("--dirigidas", action="store_true", help="colher so os dias a volta de cada emissao de config/referencia.yml")
+    parser.add_argument("--cobertura", action="store_true", help="linha a linha de config/referencia.yml: no site, no registo, com pista, ou sem nada; sem rede")
     args = parser.parse_args(argv)
 
     config = carregar()
@@ -1718,6 +1911,19 @@ def main(argv: list[str]) -> int:
     elif args.mapa:
         print(f"a colher os mapas de sitio para {pasta}", flush=True)
         resumo = colher_mapas(config, pasta, limite=args.limite)
+    elif args.dirigidas:
+        referencia = carregar_referencia()
+        if not referencia:
+            raise SystemExit("config/referencia.yml esta vazio: nao ha dias para pedir")
+        print(f"a colher os dias a volta de {len(referencia)} emissoes de referencia para {pasta}", flush=True)
+        resumo = colher_dirigidas(config, pasta, referencia)
+    elif args.cobertura:
+        referencia = carregar_referencia()
+        registos = set()
+        for caminho in (FICHEIRO_ENTREVISTAS, FICHEIRO_CLIPPING, RAIZ / "config" / "curadoria.yml"):
+            registos |= emissoes_do_registo(caminho)
+        print(f"cobertura da referencia ({len(referencia)} linhas) contra o site, o registo e a triagem de {pasta}", flush=True)
+        resumo = cobertura(config, pasta, referencia, emissoes_publicadas(), registos, tolerancia_de_referencia())
     elif args.triar:
         print(f"a triar {pasta}", flush=True)
         resumo = triar(config, pasta)

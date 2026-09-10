@@ -118,6 +118,35 @@ consultas:
 limiar_divisao: 90
 pausa_s: 6
 
+# Colheita dirigida pela lista de referencia (config/referencia.yml).
+# Por cada linha da lista pede-se uma janela curta, de `folga_antes` dias
+# antes a `folga_depois` dias depois da emissao, mais o dia de folga que
+# `url_da_consulta` ja poe de cada lado. Uma peca anuncia a entrevista na
+# vespera e relata-a no dia seguinte ou dois depois; tres dias depois
+# cobre o relato de segunda-feira de uma entrevista de sexta.
+#
+# Porque paga: o indice devolve uma amostra ordenada por relevancia, nao
+# o conjunto todo, e numa janela de sete dias com o nome do canal a
+# amostra e pequena e a peca certa tem mais hipotese de vir. As
+# consultas gerais correm para todas as linhas; as do canal so para as
+# linhas desse canal. Custo estimado, nao medido: 52 linhas vezes duas
+# consultas, cerca de 100 pedidos a 6 s, dez minutos.
+dirigidas:
+  folga_antes: 2
+  folga_depois: 3
+  consultas_gerais:
+    - '"André Ventura" entrevista'
+  consultas_por_canal:
+    rtp1: ['"André Ventura" entrevista RTP']
+    rtp2: ['"André Ventura" entrevista RTP']
+    rtp3: ['"André Ventura" entrevista RTP']
+    sic: ['"André Ventura" entrevista SIC']
+    sic-noticias: ['"André Ventura" entrevista SIC']
+    tvi: ['"André Ventura" entrevista TVI']
+    cnn-portugal: ['"André Ventura" entrevista CNN']
+    now: ['"André Ventura" entrevista NOW']
+    cmtv: ['"André Ventura" entrevista CMTV']
+
 # Pausa da resolucao das ligacoes. E mais baixa do que a da colheita
 # porque a resolucao so corre sobre os candidatos triados, que sao
 # poucas centenas, e nao sobre a colheita inteira.

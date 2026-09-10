@@ -1349,5 +1349,161 @@ class TestConsultasDaConfiguracaoReal(unittest.TestCase):
 
 
 
+class TestReferencia(unittest.TestCase):
+    """A lista de referencia dirige a colheita e mede a cobertura. O que
+    importa travar: uma janela que nao inclua o dia da emissao, uma
+    consulta de canal a correr para o canal errado, um pedido repetido, e
+    uma cobertura que diga "sem nada" com uma pista a um dia de distancia
+    ou que diga "no site" com uma emissao a dois."""
+
+    CONFIG = {
+        **CONFIG,
+        "dirigidas": {
+            "folga_antes": 2,
+            "folga_depois": 3,
+            "consultas_gerais": ["Pessoa Exemplo entrevista"],
+            "consultas_por_canal": {"canal-generalista": ["Pessoa Exemplo entrevista Canal"]},
+        },
+    }
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.pasta = Path(self.tmp.name) / "saida"
+        self.pasta.mkdir()
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def _referencia(self, texto: str) -> list[dict]:
+        caminho = Path(self.tmp.name) / "referencia.yml"
+        caminho.write_text(texto, encoding="utf-8")
+        return gnews.carregar_referencia(caminho)
+
+    def test_le_a_data_escrita_como_data_ou_como_texto(self):
+        """O YAML le `2025-03-18` como objeto de data e `'2025-03-18'`
+        como texto; a ferramenta tem de ficar sempre com o ISO."""
+        linhas = self._referencia("entrevistas:\n  - {data: 2025-03-18, canal: canal-generalista}\n  - {data: '2025-04-11', canal: canal-noticias, nota: x}\n")
+        self.assertEqual([(l["data"], l["canal"]) for l in linhas], [("2025-03-18", "canal-generalista"), ("2025-04-11", "canal-noticias")])
+        self.assertEqual(linhas[1]["nota"], "x")
+
+    def test_recusa_linha_sem_canal_ou_com_data_torta(self):
+        with self.assertRaises(ValueError):
+            self._referencia("entrevistas:\n  - {data: 2025-03-18}\n")
+        with self.assertRaises(ValueError):
+            self._referencia("entrevistas:\n  - {data: 18/03/2025, canal: canal-generalista}\n")
+
+    def test_janela_inclui_o_dia_a_vespera_e_os_tres_dias_seguintes(self):
+        pedidos = gnews.pedidos_de_referencia(self.CONFIG, [{"data": "2025-03-18", "canal": "canal-noticias"}])
+        self.assertEqual(pedidos, [("Pessoa Exemplo entrevista", (date(2025, 3, 16), date(2025, 3, 21)))])
+
+    def test_consulta_do_canal_so_corre_para_esse_canal_e_nada_se_repete(self):
+        referencia = [
+            {"data": "2025-03-18", "canal": "canal-generalista"},
+            {"data": "2025-03-18", "canal": "canal-generalista"},
+            {"data": "2025-03-18", "canal": "canal-noticias"},
+        ]
+        pedidos = gnews.pedidos_de_referencia(self.CONFIG, referencia)
+        consultas = [c for c, _ in pedidos]
+        self.assertEqual(consultas, ["Pessoa Exemplo entrevista", "Pessoa Exemplo entrevista Canal"])
+
+    def test_colheita_dirigida_partilha_o_estado_com_a_mensal(self):
+        """Os dois modos escrevem o mesmo candidatos.csv e o mesmo estado:
+        um pedido feito por um nao se repete pelo outro, e um item trazido
+        pelos dois e uma linha."""
+        pedidos: list[str] = []
+
+        def obter(url):
+            pedidos.append(url)
+            return ler("gnews_exemplo.xml")
+
+        referencia = [{"data": "2024-02-10", "canal": "canal-noticias"}]
+        gnews.colher_dirigidas(self.CONFIG, self.pasta, referencia, obter=obter, dormir=lambda s: None)
+        gnews.colher_dirigidas(self.CONFIG, self.pasta, referencia, obter=obter, dormir=lambda s: None)
+        self.assertEqual(len(pedidos), 1)
+        self.assertIn("after%3A2024-02-07", pedidos[0])
+        self.assertIn("before%3A2024-02-14", pedidos[0])
+        gnews.colher(self.CONFIG, self.pasta, date(2024, 2, 1), date(2024, 2, 29), obter=obter, dormir=lambda s: None)
+        self.assertEqual(len(pedidos), 2)
+        self.assertEqual(len(gnews.ler_csv(self.pasta)), 3)
+
+    def _triagem(self, linhas):
+        with (self.pasta / "triagem.csv").open("w", encoding="utf-8-sig", newline="") as f:
+            escritor = csv.DictWriter(f, fieldnames=gnews.COLUNAS_TRIAGEM, lineterminator="\n")
+            escritor.writeheader()
+            for linha in linhas:
+                escritor.writerow({c: linha.get(c, "") for c in gnews.COLUNAS_TRIAGEM})
+
+    def test_cobertura_distingue_site_registo_pista_e_nada(self):
+        """Quatro linhas, quatro estados, e a tolerancia de um dia nos dois
+        sentidos: a pista a um dia conta, a emissao a dois nao."""
+        self._triagem([
+            {"sugestao": "sim: canal-noticias a 2025-01-25 (relato)", "prova_url": "https://jornal.exemplo/p", "sujeito_na_pagina": "sim"},
+            {"sugestao": "prova do canal: entra por --emitir", "prova_url": "https://canal.exemplo/v/1", "data_na_pagina": "2025-05-29", "sujeito_na_pagina": "sim", "titulo_na_pagina": "x"},
+            {"sugestao": "nao: a peca nao diz entrevista", "prova_url": "https://jornal.exemplo/q", "canal": "canal-noticias", "data_emissao": "2025-07-03", "sujeito_na_pagina": "sim"},
+        ])
+        referencia = [
+            {"data": "2025-01-24", "canal": "canal-noticias", "nota": ""},
+            {"data": "2025-03-18", "canal": "canal-generalista", "nota": ""},
+            {"data": "2025-04-11", "canal": "canal-noticias", "nota": ""},
+            {"data": "2025-05-27", "canal": "canal-generalista", "nota": ""},
+            {"data": "2025-07-03", "canal": "canal-noticias", "nota": ""},
+        ]
+        emissoes = {("canal-generalista", "2025-03-19"), ("canal-noticias", "2025-04-13")}
+        registos = {("canal-noticias", "2025-04-11")}
+        with contextlib.redirect_stdout(io.StringIO()) as saida:
+            resumo = gnews.cobertura(self.CONFIG, self.pasta, referencia, emissoes, registos, tolerancia=1)
+        self.assertEqual(resumo, {"referencia": 5, "no_site": 1, "no_registo": 1, "com_pista": 1, "sem_nada": 2})
+        texto = saida.getvalue()
+        self.assertIn("2025-01-24  canal-noticias pistas: 1 avaliada", texto)
+        self.assertIn("2025-03-18  canal-generalista site: 2025-03-19", texto)
+        self.assertIn("2025-04-11  canal-noticias registo por publicar: 2025-04-11", texto)
+        # A prova de canal esta a dois dias da linha de 27 de maio: fora da
+        # tolerancia, e a linha fica "sem nada" em vez de ganhar uma pista
+        # que nao e dela.
+        self.assertIn("2025-05-27  canal-generalista sem nada", texto)
+        # A recusa da avaliacao com canal escrito a mao nao e pista: o
+        # motivo esta escrito e a linha nao prova nada.
+        self.assertIn("2025-07-03  canal-noticias sem nada", texto)
+        self.assertIn("sem nada, por ordem: 2025-05-27 canal-generalista, 2025-07-03 canal-noticias", texto)
+
+    def test_cobertura_sem_triagem_nem_site_diz_sem_nada_e_nao_falha(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            resumo = gnews.cobertura(self.CONFIG, self.pasta, [{"data": "2025-01-24", "canal": "canal-noticias", "nota": ""}], set(), set())
+        self.assertEqual(resumo["sem_nada"], 1)
+
+
+class TestReferenciaReal(unittest.TestCase):
+    """O ficheiro real: um canal com id errado ou uma data antes do inicio
+    do tema pediriam janelas para nada, e uma consulta dirigida sem o
+    sujeito traria peças que o funil deita fora todas."""
+
+    def setUp(self):
+        self.editorial = carregar_config()
+        self.referencia = gnews.carregar_referencia()
+        self.dirigidas = gnews.carregar().get("dirigidas") or {}
+
+    def test_cada_linha_tem_um_canal_dos_nove_e_uma_data_no_tema(self):
+        inicio = self.editorial.tema.desde
+        for linha in self.referencia:
+            with self.subTest(linha=linha):
+                self.assertIn(linha["canal"], set(self.editorial.canais))
+                self.assertGreaterEqual(linha["data"], inicio)
+
+    def test_nao_ha_duas_linhas_iguais(self):
+        pares = [(l["data"], l["canal"]) for l in self.referencia]
+        self.assertEqual(len(pares), len(set(pares)))
+
+    def test_cada_consulta_dirigida_nomeia_o_sujeito_e_o_canal_e_dos_nove(self):
+        sujeito = self.editorial.sujeito
+        for consulta in self.dirigidas.get("consultas_gerais") or []:
+            with self.subTest(consulta=consulta):
+                self.assertTrue(sujeito.aparece_em(consulta))
+        for canal, consultas in (self.dirigidas.get("consultas_por_canal") or {}).items():
+            with self.subTest(canal=canal):
+                self.assertIn(canal, set(self.editorial.canais))
+                for consulta in consultas:
+                    self.assertTrue(sujeito.aparece_em(consulta))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
