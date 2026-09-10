@@ -128,11 +128,15 @@ def correr(config: dict, obter=obter_texto, so_grupo: str | None = None, dormir=
         if so_grupo and grupo.get("nome") != so_grupo:
             continue
         linha = {"nome": grupo.get("nome", ""), "dominio_alvo": grupo.get("dominio_alvo", ""), "mostrar": bool(grupo.get("mostrar")), "hipoteses": []}
+        # Um indice que varre um dominio inteiro demora mais a responder
+        # do que uma pagina. Sem isto, a leitura de cinco consultas a
+        # 2026-09-10 foi "nao responde" quando era "nao responde em 30s".
+        extra = {"limite_s": grupo["tempo_limite_s"]} if grupo.get("tempo_limite_s") else {}
         for modelo in grupo.get("hipoteses") or []:
             url = modelo.replace("{termo}", urllib.parse.quote_plus(termo))
             print(f"  a sondar {url}", flush=True)
             try:
-                html = obter(url)
+                html = obter(url, **extra)
             except ErroDeRede as exc:
                 linha["hipoteses"].append({"url": url, "responde": False, "erro": str(exc)})
                 print(f"    nao responde: {exc}", flush=True)

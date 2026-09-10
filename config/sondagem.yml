@@ -248,37 +248,45 @@ grupos:
   # ==================================================================
 
   - nome: Arquivo da web, o indice
-    # O arquivo da web (web.archive.org) guarda copias das paginas dos
-    # canais, colhidas de um endereco que os canais aceitaram, e serve o
-    # seu indice a maquinas por desenho: sem conta, sem chave, sem
-    # JavaScript. O indice (CDX) devolve, em texto, um endereco por
-    # linha com a data da captura, e aceita um filtro pelo endereco. Se
-    # os enderecos dos canais nomearem o sujeito no proprio caminho, o
-    # que a SIC Noticias e a CMTV fazem, isto e um detetor de anos
-    # inteiros num pedido por dominio, e cobre a SIC, que nenhuma outra
-    # via cobre.
+    # Segunda volta, 2026-09-10, depois de a primeira ter medido mal por
+    # duas razoes, ambas verificadas na amostra que a sonda guardou:
     #
-    # O que decide: o robots.txt do arquivo (primeira hipotese), e a
-    # coluna dos enderecos declarados por dominio. Zero enderecos num
+    # 1. o filtro `.*ventura.*` casava com "aventura". Na amostra do
+    #    primeiro dominio apareciam "uma aventura muito intensa" e "acao
+    #    aventura e muita animacao". E a armadilha do nome dentro de
+    #    outro nome, ja escrita na seccao 7 da KB a proposito de
+    #    "Boaventura", agora num filtro por endereco. Passa a exigir o
+    #    nome proprio e o apelido juntos, com maiuscula ou minuscula,
+    #    separados por hifen ou por sublinhado, que e como os sitios
+    #    escrevem um nome num endereco;
+    # 2. cinco de nove consultas passaram dos 30 s e leram-se como "nao
+    #    responde". Uma consulta que varre um dominio inteiro com filtro
+    #    e cara do lado de la: o grupo pede 180 s por pedido.
+    #
+    # Uma terceira coisa que a primeira volta mostrou: um dominio bateu
+    # nos 200 do `limit`, ou seja, a resposta estava truncada e o numero
+    # nao era o numero. Duas janelas em vez de uma e `limit` a 1000.
+    #
+    # Ler assim: enderecos declarados por dominio e por janela. Zero num
     # dominio quer dizer que o arquivo nao o cobre, ou que os enderecos
     # desse canal nao nomeiam o sujeito; a amostra distingue as duas
-    # coisas. O limite de 200 esta la para medir sem descarregar o
-    # indice todo; a colheita a serio pagina.
-    #
-    # Nao verificado por quem escreveu isto: a sonda que o verifique.
+    # coisas. O `robots.txt` do arquivo devolveu 404 a 2026-09-10, o que
+    # quer dizer que nao pede ritmo nenhum.
     dominio_alvo: ''
     mostrar: true
+    tempo_limite_s: 180
     hipoteses:
-      - https://web.archive.org/robots.txt
-      - https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200
-      - https://web.archive.org/cdx/search/cdx?url=sic.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200
-      - https://web.archive.org/cdx/search/cdx?url=cnnportugal.iol.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200
-      - https://web.archive.org/cdx/search/cdx?url=tvi.iol.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200
-      - https://web.archive.org/cdx/search/cdx?url=tviplayer.iol.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200
-      - https://web.archive.org/cdx/search/cdx?url=cmjornal.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200
-      - https://web.archive.org/cdx/search/cdx?url=nowcanal.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200
-      - https://web.archive.org/cdx/search/cdx?url=rtp.pt/play/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200
-      - https://web.archive.org/cdx/search/cdx?url=rtp.pt/noticias/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200
+      - https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2021&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000
+      - https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2022&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000
+      - https://web.archive.org/cdx/search/cdx?url=sic.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000
+      - https://web.archive.org/cdx/search/cdx?url=cnnportugal.iol.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2021&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000
+      - https://web.archive.org/cdx/search/cdx?url=cnnportugal.iol.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2022&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000
+      - https://web.archive.org/cdx/search/cdx?url=tvi.iol.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2021&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000
+      - https://web.archive.org/cdx/search/cdx?url=tvi.iol.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2022&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000
+      - https://web.archive.org/cdx/search/cdx?url=tviplayer.iol.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000
+      - https://web.archive.org/cdx/search/cdx?url=cmjornal.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000
+      - https://web.archive.org/cdx/search/cdx?url=rtp.pt/play/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000
+      - https://web.archive.org/cdx/search/cdx?url=rtp.pt/noticias/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000
 
   - nome: Arquivo da web, uma pagina que a maquina nao le
     # As 233 linhas "por ler" sao paginas da SIC e do Expresso que
@@ -337,6 +345,14 @@ grupos:
       - https://sic.pt/robots.txt
 
   - nome: Motor com porta RSS
+    # MEDIDO E RECUSADO a 2026-09-10: as dez consultas responderam com
+    # cerca de 4,2 KB cada e zero ligacoes para qualquer dominio de
+    # interesse. Os termos que a sonda encontrou no texto sao o eco da
+    # propria consulta, que e a assinatura de uma pagina de aviso, a
+    # mesma do Startpage a 2026-09-08. A porta existe e nao devolve
+    # resultados a esta maquina. Fica aqui para nao voltar a ser
+    # tentado; nao correr outra vez sem uma razao nova.
+    #
     # O indice de noticias da Google tem uma porta RSS que responde a
     # maquinas onde a pagina normal recusa, e foi essa porta que
     # reconstruiu o historico. Um motor concorrente tem a mesma porta
@@ -362,6 +378,12 @@ grupos:
       - https://www.bing.com/search?q=site%3Asicnoticias.pt+{termo}+2022&format=rss
 
   - nome: DuckDuckGo na dimensao em que se usa
+    # MEDIDO a 2026-09-10, e a resposta e nao. De casa, os dois primeiros
+    # pedidos trouxeram 10 ligacoes cada e do terceiro em diante todos
+    # devolveram 305 bytes e zero, ate ao decimo. O motor aceita dois
+    # pedidos por corrida e fecha, o que serve para uma pergunta avulsa
+    # e nao para volume. Deixa de estar "por esclarecer" na KB.
+    #
     # A 2026-09-08 a versao leve deste motor respondeu com 10 ligacoes
     # da SIC Noticias e, mais tarde na mesma corrida, com 305 bytes e
     # zero: e o que faz um motor que aceita poucos pedidos e depois
@@ -408,3 +430,64 @@ grupos:
       - https://www.rtp.pt/play/p12659/grande-entrevista
       - https://www.rtp.pt/play/bg_l_ep/?listProgram=16214&page=1&type=all
       - https://www.rtp.pt/play/bg_l_ep/?listProgram=16214&page=2&type=all
+
+  - nome: SIC, o mapa que o proprio site declara e a pagina ao vivo
+    # O `robots.txt` da SIC Noticias, lido por inteiro a 2026-09-10,
+    # muda o que se sabia. A lista comprida de agentes proibidos e toda
+    # de recolha para modelos de linguagem; o `User-agent: *` proibe
+    # `/api`, `/sites`, `/sandbox`, `/hotfolder-video-exports` e
+    # `/pesquisa`, e acaba em `Allow: /`. Os 403 que este projeto
+    # apanhou em setembro foram todos na pesquisa, que e precisamente o
+    # unico caminho de conteudo que o site pede para nao tocar. E o
+    # ficheiro declara tres mapas, um deles so de videos.
+    #
+    # Duas perguntas, e as duas se veem aqui:
+    #
+    # 1. os mapas respondem, e quanto trazem? O de videos interessa mais
+    #    do que o de noticias, porque uma entrevista de canal e um video.
+    #    A coluna dos enderecos declarados e a que conta; um mapa de
+    #    indice traz mapas, nao pecas, e por isso a amostra importa;
+    # 2. uma pagina de artigo responde a esta maquina a partir de casa?
+    #    A 2026-09-08 a resposta da CI foi 403 para tudo. De casa nunca
+    #    foi perguntado, e a copia arquivada da primeira destas paginas
+    #    respondeu a 2026-09-10, o que prova que a pagina existe e e
+    #    legivel. Se as tres responderem ao vivo, a SIC deixa de precisar
+    #    do arquivo e passa a ser fonte como qualquer outro canal.
+    #
+    # Nenhuma destas hipoteses toca em `/pesquisa`.
+    dominio_alvo: sicnoticias.pt
+    mostrar: true
+    hipoteses:
+      - https://sicnoticias.pt/sitemap/index.xml
+      - https://sicnoticias.pt/sitemap/videos.xml
+      - https://sicnoticias.pt/sitemap/news.xml
+      - https://sicnoticias.pt/pais/2023-11-13-A-entrevista-a-Andre-Ventura-947f0b8a
+      - https://sicnoticias.pt/pais/2025-08-28-video-entrevista-de-andre-ventura-a-sic-noticias-61d623ea
+      - https://sicnoticias.pt/especiais/eleicoes-presidenciais/2025-10-24-andre-ventura-em-entrevista-exclusiva-a-sic-884d8388
+      - https://sic.pt/robots.txt
+
+  - nome: RTP Play, as temporadas que faltam
+    # Verificado a 2026-09-10: `bg_l_ep` pagina a serio, 12 episodios por
+    # pagina, e a pagina 2 traz ligacoes diferentes da 1. Era um palpite
+    # e confirmou-se, e e a porta para as temporadas antigas, que a
+    # pagina do programa nao mostra (so lista os ultimos doze).
+    #
+    # Falta o que nenhum raciocinio da: os identificadores das
+    # temporadas de 2019 a 2023. Sabem-se tres (16214 em 2026, 14350 em
+    # 2025, 12659 em 2024) e nao ha regra visivel entre eles. Estas
+    # hipoteses varrem a vizinhanca dos conhecidos e o identificador
+    # antigo do programa; o que responder com doze ligacoes de episodio
+    # e uma temporada, o que responder vazio nao existe.
+    #
+    # A ultima pergunta e ate onde vai a paginacao de uma temporada
+    # conhecida: se a pagina 20 responder vazia e a 5 responder cheia, o
+    # fim esta pelo meio, e isso diz quantos pedidos custa uma temporada.
+    dominio_alvo: rtp.pt
+    hipoteses:
+      - https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=1&type=all
+      - https://www.rtp.pt/play/bg_l_ep/?listProgram=12659&page=1&type=all
+      - https://www.rtp.pt/play/bg_l_ep/?listProgram=14350&page=1&type=all
+      - https://www.rtp.pt/play/bg_l_ep/?listProgram=16214&page=5&type=all
+      - https://www.rtp.pt/play/bg_l_ep/?listProgram=16214&page=20&type=all
+      - https://www.rtp.pt/play/p11017/grande-entrevista
+      - https://www.rtp.pt/play/p9822/grande-entrevista

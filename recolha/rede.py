@@ -30,6 +30,11 @@ CABECALHOS = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     "Accept-Language": "pt-PT,pt;q=0.9,en;q=0.8",
 }
+# Trinta segundos servem para uma pagina. Um indice que varre um dominio
+# inteiro pode demorar mais a montar a resposta do lado de la: a
+# 2026-09-10, cinco de nove consultas ao indice de um arquivo da web
+# passaram deste limite, e a leitura errada seria "nao responde". Quem
+# pede um limite maior declara-o no pedido.
 TEMPO_LIMITE = 30
 TENTATIVAS = 3
 MAX_BYTES = 32 * 1024 * 1024
@@ -75,12 +80,12 @@ def _espera_declarada(excecao) -> float | None:
         return None
 
 
-def obter_texto(url: str, tentativas: int = TENTATIVAS) -> str:
+def obter_texto(url: str, tentativas: int = TENTATIVAS, limite_s: float | None = None) -> str:
     ultimo: Exception | None = None
     for tentativa in range(tentativas):
         pedido = urllib.request.Request(url, headers=CABECALHOS)
         try:
-            with urllib.request.urlopen(pedido, timeout=TEMPO_LIMITE) as resposta:
+            with urllib.request.urlopen(pedido, timeout=limite_s or TEMPO_LIMITE) as resposta:
                 charset = resposta.headers.get_content_charset() or "utf-8"
                 corpo = resposta.read(MAX_BYTES + 1)
                 if len(corpo) > MAX_BYTES:

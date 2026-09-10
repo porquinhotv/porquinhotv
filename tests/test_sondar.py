@@ -138,6 +138,31 @@ class TestGrupoQueNaoExiste(unittest.TestCase):
         raise AssertionError("nao se pede nada a rede quando o grupo nao existe")
 
 
+class TestTempoLimite(unittest.TestCase):
+    """Um grupo que pede mais tempo por pedido tem de o passar a rede.
+
+    A 2026-09-10 cinco de nove consultas ao indice de um arquivo da web
+    apareceram no relatorio como "nao responde", e o que se tinha passado
+    era terem demorado mais do que os 30 s de omissao. "Nao responde em
+    30 s" e outra coisa, e um indice que varre um dominio inteiro demora
+    mesmo mais.
+    """
+
+    def test_o_limite_do_grupo_chega_ao_pedido(self):
+        pedidos = []
+
+        def obter(url, **extra):
+            pedidos.append(extra)
+            return "<html></html>"
+
+        config = {"termo": "x", "grupos": [
+            {"nome": "Lento", "tempo_limite_s": 120, "hipoteses": ["https://lento/"]},
+            {"nome": "Normal", "hipoteses": ["https://normal/"]},
+        ]}
+        sondar.correr(config, obter=obter, dormir=lambda s: None)
+        self.assertEqual(pedidos, [{"limite_s": 120}, {}])
+
+
 class TestCorrida(unittest.TestCase):
     def setUp(self):
         self.config = {
