@@ -40,29 +40,6 @@
 #     publicado_em: 2021-03-16   # so se for outro dia
 
 entrevistas:
-- data: '2020-11-16'
-  canal: tvi
-  programa: não apurado
-  prova: https://poligrafo.sapo.pt/fact-check/andre-ventura-diz-que-ha-medicos-a-ganhar-1-200-euros-de-salario-confirma-se/
-  titulo: 'RETIFICAÇÃO: André Ventura diz que há médicos "a ganhar 1.200 euros" de salário. Confirma-se? - Polígrafo'
-  publicado_em: '2020-11-17'
-- data: '2023-08-22'
-  canal: sic-noticias
-  programa: não apurado
-  prova: https://poligrafo.sapo.pt/fact-check/andre-ventura-eu-sou-o-politico-em-portugal-com-mais-seguidores-em-todas-as-redes-sociais-exceto-no-twitter/
-  titulo: 'André Ventura: "Eu sou o político em Portugal com mais seguidores em todas as redes sociais, exceto no Twitter" - Polígrafo'
-  publicado_em: '2023-08-23'
-- data: '2023-12-04'
-  canal: cnn-portugal
-  programa: não apurado
-  prova: https://poligrafo.sapo.pt/fact-check/andre-ventura-na-cnn-gastamos-para-a-corrupcao-todos-os-anos-o-equivalente-ao-orcamento-da-saude-cerca-de-9-ou-10-mil-milhoes/
-  titulo: 'André Ventura na CNN: "Gastamos para a corrupção todos os anos o equivalente ao Orçamento da Saúde, cerca de 9 ou 10 mil milhões" - Polígrafo'
-  publicado_em: '2023-12-05'
-- data: '2024-07-09'
-  canal: now
-  programa: não apurado
-  prova: https://www.atelevisao.com/cabo/news-now-anuncia-entrevista-com-o-presidente-do-chega-andre-ventura/
-  titulo: News Now anuncia entrevista com o presidente do Chega, André Ventura
 - data: '2025-03-12'
   canal: sic
   programa: não apurado
@@ -80,36 +57,3 @@ entrevistas:
   programa: não apurado
   prova: https://poligrafo.sapo.pt/fact-check/andre-ventura-2/
   titulo: André Ventura diz que "só 14%" das pessoas de etnia cigana "é que vivem do seu trabalho". Confirma-se? - Polígrafo
-- data: '2025-08-19'
-  canal: now
-  programa: não apurado
-  prova: https://poligrafo.sapo.pt/fact-check/andre-ventura-nos-temos-15-milhoes-de-portugueses-sem-medico-de-familia-e-os-imigrantes-que-chegam-tem-imediatamente-acesso-ao-sns/
-  titulo: 'André Ventura: "Nós temos 1,5 milhões de portugueses sem médico de família e os imigrantes que chegam têm imediatamente acesso ao SNS" - Polígrafo'
-  publicado_em: '2025-08-20'
-- data: '2025-08-25'
-  canal: cmtv
-  programa: não apurado
-  prova: https://poligrafo.sapo.pt/fact-check/ventura-diz-que-em-portugal-os-presos-ganham-mais-por-hora-do-que-os-bombeiros-e-verdade/
-  titulo: Ventura diz que, em Portugal, os presos ganham mais por hora do que os bombeiros. É verdade? - Polígrafo
-- data: '2026-05-13'
-  canal: cmtv
-  programa: não apurado
-  prova: https://24horas.pt/noticia/13-de-maio-ventura-confessa-se-a-luciana-video
-  titulo: '13 DE MAIO: VENTURA CONFESSA-SE A LUCIANA (VÍDEO)'
-- data: '2026-06-08'
-  canal: cmtv
-  programa: não apurado
-  prova: https://poligrafo.sapo.pt/fact-check/andre-ventura-portugueses-trabalham-em-media-mais-horas-do-que-os-parceiros-europeus/
-  titulo: 'André Ventura: "Portugueses trabalham em média mais horas do que os parceiros europeus" - Polígrafo'
-  publicado_em: '2026-06-09'
-- data: '2026-06-22'
-  canal: cmtv
-  programa: não apurado
-  prova: https://poligrafo.sapo.pt/fact-check/andre-ventura-diz-que-se-distingue-do-bloco-de-esquerda-em-materias-como-acabar-com-as-subvencoes-vitalicias-e-verdade/
-  titulo: André Ventura diz que se distingue do Bloco de Esquerda em matérias como acabar com as subvenções vitalícias. É verdade? - Polígrafo
-  publicado_em: '2026-06-23'
-- data: '2026-09-02'
-  canal: cnn-portugal
-  programa: não apurado
-  prova: https://www.jm-madeira.pt/v%C3%ADdeo/regi-o/30004362/ventura-agarra-se-a-vice-presidente-da-camara-do-funchal.html
-  titulo: Ventura 'agarra-se' a vice-presidente da Câmara do Funchal
