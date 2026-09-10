@@ -93,6 +93,19 @@
   },
   {
    "canais": {
+    "now": {
+     "declaradas": 1,
+     "emissoes": 1,
+     "entrevistas_distintas": 1,
+     "parciais": 0,
+     "sem_duracao": 1,
+     "tempo_s": 0
+    }
+   },
+   "data": "2024-07-09"
+  },
+  {
+   "canais": {
     "tvi": {
      "declaradas": 1,
      "emissoes": 1,
@@ -103,6 +116,19 @@
     }
    },
    "data": "2024-10-10"
+  },
+  {
+   "canais": {
+    "sic": {
+     "declaradas": 1,
+     "emissoes": 1,
+     "entrevistas_distintas": 1,
+     "parciais": 0,
+     "sem_duracao": 1,
+     "tempo_s": 0
+    }
+   },
+   "data": "2025-03-12"
   },
   {
    "canais": {
@@ -270,6 +296,19 @@
     }
    },
    "data": "2025-10-16"
+  },
+  {
+   "canais": {
+    "tvi": {
+     "declaradas": 1,
+     "emissoes": 1,
+     "entrevistas_distintas": 1,
+     "parciais": 0,
+     "sem_duracao": 0,
+     "tempo_s": 1371
+    }
+   },
+   "data": "2025-10-18"
   },
   {
    "canais": {
@@ -494,6 +533,14 @@
      "parciais": 0,
      "sem_duracao": 0,
      "tempo_s": 902
+    },
+    "tvi": {
+     "declaradas": 1,
+     "emissoes": 1,
+     "entrevistas_distintas": 1,
+     "parciais": 0,
+     "sem_duracao": 0,
+     "tempo_s": 902
     }
    },
    "data": "2026-06-03"
@@ -624,9 +671,10 @@
   "busca-rtp1",
   "clipping-imprensa",
   "motor-rtp3",
+  "paginas-de-canal",
   "registo-curado"
  ],
- "gerado_em": "2026-09-10T05:47:56+00:00",
+ "gerado_em": "2026-09-10T07:10:13+00:00",
  "por_ano": [
   {
    "ano": "2020",
@@ -651,24 +699,24 @@
   },
   {
    "ano": "2024",
-   "emissoes": 4,
-   "entrevistas_distintas": 4,
-   "sem_duracao": 0,
+   "emissoes": 5,
+   "entrevistas_distintas": 5,
+   "sem_duracao": 1,
    "tempo_s": 8143
   },
   {
    "ano": "2025",
-   "emissoes": 21,
-   "entrevistas_distintas": 17,
-   "sem_duracao": 10,
-   "tempo_s": 27954
+   "emissoes": 23,
+   "entrevistas_distintas": 19,
+   "sem_duracao": 11,
+   "tempo_s": 29325
   },
   {
    "ano": "2026",
-   "emissoes": 22,
-   "entrevistas_distintas": 19,
+   "emissoes": 23,
+   "entrevistas_distintas": 20,
    "sem_duracao": 8,
-   "tempo_s": 28616
+   "tempo_s": 29518
   }
  ],
  "por_canal": [
@@ -690,19 +738,19 @@
   },
   {
    "canal": "sic",
-   "emissoes": 0,
-   "entrevistas_distintas": 0,
+   "emissoes": 1,
+   "entrevistas_distintas": 1,
    "nome": "SIC",
-   "sem_duracao": 0,
+   "sem_duracao": 1,
    "tempo_s": 0
   },
   {
    "canal": "tvi",
-   "emissoes": 11,
-   "entrevistas_distintas": 11,
+   "emissoes": 13,
+   "entrevistas_distintas": 13,
    "nome": "TVI",
    "sem_duracao": 2,
-   "tempo_s": 21904
+   "tempo_s": 24177
   },
   {
    "canal": "sic-noticias",
@@ -730,10 +778,10 @@
   },
   {
    "canal": "now",
-   "emissoes": 4,
-   "entrevistas_distintas": 4,
+   "emissoes": 5,
+   "entrevistas_distintas": 5,
    "nome": "NOW",
-   "sem_duracao": 4,
+   "sem_duracao": 5,
    "tempo_s": 0
   },
   {
@@ -818,6 +866,16 @@
   },
   {
    "chaves": [
+    "a3ec8e2e9229"
+   ],
+   "data": "2024-07-09",
+   "emissoes": 1,
+   "entrevistas_distintas": 1,
+   "sem_duracao": 1,
+   "tempo_s": 0
+  },
+  {
+   "chaves": [
     "415ae7e6e6be"
    ],
    "data": "2024-10-10",
@@ -825,6 +883,16 @@
    "entrevistas_distintas": 1,
    "sem_duracao": 0,
    "tempo_s": 2125
+  },
+  {
+   "chaves": [
+    "2e99c05f8b74"
+   ],
+   "data": "2025-03-12",
+   "emissoes": 1,
+   "entrevistas_distintas": 1,
+   "sem_duracao": 1,
+   "tempo_s": 0
   },
   {
    "chaves": [
@@ -935,6 +1003,16 @@
    "entrevistas_distintas": 1,
    "sem_duracao": 0,
    "tempo_s": 6776
+  },
+  {
+   "chaves": [
+    "76705b3eab86"
+   ],
+   "data": "2025-10-18",
+   "emissoes": 1,
+   "entrevistas_distintas": 1,
+   "sem_duracao": 0,
+   "tempo_s": 1371
   },
   {
    "chaves": [
@@ -1080,13 +1158,14 @@
   },
   {
    "chaves": [
+    "0cdf964959e7",
     "a734fc34ebd0"
    ],
    "data": "2026-06-03",
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "emissoes": 2,
+   "entrevistas_distintas": 2,
    "sem_duracao": 0,
-   "tempo_s": 902
+   "tempo_s": 1804
   },
   {
    "chaves": [
@@ -1215,15 +1294,22 @@
   {
    "emissoes": 1,
    "entrevistas_distintas": 1,
+   "mes": "2024-07",
+   "sem_duracao": 1,
+   "tempo_s": 0
+  },
+  {
+   "emissoes": 1,
+   "entrevistas_distintas": 1,
    "mes": "2024-10",
    "sem_duracao": 0,
    "tempo_s": 2125
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "emissoes": 2,
+   "entrevistas_distintas": 2,
    "mes": "2025-03",
-   "sem_duracao": 0,
+   "sem_duracao": 1,
    "tempo_s": 145
   },
   {
@@ -1262,11 +1348,11 @@
    "tempo_s": 0
   },
   {
-   "emissoes": 3,
-   "entrevistas_distintas": 2,
+   "emissoes": 4,
+   "entrevistas_distintas": 3,
    "mes": "2025-10",
    "sem_duracao": 1,
-   "tempo_s": 6776
+   "tempo_s": 8147
   },
   {
    "emissoes": 5,
@@ -1311,11 +1397,11 @@
    "tempo_s": 6386
   },
   {
-   "emissoes": 6,
-   "entrevistas_distintas": 6,
+   "emissoes": 7,
+   "entrevistas_distintas": 7,
    "mes": "2026-06",
    "sem_duracao": 3,
-   "tempo_s": 4953
+   "tempo_s": 5855
   },
   {
    "emissoes": 4,
@@ -1334,15 +1420,15 @@
  ],
  "por_origem": {
   "canal": {
-   "emissoes": 40,
-   "entrevistas_distintas": 33,
+   "emissoes": 42,
+   "entrevistas_distintas": 35,
    "sem_duracao": 10,
-   "tempo_s": 66388
+   "tempo_s": 68661
   },
   "imprensa": {
-   "emissoes": 11,
-   "entrevistas_distintas": 11,
-   "sem_duracao": 11,
+   "emissoes": 13,
+   "entrevistas_distintas": 13,
+   "sem_duracao": 13,
    "tempo_s": 0
   }
  },
@@ -1399,9 +1485,23 @@
   {
    "emissoes": 1,
    "entrevistas_distintas": 1,
+   "sem_duracao": 1,
+   "semana": "2024-W28",
+   "tempo_s": 0
+  },
+  {
+   "emissoes": 1,
+   "entrevistas_distintas": 1,
    "sem_duracao": 0,
    "semana": "2024-W41",
    "tempo_s": 2125
+  },
+  {
+   "emissoes": 1,
+   "entrevistas_distintas": 1,
+   "sem_duracao": 1,
+   "semana": "2025-W11",
+   "tempo_s": 0
   },
   {
    "emissoes": 1,
@@ -1467,11 +1567,11 @@
    "tempo_s": 0
   },
   {
-   "emissoes": 2,
-   "entrevistas_distintas": 1,
+   "emissoes": 3,
+   "entrevistas_distintas": 2,
    "sem_duracao": 0,
    "semana": "2025-W42",
-   "tempo_s": 6776
+   "tempo_s": 8147
   },
   {
    "emissoes": 1,
@@ -1551,11 +1651,11 @@
    "tempo_s": 6386
   },
   {
-   "emissoes": 2,
-   "entrevistas_distintas": 2,
+   "emissoes": 3,
+   "entrevistas_distintas": 3,
    "sem_duracao": 0,
    "semana": "2026-W23",
-   "tempo_s": 1853
+   "tempo_s": 2755
   },
   {
    "emissoes": 1,
@@ -1626,10 +1726,10 @@
   "pergunta": "Quantas entrevistas exclusivas deu André Ventura na televisão portuguesa, e quanto tempo ocuparam?"
  },
  "totais": {
-  "emissoes": 51,
-  "entrevistas_distintas": 44,
-  "sem_duracao": 21,
-  "tempo_s": 66388
+  "emissoes": 55,
+  "entrevistas_distintas": 48,
+  "sem_duracao": 23,
+  "tempo_s": 68661
  },
  "ultimo_registo": "2026-09-02"
 }

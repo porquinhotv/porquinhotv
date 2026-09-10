@@ -37,7 +37,7 @@
    "programa": "Grande Entrevista",
    "prova_url": "https://www.rtp.pt/play/p9766/e648005/grande-entrevista",
    "publicado_em": "2022-10-19",
-   "rondas": 7,
+   "rondas": 10,
    "titulo": "Grande Entrevista - André Ventura - ep. 41"
   },
   {
@@ -97,7 +97,7 @@
    "programa": "Eleições Legislativas 2024",
    "prova_url": "https://www.rtp.pt/play/p13071/e752537/eleicoes-legislativas-2024-entrevistas-lideres-partidarios",
    "publicado_em": "2024-03-04",
-   "rondas": 7,
+   "rondas": 10,
    "titulo": "Eleições Legislativas 2024 - Entrevistas Líderes Partidários - André Ventura - ep. 6"
   },
   {
@@ -141,6 +141,26 @@
    "titulo": "A entrevista a André Ventura na íntegra"
   },
   {
+   "bloco": "a3ec8e2e9229",
+   "canal": "now",
+   "confianca": "media",
+   "data": "2024-07-09",
+   "data_origem": "declarada",
+   "duracao_s": null,
+   "entrevista": "a3ec8e2e9229",
+   "fonte": "clipping-imprensa",
+   "fontes_distintas": 0,
+   "id": "clipping-imprensa:ded0b2d6fae5",
+   "origem": "imprensa",
+   "parcial": false,
+   "primeira_vez": "2026-09-10",
+   "programa": "não apurado",
+   "prova_url": "https://www.atelevisao.com/cabo/news-now-anuncia-entrevista-com-o-presidente-do-chega-andre-ventura/",
+   "publicado_em": "2024-07-09",
+   "rondas": 0,
+   "titulo": "News Now anuncia entrevista com o presidente do Chega, André Ventura"
+  },
+  {
    "bloco": "415ae7e6e6be",
    "canal": "tvi",
    "confianca": "alta",
@@ -159,6 +179,26 @@
    "publicado_em": "2024-10-10",
    "rondas": 0,
    "titulo": "André Ventura: a entrevista na íntegra"
+  },
+  {
+   "bloco": "2e99c05f8b74",
+   "canal": "sic",
+   "confianca": "media",
+   "data": "2025-03-12",
+   "data_origem": "declarada",
+   "duracao_s": null,
+   "entrevista": "2e99c05f8b74",
+   "fonte": "clipping-imprensa",
+   "fontes_distintas": 0,
+   "id": "clipping-imprensa:cfe8de3b2e96",
+   "origem": "imprensa",
+   "parcial": false,
+   "primeira_vez": "2026-09-10",
+   "programa": "não apurado",
+   "prova_url": "https://poligrafo.sapo.pt/fact-check/andre-ventura-todas-as-sondagens-antes-das-legislativas-de-2024-davam-13-ou-14-ao-chega-mas-tivemos-18-dos-votos/",
+   "publicado_em": "2025-03-13",
+   "rondas": 0,
+   "titulo": "André Ventura: \"Todas as sondagens antes das legislativas de 2024 davam 13% ou 14% ao Chega, mas tivemos 18% dos votos\" - Polígrafo"
   },
   {
    "bloco": "ba05f89988d7",
@@ -441,6 +481,26 @@
    "titulo": "A entrevista exclusiva a André Ventura na íntegra"
   },
   {
+   "bloco": "76705b3eab86",
+   "canal": "tvi",
+   "confianca": "media",
+   "data": "2025-10-18",
+   "data_origem": "declarada",
+   "duracao_s": 1371,
+   "entrevista": "76705b3eab86",
+   "fonte": "paginas-de-canal",
+   "fontes_distintas": 1,
+   "id": "paginas-de-canal:3e1503e17977",
+   "origem": "canal",
+   "parcial": false,
+   "primeira_vez": "2026-09-10",
+   "programa": "não apurado",
+   "prova_url": "https://tviplayer.iol.pt/programa/cnn-sabado/619396070cf21a10a40fd15d/video/68f3f8ef0cf29d28d8296e09",
+   "publicado_em": "2025-10-18",
+   "rondas": 3,
+   "titulo": "Entrevista. Gabriel Mithá Ribeiro acusa Ventura de \"caos narcísico\""
+  },
+  {
    "bloco": "0c20c61281df",
    "canal": "sic-noticias",
    "confianca": "alta",
@@ -517,7 +577,7 @@
    "programa": "Grande Entrevista",
    "prova_url": "https://www.rtp.pt/play/p15797/e887091/grande-entrevista-candidatos-a-presidencia-da-republica",
    "publicado_em": "2025-11-04",
-   "rondas": 7,
+   "rondas": 10,
    "titulo": "Grande Entrevista - Candidatos à Presidência da República - André Ventura - ep. 2"
   },
   {
@@ -617,7 +677,7 @@
    "programa": "Grande Entrevista",
    "prova_url": "https://www.rtp.pt/play/p16214/e903851/grande-entrevista",
    "publicado_em": "2026-01-21",
-   "rondas": 7,
+   "rondas": 10,
    "titulo": "Grande Entrevista - André Ventura - ep. 2"
   },
   {
@@ -818,6 +878,26 @@
    "prova_url": "https://cnnportugal.iol.pt/videos/a-entrevista-a-andre-ventura-na-cnn-portugal-na-integra/6a1fd4390cf2d0ed34b86072",
    "publicado_em": "2026-06-03",
    "rondas": 0,
+   "titulo": "A entrevista a André Ventura na CNN Portugal na íntegra"
+  },
+  {
+   "bloco": "0cdf964959e7",
+   "canal": "tvi",
+   "confianca": "media",
+   "data": "2026-06-03",
+   "data_origem": "declarada",
+   "duracao_s": 902,
+   "entrevista": "0cdf964959e7",
+   "fonte": "paginas-de-canal",
+   "fontes_distintas": 1,
+   "id": "paginas-de-canal:80df3778d64c",
+   "origem": "canal",
+   "parcial": false,
+   "primeira_vez": "2026-09-10",
+   "programa": "não apurado",
+   "prova_url": "https://tviplayer.iol.pt/programa/cnn-20-horas/69a16fe7d34e28842c8125a9/video/6a1fd4390cf2d0ed34b86072",
+   "publicado_em": "2026-06-03",
+   "rondas": 3,
    "titulo": "A entrevista a André Ventura na CNN Portugal na íntegra"
   },
   {
@@ -1022,5 +1102,5 @@
   }
  ],
  "esquema": 1,
- "total": 51
+ "total": 55
 }

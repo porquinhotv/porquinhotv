@@ -1,6 +1,21 @@
 {
  "candidatos": [
   {
+   "bloco": "0cdf964959e7",
+   "fontes": [
+    "paginas-de-canal"
+   ],
+   "primeira_ronda": "historico-2026-09-10-1",
+   "prova_url": "https://tviplayer.iol.pt/programa/cnn-20-horas/69a16fe7d34e28842c8125a9/video/6a1fd4390cf2d0ed34b86072",
+   "rondas": [
+    "historico-2026-09-10-1",
+    "historico-2026-09-10-2",
+    "historico-2026-09-10-3"
+   ],
+   "titulo": "A entrevista a André Ventura na CNN Portugal na íntegra",
+   "ultima_ronda": "historico-2026-09-10-3"
+  },
+  {
    "bloco": "140ec62fb372",
    "fontes": [
     "busca-rtp1"
@@ -14,10 +29,13 @@
     "2026-09-09-r1",
     "2026-09-09-r2",
     "2026-09-10-r1",
-    "2026-09-10-r2"
+    "2026-09-10-r2",
+    "historico-2026-09-10-1",
+    "historico-2026-09-10-2",
+    "historico-2026-09-10-3"
    ],
    "titulo": "Eleições Legislativas 2024 - Entrevistas Líderes Partidários - André Ventura - ep. 6",
-   "ultima_ronda": "2026-09-10-r2"
+   "ultima_ronda": "historico-2026-09-10-3"
   },
   {
    "bloco": "1a3e06092d4d",
@@ -36,6 +54,21 @@
    "ultima_ronda": "2026-09-10-r2"
   },
   {
+   "bloco": "76705b3eab86",
+   "fontes": [
+    "paginas-de-canal"
+   ],
+   "primeira_ronda": "historico-2026-09-10-1",
+   "prova_url": "https://tviplayer.iol.pt/programa/cnn-sabado/619396070cf21a10a40fd15d/video/68f3f8ef0cf29d28d8296e09",
+   "rondas": [
+    "historico-2026-09-10-1",
+    "historico-2026-09-10-2",
+    "historico-2026-09-10-3"
+   ],
+   "titulo": "Entrevista. Gabriel Mithá Ribeiro acusa Ventura de \"caos narcísico\"",
+   "ultima_ronda": "historico-2026-09-10-3"
+  },
+  {
    "bloco": "a2842ebd3cd9",
    "fontes": [
     "busca-rtp1"
@@ -49,10 +82,13 @@
     "2026-09-09-r1",
     "2026-09-09-r2",
     "2026-09-10-r1",
-    "2026-09-10-r2"
+    "2026-09-10-r2",
+    "historico-2026-09-10-1",
+    "historico-2026-09-10-2",
+    "historico-2026-09-10-3"
    ],
    "titulo": "Grande Entrevista - André Ventura - ep. 2",
-   "ultima_ronda": "2026-09-10-r2"
+   "ultima_ronda": "historico-2026-09-10-3"
   },
   {
    "bloco": "ba05f89988d7",
@@ -84,10 +120,13 @@
     "2026-09-09-r1",
     "2026-09-09-r2",
     "2026-09-10-r1",
-    "2026-09-10-r2"
+    "2026-09-10-r2",
+    "historico-2026-09-10-1",
+    "historico-2026-09-10-2",
+    "historico-2026-09-10-3"
    ],
    "titulo": "Grande Entrevista - Candidatos à Presidência da República - André Ventura - ep. 2",
-   "ultima_ronda": "2026-09-10-r2"
+   "ultima_ronda": "historico-2026-09-10-3"
   },
   {
    "bloco": "d73b643e43ca",
@@ -103,12 +142,15 @@
     "2026-09-09-r1",
     "2026-09-09-r2",
     "2026-09-10-r1",
-    "2026-09-10-r2"
+    "2026-09-10-r2",
+    "historico-2026-09-10-1",
+    "historico-2026-09-10-2",
+    "historico-2026-09-10-3"
    ],
    "titulo": "Grande Entrevista - André Ventura - ep. 41",
-   "ultima_ronda": "2026-09-10-r2"
+   "ultima_ronda": "historico-2026-09-10-3"
   }
  ],
  "esquema": 1,
- "total": 6
+ "total": 8
 }
