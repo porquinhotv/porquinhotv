@@ -1545,8 +1545,246 @@
    "mostrar": false,
    "nome": "RTP Play, as temporadas que faltam",
    "verificado_em": "2026-09-10T08:54:16+00:00"
+  },
+  {
+   "dominio_alvo": "sicnoticias.pt",
+   "hipoteses": [
+    {
+     "amostra": "https://sicnoticias.pt/mundo/2025-08-28-caca-f-16-da-forca-aerea-polaca-despenha-se-e-faz-um-morto--40dcdad7 2025-08-28T22:26:47.541Z https://sicnoticias.pt/mundo/2025-08-28-caca-f-16-da-forca-aerea-polaca-despenha-se-e-faz-um-morto--40dcdad7 2025-08-28T22:26:47.541Z https://sicnoticias.pt/especiais/guerra-russia-ucrania/2025-08-28-video-nao-havera-qualquer-encontro-entre-zelensky-e-putin-num-futu",
+     "bytes_html": 57115,
+     "bytes_texto": 46593,
+     "enderecos": 268,
+     "exemplos": [],
+     "exemplos_enderecos": [
+      "https://sicnoticias.pt/mundo/2025-08-28-caca-f-16-da-forca-aerea-polaca-despenha-se-e-faz-um-morto--40dcdad7",
+      "https://sicnoticias.pt/mundo/2025-08-28-caca-f-16-da-forca-aerea-polaca-despenha-se-e-faz-um-morto--40dcdad7",
+      "https://sicnoticias.pt/especiais/guerra-russia-ucrania/2025-08-28-video-nao-havera-qualquer-encontro-entre-zelensky-e-putin-num-futuro-imediato-diz-chanceler-alemao-9ca93cc5"
+     ],
+     "ligacoes": 0,
+     "responde": true,
+     "termos_presentes": [
+      "Ventura",
+      "André Ventura",
+      "Andre Ventura"
+     ],
+     "url": "https://sicnoticias.pt/sitemap/2025/08/2025-08-28.xml"
+    },
+    {
+     "amostra": "https://sicnoticias.pt/mundo/2025-10-24-lituania-suspende-trafego-aereo-em-dois-aeroportos-devido-a-presenca-de-baloes-bielorrussos-4491da96 2025-10-24T22:59:31.617Z https://sicnoticias.pt/mundo/2025-10-24-lituania-suspende-trafego-aereo-em-dois-aeroportos-devido-a-presenca-de-baloes-bielorrussos-4491da96 2025-10-24T22:59:31.617Z https://sicnoticias.pt/desporto/2025-10-24-bruno-fernandes-so-tomara",
+     "bytes_html": 59612,
+     "bytes_texto": 48310,
+     "enderecos": 288,
+     "exemplos": [],
+     "exemplos_enderecos": [
+      "https://sicnoticias.pt/mundo/2025-10-24-lituania-suspende-trafego-aereo-em-dois-aeroportos-devido-a-presenca-de-baloes-bielorrussos-4491da96",
+      "https://sicnoticias.pt/mundo/2025-10-24-lituania-suspende-trafego-aereo-em-dois-aeroportos-devido-a-presenca-de-baloes-bielorrussos-4491da96",
+      "https://sicnoticias.pt/desporto/2025-10-24-bruno-fernandes-so-tomara-uma-decisao-sobre-o-futuro-depois-do-mundial-815efd70"
+     ],
+     "ligacoes": 0,
+     "responde": true,
+     "termos_presentes": [
+      "Ventura",
+      "André Ventura",
+      "Andre Ventura"
+     ],
+     "url": "https://sicnoticias.pt/sitemap/2025/10/2025-10-24.xml"
+    },
+    {
+     "amostra": "https://sicnoticias.pt/desporto/2023-11-13-TransferRoom-o-Tinder-do-futebol-que-permitiu-ao-Sporting-contratar-Gyokeres-69b759cb 2023-11-13T23:56:07.751Z https://sicnoticias.pt/desporto/2023-11-13-TransferRoom-o-Tinder-do-futebol-que-permitiu-ao-Sporting-contratar-Gyokeres-69b759cb 2023-11-13T23:56:07.751Z https://sicnoticias.pt/pais/2023-11-13-Operacao-Influencer-juiz-considerou-desproporcionais-",
+     "bytes_html": 34611,
+     "bytes_texto": 27365,
+     "enderecos": 184,
+     "exemplos": [],
+     "exemplos_enderecos": [
+      "https://sicnoticias.pt/desporto/2023-11-13-TransferRoom-o-Tinder-do-futebol-que-permitiu-ao-Sporting-contratar-Gyokeres-69b759cb",
+      "https://sicnoticias.pt/desporto/2023-11-13-TransferRoom-o-Tinder-do-futebol-que-permitiu-ao-Sporting-contratar-Gyokeres-69b759cb",
+      "https://sicnoticias.pt/pais/2023-11-13-Operacao-Influencer-juiz-considerou-desproporcionais-medidas-de-coacao-pedidas-pelo-MP-8d569013"
+     ],
+     "ligacoes": 0,
+     "responde": true,
+     "termos_presentes": [
+      "Ventura",
+      "André Ventura",
+      "Andre Ventura"
+     ],
+     "url": "https://sicnoticias.pt/sitemap/2023/11/2023-11-13.xml"
+    },
+    {
+     "erro": "pedido falhou: https://sicnoticias.pt/sitemap/2022/01/2022-01-5.xml: HTTP Error 403: Forbidden",
+     "responde": false,
+     "url": "https://sicnoticias.pt/sitemap/2022/01/2022-01-5.xml"
+    },
+    {
+     "erro": "pedido falhou: https://sicnoticias.pt/sitemap/2022/01/2022-01-05.xml: HTTP Error 403: Forbidden",
+     "responde": false,
+     "url": "https://sicnoticias.pt/sitemap/2022/01/2022-01-05.xml"
+    },
+    {
+     "erro": "pedido falhou: https://sicnoticias.pt/sitemap/2021/01/2021-01-13.xml: HTTP Error 403: Forbidden",
+     "responde": false,
+     "url": "https://sicnoticias.pt/sitemap/2021/01/2021-01-13.xml"
+    },
+    {
+     "erro": "pedido falhou: https://sicnoticias.pt/sitemap/2019/10/2019-10-25.xml: HTTP Error 403: Forbidden",
+     "responde": false,
+     "url": "https://sicnoticias.pt/sitemap/2019/10/2019-10-25.xml"
+    }
+   ],
+   "mostrar": true,
+   "nome": "SIC, o mapa do dia",
+   "verificado_em": "2026-09-10T09:31:26+00:00"
+  },
+  {
+   "dominio_alvo": "rtp.pt",
+   "hipoteses": [
+    {
+     "amostra": "29 abr. 2026 Paulo Rangel 08 abr. 2026 Ricardo Conde 01 abr. 2026 Rui Valério 25 mar. 2026 Rui Paula 18 mar. 2026 Miguel Stilwell d'Andrade 11 mar. 2026 Nuno Severiano Teixeira 05 mar. 2026 José Manuel Durão Barroso 25 fev. 2026 Maria da Graça Carvalho 18 fev. 2026 José Luís Carneiro 04 fev. 2026 Manuel Castro Almeida 02 fev. 2026 António José Seguro 21 jan. 2026 André Ventura 903969",
+     "bytes_html": 13533,
+     "bytes_texto": 386,
+     "enderecos": 0,
+     "exemplos": [
+      "https://www.rtp.pt/play/p10324/e925911/grande-entrevista",
+      "https://www.rtp.pt/play/p10324/e921167/grande-entrevista",
+      "https://www.rtp.pt/play/p10324/e919711/grande-entrevista"
+     ],
+     "exemplos_enderecos": [],
+     "ligacoes": 12,
+     "responde": true,
+     "termos_presentes": [
+      "Ventura",
+      "André Ventura",
+      "Andre Ventura"
+     ],
+     "url": "https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=2&type=all"
+    },
+    {
+     "amostra": "01 out. 2025 Miguel Pinto Luz 24 set. 2025 Marco Neves 17 set. 2025 João Almeida 10 set. 2025 Gonçalo Matias 26 ago. 2025 Manuel Castro Almeida 24 jul. 2025 Grande Entrevista 17 jul. 2025 Miguel Pinto Luz 09 jul. 2025 Mariana Van Zeller 02 jul. 2025 Tiago Oliveira 25 jun. 2025 Bruno Maçães 18 jun. 2025 Henrique Gouveia e Melo 11 jun. 2025 Carlos Tavares 857242",
+     "bytes_html": 14324,
+     "bytes_texto": 362,
+     "enderecos": 0,
+     "exemplos": [
+      "https://www.rtp.pt/play/p10324/e879352/grande-entrevista",
+      "https://www.rtp.pt/play/p10324/e877898/grande-entrevista",
+      "https://www.rtp.pt/play/p10324/e876329/grande-entrevista"
+     ],
+     "exemplos_enderecos": [],
+     "ligacoes": 12,
+     "responde": true,
+     "termos_presentes": [],
+     "url": "https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=4&type=all"
+    },
+    {
+     "amostra": "10 jul. 2024 Sebastião Bugalho 08 jul. 2024 Lucília Gago 03 jul. 2024 Pedro Nuno Santos 19 jun. 2024 Vasco Lourenço 12 jun. 2024 António Leitão Amaro 05 jun. 2024 José Gameiro 29 mai. 2024 Jorge Moreira da Silva 15 mai. 2024 Ana Jorge 08 mai. 2024 José Pedro Aguiar-Branco 01 mai. 2024 João Pina 18 abr. 2024 Daniela Melchior 10 abr. 2024 Nuno Morais Sarmento 761410",
+     "bytes_html": 14364,
+     "bytes_texto": 366,
+     "enderecos": 0,
+     "exemplos": [
+      "https://www.rtp.pt/play/p10324/e783915/grande-entrevista",
+      "https://www.rtp.pt/play/p10324/e782137/grande-entrevista",
+      "https://www.rtp.pt/play/p10324/e781089/grande-entrevista"
+     ],
+     "exemplos_enderecos": [],
+     "ligacoes": 12,
+     "responde": true,
+     "termos_presentes": [],
+     "url": "https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=8&type=all"
+    },
+    {
+     "amostra": "26 jul. 2023 Paulo Vizeu Pinheiro 19 jul. 2023 Daniela Braga 13 jul. 2023 Pedro Adão e Silva 12 jul. 2023 Pedro Adão e Silva 05 jul. 2023 Álvaro Covões 28 jun. 2023 Mário Centeno 21 jun. 2023 Joana Vasconcelos 14 jun. 2023 António Costa Silva 07 jun. 2023 Rui Miguel Nabeiro 31 mai. 2023 Mariana Mortágua 24 mai. 2023 António Barreto 17 mai. 2023 Jorge Moreira da Silva 692810",
+     "bytes_html": 14674,
+     "bytes_texto": 376,
+     "enderecos": 0,
+     "exemplos": [
+      "https://www.rtp.pt/play/p10324/e707510/grande-entrevista",
+      "https://www.rtp.pt/play/p10324/e706278/grande-entrevista",
+      "https://www.rtp.pt/play/p10324/e714767/grande-entrevista"
+     ],
+     "exemplos_enderecos": [],
+     "ligacoes": 12,
+     "responde": true,
+     "termos_presentes": [],
+     "url": "https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=12&type=all"
+    },
+    {
+     "amostra": "",
+     "bytes_html": 0,
+     "bytes_texto": 0,
+     "enderecos": 0,
+     "exemplos": [],
+     "exemplos_enderecos": [],
+     "ligacoes": 0,
+     "responde": true,
+     "termos_presentes": [],
+     "url": "https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=20&type=all"
+    },
+    {
+     "amostra": "",
+     "bytes_html": 0,
+     "bytes_texto": 0,
+     "enderecos": 0,
+     "exemplos": [],
+     "exemplos_enderecos": [],
+     "ligacoes": 0,
+     "responde": true,
+     "termos_presentes": [],
+     "url": "https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=40&type=all"
+    }
+   ],
+   "mostrar": false,
+   "nome": "RTP Play, ate onde vai a lista de episodios",
+   "verificado_em": "2026-09-10T09:31:38+00:00"
+  },
+  {
+   "dominio_alvo": "",
+   "hipoteses": [
+    {
+     "erro": "pedido falhou: https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2020&to=2020&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000: HTTP Error 504: Gateway Time-out",
+     "responde": false,
+     "url": "https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2020&to=2020&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000"
+    },
+    {
+     "amostra": "20210326063135 https://sicnoticias.pt/desporto/2020-05-05-O-populismo-racista-do-Andre-Ventura-apenas-serve-para-virar-homens-contra-homens 200 20210308123824 https://sicnoticias.pt/economia/2020-09-02-Andre-Ventura-pede-divulgacao-publica-e-integral-da-auditoria-ao-Novo-Banco 200 20210617135736 http://sicnoticias.pt/especiais/autarquicas/2021-06-17-Andre-Ventura-e-candidato-a-Assembleia-Municipal",
+     "bytes_html": 32051,
+     "bytes_texto": 32050,
+     "enderecos": 220,
+     "exemplos": [],
+     "exemplos_enderecos": [
+      "20210326063135 https://sicnoticias.pt/desporto/2020-05-05-O-populismo-racista-do-Andre-Ventura-apenas-serve-para-virar-homens-contra-homens 200",
+      "20210308123824 https://sicnoticias.pt/economia/2020-09-02-Andre-Ventura-pede-divulgacao-publica-e-integral-da-auditoria-ao-Novo-Banco 200",
+      "20210617135736 http://sicnoticias.pt/especiais/autarquicas/2021-06-17-Andre-Ventura-e-candidato-a-Assembleia-Municipal-de-Moura-42ef25b8 301"
+     ],
+     "ligacoes": 0,
+     "responde": true,
+     "termos_presentes": [
+      "Ventura",
+      "André Ventura",
+      "Andre Ventura"
+     ],
+     "url": "https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2021&to=2021&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000"
+    },
+    {
+     "amostra": "",
+     "bytes_html": 0,
+     "bytes_texto": 0,
+     "enderecos": 0,
+     "exemplos": [],
+     "exemplos_enderecos": [],
+     "ligacoes": 0,
+     "responde": true,
+     "termos_presentes": [],
+     "url": "https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2022&to=2022&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000"
+    },
+    {
+     "erro": "pedido falhou: https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2023&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000: HTTP Error 504: Gateway Time-out",
+     "responde": false,
+     "url": "https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2023&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000"
+    }
+   ],
+   "mostrar": true,
+   "nome": "Arquivo da web, uma janela de um ano de cada vez",
+   "verificado_em": "2026-09-10T09:31:51+00:00"
   }
  ],
  "termo": "ventura entrevista",
- "verificado_em": "2026-09-10T08:54:33+00:00"
+ "verificado_em": "2026-09-10T09:31:51+00:00"
 }

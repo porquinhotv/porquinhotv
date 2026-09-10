@@ -1,6 +1,6 @@
 # Sondagem de hipoteses
 
-Verificado em 2026-09-10T08:54:33+00:00. Consulta: ventura entrevista.
+Verificado em 2026-09-10T09:31:51+00:00. Consulta: ventura entrevista.
 
 Uma hipotese so serve se responder E trouxer ligacoes. Responder com 200
 e zero ligacoes e uma pagina de aviso, nao um resultado.
@@ -411,3 +411,72 @@ Verificado em 2026-09-10T08:54:16+00:00.
 - https://www.rtp.pt/play/p9822/grande-entrevista -> https://www.rtp.pt/play/p16170/praca-da-alegria
 - https://www.rtp.pt/play/p9822/grande-entrevista -> https://www.rtp.pt/play/p16123/a-nossa-tarde
 - https://www.rtp.pt/play/p9822/grande-entrevista -> https://www.rtp.pt/play/p16136/linha-da-frente
+
+## SIC, o mapa do dia
+
+Verificado em 2026-09-10T09:31:26+00:00.
+
+| Hipotese | Responde | Texto | Ligacoes | Enderecos | Termos |
+|---|---|---|---|---|---|
+| https://sicnoticias.pt/sitemap/2025/08/2025-08-28.xml | sim | 46593 | 0 | 268 | Ventura, André Ventura, Andre Ventura |
+| https://sicnoticias.pt/sitemap/2025/10/2025-10-24.xml | sim | 48310 | 0 | 288 | Ventura, André Ventura, Andre Ventura |
+| https://sicnoticias.pt/sitemap/2023/11/2023-11-13.xml | sim | 27365 | 0 | 184 | Ventura, André Ventura, Andre Ventura |
+| https://sicnoticias.pt/sitemap/2022/01/2022-01-5.xml | nao (pedido falhou: https://sicnoticias.pt/sitemap/2022/01/2022-0) | | | | |
+| https://sicnoticias.pt/sitemap/2022/01/2022-01-05.xml | nao (pedido falhou: https://sicnoticias.pt/sitemap/2022/01/2022-0) | | | | |
+| https://sicnoticias.pt/sitemap/2021/01/2021-01-13.xml | nao (pedido falhou: https://sicnoticias.pt/sitemap/2021/01/2021-0) | | | | |
+| https://sicnoticias.pt/sitemap/2019/10/2019-10-25.xml | nao (pedido falhou: https://sicnoticias.pt/sitemap/2019/10/2019-1) | | | | |
+
+- https://sicnoticias.pt/sitemap/2025/08/2025-08-28.xml -> https://sicnoticias.pt/mundo/2025-08-28-caca-f-16-da-forca-aerea-polaca-despenha-se-e-faz-um-morto--40dcdad7
+- https://sicnoticias.pt/sitemap/2025/08/2025-08-28.xml -> https://sicnoticias.pt/mundo/2025-08-28-caca-f-16-da-forca-aerea-polaca-despenha-se-e-faz-um-morto--40dcdad7
+- https://sicnoticias.pt/sitemap/2025/08/2025-08-28.xml -> https://sicnoticias.pt/especiais/guerra-russia-ucrania/2025-08-28-video-nao-havera-qualquer-encontro-entre-zelensky-e-putin-num-futuro-imediato-diz-chanceler-alemao-9ca93cc5
+- https://sicnoticias.pt/sitemap/2025/10/2025-10-24.xml -> https://sicnoticias.pt/mundo/2025-10-24-lituania-suspende-trafego-aereo-em-dois-aeroportos-devido-a-presenca-de-baloes-bielorrussos-4491da96
+- https://sicnoticias.pt/sitemap/2025/10/2025-10-24.xml -> https://sicnoticias.pt/mundo/2025-10-24-lituania-suspende-trafego-aereo-em-dois-aeroportos-devido-a-presenca-de-baloes-bielorrussos-4491da96
+- https://sicnoticias.pt/sitemap/2025/10/2025-10-24.xml -> https://sicnoticias.pt/desporto/2025-10-24-bruno-fernandes-so-tomara-uma-decisao-sobre-o-futuro-depois-do-mundial-815efd70
+- https://sicnoticias.pt/sitemap/2023/11/2023-11-13.xml -> https://sicnoticias.pt/desporto/2023-11-13-TransferRoom-o-Tinder-do-futebol-que-permitiu-ao-Sporting-contratar-Gyokeres-69b759cb
+- https://sicnoticias.pt/sitemap/2023/11/2023-11-13.xml -> https://sicnoticias.pt/desporto/2023-11-13-TransferRoom-o-Tinder-do-futebol-que-permitiu-ao-Sporting-contratar-Gyokeres-69b759cb
+- https://sicnoticias.pt/sitemap/2023/11/2023-11-13.xml -> https://sicnoticias.pt/pais/2023-11-13-Operacao-Influencer-juiz-considerou-desproporcionais-medidas-de-coacao-pedidas-pelo-MP-8d569013
+- https://sicnoticias.pt/sitemap/2025/08/2025-08-28.xml: `https://sicnoticias.pt/mundo/2025-08-28-caca-f-16-da-forca-aerea-polaca-despenha-se-e-faz-um-morto--40dcdad7 2025-08-28T22:26:47.541Z https://sicnoticias.pt/mundo/2025-08-28-caca-f-16-da-forca-aerea-polaca-despenha-se-e-faz-um-morto--40dcdad7 2025-08-28T22:26:47.541Z https://sicnoticias.pt/especiais/guerra-russia-ucrania/2025-08-28-video-nao-havera-qualquer-encontro-entre-zelensky-e-putin-num-futu`
+- https://sicnoticias.pt/sitemap/2025/10/2025-10-24.xml: `https://sicnoticias.pt/mundo/2025-10-24-lituania-suspende-trafego-aereo-em-dois-aeroportos-devido-a-presenca-de-baloes-bielorrussos-4491da96 2025-10-24T22:59:31.617Z https://sicnoticias.pt/mundo/2025-10-24-lituania-suspende-trafego-aereo-em-dois-aeroportos-devido-a-presenca-de-baloes-bielorrussos-4491da96 2025-10-24T22:59:31.617Z https://sicnoticias.pt/desporto/2025-10-24-bruno-fernandes-so-tomara`
+- https://sicnoticias.pt/sitemap/2023/11/2023-11-13.xml: `https://sicnoticias.pt/desporto/2023-11-13-TransferRoom-o-Tinder-do-futebol-que-permitiu-ao-Sporting-contratar-Gyokeres-69b759cb 2023-11-13T23:56:07.751Z https://sicnoticias.pt/desporto/2023-11-13-TransferRoom-o-Tinder-do-futebol-que-permitiu-ao-Sporting-contratar-Gyokeres-69b759cb 2023-11-13T23:56:07.751Z https://sicnoticias.pt/pais/2023-11-13-Operacao-Influencer-juiz-considerou-desproporcionais-`
+
+## RTP Play, ate onde vai a lista de episodios
+
+Verificado em 2026-09-10T09:31:38+00:00.
+
+| Hipotese | Responde | Texto | Ligacoes | Enderecos | Termos |
+|---|---|---|---|---|---|
+| https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=2&type=all | sim | 386 | 12 | 0 | Ventura, André Ventura, Andre Ventura |
+| https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=4&type=all | sim | 362 | 12 | 0 | nenhum |
+| https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=8&type=all | sim | 366 | 12 | 0 | nenhum |
+| https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=12&type=all | sim | 376 | 12 | 0 | nenhum |
+| https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=20&type=all | sim | 0 | 0 | 0 | nenhum |
+| https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=40&type=all | sim | 0 | 0 | 0 | nenhum |
+
+- https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=2&type=all -> https://www.rtp.pt/play/p10324/e925911/grande-entrevista
+- https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=2&type=all -> https://www.rtp.pt/play/p10324/e921167/grande-entrevista
+- https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=2&type=all -> https://www.rtp.pt/play/p10324/e919711/grande-entrevista
+- https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=4&type=all -> https://www.rtp.pt/play/p10324/e879352/grande-entrevista
+- https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=4&type=all -> https://www.rtp.pt/play/p10324/e877898/grande-entrevista
+- https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=4&type=all -> https://www.rtp.pt/play/p10324/e876329/grande-entrevista
+- https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=8&type=all -> https://www.rtp.pt/play/p10324/e783915/grande-entrevista
+- https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=8&type=all -> https://www.rtp.pt/play/p10324/e782137/grande-entrevista
+- https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=8&type=all -> https://www.rtp.pt/play/p10324/e781089/grande-entrevista
+- https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=12&type=all -> https://www.rtp.pt/play/p10324/e707510/grande-entrevista
+- https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=12&type=all -> https://www.rtp.pt/play/p10324/e706278/grande-entrevista
+- https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=12&type=all -> https://www.rtp.pt/play/p10324/e714767/grande-entrevista
+
+## Arquivo da web, uma janela de um ano de cada vez
+
+Verificado em 2026-09-10T09:31:51+00:00.
+
+| Hipotese | Responde | Texto | Ligacoes | Enderecos | Termos |
+|---|---|---|---|---|---|
+| https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2020&to=2020&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 | nao (pedido falhou: https://web.archive.org/cdx/search/cdx?url=si) | | | | |
+| https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2021&to=2021&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 | sim | 32050 | 0 | 220 | Ventura, André Ventura, Andre Ventura |
+| https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2022&to=2022&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 | sim | 0 | 0 | 0 | nenhum |
+| https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2023&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 | nao (pedido falhou: https://web.archive.org/cdx/search/cdx?url=si) | | | | |
+
+- https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2021&to=2021&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 -> 20210326063135 https://sicnoticias.pt/desporto/2020-05-05-O-populismo-racista-do-Andre-Ventura-apenas-serve-para-virar-homens-contra-homens 200
+- https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2021&to=2021&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 -> 20210308123824 https://sicnoticias.pt/economia/2020-09-02-Andre-Ventura-pede-divulgacao-publica-e-integral-da-auditoria-ao-Novo-Banco 200
+- https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2021&to=2021&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 -> 20210617135736 http://sicnoticias.pt/especiais/autarquicas/2021-06-17-Andre-Ventura-e-candidato-a-Assembleia-Municipal-de-Moura-42ef25b8 301
+- https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2021&to=2021&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000: `20210326063135 https://sicnoticias.pt/desporto/2020-05-05-O-populismo-racista-do-Andre-Ventura-apenas-serve-para-virar-homens-contra-homens 200 20210308123824 https://sicnoticias.pt/economia/2020-09-02-Andre-Ventura-pede-divulgacao-publica-e-integral-da-auditoria-ao-Novo-Banco 200 20210617135736 http://sicnoticias.pt/especiais/autarquicas/2021-06-17-Andre-Ventura-e-candidato-a-Assembleia-Municipal`
