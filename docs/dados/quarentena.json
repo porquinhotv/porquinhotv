@@ -73,6 +73,15 @@
    "url": "https://www.rtp.pt/play/p9149/e628428/afinal-ha-tempo"
   },
   {
+   "excerto": "",
+   "fonte": "busca-rtp1",
+   "id_nativo": "busca-rtp1:1f20456acaa4",
+   "motivo": "fragmento_ou_repetido (sem programa apurado, o canal ja tem emissao neste dia)",
+   "publicado_em": "2022-10-19",
+   "titulo": "Grande Entrevista",
+   "url": "https://www.rtp.pt/play/p10324/e648120/grande-entrevista"
+  },
+  {
    "excerto": "As primas, Aurora Venturini - LIVROS no olhar de Paulo Sérgio BEJu As primas de Aurora Venturini (Penguin Randon House Grupo Editorial – chancela A",
    "fonte": "busca-rtp1",
    "id_nativo": "https://www.rtp.pt/play/p9133/e705152/pequeno-toque",
@@ -109,6 +118,15 @@
    "url": "https://www.rtp.pt/play/p14350/e855325/grande-entrevista"
   },
   {
+   "excerto": "",
+   "fonte": "busca-rtp1",
+   "id_nativo": "busca-rtp1:6ab6f2c2c7f9",
+   "motivo": "fragmento_ou_repetido (sem programa apurado, o canal ja tem emissao neste dia)",
+   "publicado_em": "2025-11-04",
+   "titulo": "Grande Entrevista",
+   "url": "https://www.rtp.pt/play/p10324/e888399/grande-entrevista"
+  },
+  {
    "excerto": "O camarada Ventura… - Uma entrevista à antena 1 que pode obrigar o governo a recuar nas propostas laborais. Uma greve que fez efeito. Os debates pr",
    "fonte": "busca-rtp1",
    "id_nativo": "https://www.rtp.pt/play/p283/e895598/contraditorio",
@@ -116,6 +134,15 @@
    "publicado_em": "2025-12-12",
    "titulo": "Contraditório",
    "url": "https://www.rtp.pt/play/p283/e895598/contraditorio"
+  },
+  {
+   "excerto": "",
+   "fonte": "busca-rtp1",
+   "id_nativo": "busca-rtp1:72e937281cc7",
+   "motivo": "fragmento_ou_repetido (sem programa apurado, o canal ja tem emissao neste dia)",
+   "publicado_em": "2026-01-21",
+   "titulo": "Grande Entrevista",
+   "url": "https://www.rtp.pt/play/p10324/e903969/grande-entrevista"
   },
   {
    "excerto": "António José Seguro e André Ventura vão estar frente a frente no único debate da segunda volta das Presidenciais. O debate conta com a moderação de Carlos Daniel pela RTP.",
@@ -134,213 +161,6 @@
    "publicado_em": "2026-06-24",
    "titulo": "Grande Entrevista - André Ventura - ep. 19",
    "url": "https://www.rtp.pt/play/p16214/e938491/grande-entrevista"
-  },
-  {
-   "excerto": "É já dia 16 de novembro que vamos ter a primeira entrevista.",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/geral/16-11-2020/miguel-sousa-tavares-entrevista-os-candidatos-as-eleicoes-presidenciais-de-2021",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2020-11-16",
-   "titulo": "Miguel Sousa Tavares entrevista os candidatos às Eleições Presidenciais de 2021",
-   "url": "https://tvi.iol.pt/geral/16-11-2020/miguel-sousa-tavares-entrevista-os-candidatos-as-eleicoes-presidenciais-de-2021"
-  },
-  {
-   "excerto": "Inscreva-se no novo consurso da TVI.",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/novo-concurso/inscricoes/a-tvi-vai-estrear-um-novo-concurso-e-as-inscricoes-ja-estao-abertas",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-08-12",
-   "titulo": "A TVI vai estrear um novo concurso e as inscrições já estão abertas",
-   "url": "https://tvi.iol.pt/novo-concurso/inscricoes/a-tvi-vai-estrear-um-novo-concurso-e-as-inscricoes-ja-estao-abertas"
-  },
-  {
-   "excerto": "Vicente Blue derrete-se pela irmã bebé e encanta os seguidores de Kelly Bailey e Lourenço Ortigão",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/novelas/lourenco-ortigao/kelly-bailey/filho-mais-velho-de-kelly-bailey-e-lourenco-ortigao-derrete-se-com-a-irma-bebe-e-encanta-a-internet-que-sonho",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-08",
-   "titulo": "Filho mais velho de Kelly Bailey e Lourenço Ortigão derrete-se com a irmã bebé e encanta a Internet: «Que sonho!»",
-   "url": "https://tvi.iol.pt/novelas/lourenco-ortigao/kelly-bailey/filho-mais-velho-de-kelly-bailey-e-lourenco-ortigao-derrete-se-com-a-irma-bebe-e-encanta-a-internet-que-sonho"
-  },
-  {
-   "excerto": "Sol promete conquistar o público em «Coração de Mãe»: Conheça Maria Lopes, a jovem atriz que lhe dá vida",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/novelas/sol/maria-nunes/quem-e-sol-conheca-maria-nunes-a-jovem-atriz-cega-que-esta-a-conquistar-o-publico-em-coracao-de-mae",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-08",
-   "titulo": "Quem é Sol? Conheça Maria Nunes, a jovem atriz cega que está a conquistar o público em «Coração de Mãe»",
-   "url": "https://tvi.iol.pt/novelas/sol/maria-nunes/quem-e-sol-conheca-maria-nunes-a-jovem-atriz-cega-que-esta-a-conquistar-o-publico-em-coracao-de-mae"
-  },
-  {
-   "excerto": "É numa moradia de luxo que Lourenço Ortigão e Kelly Bailey estão a criar os dois filhos",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/novelas/lourenco-ortigao/kelly-bailey/sao-os-dois-atores-e-tem-uma-das-casas-mais-cobicadas-dos-ultimos-tempos-com-piscina-ginasio-e-um-vizinho-famoso",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-08",
-   "titulo": "São os dois atores e têm uma das casas mais cobiçadas dos últimos tempos, com piscina, ginásio e um vizinho famoso",
-   "url": "https://tvi.iol.pt/novelas/lourenco-ortigao/kelly-bailey/sao-os-dois-atores-e-tem-uma-das-casas-mais-cobicadas-dos-ultimos-tempos-com-piscina-ginasio-e-um-vizinho-famoso"
-  },
-  {
-   "excerto": "Depois de dois meses confinado na casa mais vigiada do País, Boris Carvalho está finalmente a aproveitar os primeiros dias fora do Big Brother Verão junto das pessoas que mais ama.",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/doisas10/big-brother-verao/boris/apos-sair-do-big-brother-verao-boris-mostra-se-com-companhia-especial-o-meu-porto-seguro",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-09",
-   "titulo": "Após sair do Big Brother Verão, Boris mostra-se com companhia especial: «O meu porto seguro»",
-   "url": "https://tvi.iol.pt/doisas10/big-brother-verao/boris/apos-sair-do-big-brother-verao-boris-mostra-se-com-companhia-especial-o-meu-porto-seguro"
-  },
-  {
-   "excerto": "Bárbara Parada continua a revelar pormenores da casa que adquiriu ao lado do namorado. Desta vez, a finalista do «Big Brother 2022» mostrou uma escolha para o quarto e não escondeu o entusiasmo com o resultado.",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/bigbrother/barbara-parada/20260909/casa-nova-de-barbara-parada-tem-detalhe-com-sensacao-de-hotel-veja-as-imagens-do-item-de-luxo",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-09",
-   "titulo": "Casa nova de Bárbara Parada tem detalhe com «sensação de hotel»: veja as imagens do item de luxo",
-   "url": "https://tvi.iol.pt/bigbrother/barbara-parada/20260909/casa-nova-de-barbara-parada-tem-detalhe-com-sensacao-de-hotel-veja-as-imagens-do-item-de-luxo"
-  },
-  {
-   "excerto": "Comporta transforma-se numa passerelle de luxo: os vestidos das convidadas do casamento milionário de Vicky Montanari",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/novelas/vicky-montanari/casamento/o-casamento-milionario-que-levou-a-comporta-ao-mundo-estes-foram-os-vestidos-das-convidadas",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-09",
-   "titulo": "Casamento de luxo na Comporta é notícia em todo o Mundo. E os vestidos das convidadas vão mudar as tendências",
-   "url": "https://tvi.iol.pt/novelas/vicky-montanari/casamento/o-casamento-milionario-que-levou-a-comporta-ao-mundo-estes-foram-os-vestidos-das-convidadas"
-  },
-  {
-   "excerto": "Depois do terceiro lugar no «Big Brother Verão», Nuno abriu o coração na primeira entrevista após o reality show. O ex-concorrente falou sobre a perda dos pais e a relação com Sara e Raquel.",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/bigbrother/nuno/sara/com-uma-nao-ve-futuro-e-a-outra-ja-levou-a-casa-nuno-esclarece-relacao-com-raquel-e-sara-estivemos",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-09",
-   "titulo": "Com uma não vê futuro e a outra já levou a casa. Nuno esclarece relação com Raquel e Sara: «Estivémos...»",
-   "url": "https://tvi.iol.pt/bigbrother/nuno/sara/com-uma-nao-ve-futuro-e-a-outra-ja-levou-a-casa-nuno-esclarece-relacao-com-raquel-e-sara-estivemos"
-  },
-  {
-   "excerto": "O terceiro episódio de «Coração de Mãe», a nova novela da TVI , aprofunda os dramas familiares, as tensões profissionais e os confrontos emocionais que marcam o destino de Linda (Joana Solnado), João (Diogo Morgado) e das suas famílias.",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/novelas/coracao-de-mae/tvi/emocao-aperta-no-proximo-episodio-de-coracao-de-mae-prepare-se-para-a-separacao-mais-dificil",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-09",
-   "titulo": "Emoção aperta no próximo episódio de «Coração de Mãe»: prepare-se para a separação mais difícil",
-   "url": "https://tvi.iol.pt/novelas/coracao-de-mae/tvi/emocao-aperta-no-proximo-episodio-de-coracao-de-mae-prepare-se-para-a-separacao-mais-dificil"
-  },
-  {
-   "excerto": "Depois de Sara Alves ter esclarecido, no Dois às 10, os sentimentos que tem por Nuno Pereira, foi a vez do terceiro classificado do Big Brother Verão falar sobre a relação entre os dois.",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/doisas10/big-brother-verao/nuno/fora-do-big-brother-verao-nuno-esclarece-sentimentos-por-sara-e-faz-revelacao-foi-la-a-casa",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-09",
-   "titulo": "Fora do Big Brother Verão, Nuno esclarece sentimentos por Sara e faz revelação: «Foi lá a casa»",
-   "url": "https://tvi.iol.pt/doisas10/big-brother-verao/nuno/fora-do-big-brother-verao-nuno-esclarece-sentimentos-por-sara-e-faz-revelacao-foi-la-a-casa"
-  },
-  {
-   "excerto": "Cristina Ferreira celebra esta quarta-feira, 9 de setembro, o 49.º aniversário e, no Dois às 10, não faltaram momentos especiais para assinalar a data. Depois de serem recordados alguns dos melhores momentos da apresentadora ao longo da carreira, Cláudio Ramos fez questão de lhe ",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/doisas10/cristina-ferreira/claudio-ramos/no-dia-do-aniversario-de-cristina-ferreira-claudio-ramos-deixa-mensagem-emocionante-antes-de-cuspirem-e-maltratarem-pensem",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-09",
-   "titulo": "No dia do aniversário de Cristina Ferreira, Cláudio Ramos deixa mensagem emocionante: «Antes de cuspirem e maltratarem, pensem»",
-   "url": "https://tvi.iol.pt/doisas10/cristina-ferreira/claudio-ramos/no-dia-do-aniversario-de-cristina-ferreira-claudio-ramos-deixa-mensagem-emocionante-antes-de-cuspirem-e-maltratarem-pensem"
-  },
-  {
-   "excerto": "A mesa impressionante do casamento de luxo na Comporta, de Vicky Montanari, que deixou Cristina Ferreira e a imprensa internacional de queixo caído",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/novelas/casamento/cristina-ferreira/o-detalhe-do-casamento-milionario-na-comporta-que-deixou-cristina-ferreira-e-a-imprensa-internacional-de-queixo-caido",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-09",
-   "titulo": "O detalhe do casamento milionário na Comporta que deixou Cristina Ferreira e a imprensa internacional de queixo caído",
-   "url": "https://tvi.iol.pt/novelas/casamento/cristina-ferreira/o-detalhe-do-casamento-milionario-na-comporta-que-deixou-cristina-ferreira-e-a-imprensa-internacional-de-queixo-caido"
-  },
-  {
-   "excerto": "Bárbara Parada decidiu alinhar numa das trends que tem feito furor nas redes sociais e mostrou, com muito sentido de humor, o “lado difícil” da sua vida. A concorrente do Big Brother All Stars não se levou demasiado a sério e acabou por transformar alguns dos seus maiores privilé",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/bigbrother/barbara-parada/influencer/pela-primeira-vez-barbara-parada-revela-o-que-ninguem-sabe-da-sua-vida-e-a-partilha-surpreende-todos",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-09",
-   "titulo": "Pela primeira vez, Bárbara Parada revela o que ninguém sabe da sua vida. E a partilha surpreende todos",
-   "url": "https://tvi.iol.pt/bigbrother/barbara-parada/influencer/pela-primeira-vez-barbara-parada-revela-o-que-ninguem-sabe-da-sua-vida-e-a-partilha-surpreende-todos"
-  },
-  {
-   "excerto": "Eva Pais tem um novo desafio pela frente. A vencedora da última edição da Casa dos Segredos vai juntar-se ao namorado, DJ Gamïx, num projeto que promete levar a relação dos dois também para os palcos.",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/bigbrother/eva-pais/dj-gamix/poucos-meses-depois-de-assumirem-o-namoro-eva-pais-e-o-namorado-dao-novo-passo-e-chocam-todos",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-09",
-   "titulo": "Poucos meses depois de assumirem o namoro, Eva Pais e o namorado dão novo passo e chocam todos",
-   "url": "https://tvi.iol.pt/bigbrother/eva-pais/dj-gamix/poucos-meses-depois-de-assumirem-o-namoro-eva-pais-e-o-namorado-dao-novo-passo-e-chocam-todos"
-  },
-  {
-   "excerto": "Joana Albuquerque está de regresso ao universo dos reality shows e decidiu preparar uma surpresa muito especial para os pais. Antes de revelar que iria entrar no Big Brother All Stars, a concorrente conduziu-os por uma conversa que começou de forma aparentemente inocente, mas que",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/bigbrother/joana-albuquerque/pais/revelado-video-inedito-de-joana-albuquerque-a-contar-uma-bomba-aos-pais-e-a-reacao-e-inacreditavel",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-09",
-   "titulo": "Revelado vídeo inédito de Joana Albuquerque a contar uma \"bomba\" aos pais. E a reação é inacreditável",
-   "url": "https://tvi.iol.pt/bigbrother/joana-albuquerque/pais/revelado-video-inedito-de-joana-albuquerque-a-contar-uma-bomba-aos-pais-e-a-reacao-e-inacreditavel"
-  },
-  {
-   "excerto": "Amora foi o nome escolhido por esta estrela da TVI para a segunda filha, que nasceu no início de 2025 e veio trazer ainda mais felicidade à família. Agora, meses depois, Joana Solnado está novamente em destaque como protagonista de Coração de Mãe.",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/doisas10/coracao-de-mae/novelas/tem-nome-de-uma-fruta-esta-estrela-da-tvi-e-mae-e-a-filha-encanta-as-redes-sociais-um-serio-caso-de-amor",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-09",
-   "titulo": "Tem nome de uma fruta. Esta estrela da TVI é mãe e a filha encanta as redes sociais: «Um sério caso de amor»",
-   "url": "https://tvi.iol.pt/doisas10/coracao-de-mae/novelas/tem-nome-de-uma-fruta-esta-estrela-da-tvi-e-mae-e-a-filha-encanta-as-redes-sociais-um-serio-caso-de-amor"
-  },
-  {
-   "excerto": "«Foi o amor da minha vida»: devastado, marido deixa uma última e emocionante homenagem.",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/vmais/marta-oliveira/morte-marta-oliveira/tinha-33-anos-tres-filhos-e-era-adorada-por-milhares-de-seguidores-morreu-apos-cirurgia-plastica",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-09",
-   "titulo": "Tinha 33 anos, três filhos e era adorada por milhares de pessoas: morreu após cirurgia plástica",
-   "url": "https://tvi.iol.pt/vmais/marta-oliveira/morte-marta-oliveira/tinha-33-anos-tres-filhos-e-era-adorada-por-milhares-de-seguidores-morreu-apos-cirurgia-plastica"
-  },
-  {
-   "excerto": "Ainda é desconhecida para muitos, mas tem um talento que não passa despercebido. Conheça Raquel Cabaço Pereira, a jovem atriz que dá vida a Chica em «Coração de Mãe».",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/novelas/raquel-cabaco-pereira/chica/ainda-e-desconhecida-mas-uma-das-surpresas-de-coracao-de-mae-conheca-a-atriz-que-faz-de-chica-a-namorada-de-guga",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-10",
-   "titulo": "Ainda é desconhecida, mas uma das surpresas de «Coração de Mãe»: Conheça a atriz que faz de Chica, a namorada de Guga",
-   "url": "https://tvi.iol.pt/novelas/raquel-cabaco-pereira/chica/ainda-e-desconhecida-mas-uma-das-surpresas-de-coracao-de-mae-conheca-a-atriz-que-faz-de-chica-a-namorada-de-guga"
-  },
-  {
-   "excerto": "O mundo da música está de luto.",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/vmais/geral/20260910/aos-54-anos-cantor-famoso-morre-apos-sofrer-uma-paragem-cardiaca-uma-lenda",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-10",
-   "titulo": "Aos 54 anos, cantor famoso morre subitamente após sofrer uma paragem cardíaca: «Uma lenda»",
-   "url": "https://tvi.iol.pt/vmais/geral/20260910/aos-54-anos-cantor-famoso-morre-apos-sofrer-uma-paragem-cardiaca-uma-lenda"
-  },
-  {
-   "excerto": "Cristina Ferreira celebrou os 49 anos em Formentera, ao lado de João Monteiro. Depois das muitas mensagens que marcaram o dia, o treinador de ténis esperou até ao final da noite para assinalar publicamente a data e recuperou um registo especial do casal.",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/bigbrother/cristina-ferreira/joao-monteiro/cristina-ferreira-celebrou-49-anos-e-foi-desta-forma-que-joao-monteiro-assinalou-a-data-nas-redes-sociais",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-10",
-   "titulo": "Cristina Ferreira celebrou 49 anos. E foi desta forma que João Monteiro assinalou a data nas redes sociais",
-   "url": "https://tvi.iol.pt/bigbrother/cristina-ferreira/joao-monteiro/cristina-ferreira-celebrou-49-anos-e-foi-desta-forma-que-joao-monteiro-assinalou-a-data-nas-redes-sociais"
-  },
-  {
-   "excerto": "No episódio de hoje de «Coração de Mãe», a mais recente novela da TVI, os dramas familiares, as revelações dolorosas e os mistérios que envolvem Linda (Joana Solnado), João (Diogo Morgado) e as suas famílias atingem novos patamares de intensidade.",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/novelas/coracao-de-mae/tvi/um-casamento-em-queda-um-desaparecimento-e-uma-morte-a-vista-tudo-sobre-o-quarto-episodio-de-coracao-de-mae",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-10",
-   "titulo": "Um casamento em queda, um desaparecimento e uma morte à vista: Tudo sobre o quarto episódio de «Coração de Mãe»",
-   "url": "https://tvi.iol.pt/novelas/coracao-de-mae/tvi/um-casamento-em-queda-um-desaparecimento-e-uma-morte-a-vista-tudo-sobre-o-quarto-episodio-de-coracao-de-mae"
-  },
-  {
-   "excerto": "André Ventura - André Ventura está na segunda volta das Eleições Presidenciais. Três dias depois das eleições vem à Grande Entrevista com Ví",
-   "fonte": "lista-rtp-grande-entrevista",
-   "id_nativo": "https://www.rtp.pt/play/p10324/e903969/grande-entrevista",
-   "motivo": "ja_registado (busca-rtp1)",
-   "publicado_em": "2026-01-21",
-   "titulo": "Grande Entrevista",
-   "url": "https://www.rtp.pt/play/p10324/e903969/grande-entrevista"
   },
   {
    "excerto": "António José Seguro - Todas as semanas, um protagonista da vida portuguesa responde às perguntas de Vítor Gonçalves, na Grande Entrevista.",
@@ -550,24 +370,24 @@
    "url": "https://www.rtp.pt/play/p10324/e951616/grande-entrevista"
   },
   {
-   "excerto": "Em entrevista à CMTV, líder do Chega disse que um voto em Seguro, Gouveia e Melo ou Marques Mendes seria 'mais do mesmo'.",
-   "fonte": "motor-cmtv",
-   "id_nativo": "https://www.cmjornal.pt/cmtv/videos/detalhe/andre-ventura-sobre-as-presidenciais-e-a-unica-eleicao-que-vencendo-ninguem-pode-bloquear",
-   "motivo": "formato_nao_apurado",
-   "publicado_em": "2025-11-20",
-   "titulo": "Andr&#233; Ventura sobre as presidenciais: &quot;&#201; a &#250;nica elei&#231;&#227;o que, vencendo, ningu&#233;m pode bloquear&quot;",
-   "url": "https://www.cmjornal.pt/cmtv/videos/detalhe/andre-ventura-sobre-as-presidenciais-e-a-unica-eleicao-que-vencendo-ninguem-pode-bloquear"
+   "excerto": "Rita Blanco e Ruben Alves - Numa das estreias de cinema mais aguardadas do ano, 'Santo António - O Casamenteiro de Lisboa', realizado por Ruben Alves",
+   "fonte": "lista-rtp-grande-entrevista",
+   "id_nativo": "https://www.rtp.pt/play/p10324/e952946/grande-entrevista",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-09",
+   "titulo": "Grande Entrevista",
+   "url": "https://www.rtp.pt/play/p10324/e952946/grande-entrevista"
   },
   {
-   "excerto": "Em entrevista exclusiva à CMTV, o líder do Chega critica a forma com o Ministro da Administração Interna tem reagido às polémicas que o envolvem.",
-   "fonte": "motor-cmtv",
-   "id_nativo": "https://www.cmjornal.pt/cmtv/videos/detalhe/pergunto-me-quem-e-o-primeiro-ministro-andre-ventura-fala-sobre-luis-neves-um-dia-antes-da-mocao-de-censura",
-   "motivo": "formato_nao_apurado",
-   "publicado_em": "2026-09-07",
-   "titulo": "&quot;Pergunto-me quem &#233; o primeiro-ministro&quot;: Andr&#233; Ventura fala sobre Lu&#237;s Neves um dia antes da mo&#231;&#227;o de censura",
-   "url": "https://www.cmjornal.pt/cmtv/videos/detalhe/pergunto-me-quem-e-o-primeiro-ministro-andre-ventura-fala-sobre-luis-neves-um-dia-antes-da-mocao-de-censura"
+   "excerto": "Comprar Casa ou Apartamento em São Miguel, Açores | Now Imobiliária, em Ponta Delgada e Vila Franca do Campo PDL Ponta Delgada : 296 630 380 (Chamada para rede fixa nacional) VFC Vila Franca do Campo : 296 092 960 (Chamada para rede fixa nacional) Home Imóveis Empresa Serviços Co",
+   "fonte": "motor-now",
+   "id_nativo": "https://www.now.pt/pt/politica-de-privacidade",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2020-08-04",
+   "titulo": "Comprar Casa ou Apartamento em São Miguel, Açores | Now Imobiliária, em Ponta Delgada e Vila Franca do Campo",
+   "url": "https://www.now.pt/pt/politica-de-privacidade"
   }
  ],
  "esquema": 1,
- "total": 63
+ "total": 43
 }

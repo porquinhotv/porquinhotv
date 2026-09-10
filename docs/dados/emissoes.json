@@ -55,24 +55,6 @@
    "titulo": "Eleições Legislativas 2022 - Entrevistas Líderes Partidários"
   },
   {
-   "bloco": "d5d7e6219a96",
-   "canal": "rtp1",
-   "confianca": "media",
-   "data": "2022-10-19",
-   "data_origem": "publicacao",
-   "entrevista": "d5d7e6219a96",
-   "fonte": "busca-rtp1",
-   "fontes_distintas": 1,
-   "id": "busca-rtp1:1f20456acaa4",
-   "origem": "canal",
-   "primeira_vez": "2026-09-10",
-   "programa": "",
-   "prova_url": "https://www.rtp.pt/play/p10324/e648120/grande-entrevista",
-   "publicado_em": "2022-10-19",
-   "rondas": 3,
-   "titulo": "Grande Entrevista"
-  },
-  {
    "bloco": "d73b643e43ca",
    "canal": "rtp1",
    "confianca": "media",
@@ -559,24 +541,6 @@
    "titulo": "Grande Entrevista - Candidatos à Presidência da República - André Ventura - ep. 2"
   },
   {
-   "bloco": "bf5d5a46be3f",
-   "canal": "rtp1",
-   "confianca": "media",
-   "data": "2025-11-04",
-   "data_origem": "publicacao",
-   "entrevista": "bf5d5a46be3f",
-   "fonte": "busca-rtp1",
-   "fontes_distintas": 1,
-   "id": "busca-rtp1:6ab6f2c2c7f9",
-   "origem": "canal",
-   "primeira_vez": "2026-09-10",
-   "programa": "",
-   "prova_url": "https://www.rtp.pt/play/p10324/e888399/grande-entrevista",
-   "publicado_em": "2025-11-04",
-   "rondas": 3,
-   "titulo": "Grande Entrevista"
-  },
-  {
    "bloco": "04ad7cabd1f2",
    "canal": "rtp3",
    "confianca": "alta",
@@ -665,24 +629,6 @@
    "publicado_em": "2026-01-21",
    "rondas": 3,
    "titulo": "Grande Entrevista - André Ventura - ep. 2"
-  },
-  {
-   "bloco": "f588bcdfb227",
-   "canal": "rtp1",
-   "confianca": "media",
-   "data": "2026-01-21",
-   "data_origem": "publicacao",
-   "entrevista": "f588bcdfb227",
-   "fonte": "busca-rtp1",
-   "fontes_distintas": 1,
-   "id": "busca-rtp1:72e937281cc7",
-   "origem": "canal",
-   "primeira_vez": "2026-09-10",
-   "programa": "",
-   "prova_url": "https://www.rtp.pt/play/p10324/e903969/grande-entrevista",
-   "publicado_em": "2026-01-21",
-   "rondas": 3,
-   "titulo": "Grande Entrevista"
   },
   {
    "bloco": "cefe20233472",
@@ -1064,5 +1010,5 @@
   }
  ],
  "esquema": 1,
- "total": 59
+ "total": 56
 }
