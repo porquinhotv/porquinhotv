@@ -166,6 +166,39 @@ class TestIdentidadeEBlocos(unittest.TestCase):
         self.assertTrue(q[0]["motivo"].startswith("fragmento_ou_repetido"))
         self.assertEqual(q[0]["id_nativo"], b.id)
 
+    def test_sem_programa_apurado_nao_abre_bloco_no_dia_que_ja_tem_um(self):
+        """Erro real medido no dataset de 2026-09-10: a mesma emissao entrou
+        duas vezes no mesmo canal e dia, uma com o programa deduzido do
+        titulo e outra sem, porque o titulo dela nao tem separador. Tres
+        ocorrencias em doze linhas de uma so fonte."""
+        q = []
+        f = fonte(self.config, "yt-exemplo")
+        com = criterio.avaliar(item(id_nativo="a", titulo="Entrevista Exemplo - André Ventura - ep. 41"), f, self.config, [])
+        sem = criterio.avaliar(item(id_nativo="b", titulo="Entrevista Exemplo", descricao="com André Ventura"), f, self.config, [])
+        self.assertTrue(com.programa)
+        self.assertFalse(sem.programa)
+        self.assertNotEqual(com.bloco, sem.bloco)
+        ficam = criterio.resolver_blocos([com, sem], q)
+        self.assertEqual([e.id for e in ficam], [com.id])
+        self.assertIn("sem programa apurado", q[0]["motivo"])
+        self.assertEqual(q[0]["id_nativo"], sem.id)
+
+    def test_sem_programa_apurado_conta_quando_e_a_unica_do_dia(self):
+        """A absorcao nao pode comer a emissao: sem outra no mesmo canal e
+        dia, uma emissao sem programa apurado e uma emissao e conta."""
+        sem = criterio.avaliar(item(id_nativo="b", titulo="Entrevista Exemplo", descricao="com André Ventura"), fonte(self.config, "yt-exemplo"), self.config, [])
+        q = []
+        self.assertEqual([e.id for e in criterio.resolver_blocos([sem], q)], [sem.id])
+        self.assertEqual(q, [])
+
+    def test_dois_programas_apurados_diferentes_no_mesmo_dia_contam_os_dois(self):
+        """A manha num programa de entretenimento e a noite num noticiario
+        sao duas emissoes. A absorcao so apanha o que nao esta apurado."""
+        f = fonte(self.config, "yt-exemplo")
+        a = criterio.avaliar(item(id_nativo="a", titulo="Entrevista Um - André Ventura"), f, self.config, [])
+        b = criterio.avaliar(item(id_nativo="b", titulo="Entrevista Dois - André Ventura"), f, self.config, [])
+        self.assertEqual(len(criterio.resolver_blocos([a, b], [])), 2)
+
     def test_a_ordem_das_fontes_decide_o_bloco(self):
         """O registo curado corre antes do clipping em config/fontes.yml, e
         e por isso, e so por isso, que a prova do canal fica quando as duas

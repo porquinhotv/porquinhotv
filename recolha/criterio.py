@@ -229,6 +229,10 @@ def resolver_blocos(emissoes: list[Emissao], quarentena: list | None = None) -> 
     com a mesma chave e uma delas e tratada como recorte da outra. O erro
     e sempre por defeito, nunca por excesso, e a quarentena diz que foi
     isso que aconteceu para que se veja em vez de se adivinhar.
+
+    **Uma emissao sem programa apurado nao abre bloco proprio** quando o
+    mesmo canal e o mesmo dia ja tem uma com programa apurado. Ver
+    _absorver_sem_programa: o contrario inflacionava a contagem.
     """
     por_bloco: dict[str, Emissao] = {}
     ordem: list[str] = []
@@ -255,4 +259,49 @@ def resolver_blocos(emissoes: list[Emissao], quarentena: list | None = None) -> 
                     "excerto": "",
                 }
             )
-    return [por_bloco[b] for b in ordem]
+    return _absorver_sem_programa([por_bloco[b] for b in ordem], quarentena)
+
+
+def _absorver_sem_programa(emissoes: list[Emissao], quarentena: list | None) -> list[Emissao]:
+    """Junta ao bloco com programa apurado as emissoes do mesmo canal e dia
+    que ficaram sem programa.
+
+    Reproduz um erro real, medido no dataset publicado a 2026-09-10: o
+    mesmo episodio aparecia duas vezes no mesmo dia e canal, uma vez
+    titulado "<programa> - <nome> - ep. 41", de onde a deducao tira o nome
+    do programa, e outra titulada so "<programa>", que nao tem separador
+    nenhum e de onde a deducao nao tira nada. Programa diferente, chave
+    diferente, dois blocos, duas entrevistas contadas onde houve uma.
+    Aconteceu em 2022-10-19, 2025-11-04 e 2026-01-21, tres em doze linhas
+    da mesma fonte.
+
+    A duracao mascarava isto ate 2026-09-10, e nao por desenho: as linhas
+    sem programa nunca chegavam ao dataset porque morriam antes, na
+    barreira da duracao.
+
+    Absorve-se a que nao tem programa, e nao o contrario, porque "nao
+    apurado" nao e uma afirmacao: nao se sabe qual foi o programa, logo
+    nao se pode afirmar que foi outro. Duas emissoes com programas
+    apurados e diferentes no mesmo dia continuam a contar as duas, que e o
+    caso real da manha num programa de entretenimento e da noite num
+    noticiario. Erro por defeito, como manda a regra da casa.
+    """
+    com_programa = {(e.canal, e.data) for e in emissoes if e.programa.strip()}
+    ficam = []
+    for emissao in emissoes:
+        if emissao.programa.strip() or (emissao.canal, emissao.data) not in com_programa:
+            ficam.append(emissao)
+            continue
+        if quarentena is not None:
+            quarentena.append(
+                {
+                    "fonte": emissao.fonte,
+                    "id_nativo": emissao.id,
+                    "publicado_em": emissao.publicado_em,
+                    "titulo": emissao.titulo,
+                    "url": emissao.prova_url,
+                    "motivo": "fragmento_ou_repetido (sem programa apurado, o canal ja tem emissao neste dia)",
+                    "excerto": "",
+                }
+            )
+    return ficam
