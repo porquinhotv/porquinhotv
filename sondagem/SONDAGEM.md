@@ -1,6 +1,6 @@
 # Sondagem de hipoteses
 
-Verificado em 2026-09-10T08:27:24+00:00. Consulta: ventura entrevista.
+Verificado em 2026-09-10T08:54:33+00:00. Consulta: ventura entrevista.
 
 Uma hipotese so serve se responder E trouxer ligacoes. Responder com 200
 e zero ligacoes e uma pagina de aviso, nao um resultado.
@@ -186,29 +186,30 @@ Verificado em 2026-09-09T14:05:45+00:00.
 
 ## Arquivo da web, o indice
 
-Verificado em 2026-09-10T08:10:07+00:00.
+Verificado em 2026-09-10T08:54:33+00:00.
 
 | Hipotese | Responde | Texto | Ligacoes | Enderecos | Termos |
 |---|---|---|---|---|---|
-| https://web.archive.org/robots.txt | nao (pedido falhou: https://web.archive.org/robots.txt: HTTP Erro) | | | | |
-| https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200 | nao (pedido falhou: https://web.archive.org/cdx/search/cdx?url=si) | | | | |
-| https://web.archive.org/cdx/search/cdx?url=sic.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200 | sim | 16823 | 0 | 104 | Ventura, André Ventura, Andre Ventura |
-| https://web.archive.org/cdx/search/cdx?url=cnnportugal.iol.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200 | sim | 37905 | 0 | 200 | Ventura, André Ventura, Andre Ventura |
-| https://web.archive.org/cdx/search/cdx?url=tvi.iol.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200 | nao (pedido falhou: https://web.archive.org/cdx/search/cdx?url=tv) | | | | |
-| https://web.archive.org/cdx/search/cdx?url=tviplayer.iol.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200 | nao (pedido falhou: https://web.archive.org/cdx/search/cdx?url=tv) | | | | |
-| https://web.archive.org/cdx/search/cdx?url=cmjornal.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200 | nao (pedido falhou: https://web.archive.org/cdx/search/cdx?url=cm) | | | | |
-| https://web.archive.org/cdx/search/cdx?url=nowcanal.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200 | sim | 0 | 0 | 0 | nenhum |
-| https://web.archive.org/cdx/search/cdx?url=rtp.pt/play/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200 | nao (pedido falhou: https://web.archive.org/cdx/search/cdx?url=rt) | | | | |
-| https://web.archive.org/cdx/search/cdx?url=rtp.pt/noticias/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200 | nao (pedido falhou: https://web.archive.org/cdx/search/cdx?url=rt) | | | | |
+| https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2021&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 | nao (pedido falhou: https://web.archive.org/cdx/search/cdx?url=si) | | | | |
+| https://web.archive.org/cdx/search/cdx?url=sicnoticias.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2022&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 | nao (pedido falhou: https://web.archive.org/cdx/search/cdx?url=si) | | | | |
+| https://web.archive.org/cdx/search/cdx?url=sic.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 | sim | 2064 | 0 | 12 | Ventura, André Ventura, Andre Ventura |
+| https://web.archive.org/cdx/search/cdx?url=cnnportugal.iol.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2021&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 | nao (pedido falhou: https://web.archive.org/cdx/search/cdx?url=cn) | | | | |
+| https://web.archive.org/cdx/search/cdx?url=cnnportugal.iol.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2022&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 | nao (pedido falhou: https://web.archive.org/cdx/search/cdx?url=cn) | | | | |
+| https://web.archive.org/cdx/search/cdx?url=tvi.iol.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2021&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 | nao (pedido falhou: https://web.archive.org/cdx/search/cdx?url=tv) | | | | |
+| https://web.archive.org/cdx/search/cdx?url=tvi.iol.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2022&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 | sim | 0 | 0 | 0 | nenhum |
+| https://web.archive.org/cdx/search/cdx?url=tviplayer.iol.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 | nao (pedido falhou: https://web.archive.org/cdx/search/cdx?url=tv) | | | | |
+| https://web.archive.org/cdx/search/cdx?url=cmjornal.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 | sim | 159538 | 0 | 1000 | Ventura, André Ventura, Andre Ventura |
+| https://web.archive.org/cdx/search/cdx?url=rtp.pt/play/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 | nao (pedido falhou: https://web.archive.org/cdx/search/cdx?url=rt) | | | | |
+| https://web.archive.org/cdx/search/cdx?url=rtp.pt/noticias/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 | nao (pedido falhou: https://web.archive.org/cdx/search/cdx?url=rt) | | | | |
 
-- https://web.archive.org/cdx/search/cdx?url=sic.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200 -> 20190419080847 https://sic.pt/api/molecule/content/2018-04-22-Foi-uma-viagem-muito-boa-Foi-uma-aventura-muito-intensa?domain=sic 200
-- https://web.archive.org/cdx/search/cdx?url=sic.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200 -> 20191207140544 https://sic.pt/api/molecule/content/2019-12-02-Neste-natal-ha-classicos-acao-aventura-e-muita-animacao?domain=sic 200
-- https://web.archive.org/cdx/search/cdx?url=sic.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200 -> 20190617023936 https://www.sic.pt/grelha?urlvideo=http://videos.sapo.pt/JoFz521LdtWURRpTF1YY/mov/1&Link=http://sic.sapo.pt/online/video/informacao/Edicao+da+Noite/2010/10/frei-fernando-ventura-sobre-a-situacao-do-pais02-10-2010-01611.htm&ztag=/sicembed/info/&hash={CD432F56-33C4-414C-9C5C-D90609344A55}&embed=true&autoplay=false 200
-- https://web.archive.org/cdx/search/cdx?url=cnnportugal.iol.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200 -> 20221228163847 https://cnnportugal.iol.pt/alexandra-reis/polemica/tap-ventura-fala-em-encobrimento-e-questiona-condicoes-de-pedro-nuno-santos-no-governo/20221228/ 200
-- https://web.archive.org/cdx/search/cdx?url=cnnportugal.iol.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200 -> 20221228163833 https://cnnportugal.iol.pt/alexandra-reis/polemica/tap-ventura-fala-em-encobrimento-e-questiona-condicoes-de-pedro-nuno-santos-no-governo/20221228/& 200
-- https://web.archive.org/cdx/search/cdx?url=cnnportugal.iol.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200 -> 20221228162223 https://cnnportugal.iol.pt/alexandra-reis/polemica/tap-ventura-fala-em-encobrimento-e-questiona-condicoes-de-pedro-nuno-santos-no-governo/20221228/63ac6bad0cf27230dc1ff636 200
-- https://web.archive.org/cdx/search/cdx?url=sic.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200: `20190419080847 https://sic.pt/api/molecule/content/2018-04-22-Foi-uma-viagem-muito-boa-Foi-uma-aventura-muito-intensa?domain=sic 200 20191207140544 https://sic.pt/api/molecule/content/2019-12-02-Neste-natal-ha-classicos-acao-aventura-e-muita-animacao?domain=sic 200 20190617023936 https://www.sic.pt/grelha?urlvideo=http://videos.sapo.pt/JoFz521LdtWURRpTF1YY/mov/1&Link=http://sic.sapo.pt/online/vide`
-- https://web.archive.org/cdx/search/cdx?url=cnnportugal.iol.pt/*&filter=original:.*ventura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=200: `20221228163847 https://cnnportugal.iol.pt/alexandra-reis/polemica/tap-ventura-fala-em-encobrimento-e-questiona-condicoes-de-pedro-nuno-santos-no-governo/20221228/ 200 20221228163833 https://cnnportugal.iol.pt/alexandra-reis/polemica/tap-ventura-fala-em-encobrimento-e-questiona-condicoes-de-pedro-nuno-santos-no-governo/20221228/& 200 20221228162223 https://cnnportugal.iol.pt/alexandra-reis/polemica`
+- https://web.archive.org/cdx/search/cdx?url=sic.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 -> 20211002165619 https://sic.pt/Programas/altadefinicao/videos/2021-10-02-Clara-de-Sousa-critica-a-peixeirada-no-debate-entre-Marcelo-Rebelo-de-Sousa-e-Andre-Ventura-Nao-estavamos-a-passar-nada-de-positivo-8ed559b0 200
+- https://web.archive.org/cdx/search/cdx?url=sic.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 -> 20220118100636 https://sic.pt/programas/e-especial/porque-e-que-andre-ventura-nao-e-convidado-para-este-programa-ricardo-araujo-pereira-responde/ 200
+- https://web.archive.org/cdx/search/cdx?url=sic.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 -> 20220120210652 https://sic.pt/programas/e-especial/porque-e-que-andre-ventura-nao-e-convidado-para-este-programa-ricardo-araujo-pereira-responde/Tu 301
+- https://web.archive.org/cdx/search/cdx?url=cmjornal.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 -> 20191207163327 https://www.cmjornal.pt/cm-ao-minuto/amp/agente-da-psp-que-criticou-presenca-de-andre-ventura-em-manifestacao-de-policias-alvo-de-processo-disiciplinar 200
+- https://web.archive.org/cdx/search/cdx?url=cmjornal.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 -> 20210121165612 https://www.cmjornal.pt/cm-ao-minuto/amp/alerta-cm--andre-ventura-apedrejado-por-manifestantes-em-setubal-ha-um-detido-veja-as-imagens 200
+- https://web.archive.org/cdx/search/cdx?url=cmjornal.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000 -> 20210121165554 https://www.cmjornal.pt/cm-ao-minuto/amp/alerta-cm--andre-ventura-apedrejado-por-manifestantes-em-setubal-ha-um-detido-veja-as-imagens?__twitter_impression=true 200
+- https://web.archive.org/cdx/search/cdx?url=sic.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000: `20211002165619 https://sic.pt/Programas/altadefinicao/videos/2021-10-02-Clara-de-Sousa-critica-a-peixeirada-no-debate-entre-Marcelo-Rebelo-de-Sousa-e-Andre-Ventura-Nao-estavamos-a-passar-nada-de-positivo-8ed559b0 200 20220118100636 https://sic.pt/programas/e-especial/porque-e-que-andre-ventura-nao-e-convidado-para-este-programa-ricardo-araujo-pereira-responde/ 200 20220120210652 https://sic.pt/pro`
+- https://web.archive.org/cdx/search/cdx?url=cmjornal.pt/*&filter=original:.*[Aa]ndre[-_][Vv]entura.*&from=2019&to=2023&fl=timestamp,original,statuscode&collapse=urlkey&limit=1000: `20191207163327 https://www.cmjornal.pt/cm-ao-minuto/amp/agente-da-psp-que-criticou-presenca-de-andre-ventura-em-manifestacao-de-policias-alvo-de-processo-disiciplinar 200 20210121165612 https://www.cmjornal.pt/cm-ao-minuto/amp/alerta-cm--andre-ventura-apedrejado-por-manifestantes-em-setubal-ha-um-detido-veja-as-imagens 200 20210121165554 https://www.cmjornal.pt/cm-ao-minuto/amp/alerta-cm--andre-ve`
 
 ## Arquivo da web, uma pagina que a maquina nao le
 
@@ -349,3 +350,64 @@ Verificado em 2026-09-10T08:27:24+00:00.
 - https://www.rtp.pt/play/bg_l_ep/?listProgram=16214&page=2&type=all -> https://www.rtp.pt/play/p16214/e927347/grande-entrevista
 - https://www.rtp.pt/play/bg_l_ep/?listProgram=16214&page=2&type=all -> https://www.rtp.pt/play/p16214/e925864/grande-entrevista
 - https://www.rtp.pt/play/bg_l_ep/?listProgram=16214&page=2&type=all -> https://www.rtp.pt/play/p16214/e921019/grande-entrevista
+
+## SIC, o mapa que o proprio site declara e a pagina ao vivo
+
+Verificado em 2026-09-10T08:54:04+00:00.
+
+| Hipotese | Responde | Texto | Ligacoes | Enderecos | Termos |
+|---|---|---|---|---|---|
+| https://sicnoticias.pt/sitemap/index.xml | sim | 104178 | 0 | 1331 | nenhum |
+| https://sicnoticias.pt/sitemap/videos.xml | sim | 139074 | 0 | 200 | Ventura, André Ventura, Andre Ventura |
+| https://sicnoticias.pt/sitemap/news.xml | sim | 40156 | 0 | 200 | nenhum |
+| https://sicnoticias.pt/pais/2023-11-13-A-entrevista-a-Andre-Ventura-947f0b8a | nao (pedido falhou: https://sicnoticias.pt/pais/2023-11-13-A-entr) | | | | |
+| https://sicnoticias.pt/pais/2025-08-28-video-entrevista-de-andre-ventura-a-sic-noticias-61d623ea | nao (pedido falhou: https://sicnoticias.pt/pais/2025-08-28-video-) | | | | |
+| https://sicnoticias.pt/especiais/eleicoes-presidenciais/2025-10-24-andre-ventura-em-entrevista-exclusiva-a-sic-884d8388 | nao (pedido falhou: https://sicnoticias.pt/especiais/eleicoes-pre) | | | | |
+| https://sic.pt/robots.txt | sim | 2316 | 0 | 3 | nenhum |
+
+- https://sicnoticias.pt/sitemap/index.xml -> https://sicnoticias.pt/sitemap/2026/09/2026-09-10.xml
+- https://sicnoticias.pt/sitemap/index.xml -> https://sicnoticias.pt/sitemap/2026/09/2026-09-9.xml
+- https://sicnoticias.pt/sitemap/index.xml -> https://sicnoticias.pt/sitemap/2026/09/2026-09-8.xml
+- https://sicnoticias.pt/sitemap/videos.xml -> https://sicnoticias.pt/janela-de-esperanca/temas/educacao/2026-09-10-video-governo-testa-fusao-do-1.-e-2.-ciclos-ja-no-proximo-ano-letivo-1bfde689
+- https://sicnoticias.pt/sitemap/videos.xml -> https://sicnoticias.pt/desporto/futebol-nacional/2026-09-10-video-vitoria-na-champions-nao-dissipa-as-duvidas-mas-sporting-esta-a-crescer-para-ser-diferente-7af2eff0
+- https://sicnoticias.pt/sitemap/videos.xml -> https://sicnoticias.pt/mundo/eua/2026-09-10-video-promessas-de-trump-na-convencao-republicana-sao-reflexo-de-uma-relacao-intermitente-com-a-realidade-0549f603
+- https://sicnoticias.pt/sitemap/news.xml -> https://sicnoticias.pt/janela-de-esperanca/temas/educacao/2026-09-10-video-governo-testa-fusao-do-1.-e-2.-ciclos-ja-no-proximo-ano-letivo-1bfde689
+- https://sicnoticias.pt/sitemap/news.xml -> https://sicnoticias.pt/desporto/futebol-nacional/2026-09-10-video-vitoria-na-champions-nao-dissipa-as-duvidas-mas-sporting-esta-a-crescer-para-ser-diferente-7af2eff0
+- https://sicnoticias.pt/sitemap/news.xml -> https://sicnoticias.pt/especiais/guerra-russia-ucrania/2026-09-10-seguranca-da-embaixada-britanica-detido-na-russia-por-alegada-espionagem-para-a-ucrania-597443b6
+- https://sic.pt/robots.txt -> Sitemap: https://sic.pt/sitemap/news.xml
+- https://sic.pt/robots.txt -> Sitemap: https://sic.pt/sitemap/index.xml
+- https://sic.pt/robots.txt -> Sitemap: https://sic.pt/sitemap/videos.xml
+- https://sicnoticias.pt/sitemap/index.xml: `https://sicnoticias.pt/sitemap/2026/09/2026-09-10.xml 2026-09-10T08:51:53.000Z https://sicnoticias.pt/sitemap/2026/09/2026-09-9.xml 2026-09-09T22:51:59.000Z https://sicnoticias.pt/sitemap/2026/09/2026-09-8.xml 2026-09-08T23:00:17.000Z https://sicnoticias.pt/sitemap/2026/09/2026-09-7.xml 2026-09-07T22:31:32.000Z https://sicnoticias.pt/sitemap/2026/09/2026-09-6.xml 2026-09-06T22:52:34.000Z https://s`
+- https://sicnoticias.pt/sitemap/videos.xml: `https://sicnoticias.pt/janela-de-esperanca/temas/educacao/2026-09-10-video-governo-testa-fusao-do-1.-e-2.-ciclos-ja-no-proximo-ano-letivo-1bfde689 Governo testa fusão do 1.º e 2.º ciclos já no próximo ano letivo <p><span>Projeto-piloto arranca em 2027-2028. O ministro da Educação </span><span>não adianta quantas escolas serão abrangidas, mas admite que gostava que este fosse um teste "alargado".</`
+- https://sicnoticias.pt/sitemap/news.xml: `https://sicnoticias.pt/janela-de-esperanca/temas/educacao/2026-09-10-video-governo-testa-fusao-do-1.-e-2.-ciclos-ja-no-proximo-ano-letivo-1bfde689 2026-09-10T08:51:29.367Z SIC Notícias pt https://sicnoticias.pt/desporto/futebol-nacional/2026-09-10-video-vitoria-na-champions-nao-dissipa-as-duvidas-mas-sporting-esta-a-crescer-para-ser-diferente-7af2eff0 2026-09-10T08:37:38.283Z SIC Notícias pt https`
+- https://sic.pt/robots.txt: `User-agent: AI2Bot User-agent: Ai2Bot-Dolma User-agent: aiHitBot User-agent: Amazonbot User-agent: Andibot User-agent: anthropic-ai User-agent: Applebot User-agent: Applebot-Extended User-agent: Awario User-agent: bedrockbot User-agent: Brightbot 1.0 User-agent: Bytespider User-agent: CCBot User-agent: ChatGPT-User User-agent: Claude-SearchBot User-agent: Claude-User User-agent: Claude-Web User-ag`
+
+## RTP Play, as temporadas que faltam
+
+Verificado em 2026-09-10T08:54:16+00:00.
+
+| Hipotese | Responde | Texto | Ligacoes | Enderecos | Termos |
+|---|---|---|---|---|---|
+| https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=1&type=all | sim | 399 | 12 | 0 | Ventura, André Ventura, Andre Ventura |
+| https://www.rtp.pt/play/bg_l_ep/?listProgram=12659&page=1&type=all | sim | 472 | 12 | 0 | nenhum |
+| https://www.rtp.pt/play/bg_l_ep/?listProgram=14350&page=1&type=all | sim | 363 | 12 | 0 | nenhum |
+| https://www.rtp.pt/play/bg_l_ep/?listProgram=16214&page=5&type=all | sim | 0 | 0 | 0 | nenhum |
+| https://www.rtp.pt/play/bg_l_ep/?listProgram=16214&page=20&type=all | sim | 0 | 0 | 0 | nenhum |
+| https://www.rtp.pt/play/p11017/grande-entrevista | sim | 3965 | 49 | 0 | nenhum |
+| https://www.rtp.pt/play/p9822/grande-entrevista | sim | 4748 | 58 | 0 | nenhum |
+
+- https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=1&type=all -> https://www.rtp.pt/play/p10324/e951616/grande-entrevista
+- https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=1&type=all -> https://www.rtp.pt/play/p10324/e949138/grande-entrevista
+- https://www.rtp.pt/play/bg_l_ep/?listProgram=10324&page=1&type=all -> https://www.rtp.pt/play/p10324/e948265/grande-entrevista
+- https://www.rtp.pt/play/bg_l_ep/?listProgram=12659&page=1&type=all -> https://www.rtp.pt/play/p12659/e817472/grande-entrevista
+- https://www.rtp.pt/play/bg_l_ep/?listProgram=12659&page=1&type=all -> https://www.rtp.pt/play/p12659/e815492/grande-entrevista
+- https://www.rtp.pt/play/bg_l_ep/?listProgram=12659&page=1&type=all -> https://www.rtp.pt/play/p12659/e813831/grande-entrevista
+- https://www.rtp.pt/play/bg_l_ep/?listProgram=14350&page=1&type=all -> https://www.rtp.pt/play/p14350/e896777/grande-entrevista
+- https://www.rtp.pt/play/bg_l_ep/?listProgram=14350&page=1&type=all -> https://www.rtp.pt/play/p14350/e893773/grande-entrevista
+- https://www.rtp.pt/play/bg_l_ep/?listProgram=14350&page=1&type=all -> https://www.rtp.pt/play/p14350/e892362/grande-entrevista
+- https://www.rtp.pt/play/p11017/grande-entrevista -> https://www.rtp.pt/play/p16170/praca-da-alegria
+- https://www.rtp.pt/play/p11017/grande-entrevista -> https://www.rtp.pt/play/p16123/a-nossa-tarde
+- https://www.rtp.pt/play/p11017/grande-entrevista -> https://www.rtp.pt/play/p16136/linha-da-frente
+- https://www.rtp.pt/play/p9822/grande-entrevista -> https://www.rtp.pt/play/p16170/praca-da-alegria
+- https://www.rtp.pt/play/p9822/grande-entrevista -> https://www.rtp.pt/play/p16123/a-nossa-tarde
+- https://www.rtp.pt/play/p9822/grande-entrevista -> https://www.rtp.pt/play/p16136/linha-da-frente
