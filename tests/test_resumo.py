@@ -112,3 +112,60 @@ class TestVazio(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class TestAmbitoVisivel(unittest.TestCase):
+    """O site mostra e conta a partir de tema.visivel_desde (decisao do
+    autor, 2026-09-11). O erro que isto previne: somar anos de cobertura
+    residual (2019 a 2023, com uma ou duas emissoes apuradas por ano) como
+    se fossem medicao. Nada se apaga: o que fica antes do corte sai de
+    todos os agregados e e contado em ambito.fora_do_ambito, para a pagina
+    de Fontes o dizer."""
+
+    def _config_com_corte(self):
+        from dataclasses import replace
+
+        config = config_teste()
+        tema = replace(
+            config.tema,
+            visivel_desde="2024-01-01",
+            visivel_rotulo="desde o inicio de 2024",
+            visivel_tab="Desde 2024",
+        )
+        return replace(config, tema=tema)
+
+    def test_linha_anterior_ao_corte_fica_fora_de_todos_os_agregados(self):
+        """2023-12-31 fica fora e 2024-01-01 entra: o corte compara datas
+        ISO e inclui o proprio dia. A linha de fora nao aparece em nenhum
+        balde nem na lista de fontes, e fica contada no ambito."""
+        linhas = [
+            linha("2023-12-31", "sic", fonte="clipping-imprensa", proveniencia="imprensa"),
+            linha("2024-01-01", "cmtv"),
+        ]
+        r = resumo.construir(linhas, self._config_com_corte())
+        self.assertEqual(r["totais"], {"emissoes": 1, "entrevistas_distintas": 1})
+        self.assertEqual([b["ano"] for b in r["por_ano"]], ["2024"])
+        self.assertEqual([d["data"] for d in r["por_dia"]], ["2024-01-01"])
+        self.assertEqual(r["primeiro_registo"], "2024-01-01")
+        self.assertEqual(r["fontes"], ["registo-curado"])
+        self.assertEqual(sum(c["emissoes"] for c in r["por_canal"]), r["totais"]["emissoes"])
+        self.assertEqual(r["ambito"]["fora_do_ambito"], {"emissoes": 1, "entrevistas_distintas": 1})
+
+    def test_o_ambito_vai_no_resumo_por_extenso(self):
+        """O site nao pode adivinhar o corte: o resumo di-lo, com o rotulo
+        e a tab que a configuracao editorial escreveu."""
+        r = resumo.construir([linha("2024-05-01", "sic")], self._config_com_corte())
+        self.assertEqual(r["ambito"]["visivel_desde"], "2024-01-01")
+        self.assertEqual(r["ambito"]["rotulo"], "desde o inicio de 2024")
+        self.assertEqual(r["ambito"]["tab"], "Desde 2024")
+        self.assertEqual(r["ambito"]["recolha_desde"], self._config_com_corte().tema.desde)
+
+    def test_sem_corte_definido_o_resumo_conta_tudo_como_dantes(self):
+        """Uma configuracao sem visivel_desde comporta-se como antes da
+        mudanca: o corte cai em tema.desde e nada do dataset sai. E o que
+        protege as configuracoes e fixtures antigas."""
+        config = config_teste()
+        r = resumo.construir([linha("2025-09-01", "sic")], config)
+        self.assertEqual(r["totais"]["emissoes"], 1)
+        self.assertEqual(r["ambito"]["visivel_desde"], config.tema.desde)
+        self.assertEqual(r["ambito"]["fora_do_ambito"], {"emissoes": 0, "entrevistas_distintas": 0})

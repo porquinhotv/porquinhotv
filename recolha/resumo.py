@@ -79,6 +79,23 @@ def recordes(datas: list[str]) -> dict:
 
 
 def construir(linhas: list[dict], config: Config) -> dict:
+    # Ambito visivel (decisao do autor, 2026-09-11): o site mostra e conta
+    # a partir de tema.visivel_desde. As linhas anteriores nao se apagam,
+    # continuam em emissoes.json; aqui ficam fora de todos os agregados,
+    # para que nenhum numero do site as some, e saem contadas em
+    # `ambito.fora_do_ambito`, porque nada se descarta em silencio. A
+    # razao esta na Metodologia: antes do corte a cobertura das vias de
+    # recolha e residual e desigual entre canais, e somar esses anos seria
+    # apresentar ausencia de cobertura como medicao.
+    corte = config.tema.visivel_desde or config.tema.desde
+    fora = _balde()
+    visiveis = []
+    for linha in linhas:
+        if linha["data"] < corte:
+            _somar(fora, linha)
+        else:
+            visiveis.append(linha)
+
     total = _balde()
     por_dia: dict = defaultdict(_balde)
     por_semana: dict = defaultdict(_balde)
@@ -88,7 +105,7 @@ def construir(linhas: list[dict], config: Config) -> dict:
     canal_por_dia: dict = defaultdict(lambda: defaultdict(lambda: {**_balde(), "declaradas": 0}))
     por_origem: dict = defaultdict(_balde)
 
-    for linha in linhas:
+    for linha in visiveis:
         data = linha["data"]
         _somar(total, linha)
         _somar(por_dia[data], linha)
@@ -115,6 +132,16 @@ def construir(linhas: list[dict], config: Config) -> dict:
             "desde_rotulo": tema.desde_rotulo,
         },
         "sujeito": {"id": config.sujeito.id, "nome": config.sujeito.nome},
+        # O ambito visivel, dito por extenso para o site e para quem abrir
+        # o ficheiro: de onde o site conta, desde quando a recolha aceita,
+        # e quanto existe no dataset antes do corte.
+        "ambito": {
+            "recolha_desde": tema.desde,
+            "visivel_desde": corte,
+            "rotulo": tema.visivel_rotulo or tema.desde_rotulo,
+            "tab": tema.visivel_tab,
+            "fora_do_ambito": _fechar(fora),
+        },
         "primeiro_registo": datas[0] if datas else None,
         "ultimo_registo": datas[-1] if datas else None,
         "totais": _fechar(total),
@@ -149,7 +176,7 @@ def construir(linhas: list[dict], config: Config) -> dict:
         # qualidade da propria cobertura.
         "por_origem": {origem: _fechar(balde) for origem, balde in sorted(por_origem.items())},
         "recordes": recordes(datas),
-        "fontes": sorted({linha["fonte"] for linha in linhas}),
+        "fontes": sorted({linha["fonte"] for linha in visiveis}),
     }
 
 

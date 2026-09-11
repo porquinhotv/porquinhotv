@@ -6,11 +6,19 @@ O Porquinho TV conta as entrevistas exclusivas dadas por André Ventura na telev
 
 Uma **entrevista exclusiva** é um segmento em que ele é o único entrevistado, responde a perguntas de um jornalista do canal, e a emissão passou num dos nove canais medidos: RTP1, RTP2, SIC, TVI, SIC Notícias, RTP3, CNN Portugal, NOW e CMTV.
 
-Conta desde 16 de maio de 2019, dia em que o Diário da República publicou o registo do partido. Nada anterior entra, mesmo que exista.
+O registo aceita emissões desde 16 de maio de 2019, dia em que o Diário da República publicou o registo do partido. Nada anterior a essa data entra, mesmo que exista. O site, porém, mostra e conta apenas de 2024 em diante, e a secção seguinte diz porquê.
 
 Programas de entretenimento contam, desde que a entrevista seja a solo. Noticiários com entrevista em estúdio contam.
 
 **Sem prova pública, não há linha.** Cada emissão tem uma ligação que qualquer pessoa abre: a página do canal, uma notícia que relate ou anuncie a entrevista, ou uma publicação de uma conta oficial do canal ou do próprio entrevistado. A prova tem de nomear o canal e fixar o dia. Estão todas na página de Fontes.
+
+## O âmbito do site: de 2024 em diante
+
+O site mostra e conta as emissões de 1 de janeiro de 2024 em diante. As emissões apuradas antes dessa data não foram apagadas: continuam no conjunto de dados publicado, que qualquer pessoa pode descarregar, mas ficam fora dos totais, dos gráficos, do calendário e da tabela de Fontes, que diz quantas são.
+
+A razão é de honestidade de medição. Para os anos de 2019 a 2023, o que há para ler online, os arquivos dos canais e os índices de notícias, tem cobertura residual e muito desigual entre canais. O que se conseguia apurar desses anos era uma ou duas emissões por ano, e publicar esses números como o retrato desses anos seria apresentar a ausência de cobertura como se fosse medição. De 2024 em diante a cobertura sustenta uma contagem, e é sobre ela que o site responde.
+
+Se a cobertura dos anos anteriores vier um dia a atingir o mesmo nível, o âmbito alarga-se para trás sem se recolher nada de novo: as emissões já apuradas estão guardadas e voltam a contar no dia em que a medição as sustentar.
 
 ## O que não conta
 

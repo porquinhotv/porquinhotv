@@ -57,6 +57,14 @@ class Tema:
     pergunta: str
     desde: str
     desde_rotulo: str = "desde sempre"
+    # Ambito visivel do site (decisao do autor, 2026-09-11): o site mostra
+    # e conta a partir daqui. O que fica antes nao se apaga, continua em
+    # emissoes.json e fora de todos os agregados. Vazio significa "tudo
+    # desde `desde`", e e assim que uma configuracao sem o campo continua
+    # a valer como dantes.
+    visivel_desde: str = ""
+    visivel_rotulo: str = ""
+    visivel_tab: str = ""
     # Rondas distintas em que um bloco tem de ser visto antes de entrar
     # no dataset publicado. Ver recolha/confirmacao.py.
     rondas_para_confirmar: int = 2
@@ -253,6 +261,9 @@ def carregar_config(
         pergunta=t.get("pergunta", ""),
         desde=str(t["desde"]),
         desde_rotulo=t.get("desde_rotulo", "desde sempre"),
+        visivel_desde=str(t.get("visivel_desde", "") or ""),
+        visivel_rotulo=t.get("visivel_rotulo", ""),
+        visivel_tab=t.get("visivel_tab", ""),
         rondas_para_confirmar=int(t.get("rondas_para_confirmar", 2)),
     )
     sujeito = Sujeito(id=s["id"], nome=s["nome"], detetar=tuple(s.get("detetar", [])))

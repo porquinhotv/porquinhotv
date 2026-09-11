@@ -31,6 +31,18 @@ tema:
   # (2.a serie, n.o 94, 16 de maio de 2019). Nada anterior entra.
   desde: '2019-05-16'
   desde_rotulo: desde a fundação do partido
+  # Ambito visivel do site (decisao do autor, 2026-09-11): mostra-se e
+  # conta-se a partir daqui. A recolha continua a aceitar tudo desde
+  # `desde` e nada se apaga: as emissoes anteriores ficam em emissoes.json,
+  # fora dos agregados e da pagina de Fontes, prontas a voltar a contar se
+  # o ambito um dia recuar. Razao, medida: de 2019 a 2023 a cobertura das
+  # vias de recolha e residual e desigual entre canais (o indice de
+  # noticias triou 0, 3, 1, 13 e 1 candidatos nesses anos), e publicar uma
+  # ou duas emissoes por ano seria apresentar ausencia de cobertura como
+  # medicao.
+  visivel_desde: '2024-01-01'
+  visivel_rotulo: desde o início de 2024
+  visivel_tab: Desde 2024
   # Rondas distintas em que um bloco tem de ser visto antes de entrar no
   # dataset publicado. Protege de um erro transitorio da recolha (pagina
   # truncada, JSON-LD malformado nesse dia); nao protege de a fonte estar

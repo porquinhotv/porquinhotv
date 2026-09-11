@@ -13,7 +13,7 @@
     { id: "semana", tab: "Esta semana", frase: "esta semana" },
     { id: "mes", tab: "Este mês", frase: "este mês" },
     { id: "ano", tab: "Este ano", frase: "este ano" },
-    { id: "sempre", tab: "Desde sempre", frase: "" }   // frase vem do resumo (desde_rotulo)
+    { id: "sempre", tab: "Desde sempre", frase: "" }   // tab e frase vem do resumo (ambito)
   ];
   var ESCALAS = [
     { id: "semana", tab: "Semanas", chave: "por_semana", campo: "semana" },
@@ -23,9 +23,17 @@
 
   var estado = { resumo: null, textos: null, periodo: "mes", escala: "mes", hoje: new Date() };
 
+  /* O resumo passou a trazer o ambito visivel a 2026-09-11. Um resumo
+     gerado antes ainda nao o traz; ate a recolha seguinte correr, o site
+     le esse resumo e comporta-se como dantes, em vez de partir. */
+  function ambito() {
+    var r = estado.resumo;
+    return r.ambito || { visivel_desde: r.tema.desde, rotulo: r.tema.desde_rotulo, tab: "" };
+  }
+
   function periodoAtual() {
     var p = PERIODOS.filter(function (x) { return x.id === estado.periodo; })[0];
-    return { id: p.id, tab: p.tab, frase: p.frase || estado.resumo.tema.desde_rotulo };
+    return { id: p.id, tab: p.tab, frase: p.frase || ambito().rotulo };
   }
 
   function nomeDoCanal(id) {
@@ -308,7 +316,9 @@
       ]));
       return;
     }
-    var intervalo = PTV.intervalo(estado.periodo, estado.hoje, estado.resumo.tema.desde);
+    var intervalo = PTV.intervalo(estado.periodo, estado.hoje, ambito().visivel_desde);
+    var sempre = PERIODOS.filter(function (x) { return x.id === "sempre"; })[0];
+    sempre.tab = ambito().tab || sempre.tab;
     desenharSeletor(painel, PERIODOS, estado.periodo, function (id) { estado.periodo = id; desenharPainel(); }, "Período");
     desenharTotal(painel, intervalo);
     desenharCanais(painel, intervalo);
