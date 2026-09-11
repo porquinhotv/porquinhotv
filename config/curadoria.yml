@@ -148,14 +148,27 @@ entrevistas:
     titulo: 'A entrevista a André Ventura na íntegra'
     mesma_entrevista: '2025-03-17'
 
-  # A lista de referencia dava esta a TVI. O caminho do programa diz o
-  # nome do canal por extenso e diz CNN, e o canal le-se do texto e nunca
-  # do dominio (decisao editorial 19). Entra como uma emissao so: ao
-  # contrario da de 17 de marco, nenhum dos dois canais declarou simulcast.
+  # CORRIGIDO a 2026-09-11: esta linha estava aqui como emissao so da CNN,
+  # com o comentario a afirmar que nenhum dos dois canais declarou
+  # simulcast. Era falso, e ninguem tinha aberto a pagina para o verificar.
+  # A pagina declara, no texto que serve aos motores de busca, "Em
+  # entrevista a TVI/CNN Portugal". E simulcast declarado por quem emitiu,
+  # que e o criterio, e conta nos dois canais pela decisao editorial 3.
+  #
+  # O identificador de video partilhado levanta a suspeita de duplicacao e
+  # NAO a resolve: o que a resolve e esta frase. O grupo escreve os dois
+  # canais quando sao dois, e um so quando e um.
   - data: 2025-01-13
     canal: cnn-portugal
     prova: https://tviplayer.iol.pt/programa/jornal-da-cnn/619392fe0cf2cc58e7d362cc/video/67858b380cf23e044af76538
     titulo: 'Entrevista a André Ventura na íntegra'
+    mesma_entrevista: '2025-01-13'
+  - data: 2025-01-13
+    canal: tvi
+    programa: Jornal da CNN
+    prova: https://tviplayer.iol.pt/programa/jornal-da-cnn/619392fe0cf2cc58e7d362cc/video/67858b380cf23e044af76538
+    titulo: 'Entrevista a André Ventura na íntegra'
+    mesma_entrevista: '2025-01-13'
 
   # Duas da CMTV. A segunda nao estava na lista de referencia: apareceu
   # porque a pagina que se foi verificar declarava outra data.
@@ -227,9 +240,33 @@ entrevistas:
   - data: 2025-04-03
     canal: cnn-portugal
     prova: https://www.instagram.com/p/DH_pniUtT4Q/
-    # A conta desta publicacao nao ficou identificada na verificacao. Se
-    # for de um particular, a regra do autor exclui-a e a linha sai.
+    # DUVIDA FECHADA a 2026-09-11: a conta e do proprio entrevistado, e a
+    # linha conta pela decisao editorial 27. O custo dessa decisao continua
+    # a valer aqui: um anuncio do proprio nao e um registo de quem emitiu.
+
+  # Entrou a 2026-09-11 e nao estava na lista de referencia. A etiqueta que
+  # levou a esta pagina supunha 3 de julho de 2025; a pagina declara 14 de
+  # janeiro de 2026, em plena campanha presidencial. Uma etiqueta e uma
+  # hipotese e a data lida na pagina e o facto.
+  #
+  # Santana Lopes conduz a entrevista, nao e um segundo convidado: sem essa
+  # confirmacao seria um painel e nao contava.
+  - data: 2026-01-14
+    canal: now
+    prova: https://www.nowcanal.pt/ultimas/detalhe/entrevista-completa-de-andre-ventura-no-now-com-santana-lopes
+    titulo: 'Entrevista completa de André Ventura no NOW, com Santana Lopes'
 
 remover:
   - prova: https://www.jm-madeira.pt/v%C3%ADdeo/regi-o/30004362/ventura-agarra-se-a-vice-presidente-da-camara-do-funchal.html
     motivo: é a mesma entrevista da emissão de 2026-09-01 na CNN Portugal, já provada pela página do canal; a data desta peça é a da publicação, não a da emissão
+
+  # As duas linhas seguintes sao o mesmo caso e foram decididas lendo a
+  # pagina, a 2026-09-11. O identificador de video partilhado entre os dois
+  # dominios do grupo levanta a suspeita; o que a resolve e o que a pagina
+  # declara. Nestas duas a pagina nomeia um canal so, ou nomeia o programa
+  # de informacao da CNN e mais nenhum canal. A emissao da CNN de cada dia
+  # fica, provada a parte.
+  - prova: https://tviplayer.iol.pt/programa/noticias-cnn/6193fe4b0cf2c7ea0f090b1e/video/6708406b0cf23ab6553606d3
+    motivo: a página declara "em entrevista à CNN Portugal" e nomeia só esse canal; é um vídeo da CNN servido no leitor do grupo, não uma emissão da TVI, e a emissão de 2024-10-10 na CNN Portugal já está contada
+  - prova: https://tviplayer.iol.pt/programa/cnn-em-foco/66576e34d34e049892216643/video/690690050cf2c7eb24443f42
+    motivo: a página não nomeia a TVI em lado nenhum e identifica o programa como CNN em Foco; é um vídeo da CNN servido no leitor do grupo, e a emissão de 2025-11-01 na CNN Portugal já está contada
