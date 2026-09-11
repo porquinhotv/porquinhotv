@@ -277,8 +277,20 @@ entrevistas:
     titulo: 'Ventura exige negociação com AD para aprovar Orçamento do Estado'
 
 remover:
+  # Lida pelo autor a 2026-09-11: e um resumo de quinze minutos da
+  # entrevista do noticiario da noite anterior, que ja esta contada pela
+  # pagina do canal. Nao e uma entrevista nova, e a data que a fonte lhe
+  # deu (o dia da publicacao) punha-a no dia seguinte, o que a fazia
+  # parecer outra entrevista.
+  #
+  # Era um dos dois itens do `motor-rtp3` que a KB tinha por rever, no
+  # ponto 16 da lista em aberto, com a suspeita escrita de serem recortes.
+  # A suspeita confirmou-se nesta; a de 2025-05-12 continua por abrir.
+  - prova: https://www.rtp.pt/noticias/politica/entrevista-a-rtp-ventura-assume-que-eleger-menos-de-50-deputados-seria-derrota_v1641804
+    motivo: é um resumo de quinze minutos da entrevista do Telejornal da noite anterior, já contada pela página do canal; não é uma entrevista nova
+
   - prova: https://www.jm-madeira.pt/v%C3%ADdeo/regi-o/30004362/ventura-agarra-se-a-vice-presidente-da-camara-do-funchal.html
-    motivo: é a mesma entrevista da entrevista de 2026-09-01 na CNN Portugal, já provada pela página do canal; a data desta peça é a da publicação, não a da entrevista
+    motivo: é a mesma entrevista de 2026-09-01 na CNN Portugal, já provada pela página do canal; a data desta peça é a da publicação, não o dia em que passou
 
   # As duas linhas seguintes sao o mesmo caso e foram decididas lendo a
   # pagina, a 2026-09-11. O identificador de video partilhado entre os dois
@@ -311,8 +323,9 @@ remover:
 # ------------------------------------------------------------------
 # mesma_entrevista: duas transmissoes, uma entrevista
 # ------------------------------------------------------------------
-# Desde 2026-09-11 a unidade do site e a entrevista exclusiva, e nao a
-# entrevista. Quando a mesma entrevista passa em dois canais, conta uma vez,
+# Desde 2026-09-11 a unidade do site e a entrevista exclusiva, e deixou
+# de ser cada passagem num canal. Quando a mesma entrevista passa em dois
+# canais, conta uma vez,
 # fica atribuida a um deles, e o site escreve ao lado que passou tambem no
 # outro.
 #
@@ -376,24 +389,20 @@ mesma_entrevista:
       - https://tvi.iol.pt/noticias/videos/a-entrevista-a-andre-ventura-na-integra/67d8a54e0cf20ac1d5f2f1cc
       - https://cnnportugal.iol.pt/videos/a-entrevista-a-andre-ventura-na-integra/67d8a54e0cf20ac1d5f2f1cc
 
-  # AGRUPAMENTO HERDADO E POR CONFIRMAR, e e o unico desta tabela que
-  # ninguem leu. Estava agrupado no registo desde antes de 2026-09-11, e
-  # so contava para o numero secundario de entrevistas distintas, que era
-  # um numero sem palavras ao lado. Agora decide a contagem principal e
-  # faz o site escrever que a entrevista passou nos dois canais, por isso
-  # passou a merecer leitura.
+  # 2025-04-09 ESTEVE AQUI E SAIU, a 2026-09-11. Era o unico grupo desta
+  # tabela que ninguem tinha lido: estava agrupado no registo desde antes
+  # do refactor e so contava para o numero secundario de entrevistas
+  # distintas, que era um numero sem palavras ao lado.
   #
-  # O que levanta a duvida: as duas provas nomeiam programas diferentes,
-  # um da grelha de entretenimento da tarde e outra a cobertura de
-  # legislativas. Mantem-se agrupado ate alguem abrir as duas paginas,
-  # porque desagrupar sem ler seria trocar um erro por defeito por um erro
-  # por excesso, e a regra da casa diz qual dos dois e o pior.
-  - chave: '2025-04-09'
-    canal: now
-    motivo: agrupamento herdado do registo, por confirmar; as duas provas nomeiam programas diferentes e ninguém abriu as páginas
-    provas:
-      - https://www.nowcanal.pt/ultimas/detalhe/legislativas-2025-assista-a-entrevista-de-andre-ventura
-      - https://tvi.iol.pt/videos/goucha-entrevista-exclusiva-com-andre-ventura/67f684a50cf216cd3ad34a05
+  # O autor abriu as duas paginas: sao duas entrevistas diferentes no
+  # mesmo dia, uma a tarde num programa de entretenimento da TVI e outra
+  # a noite na NOW. Contam as duas, e passam a contar desde esta corrida.
+  #
+  # A licao fica escrita porque vale para a tabela toda: um agrupamento
+  # herdado nao e um agrupamento verificado. Enquanto so decidia um numero
+  # secundario ninguem o foi ler; quando passou a decidir a contagem
+  # principal e a fazer o site afirmar que a entrevista passou nos dois
+  # canais, foi lido, e estava errado.
 
   # Os identificadores de video sao diferentes nos dois dominios, por isso
   # nao e o mesmo ficheiro republicado: sao duas paginas da mesma

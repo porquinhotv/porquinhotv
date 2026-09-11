@@ -859,46 +859,6 @@
   },
   {
    "canais": [
-    "rtp3"
-   ],
-   "canal": "rtp3",
-   "confianca": "media",
-   "data": "2025-03-19",
-   "data_origem": "publicacao",
-   "fonte": "motor-rtp3",
-   "fontes_distintas": 1,
-   "id": "ba05f89988d7",
-   "origem": "canal",
-   "primeira_vez": "2026-09-10",
-   "principal_declarado": false,
-   "programa": "",
-   "prova_url": "https://www.rtp.pt/noticias/politica/entrevista-a-rtp-ventura-assume-que-eleger-menos-de-50-deputados-seria-derrota_v1641804",
-   "publicado_em": "2025-03-19",
-   "rondas": 3,
-   "titulo": "Entrevista à RTP. Ventura assume que eleger menos de 50 deputados seria derrota",
-   "transmissoes": [
-    {
-     "bloco": "ba05f89988d7",
-     "canal": "rtp3",
-     "confianca": "media",
-     "data": "2025-03-19",
-     "data_origem": "publicacao",
-     "entrevista": "ba05f89988d7",
-     "fonte": "motor-rtp3",
-     "fontes_distintas": 1,
-     "id": "motor-rtp3:05261e0a3fbe",
-     "origem": "canal",
-     "primeira_vez": "2026-09-10",
-     "programa": "",
-     "prova_url": "https://www.rtp.pt/noticias/politica/entrevista-a-rtp-ventura-assume-que-eleger-menos-de-50-deputados-seria-derrota_v1641804",
-     "publicado_em": "2025-03-19",
-     "rondas": 3,
-     "titulo": "Entrevista à RTP. Ventura assume que eleger menos de 50 deputados seria derrota"
-    }
-   ]
-  },
-  {
-   "canais": [
     "sic-noticias"
    ],
    "canal": "sic-noticias",
@@ -979,8 +939,7 @@
   },
   {
    "canais": [
-    "now",
-    "tvi"
+    "now"
    ],
    "canal": "now",
    "confianca": "alta",
@@ -988,10 +947,10 @@
    "data_origem": "declarada",
    "fonte": "registo-curado",
    "fontes_distintas": 0,
-   "id": "2025-04-09",
+   "id": "6b76e93656cc",
    "origem": "canal",
    "primeira_vez": "2026-09-10",
-   "principal_declarado": true,
+   "principal_declarado": false,
    "programa": "Legislativas 2025",
    "prova_url": "https://www.nowcanal.pt/ultimas/detalhe/legislativas-2025-assista-a-entrevista-de-andre-ventura",
    "publicado_em": "2025-04-09",
@@ -1015,7 +974,29 @@
      "publicado_em": "2025-04-09",
      "rondas": 0,
      "titulo": "Legislativas 2025: Assista à entrevista de André Ventura"
-    },
+    }
+   ]
+  },
+  {
+   "canais": [
+    "tvi"
+   ],
+   "canal": "tvi",
+   "confianca": "alta",
+   "data": "2025-04-09",
+   "data_origem": "declarada",
+   "fonte": "registo-curado",
+   "fontes_distintas": 0,
+   "id": "67abcd6061e0",
+   "origem": "canal",
+   "primeira_vez": "2026-09-10",
+   "principal_declarado": false,
+   "programa": "Goucha",
+   "prova_url": "https://tvi.iol.pt/videos/goucha-entrevista-exclusiva-com-andre-ventura/67f684a50cf216cd3ad34a05",
+   "publicado_em": "2025-04-09",
+   "rondas": 0,
+   "titulo": "Goucha - Entrevista exclusiva com André Ventura",
+   "transmissoes": [
     {
      "bloco": "67abcd6061e0",
      "canal": "tvi",

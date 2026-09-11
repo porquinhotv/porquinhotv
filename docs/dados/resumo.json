@@ -137,15 +137,6 @@
   },
   {
    "canais": {
-    "rtp3": {
-     "declaradas": 0,
-     "entrevistas": 1
-    }
-   },
-   "data": "2025-03-19"
-  },
-  {
-   "canais": {
     "sic-noticias": {
      "declaradas": 1,
      "entrevistas": 1
@@ -165,6 +156,10 @@
   {
    "canais": {
     "now": {
+     "declaradas": 1,
+     "entrevistas": 1
+    },
+    "tvi": {
      "declaradas": 1,
      "entrevistas": 1
     }
@@ -549,7 +544,7 @@
   "motor-rtp3",
   "registo-curado"
  ],
- "gerado_em": "2026-09-11T18:13:08+00:00",
+ "gerado_em": "2026-09-11T18:24:41+00:00",
  "por_ano": [
   {
    "ano": "2024",
@@ -582,7 +577,7 @@
   },
   {
    "canal": "tvi",
-   "entrevistas": 3,
+   "entrevistas": 4,
    "nome": "TVI"
   },
   {
@@ -592,7 +587,7 @@
   },
   {
    "canal": "rtp3",
-   "entrevistas": 8,
+   "entrevistas": 7,
    "nome": "RTP3"
   },
   {
@@ -669,10 +664,6 @@
    "entrevistas": 1
   },
   {
-   "data": "2025-03-19",
-   "entrevistas": 1
-  },
-  {
    "data": "2025-03-27",
    "entrevistas": 1
   },
@@ -682,7 +673,7 @@
   },
   {
    "data": "2025-04-09",
-   "entrevistas": 1
+   "entrevistas": 2
   },
   {
    "data": "2025-04-11",
@@ -875,11 +866,11 @@
    "mes": "2025-01"
   },
   {
-   "entrevistas": 6,
+   "entrevistas": 5,
    "mes": "2025-03"
   },
   {
-   "entrevistas": 4,
+   "entrevistas": 5,
    "mes": "2025-04"
   },
   {
@@ -989,7 +980,7 @@
    "semana": "2025-W11"
   },
   {
-   "entrevistas": 3,
+   "entrevistas": 2,
    "semana": "2025-W12"
   },
   {
@@ -1001,7 +992,7 @@
    "semana": "2025-W14"
   },
   {
-   "entrevistas": 2,
+   "entrevistas": 3,
    "semana": "2025-W15"
   },
   {
@@ -1141,9 +1132,9 @@
    "dias": 94
   },
   "maior_maratona": {
-   "ate": "2025-03-19",
-   "de": "2025-03-17",
-   "dias": 3
+   "ate": "2024-03-21",
+   "de": "2024-03-20",
+   "dias": 2
   },
   "ultima_data": "2026-09-10"
  },
