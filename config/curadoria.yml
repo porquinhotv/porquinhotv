@@ -101,6 +101,134 @@ entrevistas:
     # informacao do grupo. Fica `sic-noticias`, que e o que o endereco
     # declara, e nao o que a lista supoe.
 
+  # Onze linhas acrescentadas a 2026-09-11 a tarde, todas com a pagina
+  # aberta e lida pelo autor na ferramenta de verificacao. A origem de
+  # cada uma esta dita no comentario respetivo.
+  #
+  # Regra aplicada aos dois canais do grupo SIC, e vale a pena escreve-la
+  # porque nao e obvia: sic.pt e a SIC, sicnoticias.pt e a SIC Noticias.
+  # Varias destas paginas dizem "a SIC" no texto sendo servidas no
+  # dominio do canal de informacao, que e a mesma troca que a KB ja
+  # regista na imprensa. Fica o dominio, que e o que o canal declara ao
+  # publicar, e nao a abreviatura do texto. E uma decisao editorial por
+  # confirmar: se for ao contrario, sao tres linhas a mudar de canal.
+  - data: 2025-01-24
+    canal: sic-noticias
+    prova: https://sicnoticias.pt/pais/2025-01-24-andre-ventura-em-entrevista-a-sic-sobre-polemica-que-envolve-miguel-arruda-56229f76
+    titulo: 'André Ventura em entrevista à SIC sobre polémica que envolve Miguel Arruda'
+    # Uma das quatro da bolsa da SIC: o coletor encontra o endereco e leva
+    # 403 ao abrir. Data no caminho e a palavra do formato tambem.
+  - data: 2025-03-27
+    canal: sic-noticias
+    prova: https://sicnoticias.pt/pais/2025-03-27-video-era-o-que-faltava-andre-ventura-recusa-se-a-tirar-cartazes-polemicos-e-rejeita-acordo-com-luis-montenegro-26924ff4
+    # O endereco nao diz entrevista; foi a leitura da pagina que o
+    # confirmou. Sem essa leitura esta linha nao entrava.
+  - data: 2024-03-21
+    canal: sic-noticias
+    prova: https://sicnoticias.pt/video/2024-03-21-Quero-ser-primeiro-ministro-o-objetivo-de-Andre-Ventura-que-no-presente-nao-aceita-viabilizar-o-OE-sem-acordo-74ed180d
+    # Idem: o endereco nao traz a palavra do formato.
+
+  # Simulcast declarado pelos proprios canais: as contas oficiais dos dois
+  # publicaram o mesmo video com o titulo "em entrevista na TVI e CNN
+  # Portugal". Contam as duas emissoes pela decisao editorial 3, e a chave
+  # junta-as como uma entrevista so.
+  #
+  # As duas paginas partilham o identificador de video de 24 caracteres,
+  # que e o sinal da seccao 0.1.2. Aqui nao e duplicacao: e simulcast a
+  # serio, e a diferenca esta provada pelo que os canais escreveram.
+  - data: 2025-03-17
+    canal: tvi
+    prova: https://tvi.iol.pt/noticias/videos/a-entrevista-a-andre-ventura-na-integra/67d8a54e0cf20ac1d5f2f1cc
+    titulo: 'A entrevista a André Ventura na íntegra'
+    mesma_entrevista: '2025-03-17'
+  - data: 2025-03-17
+    canal: cnn-portugal
+    prova: https://cnnportugal.iol.pt/videos/a-entrevista-a-andre-ventura-na-integra/67d8a54e0cf20ac1d5f2f1cc
+    titulo: 'A entrevista a André Ventura na íntegra'
+    mesma_entrevista: '2025-03-17'
+
+  # A lista de referencia dava esta a TVI. O caminho do programa diz o
+  # nome do canal por extenso e diz CNN, e o canal le-se do texto e nunca
+  # do dominio (decisao editorial 19). Entra como uma emissao so: ao
+  # contrario da de 17 de marco, nenhum dos dois canais declarou simulcast.
+  - data: 2025-01-13
+    canal: cnn-portugal
+    prova: https://tviplayer.iol.pt/programa/jornal-da-cnn/619392fe0cf2cc58e7d362cc/video/67858b380cf23e044af76538
+    titulo: 'Entrevista a André Ventura na íntegra'
+
+  # Duas da CMTV. A segunda nao estava na lista de referencia: apareceu
+  # porque a pagina que se foi verificar declarava outra data.
+  - data: 2025-03-10
+    canal: cmtv
+    programa: Grande Jornal
+    prova: https://www.cmjornal.pt/tv-media/detalhe/andre-ventura-esta-noite-no-grande-jornal-da-cmtv
+    titulo: 'André Ventura esta noite no Grande Jornal da CMTV'
+  - data: 2025-05-02
+    canal: cmtv
+    programa: Grande Jornal
+    prova: https://www.cmjornal.pt/politica/detalhe/andre-ventura-em-entrevista-ao-grande-jornal
+    titulo: 'André Ventura em entrevista ao Grande Jornal'
+
+  # Tres da SIC, nenhuma na lista de referencia, todas em sic.pt. Sao
+  # presencas a solo em programas de tarde e de manha, que contam pelas
+  # decisoes editoriais 2 e 14. Antes destas o site tinha uma unica
+  # emissao da SIC em todo o historico.
+  - data: 2025-04-22
+    canal: sic
+    prova: https://sic.pt/programas/julia/videos/2025-04-22-video-andre-ventura-tem-a-fe-como-pilar-mas-uma-paixao-falou-mais-alto-foi-doloroso-a669d0ce
+    # Quatro recortes do mesmo dia no mesmo programa, o que e o padrao de
+    # uma entrevista longa cortada em pedacos.
+  - data: 2025-11-05
+    canal: sic
+    prova: https://sic.pt/programas/julia/videos/2025-11-05-video-andre-ventura-e-as-noticias-falsas-do-chega-nao-me-venha-com-essa-historia-332b26a2
+  - data: 2024-02-21
+    canal: sic
+    prova: https://sic.pt/programas/casa-feliz/2024-02-21-ainda-nao-desisti-de-ter-filhos--andre-ventura-o-outro-lado-do-politico-aguerrido
+    titulo: '"Ainda não desisti de ter filhos": André Ventura, o outro lado do político aguerrido'
+
+  # NOW, 29 de maio de 2025. Prova: o video na conta oficial do canal no
+  # Facebook, que diz "marcou presenca esta noite no NOW, programa
+  # Informacao Privilegiada". O autor abriu a publicacao e leu a data.
+  #
+  # E a primeira linha do site provada por rede social, ao abrigo da
+  # decisao do autor de 2026-09-11: uma publicacao oficial de um canal
+  # conta como prova. O programa vai escrito porque a propria publicacao
+  # o nomeia.
+  - data: 2025-05-29
+    canal: now
+    programa: Informação Privilegiada
+    prova: https://www.facebook.com/nowcanal/videos/1027890302863284/
+
+  # Tres linhas provadas por publicacoes na conta do proprio entrevistado,
+  # ao abrigo da decisao do autor de 2026-09-11: quem vai ser entrevistado
+  # a confirmar a entrevista nao e um particular qualquer, e a publicacao
+  # nomeia o canal e fixa o dia, que sao duas das quatro condicoes que ja
+  # se exigem a uma peca de imprensa.
+  #
+  # O custo esta assumido e tem de ficar escrito: um anuncio do proprio
+  # nao e um registo de quem emitiu. Se uma emissao anunciada cair ou for
+  # adiada, o canal corrige e o convidado raramente o faz. Destas tres,
+  # nenhuma foi desmentida, e as datas foram lidas nas paginas pelo autor.
+  - data: 2026-09-10
+    canal: now
+    prova: https://x.com/AndreCVentura/status/2098139451541139464
+    titulo: 'É hoje! A partir das 22H, acompanha no NOW'
+    publicado_em: 2026-09-10
+    # Anuncio publicado no proprio dia, cerca das 21h de Lisboa, para uma
+    # emissao a partir das 22h. Nenhuma fonte do projeto viu esta emissao,
+    # e a razao esta medida na KB 0.4: a NOW nao tem cobertura automatica
+    # nenhuma a funcionar. Passa a ser a emissao mais recente do site.
+  - data: 2025-08-05
+    canal: now
+    prova: https://www.instagram.com/p/DM-_nmPJJcI/
+    titulo: 'É hoje! A partir das 21h55'
+    publicado_em: 2025-08-05
+  - data: 2025-04-03
+    canal: cnn-portugal
+    prova: https://www.instagram.com/p/DH_pniUtT4Q/
+    # A conta desta publicacao nao ficou identificada na verificacao. Se
+    # for de um particular, a regra do autor exclui-a e a linha sai.
+
 remover:
   - prova: https://www.jm-madeira.pt/v%C3%ADdeo/regi-o/30004362/ventura-agarra-se-a-vice-presidente-da-camara-do-funchal.html
     motivo: é a mesma entrevista da emissão de 2026-09-01 na CNN Portugal, já provada pela página do canal; a data desta peça é a da publicação, não a da emissão
