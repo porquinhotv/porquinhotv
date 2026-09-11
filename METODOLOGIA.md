@@ -27,13 +27,9 @@ Também não se lê o conteúdo. O site não avalia perguntas, não classifica r
 
 O site conta **entrevistas exclusivas**. Uma entrevista conta uma vez, mesmo quando passou em mais do que um canal.
 
-Isto mudou a 11 de setembro de 2026. Até essa data a unidade era a emissão, e a mesma entrevista transmitida em dois canais contava duas vezes, com o número de entrevistas distintas escrito ao lado. Eram dois números para a mesma coisa, e quem lia o site tinha de perceber a diferença entre os dois antes de perceber qualquer um deles. Passou a haver um número só.
-
 **Quando uma entrevista passa em dois canais**, o que acontece entre canais do mesmo grupo, ela conta uma vez e fica atribuída a um deles. A página de Fontes diz a qual ficou atribuída, escreve ao lado que passou também no outro, e dá a ligação da prova de cada um dos canais: quem discordar da atribuição abre as duas páginas a partir dali.
 
-**A que canal fica atribuída é uma decisão escrita, nunca uma dedução.** O canal não se lê do endereço onde o vídeo está alojado, e dois canais do mesmo grupo servem os mesmos vídeos um no outro. Cada caso destes está escrito na configuração do projeto, com o motivo e com as ligações das duas provas, e o motivo diz também se alguém abriu as páginas ou se o agrupamento vem herdado e está por confirmar.
-
-**O que isto custa, dito por inteiro:** uma entrevista transmitida na RTP1 e na RTP3 aparece agora num canal só, e a repartição por canal mostra menos uma nesse outro canal do que mostrava antes. Em troca, a soma dos números por canal passou a ser exactamente o total publicado, o que antes não acontecia.
+**O que isto custa:** uma entrevista transmitida na RTP1 e na RTP3 aparece na repartição por canal num canal só. Em troca, a soma dos números por canal é exactamente o total publicado.
 
 Duas entrevistas no mesmo dia e no mesmo canal, uma de manhã e outra à noite, contam as duas.
 
@@ -50,8 +46,6 @@ Isto é sempre uma conta por baixo. Uma entrevista que nem o canal nem a imprens
 ## Correções e sugestões
 
 Uma linha errada, uma entrevista que falta, uma prova que não abre: [porquinhotvmail@proton.me](mailto:porquinhotvmail@proton.me?subject=Porquinho%20TV). Basta mandar a ligação da prova e o dia.
-
-Erros corrigem-se à vista: uma entrevista publicada por engano é retirada com o motivo escrito e passa a aparecer na lista do que ficou de fora, em vez de desaparecer sem se dar por ela.
 
 ## Verificar
 
