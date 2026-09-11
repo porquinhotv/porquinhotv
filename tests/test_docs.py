@@ -98,6 +98,16 @@ class TestConvencoes(unittest.TestCase):
                 for url in re.findall(r"https?://[^\s\"'<>)]+", caminho.read_text(encoding="utf-8")):
                     self.assertRegex(url, URL_PERMITIDO, f"pedido externo em {caminho.name}: {url}")
 
+    def test_o_contacto_do_site_e_um_mailto_e_nao_um_formulario(self):
+        """Um formulario que envia precisa de um receptor, e o receptor e
+        sempre um terceiro com conta e chave: quebra as duas propriedades
+        que este projeto nao negoceia. O contacto e um endereco em
+        `mailto:`, que nao e um pedido e nao exige conta a ninguem."""
+        for caminho in sorted((RAIZ / "docs").glob("*.html")):
+            texto = caminho.read_text(encoding="utf-8").lower()
+            with self.subTest(ficheiro=caminho.name):
+                self.assertNotIn("<form", texto, f"{caminho.name} tem um formulario")
+
     def test_sem_google_no_site(self):
         for caminho in sorted((RAIZ / "docs").glob("*.html")) + sorted((RAIZ / "docs").glob("*.css")):
             self.assertNotIn("google", caminho.read_text(encoding="utf-8").lower(), caminho.name)
