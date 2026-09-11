@@ -1,6 +1,19 @@
 {
  "candidatos": [
   {
+   "bloco": "0d107df38d70",
+   "fontes": [
+    "motor-cmtv"
+   ],
+   "primeira_ronda": "2026-09-11-r1",
+   "prova_url": "https://www.cmjornal.pt/cmtv/videos/detalhe/entrevista-a-andre-ventura-no-grande-jornal",
+   "rondas": [
+    "2026-09-11-r1"
+   ],
+   "titulo": "Entrevista a Andr&#233; Ventura no Grande Jornal",
+   "ultima_ronda": "2026-09-11-r1"
+  },
+  {
    "bloco": "140ec62fb372",
    "fontes": [
     "busca-rtp1"
@@ -12,10 +25,11 @@
     "historico-2026-09-10-2",
     "historico-2026-09-10-3",
     "2026-09-10-r1",
-    "2026-09-11-r1"
+    "2026-09-11-r1",
+    "2026-09-11-r2"
    ],
    "titulo": "Eleições Legislativas 2024 - Entrevistas Líderes Partidários - André Ventura - ep. 6",
-   "ultima_ronda": "2026-09-11-r1"
+   "ultima_ronda": "2026-09-11-r2"
   },
   {
    "bloco": "1a3e06092d4d",
@@ -27,10 +41,11 @@
    "rondas": [
     "historico-2026-09-10-1",
     "2026-09-10-r1",
-    "2026-09-11-r1"
+    "2026-09-11-r1",
+    "2026-09-11-r2"
    ],
    "titulo": "Entrevista RTP. Ventura garante que o Chega está na corrida para vencer as eleições",
-   "ultima_ronda": "2026-09-11-r1"
+   "ultima_ronda": "2026-09-11-r2"
   },
   {
    "bloco": "5adc27508bd5",
@@ -44,10 +59,11 @@
     "historico-2026-09-10-2",
     "historico-2026-09-10-3",
     "2026-09-10-r1",
-    "2026-09-11-r1"
+    "2026-09-11-r1",
+    "2026-09-11-r2"
    ],
    "titulo": "Grande Entrevista",
-   "ultima_ronda": "2026-09-11-r1"
+   "ultima_ronda": "2026-09-11-r2"
   },
   {
    "bloco": "8ffaa57304af",
@@ -61,10 +77,11 @@
     "historico-2026-09-10-2",
     "historico-2026-09-10-3",
     "2026-09-10-r1",
-    "2026-09-11-r1"
+    "2026-09-11-r1",
+    "2026-09-11-r2"
    ],
    "titulo": "Grande Entrevista",
-   "ultima_ronda": "2026-09-11-r1"
+   "ultima_ronda": "2026-09-11-r2"
   },
   {
    "bloco": "a2842ebd3cd9",
@@ -78,10 +95,11 @@
     "historico-2026-09-10-2",
     "historico-2026-09-10-3",
     "2026-09-10-r1",
-    "2026-09-11-r1"
+    "2026-09-11-r1",
+    "2026-09-11-r2"
    ],
    "titulo": "Grande Entrevista - André Ventura - ep. 2",
-   "ultima_ronda": "2026-09-11-r1"
+   "ultima_ronda": "2026-09-11-r2"
   },
   {
    "bloco": "ac915feb9314",
@@ -95,10 +113,11 @@
     "historico-2026-09-10-2",
     "historico-2026-09-10-3",
     "2026-09-10-r1",
-    "2026-09-11-r1"
+    "2026-09-11-r1",
+    "2026-09-11-r2"
    ],
    "titulo": "Eleições Legislativas 2022 - Entrevistas Líderes Partidários",
-   "ultima_ronda": "2026-09-11-r1"
+   "ultima_ronda": "2026-09-11-r2"
   },
   {
    "bloco": "ba05f89988d7",
@@ -127,10 +146,11 @@
     "historico-2026-09-10-2",
     "historico-2026-09-10-3",
     "2026-09-10-r1",
-    "2026-09-11-r1"
+    "2026-09-11-r1",
+    "2026-09-11-r2"
    ],
    "titulo": "Grande Entrevista - Candidatos à Presidência da República - André Ventura - ep. 2",
-   "ultima_ronda": "2026-09-11-r1"
+   "ultima_ronda": "2026-09-11-r2"
   },
   {
    "bloco": "cae2c99544d6",
@@ -144,10 +164,11 @@
     "historico-2026-09-10-2",
     "historico-2026-09-10-3",
     "2026-09-10-r1",
-    "2026-09-11-r1"
+    "2026-09-11-r1",
+    "2026-09-11-r2"
    ],
    "titulo": "Grande Entrevista",
-   "ultima_ronda": "2026-09-11-r1"
+   "ultima_ronda": "2026-09-11-r2"
   },
   {
    "bloco": "cde286b5da5a",
@@ -161,10 +182,11 @@
     "historico-2026-09-10-2",
     "historico-2026-09-10-3",
     "2026-09-10-r1",
-    "2026-09-11-r1"
+    "2026-09-11-r1",
+    "2026-09-11-r2"
    ],
    "titulo": "Presidenciais 2021 - Entrevistas",
-   "ultima_ronda": "2026-09-11-r1"
+   "ultima_ronda": "2026-09-11-r2"
   },
   {
    "bloco": "d73b643e43ca",
@@ -178,12 +200,13 @@
     "historico-2026-09-10-2",
     "historico-2026-09-10-3",
     "2026-09-10-r1",
-    "2026-09-11-r1"
+    "2026-09-11-r1",
+    "2026-09-11-r2"
    ],
    "titulo": "Grande Entrevista - André Ventura - ep. 41",
-   "ultima_ronda": "2026-09-11-r1"
+   "ultima_ronda": "2026-09-11-r2"
   }
  ],
  "esquema": 1,
- "total": 11
+ "total": 12
 }

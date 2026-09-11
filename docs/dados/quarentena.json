@@ -235,6 +235,15 @@
    "url": "https://tvi.iol.pt/novelas/joana-solnado/vida/a-vida-inacreditavel-de-joana-solnado-a-morte-clinica-a-mudanca-drastica-de-vida-e-a-importancia-da-mistica"
   },
   {
+   "excerto": "Trágica notícia no mundo do entretenimento. Os fãs ainda não acreditam.",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/vmais/mike-mcfarland/dobragens-de-anime/aos-56-anos-morreu-um-ator-muito-acarinhado-que-marcou-uma-das-series-mais-iconicas-de-sempre-era-um-talento-incrivel",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-11",
+   "titulo": "Aos 56 anos, morreu ator muito acarinhado que marcou uma das séries mais icónicas de sempre: «Era um talento incrível»",
+   "url": "https://tvi.iol.pt/vmais/mike-mcfarland/dobragens-de-anime/aos-56-anos-morreu-um-ator-muito-acarinhado-que-marcou-uma-das-series-mais-iconicas-de-sempre-era-um-talento-incrivel"
+  },
+  {
    "excerto": "Catarina Miranda tem usado até o nome de Cristina Ferreira para provocar Francisco Monteiro no «Big Brother All Stars». De regresso das férias, Cristina ouviu tudo e já disse o que pensa da estratégia da concorrente.",
    "fonte": "busca-tvi",
    "id_nativo": "https://tvi.iol.pt/bigbrother/catarina-miranda/francisco-monteiro/catarina-miranda-utiliza-o-nome-de-cristina-ferreira-para-provocar-zaza-agora-a-apresentadora-reage",
@@ -346,7 +355,7 @@
    "excerto": "",
    "fonte": "clipping-imprensa",
    "id_nativo": "fedd2e08b064",
-   "motivo": "vetada_a_mao (é a mesma entrevista da entrevista de 2026-09-01 na CNN Portugal, já provada pela página do canal; a data desta peça é a da publicação, não a da entrevista)",
+   "motivo": "vetada_a_mao (é a mesma entrevista de 2026-09-01 na CNN Portugal, já provada pela página do canal; a data desta peça é a da publicação, não o dia em que passou)",
    "publicado_em": "2026-09-02",
    "titulo": "Ventura 'agarra-se' a vice-presidente da Câmara do Funchal",
    "url": "https://www.jm-madeira.pt/v%C3%ADdeo/regi-o/30004362/ventura-agarra-se-a-vice-presidente-da-camara-do-funchal.html"
@@ -568,24 +577,6 @@
    "url": "https://www.rtp.pt/play/p10324/e952946/grande-entrevista"
   },
   {
-   "excerto": "Em entrevista à CMTV, líder do Chega disse que um voto em Seguro, Gouveia e Melo ou Marques Mendes seria 'mais do mesmo'.",
-   "fonte": "motor-cmtv",
-   "id_nativo": "https://www.cmjornal.pt/cmtv/videos/detalhe/andre-ventura-sobre-as-presidenciais-e-a-unica-eleicao-que-vencendo-ninguem-pode-bloquear",
-   "motivo": "formato_nao_apurado",
-   "publicado_em": "2025-11-20",
-   "titulo": "Andr&#233; Ventura sobre as presidenciais: &quot;&#201; a &#250;nica elei&#231;&#227;o que, vencendo, ningu&#233;m pode bloquear&quot;",
-   "url": "https://www.cmjornal.pt/cmtv/videos/detalhe/andre-ventura-sobre-as-presidenciais-e-a-unica-eleicao-que-vencendo-ninguem-pode-bloquear"
-  },
-  {
-   "excerto": "Em entrevista exclusiva à CMTV, o líder do Chega critica a forma com o Ministro da Administração Interna tem reagido às polémicas que o envolvem.",
-   "fonte": "motor-cmtv",
-   "id_nativo": "https://www.cmjornal.pt/cmtv/videos/detalhe/pergunto-me-quem-e-o-primeiro-ministro-andre-ventura-fala-sobre-luis-neves-um-dia-antes-da-mocao-de-censura",
-   "motivo": "formato_nao_apurado",
-   "publicado_em": "2026-09-07",
-   "titulo": "&quot;Pergunto-me quem &#233; o primeiro-ministro&quot;: Andr&#233; Ventura fala sobre Lu&#237;s Neves um dia antes da mo&#231;&#227;o de censura",
-   "url": "https://www.cmjornal.pt/cmtv/videos/detalhe/pergunto-me-quem-e-o-primeiro-ministro-andre-ventura-fala-sobre-luis-neves-um-dia-antes-da-mocao-de-censura"
-  },
-  {
    "excerto": "Aqui encontra todas as notícias sobre Andre ventura",
    "fonte": "motor-cnn-portugal",
    "id_nativo": "https://cnnportugal.iol.pt/noticias/Andre-ventura",
@@ -674,6 +665,15 @@
    "publicado_em": "2025-03-18",
    "titulo": "André Ventura diz \"nunca é nunca\" a Montenegro e assume \"cada vez menos esperança\" no PSD",
    "url": "https://www.rtp.pt/noticias/politica/andre-ventura-e-o-entrevistado-desta-noite-no-telejornal_n1641739"
+  },
+  {
+   "excerto": "André Ventura assegura que \"nunca é nunca\" com Luís Montenegro, recusando entendimentos pós-eleitorais à direita que incluam o atual líder do PSD.",
+   "fonte": "motor-rtp3",
+   "id_nativo": "https://www.rtp.pt/noticias/politica/entrevista-a-rtp-ventura-assume-que-eleger-menos-de-50-deputados-seria-derrota_v1641804",
+   "motivo": "vetada_a_mao (é um resumo de quinze minutos da entrevista do Telejornal da noite anterior, já contada pela página do canal; não é uma entrevista nova)",
+   "publicado_em": "2025-03-19",
+   "titulo": "Entrevista à RTP. Ventura assume que eleger menos de 50 deputados seria derrota",
+   "url": "https://www.rtp.pt/noticias/politica/entrevista-a-rtp-ventura-assume-que-eleger-menos-de-50-deputados-seria-derrota_v1641804"
   },
   {
    "excerto": "André Ventura considera que é difícil o país \"andar para a frente\" enquanto o primeiro-ministro não esclarecer todas as suspeitas em torno do património. De visita aos Açores, o presidente do Chega diz que, a poucos dias do início da campanha, não se consegue falar dos problemas ",
