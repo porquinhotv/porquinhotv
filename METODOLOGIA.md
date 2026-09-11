@@ -15,7 +15,7 @@ Uma **entrevista exclusiva** é um segmento de programa em que:
 1. André Ventura é o único entrevistado;
 2. há pelo menos um entrevistador do canal, em formato de pergunta e resposta;
 3. o segmento foi emitido num dos nove canais medidos: RTP1, RTP2, SIC, TVI, SIC Notícias, RTP3, CNN Portugal, NOW e CMTV;
-4. há prova pública de que aconteceu: a página ou o feed do próprio canal, ou uma peça de imprensa que relate a entrevista, nomeando o canal e fixando o dia. Ver a secção 8.
+4. há prova pública de que aconteceu: a página ou o feed do próprio canal, uma peça de imprensa que relate ou anuncie a entrevista, ou uma publicação numa conta oficial do canal ou na conta do próprio entrevistado. Em qualquer dos casos a prova tem de nomear o canal e fixar o dia. Ver as secções 7 e 8.
 
 Programas de entretenimento com uma entrevista a solo contam. Noticiários com uma entrevista em estúdio contam.
 
@@ -30,7 +30,7 @@ Esta regra foi invertida a 8 de setembro de 2026. Até então bastava não haver
 - **Debates e painéis**: mais de um convidado a responder às mesmas perguntas.
 - **Declarações**: perguntas à saída de um evento, reações, respostas a jornalistas em conferência de imprensa.
 - **Diretos**: comícios, discursos, sessões parlamentares.
-- **Rádio, podcast exclusivo, redes sociais**: só televisão. Um podcast só conta se for a gravação de um segmento emitido em televisão.
+- **Rádio, podcast exclusivo, redes sociais**: só televisão. Um podcast só conta se for a gravação de um segmento emitido em televisão. Esta regra diz onde a entrevista foi emitida, não onde está a prova: uma entrevista dada a um canal de televisão conta mesmo quando a única prova pública dela é uma publicação numa rede social, e uma entrevista dada a um canal de YouTube não conta mesmo que o canal a publique no seu site.
 
 O site não lê nem caracteriza o conteúdo das entrevistas. Não avalia perguntas, não classifica respostas, não mede tom nem tempo. Conta emissões.
 
@@ -39,6 +39,14 @@ O site não lê nem caracteriza o conteúdo das entrevistas. Não avalia pergunt
 A unidade de contagem é a **emissão**: uma entrevista exclusiva, num canal, num dia. A mesma entrevista emitida em dois canais (por exemplo, em simultâneo na SIC e na SIC Notícias) são **duas emissões**, porque a pergunta que o site responde é em que canais houve entrevistas, e quantas. A repartição por canal e o total somam emissões.
 
 Para quem preferir contar entrevistas e não emissões, o site mostra também **entrevistas distintas**: emissões agrupadas pela chave `entrevista`, que no registo curado é preenchida à mão quando há simulcast ou repetição. Sem chave, cada emissão é a sua própria entrevista. Os dois números aparecem lado a lado quando diferem.
+
+### Qual é o canal de uma emissão
+
+Como a emissão é um canal e um dia, dizer o canal errado inflaciona a repartição por canal e pode duplicar uma emissão. O canal lê-se do que a página afirma: o nome do programa, o texto, ou a declaração de quem emitiu. **Nunca se deduz do domínio onde a página está alojada.** A razão é medida: dois canais do mesmo grupo partilham o leitor de vídeo e servem o mesmo vídeo nos dois domínios, e um domínio de jornal pode ser ao mesmo tempo o domínio de um canal do mesmo grupo. Uma tentativa de atribuir o canal pelo domínio, em setembro de 2026, escreveu oito linhas e as oito estavam erradas.
+
+**Há uma excepção, e é entre os dois canais próprios do grupo SIC.** Uma página em `sic.pt` é da SIC e uma página em `sicnoticias.pt` é da SIC Notícias, mesmo quando o texto da própria página diz apenas "a SIC". Não é a mesma situação: aqui não há um leitor partilhado nem um domínio de jornal, há dois domínios que cada canal usa para publicar o que é seu, e a abreviatura no texto é o mesmo descuido que a secção 12 já regista na imprensa. Entre o que o canal declara ao escolher onde publicar e a forma abreviada como se nomeia no corpo do texto, fica o primeiro.
+
+Quando nem o texto nem o programa dizem o canal, e o domínio não decide, a emissão não entra.
 
 ## 5. Porque não há duração
 
@@ -79,6 +87,14 @@ Desde 9 de setembro de 2026 estas quatro condições são verificadas pela ferra
 Até 8 de setembro de 2026 esta fonte era o último recurso, reservada ao que o canal não tinha publicado. Deixou de ser, por uma razão verificada nesse dia: seis dos nove canais não respondem a uma máquina, e os que respondem titulam as peças com a citação e deixam a palavra "entrevista" para o corpo do texto, que os índices não trazem. Com a regra antiga, das treze entrevistas da CMTV encontradas nesse dia por pesquisa direta, o registo tinha uma. A imprensa é muitas vezes o único rasto público de que a entrevista existiu. A repartição entre provas do canal e provas da imprensa é publicada na página de Fontes. Quando o canal e a imprensa provam a mesma emissão, há uma emissão e não duas: fica a do canal, por ser a que corre primeiro, e não por valer mais.
 
 **7. Feeds públicos de YouTube**. Dizem que saiu um vídeo com o nome no título e a data de publicação. Passam pelo critério como qualquer fonte automática: o título tem de provar o formato e o bloco tem de ser visto em rondas distintas. Os que não dizem que são uma entrevista ficam na quarentena como `formato_nao_apurado`.
+
+**Publicações em redes sociais, como prova e nunca como fonte.** Desde 11 de setembro de 2026 uma publicação numa rede social pode ser a prova de uma emissão. Não há aqui nenhuma recolha automática: ninguém interroga uma rede social, e o projeto não tem conta em nenhuma. É uma pessoa que encontra a publicação, a lê e escreve a linha na curadoria, como faria com a página de um canal.
+
+Contam duas origens, e só estas duas. **A conta oficial de um canal**, porque um canal que publica o vídeo ou o anúncio da entrevista afirma exactamente o mesmo que afirmaria na sua página. E **a conta do próprio entrevistado**, porque não é um particular qualquer a comentar: é a pessoa que vai ser entrevistada a confirmar a entrevista. Neste segundo caso exige-se o que já se exige a uma peça de imprensa: a publicação tem de nomear o canal e fixar o dia.
+
+A publicação de qualquer outra pessoa não conta, por mais credível que pareça. Apareceu na prática o caso que explica porquê: uma publicação de um perfil pessoal cujo texto era a própria lista de emissões conhecidas a partir da qual se estava a procurar. Uma lista não se corrobora a si própria.
+
+**Duas objecções, e o que se responde a cada uma.** A primeira é a regra de que a prova é um endereço que qualquer pessoa abre, e algumas destas publicações pedem conta para serem vistas. Assume-se que uma rede social é aberta a quem queira ter conta nela, e que isso basta. A segunda é mais séria e fica dita sem atenuante: **um anúncio do próprio não é um registo de quem emitiu.** Se uma emissão anunciada cair ou for adiada, o canal corrige o seu site e o convidado raramente corrige a sua publicação, e uma linha assim fica a afirmar uma emissão que não houve. Das linhas que entraram por esta via nenhuma foi desmentida até hoje, e todas as datas foram lidas nas próprias páginas, mas o risco é do tipo que só se vê quando se materializa. A página de Fontes mostra a ligação de cada linha, para que qualquer leitor a possa contestar.
 
 **Uma fonte que foi testada e recusada.** O arquivo da web portuguesa foi ensaiado como fonte para o histórico e devolveu zero resultados para o nome do sujeito no domínio de um canal generalista ao longo de sete anos, o que foi confirmado à mão. Uma fonte que devolve zero onde tem de haver resultados não é uma fonte, e não é usada. Fica registado aqui porque saber o que foi tentado e recusado faz parte do método.
 

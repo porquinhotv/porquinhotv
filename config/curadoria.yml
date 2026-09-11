@@ -110,8 +110,9 @@ entrevistas:
   # Varias destas paginas dizem "a SIC" no texto sendo servidas no
   # dominio do canal de informacao, que e a mesma troca que a KB ja
   # regista na imprensa. Fica o dominio, que e o que o canal declara ao
-  # publicar, e nao a abreviatura do texto. E uma decisao editorial por
-  # confirmar: se for ao contrario, sao tres linhas a mudar de canal.
+  # publicar, e nao a abreviatura do texto. Decisao do autor confirmada a
+  # 2026-09-11 e escrita na Metodologia, seccao 4: entre os dois dominios
+  # proprios do grupo SIC, e so entre esses, o dominio decide.
   - data: 2025-01-24
     canal: sic-noticias
     prova: https://sicnoticias.pt/pais/2025-01-24-andre-ventura-em-entrevista-a-sic-sobre-polemica-que-envolve-miguel-arruda-56229f76
