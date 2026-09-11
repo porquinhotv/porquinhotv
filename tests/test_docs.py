@@ -41,6 +41,24 @@ class TestArtefactosGerados(unittest.TestCase):
         with self.assertRaises(ValueError):
             gerar_textos.validar(desordem)
 
+    def test_validacao_das_metricas_apanha_erros(self):
+        """A camada satirica das metricas e escrita a mao no YAML. Um
+        placeholder que o site nao preenche chega ao ecra com as chavetas a
+        vista, e uma escada com limites fora de ordem deixa um numero sem
+        frase nenhuma. As duas coisas tem de parar aqui."""
+        base = {"humores": [{"id": "a", "ate_dias": None, "frases": []}]}
+        with self.assertRaises(ValueError):
+            gerar_textos.validar(dict(base, metricas={"total": [{"ate": None, "frases": ["{canal}"]}]}))
+        with self.assertRaises(ValueError):
+            gerar_textos.validar(dict(base, metricas={"total": [{"ate": 3, "frases": []}, {"ate": 1, "frases": []}, {"ate": None, "frases": []}]}))
+        with self.assertRaises(ValueError):
+            gerar_textos.validar(dict(base, metricas={"total": [{"ate": 3, "frases": []}]}))
+        with self.assertRaises(ValueError):
+            gerar_textos.validar(dict(base, metricas={"lider": "{periodo}"}))
+        with self.assertRaises(ValueError):
+            gerar_textos.validar(dict(base, metricas={"legendas": {"canais": "{n} canais"}}))
+        gerar_textos.validar(base)  # sem metricas continua valido
+
     def test_o_site_nao_le_campos_de_tempo(self):
         """A duracao saiu a 2026-09-10 e o resumo deixou de ter `tempo_s` e
         `sem_duracao`. Um JavaScript que ainda os lesse somava `undefined` e

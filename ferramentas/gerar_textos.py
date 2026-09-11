@@ -3,10 +3,11 @@
     python -m ferramentas.gerar_textos            escreve
     python -m ferramentas.gerar_textos --check    so verifica
 
-A camada satirica do site le este JSON e nunca os dados. Ha um teste que
-corre o --check, por isso um YAML alterado sem regenerar o JSON parte a
-suite antes de chegar ao site. Tambem valida o que o site vai assumir: um
-so placeholder por frase e limites de humor crescentes.
+A camada satirica do site le este JSON e nunca os dados: as frases do
+porquinho e as das metricas. Ha um teste que corre o --check, por isso um
+YAML alterado sem regenerar o JSON parte a suite antes de chegar ao site.
+Tambem valida o que o site vai assumir: so os placeholders que ele sabe
+preencher, e escadas com limites crescentes e ultimo degrau aberto.
 
 As comparacoes de tempo (config/comparacoes.yml) sairam a 2026-09-10 com
 a duracao: sem tempo medido nao ha nada para dividir.
@@ -28,21 +29,38 @@ ALVO = RAIZ / "docs" / "textos.json"
 PLACEHOLDER = re.compile(r"\{([a-z_]+)\}")
 
 
-def validar(humor: dict) -> None:
+def validar_texto(texto: str, permitidos: set, onde: str) -> None:
+    extras = set(PLACEHOLDER.findall(texto)) - permitidos
+    if extras:
+        raise ValueError(f"{onde}: placeholder desconhecido {extras}")
+
+
+def validar_escada(degraus: list, campo: str, permitidos: set, onde: str) -> None:
+    """Limites crescentes e ultimo degrau aberto, senao um valor cai entre
+    dois degraus e o site fica sem frase. Serve o humor (por dias) e as
+    metricas (por numero de entrevistas)."""
     anterior = -1
-    humores = humor["humores"]
-    for i, h in enumerate(humores):
-        limite = h.get("ate_dias")
-        if i < len(humores) - 1:
+    for i, degrau in enumerate(degraus):
+        limite = degrau.get(campo)
+        if i < len(degraus) - 1:
             if limite is None or limite <= anterior:
-                raise ValueError(f"humor {h['id']}: ate_dias tem de ser crescente")
+                raise ValueError(f"{onde}: {campo} tem de ser crescente")
             anterior = limite
         elif limite is not None:
-            raise ValueError("o ultimo humor tem de ter ate_dias: null")
-        for frase in h["frases"]:
-            extras = set(PLACEHOLDER.findall(frase)) - {"dias"}
-            if extras:
-                raise ValueError(f"humor {h['id']}: placeholder desconhecido {extras}")
+            raise ValueError(f"{onde}: o ultimo degrau tem de ter {campo}: null")
+        for frase in degrau["frases"]:
+            validar_texto(frase, permitidos, onde)
+
+
+def validar(humor: dict) -> None:
+    validar_escada(humor["humores"], "ate_dias", {"dias"}, "humores")
+    metricas = humor.get("metricas") or {}
+    if "total" in metricas:
+        validar_escada(metricas["total"], "ate", {"n"}, "metricas.total")
+    if "lider" in metricas:
+        validar_texto(metricas["lider"], {"canal", "n"}, "metricas.lider")
+    for chave, texto in (metricas.get("legendas") or {}).items():
+        validar_texto(texto, set(), f"metricas.legendas.{chave}")
 
 
 def construir() -> str:
@@ -52,6 +70,7 @@ def construir() -> str:
         "cabecalho": humor["cabecalho"],
         "estado": humor["estado"],
         "humores": humor["humores"],
+        "metricas": humor.get("metricas") or {},
     }
     return json.dumps(conteudo, ensure_ascii=False, indent=1, sort_keys=True) + "\n"
 

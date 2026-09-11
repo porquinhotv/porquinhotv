@@ -98,20 +98,38 @@
 
   /* ---- humor -------------------------------------------------------- */
 
-  function humorPara(dias, textos) {
-    var lista = textos.humores;
+  /* Degrau de uma escada de frases: o primeiro cujo limite ainda cobre o
+     valor. O ultimo tem limite nulo e apanha o resto. Serve o humor, por
+     dias, e as metricas, por numero de entrevistas. */
+  function degrauPara(lista, valor, campo) {
+    var chave = campo || "ate";
     for (var i = 0; i < lista.length; i++) {
-      var limite = lista[i].ate_dias;
-      if (limite === null || limite === undefined || dias <= limite) { return lista[i]; }
+      var limite = lista[i][chave];
+      if (limite === null || limite === undefined || valor <= limite) { return lista[i]; }
     }
     return lista[lista.length - 1];
   }
 
-  /* Determinista pelo numero de dias, para a frase nao mudar a cada
+  function humorPara(dias, textos) {
+    return degrauPara(textos.humores, dias, "ate_dias");
+  }
+
+  /* Determinista pelo proprio numero, para a frase nao mudar a cada
      refresh e ser a mesma para toda a gente no mesmo dia. */
+  function escolherFrase(frases, indice) {
+    if (!frases || !frases.length) { return ""; }
+    return frases[Math.abs(indice) % frases.length];
+  }
+
   function fraseDeHumor(humor, dias) {
-    if (!humor.frases.length) { return ""; }
-    return humor.frases[dias % humor.frases.length].replace(/\{dias\}/g, String(dias));
+    return preencher(escolherFrase(humor.frases, dias), { dias: dias });
+  }
+
+  /* Frase satirica de uma metrica. Devolve "" quando nao ha escada
+     configurada: a camada de humor pode faltar, o numero nao. */
+  function fraseDeMetrica(escada, n) {
+    if (!escada || !escada.length) { return ""; }
+    return preencher(escolherFrase(degrauPara(escada, n).frases, n), { n: n });
   }
 
   function cabecalhoDias(dias, textos) {
@@ -143,8 +161,10 @@
     intervalo: intervalo,
     somar: somar,
     somarCanais: somarCanais,
+    degrauPara: degrauPara,
     humorPara: humorPara,
     fraseDeHumor: fraseDeHumor,
+    fraseDeMetrica: fraseDeMetrica,
     cabecalhoDias: cabecalhoDias,
     preencher: preencher
   };

@@ -35,6 +35,20 @@
 
   function plural(n, um, varios) { return n === 1 ? "1 " + um : n + " " + varios; }
 
+  /* A camada satirica vive toda em config/humor.yml e chega aqui pelo
+     textos.json. Quando falta, o site desenha os numeros na mesma: o
+     humor e um enfeite, o numero e que e o site. */
+  function metricas() { return estado.textos.metricas || {}; }
+
+  function legenda(chave) {
+    var l = metricas().legendas || {};
+    return l[chave] || "";
+  }
+
+  function acrescentarFrase(no, texto) {
+    if (texto) { no.appendChild(el("p", { class: "comparacao", text: texto })); }
+  }
+
   /* "3 emissões, 2 entrevistas distintas": o segundo numero so aparece
      quando difere do primeiro, ou seja, quando houve simulcast. */
   function contagemDe(bucket) {
@@ -102,8 +116,10 @@
     var cartao = el("section", { class: "cartao" });
 
     if (t.emissoes === 0) {
-      cartao.appendChild(el("p", { class: "numero-grande", text: "Nenhuma entrevista exclusiva", }));
-      cartao.appendChild(el("p", { class: "comparacao", text: PTV.preencher("{periodo}, nada registado.", { periodo: p.frase.charAt(0).toUpperCase() + p.frase.slice(1) }) }));
+      var vazio = el("p", { class: "numero-grande", text: "Nenhuma entrevista exclusiva" });
+      vazio.appendChild(el("small", { text: p.frase }));
+      cartao.appendChild(vazio);
+      acrescentarFrase(cartao, PTV.fraseDeMetrica(metricas().total, 0));
       painel.appendChild(cartao);
       return;
     }
@@ -117,6 +133,8 @@
     partes.push(p.frase);
     numero.appendChild(el("small", { text: partes.join(", ") }));
     cartao.appendChild(numero);
+    // A escada e pelo numero de entrevistas, que e o numero grande.
+    acrescentarFrase(cartao, PTV.fraseDeMetrica(metricas().total, t.entrevistas));
     painel.appendChild(cartao);
   }
 
@@ -135,7 +153,7 @@
     var secao = el("section", {}, [
       el("h2", { text: "Em que canais" }),
       el("p", { class: "legenda-secao", text: total > 0
-        ? "Como se repartem as emissões de entrevistas exclusivas " + p.frase + ". A mesma entrevista emitida em dois canais conta nos dois."
+        ? legenda("canais")
         : "Sem entrevistas registadas " + p.frase + "." })
     ]);
 
@@ -165,6 +183,16 @@
       ]));
     });
     secao.appendChild(ul);
+
+    /* A frase do lider so aparece quando ha repartição para comentar. Com
+       duas emissoes no periodo, "leva 50%" e uma frase sobre ruido: a
+       percentagem esta certa e a graca nao. */
+    var lider = ordenada[0];
+    if (metricas().lider && total >= 3 && lider && lider.emissoes >= 2) {
+      acrescentarFrase(secao, PTV.preencher(metricas().lider, {
+        canal: lider.nome, n: Math.round(lider.emissoes / total * 100)
+      }));
+    }
     painel.appendChild(secao);
   }
 
@@ -182,7 +210,7 @@
     if (escala.id === "semana" && serie.length > 78) { serie = serie.slice(-78); }
     var secao = el("section", {}, [
       el("h2", { text: "Como tem evoluído" }),
-      el("p", { class: "legenda-secao", text: "Cada barra é o número de emissões de entrevistas exclusivas nesse período. Passe o rato ou use o teclado para ler os valores." })
+      el("p", { class: "legenda-secao", text: legenda("evolucao") })
     ]);
     desenharSeletor(secao, ESCALAS, estado.escala, function (id) { estado.escala = id; desenharPainel(); }, "Escala");
 
@@ -263,7 +291,7 @@
     }
     painel.appendChild(el("section", {}, [
       el("h2", { text: "Recordes" }),
-      el("p", { class: "legenda-secao", text: "Contados sobre todo o histórico registado, por dia de emissão." }),
+      el("p", { class: "legenda-secao", text: legenda("recordes") }),
       grelha
     ]));
   }

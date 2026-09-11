@@ -57,5 +57,52 @@
    "id": "hibernacao",
    "rotulo": "em hibernação"
   }
- ]
+ ],
+ "metricas": {
+  "legendas": {
+   "canais": "Onde é que ele apareceu mais vezes. A mesma entrevista em dois canais conta nos dois, porque a omnipresença também se conta duas vezes.",
+   "evolucao": "Cada barra é um período. Quanto mais alta, mais convites houve. Passe o rato ou use o teclado para ler os valores.",
+   "recordes": "O melhor e o pior do chiqueiro, em todo o histórico."
+  },
+  "lider": "{canal}: {n}% das emissões. Já não é um canal, é uma segunda casa.",
+  "total": [
+   {
+    "ate": 0,
+    "frases": [
+     "Nada. O porquinho bateu no telecomando para ver se estava avariado."
+    ]
+   },
+   {
+    "ate": 1,
+    "frases": [
+     "Uma. Já viu a entrevista, a repetição e o resumo."
+    ]
+   },
+   {
+    "ate": 3,
+    "frases": [
+     "Ainda dá tempo para arrumar o chiqueiro entre uma e outra.",
+     "Ritmo de quem tem mais que fazer.",
+     "O porquinho conta pelos dedos. Tem quatro."
+    ]
+   },
+   {
+    "ate": 9,
+    "frases": [
+     "Isto já não é aparecer na televisão, é passar por casa.",
+     "O porquinho precisou de um caderno maior.",
+     "A esta altura já sabe onde ficam os camarins todos.",
+     "Há convidados e há inquilinos."
+    ]
+   },
+   {
+    "ate": null,
+    "frases": [
+     "Isto já não é uma grelha de programação, é uma assinatura.",
+     "O porquinho desistiu de contar de cabeça.",
+     "Se fosse um programa, já ia na terceira temporada."
+    ]
+   }
+  ]
+ }
 }

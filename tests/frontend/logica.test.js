@@ -102,3 +102,23 @@ test("os textos nao trazem comparacoes de tempo", () => {
   assert.equal(textos.comparacoes, undefined);
   assert.equal(textos.frases, undefined);
 });
+
+test("a escada das metricas cobre qualquer numero e nao deixa placeholder", () => {
+  // Um degrau em falta ou um placeholder a mais escrevia "{n}" no ecra,
+  // que e exactamente o que a validacao do gerador tenta impedir.
+  for (let n = 0; n <= 60; n++) {
+    const f = PTV.fraseDeMetrica(textos.metricas.total, n);
+    assert.notEqual(f, "", `n=${n}`);
+    assert.doesNotMatch(f, /\{[a-z_]+\}/, `n=${n}: ${f}`);
+  }
+  // Sem camada de humor o site desenha os numeros na mesma.
+  assert.equal(PTV.fraseDeMetrica([], 3), "");
+  assert.equal(PTV.fraseDeMetrica(undefined, 3), "");
+});
+
+test("a frase do canal lider preenche o nome e a percentagem", () => {
+  const f = PTV.preencher(textos.metricas.lider, { canal: "Canal A", n: 42 });
+  assert.match(f, /Canal A/);
+  assert.match(f, /42/);
+  assert.doesNotMatch(f, /\{[a-z_]+\}/);
+});
