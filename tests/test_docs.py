@@ -22,7 +22,10 @@ TEXTO_VERSIONADO = [RAIZ / "METODOLOGIA.md", RAIZ / "README.md"]
 TEXTO_VERSIONADO += sorted((RAIZ / "config").glob("*.yml"))
 TEXTO_VERSIONADO += sorted((RAIZ / "docs").glob("*.html")) + sorted((RAIZ / "docs").glob("*.js")) + sorted((RAIZ / "docs").glob("*.css"))
 # Unico esquema externo permitido: o namespace do SVG, que nao e um pedido.
-URL_PERMITIDO = re.compile(r"https?://(www\.)?w3\.org/")
+URL_PERMITIDO = re.compile(
+    r"https?://(www\.)?w3\.org/"                # espaco de nomes do SVG, nao e um pedido
+    r"|^https://cloud\.umami\.is/script\.js$"    # estatisticas de visitas, ver o teste abaixo
+)
 NOMES_PROIBIDOS_NO_CODIGO = re.compile(r"\b(ventura|chega|rtp\d?|sic|tvi|cnn|cmtv|milhazes|rogeiro)\b", re.IGNORECASE)
 
 
@@ -182,10 +185,26 @@ class TestConvencoes(unittest.TestCase):
                 self.assertIsNone(re.search(r"\b[Ee]le\b", linha), f"textos.json:{n}")
 
     def test_o_site_nao_pede_nada_a_terceiros(self):
+        """A lista de permitidos tem dois enderecos e mais nenhum: o espaco
+        de nomes do SVG, que nao chega a ser um pedido, e o script de
+        estatisticas de visitas. O endereco esta fixado ate ao caminho, e
+        nao ao anfitriao, para que uma chamada nova ao mesmo dominio tenha
+        de passar por aqui. Sem isto voltam CDN, tipos de letra remotos e
+        tudo o resto que este site nao serve a partir de terceiros."""
         for caminho in sorted((RAIZ / "docs").glob("*.html")) + sorted((RAIZ / "docs").glob("*.js")) + sorted((RAIZ / "docs").glob("*.css")):
             with self.subTest(ficheiro=caminho.name):
                 for url in re.findall(r"https?://[^\s\"'<>)]+", caminho.read_text(encoding="utf-8")):
                     self.assertRegex(url, URL_PERMITIDO, f"pedido externo em {caminho.name}: {url}")
+
+    def test_as_estatisticas_de_visitas_estao_em_todas_as_paginas(self):
+        """A metodologia.html e gerada: um snippet colado a mao nela
+        desaparecia na geracao seguinte, sem erro e sem se dar por isso, e
+        a pagina deixava de ser contada. Tem de vir do gerador, e este
+        teste falha se alguma pagina do site ficar de fora."""
+        for caminho in sorted((RAIZ / "docs").glob("*.html")):
+            with self.subTest(ficheiro=caminho.name):
+                self.assertIn("cloud.umami.is/script.js", caminho.read_text(encoding="utf-8"),
+                              f"{caminho.name} nao conta as visitas")
 
     def test_o_contacto_do_site_e_um_mailto_e_nao_um_formulario(self):
         """Um formulario que envia precisa de um receptor, e o receptor e

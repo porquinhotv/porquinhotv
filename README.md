@@ -11,7 +11,7 @@ O site publica, por período (semana, mês, ano, desde sempre), um número só: 
 - `config/fontes.yml` declara as fontes automáticas. A principal é a pesquisa do próprio site de cada canal: pede a pesquisa do canal por cada forma do nome, recolhe os endereços de artigo desse domínio e lê de cada página o que ela publica em schema.org e OpenGraph. Não há seletores de HTML de nenhum site, e por isso a leitura sobrevive a uma remodelação em vez de passar a devolver zero em silêncio.
 - Uma transmissão vinda de fonte automática não entra na primeira vez que é vista: só entra depois de o mesmo bloco aparecer em rondas distintas. O registo de avistamentos está em `docs/dados/candidatos.json`, e ao lado de cada linha ficam as rondas e o número de fontes distintas que a viram. Ver a Metodologia para o que isto protege e o que não protege.
 - `recolha/` aplica o critério em `config/porquinho.yml`, dobra as transmissões em entrevistas (`recolha/entrevistas.py`) e escreve `docs/dados/entrevistas.json` (uma entrada por entrevista, com as transmissões dentro; append-only ao nível da transmissão), `docs/dados/quarentena.json` (tudo o que ficou de fora, com motivo) e `docs/dados/resumo.json` (os agregados).
-- `docs/` é o site. Zero dependências externas: sem CDN, sem fontes remotas, sem analytics. A fonte tipográfica é servida localmente, licença OFL ao lado.
+- `docs/` é o site. Sem CDN e sem fontes remotas. A fonte tipográfica é servida localmente, licença OFL ao lado.
 - Uma GitHub Action corre a recolha todos os dias e publica as alterações.
 
 A [Metodologia](METODOLOGIA.md) diz o que conta, o que não conta e onde o método falha.
