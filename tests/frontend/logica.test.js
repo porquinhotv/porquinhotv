@@ -40,37 +40,60 @@ test("intervalo de periodos", () => {
   assert.equal(PTV.intervalo("semana", domingo, "2019-05-16").de, "2026-09-07");
 });
 
+/* Cada entrada do resumo e uma entrevista desde 2026-09-11, por isso a
+   soma de um periodo e uma soma. Ate essa data cada dia trazia tambem a
+   lista das chaves de entrevista e esta funcao unia-as para nao contar
+   duas vezes um simulcast. */
 const porDia = [
-  { data: "2026-09-01", emissoes: 2, entrevistas_distintas: 1, chaves: ["k1"] },
-  { data: "2026-09-03", emissoes: 1, entrevistas_distintas: 1, chaves: ["k2"] },
-  { data: "2026-09-05", emissoes: 1, entrevistas_distintas: 1, chaves: ["k4"] },
-  { data: "2026-09-20", emissoes: 1, entrevistas_distintas: 1, chaves: ["k3"] },
+  { data: "2026-09-01", entrevistas: 2 },
+  { data: "2026-09-03", entrevistas: 1 },
+  { data: "2026-09-05", entrevistas: 1 },
+  { data: "2026-09-20", entrevistas: 1 },
 ];
 
-test("somar um periodo conta simulcast como uma entrevista", () => {
+test("somar um periodo", () => {
   const t = PTV.somar(porDia, "2026-09-01", "2026-09-04");
-  assert.deepEqual(t, { emissoes: 3, entrevistas: 2 });
+  assert.deepEqual(t, { entrevistas: 3 });
 });
 
 test("somar um periodo maior", () => {
   const t = PTV.somar(porDia, "2026-09-01", "2026-09-10");
-  assert.deepEqual(t, { emissoes: 4, entrevistas: 3 });
+  assert.deepEqual(t, { entrevistas: 4 });
 });
 
 test("somar fora do intervalo da zero", () => {
-  assert.deepEqual(PTV.somar(porDia, "2027-01-01", "2027-12-31"), { emissoes: 0, entrevistas: 0 });
+  assert.deepEqual(PTV.somar(porDia, "2027-01-01", "2027-12-31"), { entrevistas: 0 });
 });
 
 test("somar canais", () => {
   const cpd = [
-    { data: "2026-09-01", canais: { sic: { emissoes: 1, declaradas: 1 }, "sic-noticias": { emissoes: 1, declaradas: 1 } } },
-    { data: "2026-09-03", canais: { sic: { emissoes: 1, declaradas: 1 } } },
-    { data: "2026-09-05", canais: { cmtv: { emissoes: 1, declaradas: 0 } } },
+    { data: "2026-09-01", canais: { sic: { entrevistas: 1, declaradas: 1 }, "sic-noticias": { entrevistas: 1, declaradas: 1 } } },
+    { data: "2026-09-03", canais: { sic: { entrevistas: 1, declaradas: 1 } } },
+    { data: "2026-09-05", canais: { cmtv: { entrevistas: 1, declaradas: 0 } } },
   ];
   const m = PTV.somarCanais(cpd, "2026-09-01", "2026-09-30");
-  assert.deepEqual(m.sic, { emissoes: 2 });
-  assert.deepEqual(m["sic-noticias"], { emissoes: 1 });
-  assert.deepEqual(m.cmtv, { emissoes: 1 });
+  assert.deepEqual(m.sic, { entrevistas: 2 });
+  assert.deepEqual(m["sic-noticias"], { entrevistas: 1 });
+  assert.deepEqual(m.cmtv, { entrevistas: 1 });
+});
+
+/* O numero que o site escreve em grande e a soma dos numeros por canal
+   tem de ser o mesmo. Enquanto a unidade era a emissao, a reparticao por
+   canal somava mais do que o total sempre que houvesse simulcast, e o
+   site tinha de escrever dois numeros para o explicar. */
+test("a soma por canal fecha no total do periodo", () => {
+  const dias = [
+    { data: "2026-09-01", entrevistas: 2 },
+    { data: "2026-09-02", entrevistas: 1 },
+  ];
+  const cpd = [
+    { data: "2026-09-01", canais: { sic: { entrevistas: 1, declaradas: 1 }, cmtv: { entrevistas: 1, declaradas: 1 } } },
+    { data: "2026-09-02", canais: { tvi: { entrevistas: 1, declaradas: 1 } } },
+  ];
+  const total = PTV.somar(dias, "2026-09-01", "2026-09-30").entrevistas;
+  const mapa = PTV.somarCanais(cpd, "2026-09-01", "2026-09-30");
+  const porCanal = Object.keys(mapa).reduce((n, id) => n + mapa[id].entrevistas, 0);
+  assert.equal(porCanal, total);
 });
 
 test("humor nos limites", () => {

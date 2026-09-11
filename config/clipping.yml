@@ -1,12 +1,12 @@
 ---
-# Clipping de imprensa. Prova de que a emissao existiu, e de quando.
+# Clipping de imprensa. Prova de que a entrevista existiu, e de quando.
 #
-# Uma linha por emissao provada por uma peca de imprensa. A `prova` e o
+# Uma linha por transmissao provada por uma peca de imprensa. A `prova` e o
 # URL da peca, e a peca tem de cumprir quatro condicoes, que quem abrir a
 # ligacao consegue verificar:
 #   1. nomeia o canal ("em entrevista a CMTV", nao "a televisao");
 #   2. diz entrevista, e nao debate nem declaracoes;
-#   3. fixa o dia da emissao (data, "ontem", "esta segunda-feira");
+#   3. fixa o dia em que passou (data, "ontem", "esta segunda-feira");
 #   4. relata a entrevista ou anuncia-a com o dia fixado. O anuncio ("da
 #      hoje entrevista as 19h") conta desde 2026-09-09, por decisao do
 #      autor: uma entrevista anunciada a um canal raramente se cancela ou
@@ -22,10 +22,10 @@
 # escreve "(imprensa)" ao lado da linha e publica a reparticao entre
 # provas do canal e da imprensa.
 #
-# `data` e o dia da emissao; `publicado_em` e o dia da peca, quando e
-# outro. Confundir os dois desloca a emissao um dia.
+# `data` e o dia em que a entrevista passou; `publicado_em` e o dia da
+# peca, quando e outro. Confundir os dois desloca a entrevista um dia.
 #
-# Regra: se a mesma emissao aparecer aqui e em config/entrevistas.yml,
+# Regra: se a mesma entrevista aparecer aqui e em config/entrevistas.yml,
 # fica a do canal, e esta vai para a quarentena como fragmento_ou_repetido.
 # `python -m ferramentas.gnews --emitir --imprensa` escreve este ficheiro
 # a partir da triagem e ja salta o que o registo do canal tem.

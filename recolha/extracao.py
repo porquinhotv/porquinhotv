@@ -56,7 +56,7 @@ CAMPOS_DATA = (
 )
 CAMPOS_DESCRICAO = ("og:description", "description", "twitter:description")
 # Etiquetas e sinopses. Um canal marca a peca com o nome do convidado
-# muitas vezes sem o escrever no titulo: sem ler isto, a emissao era
+# muitas vezes sem o escrever no titulo: sem ler isto, a entrevista era
 # rejeitada por `sem_sujeito` quando a propria pagina a identificava.
 CAMPOS_ETIQUETAS = (
     "keywords",

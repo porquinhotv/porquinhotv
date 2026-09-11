@@ -1,8 +1,7 @@
 {
  "ambito": {
   "fora_do_ambito": {
-   "emissoes": 6,
-   "entrevistas_distintas": 6
+   "entrevistas": 6
   },
   "recolha_desde": "2019-05-16",
   "rotulo": "desde o início de 2024",
@@ -14,8 +13,7 @@
    "canais": {
     "sic": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2024-02-21"
@@ -24,8 +22,7 @@
    "canais": {
     "rtp1": {
      "declaradas": 0,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2024-03-04"
@@ -34,23 +31,16 @@
    "canais": {
     "tvi": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2024-03-11"
   },
   {
    "canais": {
-    "rtp1": {
-     "declaradas": 0,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
-    },
     "rtp3": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2024-03-20"
@@ -59,8 +49,7 @@
    "canais": {
     "sic-noticias": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2024-03-21"
@@ -69,8 +58,7 @@
    "canais": {
     "cnn-portugal": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2024-05-06"
@@ -79,8 +67,7 @@
    "canais": {
     "now": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2024-07-09"
@@ -89,8 +76,7 @@
    "canais": {
     "cnn-portugal": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2024-10-10"
@@ -99,13 +85,7 @@
    "canais": {
     "cnn-portugal": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
-    },
-    "tvi": {
-     "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-01-13"
@@ -114,8 +94,7 @@
    "canais": {
     "sic-noticias": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-01-24"
@@ -124,8 +103,7 @@
    "canais": {
     "cmtv": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-03-10"
@@ -134,8 +112,7 @@
    "canais": {
     "sic": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-03-12"
@@ -144,13 +121,7 @@
    "canais": {
     "cnn-portugal": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
-    },
-    "tvi": {
-     "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-03-17"
@@ -159,8 +130,7 @@
    "canais": {
     "rtp1": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-03-18"
@@ -169,8 +139,7 @@
    "canais": {
     "rtp3": {
      "declaradas": 0,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-03-19"
@@ -179,8 +148,7 @@
    "canais": {
     "sic-noticias": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-03-27"
@@ -189,8 +157,7 @@
    "canais": {
     "cnn-portugal": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-04-03"
@@ -199,13 +166,7 @@
    "canais": {
     "now": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
-    },
-    "tvi": {
-     "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-04-09"
@@ -214,8 +175,7 @@
    "canais": {
     "rtp3": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-04-11"
@@ -224,8 +184,7 @@
    "canais": {
     "sic": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-04-22"
@@ -234,8 +193,7 @@
    "canais": {
     "cmtv": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-05-02"
@@ -244,8 +202,7 @@
    "canais": {
     "rtp3": {
      "declaradas": 0,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-05-12"
@@ -254,13 +211,7 @@
    "canais": {
     "cnn-portugal": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
-    },
-    "tvi": {
-     "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-05-21"
@@ -269,8 +220,7 @@
    "canais": {
     "cmtv": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-05-22"
@@ -279,8 +229,7 @@
    "canais": {
     "sic-noticias": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-05-27"
@@ -289,23 +238,16 @@
    "canais": {
     "now": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-05-29"
   },
   {
    "canais": {
-    "rtp1": {
-     "declaradas": 0,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
-    },
     "rtp3": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-06-04"
@@ -314,8 +256,7 @@
    "canais": {
     "cnn-portugal": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-07-09"
@@ -324,8 +265,7 @@
    "canais": {
     "cnn-portugal": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-08-01"
@@ -334,8 +274,7 @@
    "canais": {
     "now": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-08-05"
@@ -344,8 +283,7 @@
    "canais": {
     "now": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-08-19"
@@ -354,8 +292,7 @@
    "canais": {
     "cmtv": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-08-25"
@@ -364,8 +301,7 @@
    "canais": {
     "sic-noticias": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-08-28"
@@ -374,13 +310,7 @@
    "canais": {
     "cnn-portugal": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
-    },
-    "tvi": {
-     "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-10-16"
@@ -389,8 +319,7 @@
    "canais": {
     "sic-noticias": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-10-24"
@@ -399,23 +328,16 @@
    "canais": {
     "cnn-portugal": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-11-01"
   },
   {
    "canais": {
-    "rtp1": {
-     "declaradas": 0,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
-    },
     "rtp3": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-11-04"
@@ -424,8 +346,7 @@
    "canais": {
     "sic": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-11-05"
@@ -434,8 +355,7 @@
    "canais": {
     "tvi": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-11-11"
@@ -444,8 +364,7 @@
    "canais": {
     "now": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2025-12-17"
@@ -454,8 +373,7 @@
    "canais": {
     "now": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2026-01-14"
@@ -464,23 +382,16 @@
    "canais": {
     "cmtv": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2026-01-20"
   },
   {
    "canais": {
-    "rtp1": {
-     "declaradas": 0,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
-    },
     "rtp3": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2026-01-21"
@@ -489,8 +400,7 @@
    "canais": {
     "cnn-portugal": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2026-01-30"
@@ -499,8 +409,7 @@
    "canais": {
     "sic-noticias": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2026-02-04"
@@ -509,8 +418,7 @@
    "canais": {
     "cnn-portugal": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2026-03-06"
@@ -519,8 +427,7 @@
    "canais": {
     "now": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2026-03-11"
@@ -529,8 +436,7 @@
    "canais": {
     "cnn-portugal": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2026-05-12"
@@ -539,8 +445,7 @@
    "canais": {
     "cmtv": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2026-05-13"
@@ -549,8 +454,7 @@
    "canais": {
     "tvi": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2026-06-02"
@@ -559,8 +463,7 @@
    "canais": {
     "cnn-portugal": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2026-06-03"
@@ -569,8 +472,7 @@
    "canais": {
     "cmtv": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2026-06-08"
@@ -579,8 +481,7 @@
    "canais": {
     "sic-noticias": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2026-06-16"
@@ -589,23 +490,16 @@
    "canais": {
     "cmtv": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2026-06-22"
   },
   {
    "canais": {
-    "rtp1": {
-     "declaradas": 0,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
-    },
     "rtp3": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2026-06-24"
@@ -614,8 +508,7 @@
    "canais": {
     "cnn-portugal": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2026-07-16"
@@ -624,8 +517,7 @@
    "canais": {
     "cnn-portugal": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2026-07-29"
@@ -634,8 +526,7 @@
    "canais": {
     "cnn-portugal": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2026-09-01"
@@ -644,14 +535,13 @@
    "canais": {
     "now": {
      "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
+     "entrevistas": 1
     }
    },
    "data": "2026-09-10"
   }
  ],
- "esquema": 2,
+ "esquema": 3,
  "fontes": [
   "busca-rtp1",
   "clipping-imprensa",
@@ -659,910 +549,587 @@
   "motor-rtp3",
   "registo-curado"
  ],
- "gerado_em": "2026-09-11T15:23:40+00:00",
+ "gerado_em": "2026-09-11T17:28:41+00:00",
  "por_ano": [
   {
    "ano": "2024",
-   "emissoes": 9,
-   "entrevistas_distintas": 9
+   "entrevistas": 8
   },
   {
    "ano": "2025",
-   "emissoes": 39,
-   "entrevistas_distintas": 34
+   "entrevistas": 32
   },
   {
    "ano": "2026",
-   "emissoes": 21,
-   "entrevistas_distintas": 21
+   "entrevistas": 19
   }
  ],
  "por_canal": [
   {
    "canal": "rtp1",
-   "emissoes": 7,
-   "entrevistas_distintas": 7,
+   "entrevistas": 2,
    "nome": "RTP1"
   },
   {
    "canal": "rtp2",
-   "emissoes": 0,
-   "entrevistas_distintas": 0,
+   "entrevistas": 0,
    "nome": "RTP2"
   },
   {
    "canal": "sic",
-   "emissoes": 4,
-   "entrevistas_distintas": 4,
+   "entrevistas": 4,
    "nome": "SIC"
   },
   {
    "canal": "tvi",
-   "emissoes": 8,
-   "entrevistas_distintas": 8,
+   "entrevistas": 3,
    "nome": "TVI"
   },
   {
    "canal": "sic-noticias",
-   "emissoes": 8,
-   "entrevistas_distintas": 8,
+   "entrevistas": 8,
    "nome": "SIC Notícias"
   },
   {
    "canal": "rtp3",
-   "emissoes": 8,
-   "entrevistas_distintas": 8,
+   "entrevistas": 8,
    "nome": "RTP3"
   },
   {
    "canal": "cnn-portugal",
-   "emissoes": 17,
-   "entrevistas_distintas": 17,
+   "entrevistas": 17,
    "nome": "CNN Portugal"
   },
   {
    "canal": "now",
-   "emissoes": 9,
-   "entrevistas_distintas": 9,
+   "entrevistas": 9,
    "nome": "NOW"
   },
   {
    "canal": "cmtv",
-   "emissoes": 8,
-   "entrevistas_distintas": 8,
+   "entrevistas": 8,
    "nome": "CMTV"
   }
  ],
  "por_dia": [
   {
-   "chaves": [
-    "8eb2355b3705"
-   ],
    "data": "2024-02-21",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "140ec62fb372"
-   ],
    "data": "2024-03-04",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "cf00725f9209"
-   ],
    "data": "2024-03-11",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "048352d9feb3",
-    "5adc27508bd5"
-   ],
    "data": "2024-03-20",
-   "emissoes": 2,
-   "entrevistas_distintas": 2
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "e4d169d985a0"
-   ],
    "data": "2024-03-21",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "73c40b2089b3"
-   ],
    "data": "2024-05-06",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "a3ec8e2e9229"
-   ],
    "data": "2024-07-09",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "2024-10-10"
-   ],
    "data": "2024-10-10",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "2025-01-13"
-   ],
    "data": "2025-01-13",
-   "emissoes": 2,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "4670e7e2a56f"
-   ],
    "data": "2025-01-24",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "7a83aaef77ab"
-   ],
    "data": "2025-03-10",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "2e99c05f8b74"
-   ],
    "data": "2025-03-12",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "2025-03-17"
-   ],
    "data": "2025-03-17",
-   "emissoes": 2,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "2025-03-18"
-   ],
    "data": "2025-03-18",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "ba05f89988d7"
-   ],
    "data": "2025-03-19",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "19dbf8ff671b"
-   ],
    "data": "2025-03-27",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "0e08a81d23d2"
-   ],
    "data": "2025-04-03",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "2025-04-09"
-   ],
    "data": "2025-04-09",
-   "emissoes": 2,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "aa495e73ad08"
-   ],
    "data": "2025-04-11",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "d15f499cea5e"
-   ],
    "data": "2025-04-22",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "71347a16cdcd"
-   ],
    "data": "2025-05-02",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "1a3e06092d4d"
-   ],
    "data": "2025-05-12",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "2025-05-21"
-   ],
    "data": "2025-05-21",
-   "emissoes": 2,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "854ab4d77a6e"
-   ],
    "data": "2025-05-22",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "1b0187abc55f"
-   ],
    "data": "2025-05-27",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "aca340e9b8e5"
-   ],
    "data": "2025-05-29",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "5cddef338c50",
-    "8ffaa57304af"
-   ],
    "data": "2025-06-04",
-   "emissoes": 2,
-   "entrevistas_distintas": 2
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "0973eeccbc39"
-   ],
    "data": "2025-07-09",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "4500b48a07f8"
-   ],
    "data": "2025-08-01",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "b4a1b6efa0db"
-   ],
    "data": "2025-08-05",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "ff57ab76e405"
-   ],
    "data": "2025-08-19",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "77e6c2dce3de"
-   ],
    "data": "2025-08-25",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "81250e66e573"
-   ],
    "data": "2025-08-28",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "2025-10-16"
-   ],
    "data": "2025-10-16",
-   "emissoes": 2,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "0c20c61281df"
-   ],
    "data": "2025-10-24",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "2025-11-01"
-   ],
    "data": "2025-11-01",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "04ad7cabd1f2",
-    "caa909947e86"
-   ],
    "data": "2025-11-04",
-   "emissoes": 2,
-   "entrevistas_distintas": 2
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "5d8d15dceacc"
-   ],
    "data": "2025-11-05",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "ab8e608afe45"
-   ],
    "data": "2025-11-11",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "e1c4ae8c4c99"
-   ],
    "data": "2025-12-17",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "10cc33d09c34"
-   ],
    "data": "2026-01-14",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "175ecd10afba"
-   ],
    "data": "2026-01-20",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "a2842ebd3cd9",
-    "cefe20233472"
-   ],
    "data": "2026-01-21",
-   "emissoes": 2,
-   "entrevistas_distintas": 2
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "e8a44cfdfb97"
-   ],
    "data": "2026-01-30",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "aa4df0528473"
-   ],
    "data": "2026-02-04",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "11ebf323d4aa"
-   ],
    "data": "2026-03-06",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "c63f091f9802"
-   ],
    "data": "2026-03-11",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "2026-05-12"
-   ],
    "data": "2026-05-12",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "73d2a05c599c"
-   ],
    "data": "2026-05-13",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "ef788491e9f9"
-   ],
    "data": "2026-06-02",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "a734fc34ebd0"
-   ],
    "data": "2026-06-03",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "7fc1bb683a10"
-   ],
    "data": "2026-06-08",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "ea63bf05e197"
-   ],
    "data": "2026-06-16",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "4c9eadec21b0"
-   ],
    "data": "2026-06-22",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "cae2c99544d6",
-    "f8724ddc6403"
-   ],
    "data": "2026-06-24",
-   "emissoes": 2,
-   "entrevistas_distintas": 2
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "2026-07-16"
-   ],
    "data": "2026-07-16",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "2026-07-29"
-   ],
    "data": "2026-07-29",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "6685dd312154"
-   ],
    "data": "2026-09-01",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   },
   {
-   "chaves": [
-    "0e04061d1838"
-   ],
    "data": "2026-09-10",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
+   "entrevistas": 1
   }
  ],
  "por_mes": [
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "mes": "2024-02"
   },
   {
-   "emissoes": 5,
-   "entrevistas_distintas": 5,
+   "entrevistas": 4,
    "mes": "2024-03"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "mes": "2024-05"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "mes": "2024-07"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "mes": "2024-10"
   },
   {
-   "emissoes": 3,
-   "entrevistas_distintas": 2,
+   "entrevistas": 2,
    "mes": "2025-01"
   },
   {
-   "emissoes": 7,
-   "entrevistas_distintas": 6,
+   "entrevistas": 6,
    "mes": "2025-03"
   },
   {
-   "emissoes": 5,
-   "entrevistas_distintas": 4,
+   "entrevistas": 4,
    "mes": "2025-04"
   },
   {
-   "emissoes": 7,
-   "entrevistas_distintas": 6,
+   "entrevistas": 6,
    "mes": "2025-05"
   },
   {
-   "emissoes": 2,
-   "entrevistas_distintas": 2,
+   "entrevistas": 1,
    "mes": "2025-06"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "mes": "2025-07"
   },
   {
-   "emissoes": 5,
-   "entrevistas_distintas": 5,
+   "entrevistas": 5,
    "mes": "2025-08"
   },
   {
-   "emissoes": 3,
-   "entrevistas_distintas": 2,
+   "entrevistas": 2,
    "mes": "2025-10"
   },
   {
-   "emissoes": 5,
-   "entrevistas_distintas": 5,
+   "entrevistas": 4,
    "mes": "2025-11"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "mes": "2025-12"
   },
   {
-   "emissoes": 5,
-   "entrevistas_distintas": 5,
+   "entrevistas": 4,
    "mes": "2026-01"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "mes": "2026-02"
   },
   {
-   "emissoes": 2,
-   "entrevistas_distintas": 2,
+   "entrevistas": 2,
    "mes": "2026-03"
   },
   {
-   "emissoes": 2,
-   "entrevistas_distintas": 2,
+   "entrevistas": 2,
    "mes": "2026-05"
   },
   {
-   "emissoes": 7,
-   "entrevistas_distintas": 7,
+   "entrevistas": 6,
    "mes": "2026-06"
   },
   {
-   "emissoes": 2,
-   "entrevistas_distintas": 2,
+   "entrevistas": 2,
    "mes": "2026-07"
   },
   {
-   "emissoes": 2,
-   "entrevistas_distintas": 2,
+   "entrevistas": 2,
    "mes": "2026-09"
   }
  ],
  "por_origem": {
   "canal": {
-   "emissoes": 58,
-   "entrevistas_distintas": 53
+   "entrevistas": 48
   },
   "imprensa": {
-   "emissoes": 11,
-   "entrevistas_distintas": 11
+   "entrevistas": 11
   }
  },
  "por_semana": [
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2024-W08"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2024-W10"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2024-W11"
   },
   {
-   "emissoes": 3,
-   "entrevistas_distintas": 3,
+   "entrevistas": 2,
    "semana": "2024-W12"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2024-W19"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2024-W28"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2024-W41"
   },
   {
-   "emissoes": 2,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2025-W03"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2025-W04"
   },
   {
-   "emissoes": 2,
-   "entrevistas_distintas": 2,
+   "entrevistas": 2,
    "semana": "2025-W11"
   },
   {
-   "emissoes": 4,
-   "entrevistas_distintas": 3,
+   "entrevistas": 3,
    "semana": "2025-W12"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2025-W13"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2025-W14"
   },
   {
-   "emissoes": 3,
-   "entrevistas_distintas": 2,
+   "entrevistas": 2,
    "semana": "2025-W15"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2025-W17"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2025-W18"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2025-W20"
   },
   {
-   "emissoes": 3,
-   "entrevistas_distintas": 2,
+   "entrevistas": 2,
    "semana": "2025-W21"
   },
   {
-   "emissoes": 2,
-   "entrevistas_distintas": 2,
+   "entrevistas": 2,
    "semana": "2025-W22"
   },
   {
-   "emissoes": 2,
-   "entrevistas_distintas": 2,
+   "entrevistas": 1,
    "semana": "2025-W23"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2025-W28"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2025-W31"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2025-W32"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2025-W34"
   },
   {
-   "emissoes": 2,
-   "entrevistas_distintas": 2,
+   "entrevistas": 2,
    "semana": "2025-W35"
   },
   {
-   "emissoes": 2,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2025-W42"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2025-W43"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2025-W44"
   },
   {
-   "emissoes": 3,
-   "entrevistas_distintas": 3,
+   "entrevistas": 2,
    "semana": "2025-W45"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2025-W46"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2025-W51"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2026-W03"
   },
   {
-   "emissoes": 3,
-   "entrevistas_distintas": 3,
+   "entrevistas": 2,
    "semana": "2026-W04"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2026-W05"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2026-W06"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2026-W10"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2026-W11"
   },
   {
-   "emissoes": 2,
-   "entrevistas_distintas": 2,
+   "entrevistas": 2,
    "semana": "2026-W20"
   },
   {
-   "emissoes": 2,
-   "entrevistas_distintas": 2,
+   "entrevistas": 2,
    "semana": "2026-W23"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2026-W24"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2026-W25"
   },
   {
-   "emissoes": 3,
-   "entrevistas_distintas": 3,
+   "entrevistas": 2,
    "semana": "2026-W26"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2026-W29"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2026-W31"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2026-W36"
   },
   {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
+   "entrevistas": 1,
    "semana": "2026-W37"
   }
  ],
@@ -1592,8 +1159,7 @@
   "pergunta": "Quantas entrevistas exclusivas deu André Ventura na televisão portuguesa?"
  },
  "totais": {
-  "emissoes": 69,
-  "entrevistas_distintas": 64
+  "entrevistas": 59
  },
  "ultimo_registo": "2026-09-10"
 }

@@ -64,7 +64,7 @@ jobs:
       - name: Repor dados
         if: github.event.inputs.repor == 'true'
         run: |
-          rm -f docs/dados/emissoes.json docs/dados/quarentena.json docs/dados/candidatos.json docs/dados/resumo.json
+          rm -f docs/dados/entrevistas.json docs/dados/quarentena.json docs/dados/candidatos.json docs/dados/resumo.json
           echo "docs/dados reposto"
 
       - name: Rondas de historico

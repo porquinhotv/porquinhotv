@@ -7,6 +7,11 @@ seja legivel: o historico do repositorio e a trilha de auditoria.
 Consequencia a nao esquecer: uma linha que deixe de ser produzida nao
 desaparece sozinha. Corrigir uma regra que muda classificacoes obriga a
 repor docs/dados e a recolher de novo, na mesma operacao.
+
+O que este ficheiro guarda e a **transmissao**, e o que publica e a
+**entrevista**. A dobragem de uma na outra e feita em
+recolha/entrevistas.py, a publicacao: mudar o agrupamento nao mexe no que
+esta guardado e por isso nao exige `repor`.
 """
 
 from __future__ import annotations
@@ -14,25 +19,40 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from .modelos import DADOS_DIR, Emissao
+from .modelos import DADOS_DIR, Transmissao
 
-EMISSOES = DADOS_DIR / "emissoes.json"
+ENTREVISTAS = DADOS_DIR / "entrevistas.json"
 QUARENTENA = DADOS_DIR / "quarentena.json"
-ESQUEMA = 1
+# Subiu para 2 a 2026-09-11, quando o ficheiro deixou de ser uma lista de
+# emissoes e passou a ser uma lista de entrevistas com as suas
+# transmissoes dentro. Um site antigo a ler um ficheiro novo veria uma
+# lista vazia; com o esquema a mudar, ve que mudou.
+ESQUEMA = 2
 
 
-def carregar(caminho: Path = EMISSOES) -> dict[str, dict]:
+def carregar(caminho: Path = ENTREVISTAS) -> dict[str, dict]:
+    """As transmissoes guardadas, por id.
+
+    O ficheiro publicado e uma lista de entrevistas, mas o que o append-only
+    protege e a transmissao: e ela que tem prova propria e `primeira_vez`.
+    Achata-se na leitura e volta a dobrar-se na escrita, e assim o
+    agrupamento nunca entra neste modulo.
+    """
     if not caminho.exists():
         return {}
     conteudo = json.loads(caminho.read_text(encoding="utf-8"))
-    return {linha["id"]: linha for linha in conteudo.get("emissoes", [])}
+    linhas = {}
+    for entrevista in conteudo.get("entrevistas", []):
+        for linha in entrevista.get("transmissoes", []):
+            linhas[linha["id"]] = linha
+    return linhas
 
 
-def fundir(existentes: dict[str, dict], novas: list[Emissao]) -> tuple[dict, int, int]:
+def fundir(existentes: dict[str, dict], novas: list[Transmissao]) -> tuple[dict, int, int]:
     adicionadas = 0
     atualizadas = 0
-    for emissao in novas:
-        linha = emissao.como_dict()
+    for transmissao in novas:
+        linha = transmissao.como_dict()
         atual = existentes.get(linha["id"])
         if atual is None:
             existentes[linha["id"]] = linha
@@ -57,9 +77,14 @@ def _escrever(caminho: Path, conteudo: dict) -> None:
     )
 
 
-def guardar(linhas: dict[str, dict], caminho: Path = EMISSOES) -> None:
-    ordenadas = sorted(linhas.values(), key=lambda r: (r["data"], r["canal"], r["id"]))
-    _escrever(caminho, {"esquema": ESQUEMA, "total": len(ordenadas), "emissoes": ordenadas})
+def guardar(entrevistas: list[dict], caminho: Path = ENTREVISTAS) -> None:
+    """As entrevistas, ja dobradas por recolha/entrevistas.py.
+
+    `total` e o numero que o site publica em grande: entrevistas
+    exclusivas, nunca transmissoes. Quem abrir o ficheiro ve as duas
+    coisas, mas so uma delas e a contagem.
+    """
+    _escrever(caminho, {"esquema": ESQUEMA, "total": len(entrevistas), "entrevistas": entrevistas})
 
 
 def guardar_quarentena(entradas: list[dict], caminho: Path = QUARENTENA) -> None:

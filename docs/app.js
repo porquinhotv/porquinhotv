@@ -1,7 +1,7 @@
 /* Pagina principal. Le dados/resumo.json e textos.json, e desenha.
    Nao calcula agregados novos: soma periodos a partir das reparticoes
-   diarias. Tudo o resto vem feito. Conta emissoes e entrevistas; nao ha
-   tempo em lado nenhum desde 2026-09-10. */
+   diarias. Tudo o resto vem feito. Conta uma coisa so, entrevistas
+   exclusivas; nao ha tempo em lado nenhum desde 2026-09-10. */
 
 (function () {
   "use strict";
@@ -57,15 +57,11 @@
     if (texto) { no.appendChild(el("p", { class: "comparacao", text: texto })); }
   }
 
-  /* "3 emissões, 2 entrevistas distintas": o segundo numero so aparece
-     quando difere do primeiro, ou seja, quando houve simulcast. */
+  /* Um numero e uma unidade. Ate 2026-09-11 escreviam-se dois, as
+     transmissoes e as entrevistas distintas, e quem lia o site tinha de
+     perceber a diferenca antes de perceber o numero. */
   function contagemDe(bucket) {
-    var texto = plural(bucket.emissoes, "emissão", "emissões");
-    var distintas = bucket.entrevistas_distintas;
-    if (distintas !== undefined && distintas !== bucket.emissoes) {
-      texto += ", " + plural(distintas, "entrevista distinta", "entrevistas distintas");
-    }
-    return texto;
+    return plural(bucket.entrevistas, "entrevista exclusiva", "entrevistas exclusivas");
   }
 
   // ---- porquinho ---------------------------------------------------------
@@ -123,7 +119,7 @@
     var p = periodoAtual();
     var cartao = el("section", { class: "cartao" });
 
-    if (t.emissoes === 0) {
+    if (t.entrevistas === 0) {
       var vazio = el("p", { class: "numero-grande", text: "Nenhuma entrevista exclusiva" });
       vazio.appendChild(el("small", { text: p.frase }));
       cartao.appendChild(vazio);
@@ -134,12 +130,10 @@
 
     var numero = el("p", { class: "numero-grande" });
     numero.appendChild(document.createTextNode(plural(t.entrevistas, "entrevista exclusiva", "entrevistas exclusivas")));
-    var partes = [];
-    // A mesma entrevista em dois canais sao duas emissoes e uma
-    // entrevista; o segundo numero so se escreve quando difere.
-    if (t.emissoes !== t.entrevistas) { partes.push(plural(t.emissoes, "emissão", "emissões")); }
-    partes.push(p.frase);
-    numero.appendChild(el("small", { text: partes.join(", ") }));
+    // Por baixo do numero fica so o periodo. A mesma entrevista em dois
+    // canais conta uma vez, e quando isso acontece quem o diz e a nota da
+    // pagina de Fontes, ao lado das duas provas.
+    numero.appendChild(el("small", { text: p.frase }));
     cartao.appendChild(numero);
     // A escada e pelo numero de entrevistas, que e o numero grande.
     acrescentarFrase(cartao, PTV.fraseDeMetrica(metricas().total, t.entrevistas));
@@ -151,11 +145,11 @@
   function desenharCanais(painel, intervalo) {
     var canais = PTV.somarCanais(estado.resumo.canal_por_dia, intervalo.de, intervalo.ate);
     var lista = estado.resumo.por_canal.map(function (c) {
-      var s = canais[c.canal] || { emissoes: 0 };
-      return { id: c.canal, nome: c.nome, emissoes: s.emissoes };
+      var s = canais[c.canal] || { entrevistas: 0 };
+      return { id: c.canal, nome: c.nome, entrevistas: s.entrevistas };
     });
-    var total = lista.reduce(function (n, c) { return n + c.emissoes; }, 0);
-    var ordenada = lista.slice().sort(function (a, b) { return b.emissoes - a.emissoes || a.nome.localeCompare(b.nome); });
+    var total = lista.reduce(function (n, c) { return n + c.entrevistas; }, 0);
+    var ordenada = lista.slice().sort(function (a, b) { return b.entrevistas - a.entrevistas || a.nome.localeCompare(b.nome); });
     var p = periodoAtual();
 
     var secao = el("section", {}, [
@@ -166,10 +160,10 @@
     ]);
 
     if (total > 0) {
-      var empilhada = el("div", { class: "empilhada", role: "img", "aria-label": "Quota de emissões por canal" });
-      ordenada.filter(function (c) { return c.emissoes > 0; }).forEach(function (c) {
-        var f = el("span", { title: c.nome + ": " + Math.round(c.emissoes / total * 100) + "%" });
-        f.style.width = (c.emissoes / total * 100).toFixed(2) + "%";
+      var empilhada = el("div", { class: "empilhada", role: "img", "aria-label": "Quota de entrevistas exclusivas por canal" });
+      ordenada.filter(function (c) { return c.entrevistas > 0; }).forEach(function (c) {
+        var f = el("span", { title: c.nome + ": " + Math.round(c.entrevistas / total * 100) + "%" });
+        f.style.width = (c.entrevistas / total * 100).toFixed(2) + "%";
         f.style.background = cor(c.id);
         empilhada.appendChild(f);
       });
@@ -179,11 +173,11 @@
     var ul = el("ul", { class: "canais" });
     ordenada.forEach(function (c) {
       var ponto = el("span", { class: "ponto" }); ponto.style.background = cor(c.id);
-      var enchimento = el("span"); enchimento.style.width = (total ? c.emissoes / total * 100 : 0).toFixed(1) + "%"; enchimento.style.background = cor(c.id);
-      var valor = c.emissoes > 0
-        ? plural(c.emissoes, "emissão", "emissões") + " (" + Math.round(c.emissoes / total * 100) + "%)"
+      var enchimento = el("span"); enchimento.style.width = (total ? c.entrevistas / total * 100 : 0).toFixed(1) + "%"; enchimento.style.background = cor(c.id);
+      var valor = c.entrevistas > 0
+        ? plural(c.entrevistas, "entrevista", "entrevistas") + " (" + Math.round(c.entrevistas / total * 100) + "%)"
         : "nada registado";
-      ul.appendChild(el("li", { class: c.emissoes > 0 ? "" : "zero" }, [
+      ul.appendChild(el("li", { class: c.entrevistas > 0 ? "" : "zero" }, [
         ponto,
         el("span", { class: "nome", text: c.nome }),
         el("span", { class: "pista" }, [enchimento]),
@@ -193,12 +187,12 @@
     secao.appendChild(ul);
 
     /* A frase do lider so aparece quando ha repartição para comentar. Com
-       duas emissoes no periodo, "leva 50%" e uma frase sobre ruido: a
+       duas entrevistas no periodo, "leva 50%" e uma frase sobre ruido: a
        percentagem esta certa e a graca nao. */
     var lider = ordenada[0];
-    if (metricas().lider && total >= 3 && lider && lider.emissoes >= 2) {
+    if (metricas().lider && total >= 3 && lider && lider.entrevistas >= 2) {
       acrescentarFrase(secao, PTV.preencher(metricas().lider, {
-        canal: lider.nome, n: Math.round(lider.emissoes / total * 100)
+        canal: lider.nome, n: Math.round(lider.entrevistas / total * 100)
       }));
     }
     painel.appendChild(secao);
@@ -231,11 +225,11 @@
     var largura = 1000, altura = 220, baixo = 30, cima = 6;
     var area = altura - baixo - cima;
     var passo = largura / serie.length;
-    var max = Math.max.apply(null, serie.map(function (s) { return s.emissoes; })) || 1;
-    var svg = '<svg class="grafico" viewBox="0 0 ' + largura + ' ' + altura + '" role="group" aria-label="Emissões por período">';
+    var max = Math.max.apply(null, serie.map(function (s) { return s.entrevistas; })) || 1;
+    var svg = '<svg class="grafico" viewBox="0 0 ' + largura + ' ' + altura + '" role="group" aria-label="Entrevistas exclusivas por período">';
     var anosVistos = {};
     serie.forEach(function (s, i) {
-      var h = s.emissoes / max * area;
+      var h = s.entrevistas / max * area;
       var x = i * passo;
       var rotulo = rotuloDoPeriodo(escala.campo, s[escala.campo]) + ": " + contagemDe(s);
       svg += '<g class="coluna" data-i="' + i + '" tabindex="0" role="img" aria-label="' + PTVDOM.escapar(rotulo) + '">';
@@ -309,7 +303,7 @@
   function desenharPainel() {
     var painel = document.getElementById("painel");
     painel.innerHTML = "";
-    if (!estado.resumo.totais.emissoes) {
+    if (!estado.resumo.totais.entrevistas) {
       painel.appendChild(el("div", { class: "cartao vazio" }, [
         el("h2", { text: "Ainda sem dados" }),
         el("p", { text: "Ainda não há entrevistas registadas. Quando houver, aparecem aqui com prova em cada linha." })

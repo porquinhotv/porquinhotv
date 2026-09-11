@@ -1,5 +1,5 @@
 ---
-# Humor do porquinho. Uma funcao dos dias desde a ultima emissao.
+# Humor do porquinho. Uma funcao dos dias desde a ultima entrevista.
 #
 # Este ficheiro e lido pelo site como docs/textos.json, gerado por
 # ferramentas/gerar_textos.py. Ha um teste que falha se divergirem.
@@ -100,7 +100,7 @@ metricas:
         - Isto já não é uma grelha de programação, é uma assinatura.
         - O porquinho desistiu de contar de cabeça.
         - Se fosse um programa, já ia na terceira temporada.
-  lider: '{canal}: {n}% das emissões. Já não é um canal, é uma segunda casa.'
+  lider: '{canal}: {n}% das entrevistas. Já não é um canal, é uma segunda casa.'
   legendas:
     canais: Onde é que o porquinho apareceu mais vezes. A mesma entrevista em dois canais conta nos dois, porque a omnipresença do porquinho também se conta duas vezes.
     evolucao: Cada barra é um período. Quanto mais alta, mais cheiro a estrume ficou no ar. Passe o rato ou use o teclado para ler os valores.

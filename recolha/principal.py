@@ -21,18 +21,14 @@ from collections import Counter
 from dataclasses import replace
 from pathlib import Path
 
-from . import armazem, confirmacao, criterio, curadoria, resumo
+from . import armazem, confirmacao, criterio, curadoria, entrevistas, resumo
 from .fontes import base as fontes_base
 from .fontes import busca_site, manual, podcast_rss, youtube_feed  # noqa: F401  (registo dos plugins)
-from .modelos import carregar_config, hoje_iso
-
-
-def _url_normalizado(url: str) -> str:
-    return url.strip().rstrip("/").replace("http://", "https://").replace("www.", "")
+from .modelos import carregar_config, hoje_iso, url_normalizado
 
 
 def _aplicar_vetos(fundidas: dict, remocoes: dict[str, str], quarentena: list[dict]) -> tuple[dict, int]:
-    """Retira do que vai ser publicado as emissoes vetadas a mao.
+    """Retira do que vai ser publicado as transmissoes vetadas a mao.
 
     Corre depois do `fundir` e nao antes, porque o veto tem de apanhar
     tambem as linhas que ja estavam no armazem de corridas anteriores.
@@ -49,7 +45,7 @@ def _aplicar_vetos(fundidas: dict, remocoes: dict[str, str], quarentena: list[di
         return fundidas, 0
     ficam, vetadas = {}, 0
     for chave, linha in fundidas.items():
-        alvo = _url_normalizado(linha.get("prova_url") or "")
+        alvo = url_normalizado(linha.get("prova_url") or "")
         if alvo not in remocoes:
             ficam[chave] = linha
             continue
@@ -71,7 +67,7 @@ def _aplicar_vetos(fundidas: dict, remocoes: dict[str, str], quarentena: list[di
 def _contar_recusas(quarentena: list[dict], prefixo: str = "") -> None:
     """As recusas contadas por fonte e por motivo, com um exemplo cada.
 
-    Sem isto, uma fonte nova que devolva zero emissoes nao diz porque:
+    Sem isto, uma fonte nova que devolva zero linhas nao diz porque:
     a 2026-09-10 uma lista de episodios trouxe 194 paginas, todas lidas
     e todas com duracao, e a corrida terminou com \"194 itens em
     quarentena\" e mais nada. O motivo estava escrito em cada linha da
@@ -102,7 +98,10 @@ def correr(so_fonte: str | None = None, dry_run: bool = False, paginas: int = 0,
     # devolvem agora, e ao que ja esta publicado. So o primeiro nao
     # chegava: uma linha ja no armazem continuaria a ser publicada, e
     # remover passaria a exigir uma corrida com `repor`.
-    remocoes = {_url_normalizado(url): motivo for url, motivo in curadoria.ler_remocoes().items()}
+    remocoes = {url_normalizado(url): motivo for url, motivo in curadoria.ler_remocoes().items()}
+    # As transmissoes que sao a mesma entrevista, e o canal a que ela fica
+    # atribuida. Sem entrada aqui, cada transmissao e uma entrevista.
+    grupos = curadoria.ler_grupos()
     aceites = []
     quarentena: list[dict] = []
     avisos: list[str] = []
@@ -126,7 +125,7 @@ def correr(so_fonte: str | None = None, dry_run: bool = False, paginas: int = 0,
 
         contadas = 0
         for item in itens:
-            chave = _url_normalizado(item.prova_url or item.url)
+            chave = url_normalizado(item.prova_url or item.url)
             if chave in remocoes:
                 criterio.rejeitar(quarentena, item, fonte, f"vetada_a_mao ({remocoes[chave]})")
                 continue
@@ -134,13 +133,13 @@ def correr(so_fonte: str | None = None, dry_run: bool = False, paginas: int = 0,
             if anterior and anterior != fonte.id:
                 criterio.rejeitar(quarentena, item, fonte, f"ja_registado ({anterior})")
                 continue
-            emissao = criterio.avaliar(item, fonte, config, quarentena)
-            if emissao is None:
+            transmissao = criterio.avaliar(item, fonte, config, quarentena)
+            if transmissao is None:
                 continue
             provas_vistas.setdefault(chave, fonte.id)
-            aceites.append(emissao)
+            aceites.append(transmissao)
             contadas += 1
-        print(f"{fonte.id}: {len(itens)} itens, {contadas} emissoes")
+        print(f"{fonte.id}: {len(itens)} itens, {contadas} transmissoes")
 
     aceites = criterio.resolver_blocos(aceites, quarentena)
 
@@ -164,7 +163,7 @@ def correr(so_fonte: str | None = None, dry_run: bool = False, paginas: int = 0,
     candidatos = confirmacao.registar(candidatos, automaticas, ronda)
     minimo = config.tema.rondas_para_confirmar
     confirmadas = confirmacao.filtrar(automaticas, candidatos, minimo, quarentena)
-    # Quantas emissoes esta corrida viu mas ainda nao pode publicar. E o
+    # Quantas transmissoes esta corrida viu mas ainda nao pode publicar. E o
     # sinal que decide se vale a pena uma segunda ronda hoje: sem nada a
     # espera, uma segunda leitura nao teria nada para confirmar.
     por_confirmar = len(automaticas) - len(confirmadas)
@@ -173,10 +172,20 @@ def correr(so_fonte: str | None = None, dry_run: bool = False, paginas: int = 0,
 
     fundidas, adicionadas, atualizadas = armazem.fundir(existentes, aceites)
     fundidas, vetadas = _aplicar_vetos(fundidas, remocoes, quarentena)
-    agregados = resumo.construir(list(fundidas.values()), config)
+    # A dobragem das transmissoes em entrevistas. Feita aqui, a
+    # publicacao, e nao na recolha: o que fica guardado continua a ser a
+    # transmissao, com prova propria e `primeira_vez` intacta, e por isso
+    # mudar o agrupamento nunca exige `repor`. Ver recolha/entrevistas.py.
+    publicadas = entrevistas.agrupar(list(fundidas.values()), grupos, avisos)
+    agregados = resumo.construir(publicadas, config)
 
     prefixo = "[dry-run] " if dry_run else ""
-    print(f"{prefixo}+{adicionadas} novas, {atualizadas} atualizadas, {len(fundidas)} no total")
+    print(f"{prefixo}+{adicionadas} novas, {atualizadas} atualizadas, {len(fundidas)} transmissoes")
+    # O numero que o site publica. Escrito ao lado do das transmissoes de
+    # proposito: a diferenca entre os dois e o simulcast, e se ela crescer
+    # sem uma entrada nova na tabela de agrupamento ha alguma coisa
+    # errada.
+    print(f"{prefixo}{len(publicadas)} entrevistas exclusivas publicadas")
     if vetadas:
         print(f"{prefixo}{vetadas} ja publicadas retiradas por veto escrito a mao")
     print(f"{prefixo}{len(quarentena)} itens em quarentena nesta corrida")
@@ -193,7 +202,7 @@ def correr(so_fonte: str | None = None, dry_run: bool = False, paginas: int = 0,
         print(f"{prefixo}{por_confirmar} a aguardar confirmacao noutra ronda")
 
     if not dry_run:
-        armazem.guardar(fundidas)
+        armazem.guardar(publicadas)
         resumo.guardar(agregados)
         armazem.guardar_quarentena(quarentena)
         confirmacao.guardar(candidatos)
@@ -206,7 +215,8 @@ def correr(so_fonte: str | None = None, dry_run: bool = False, paginas: int = 0,
                     "adicionadas": adicionadas,
                     "atualizadas": atualizadas,
                     "por_confirmar": por_confirmar,
-                    "total": len(fundidas),
+                    "transmissoes": len(fundidas),
+                    "total": len(publicadas),
                 },
                 ensure_ascii=False,
                 indent=1,
@@ -226,7 +236,7 @@ def correr(so_fonte: str | None = None, dry_run: bool = False, paginas: int = 0,
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Recolha de emissoes")
+    parser = argparse.ArgumentParser(description="Recolha de entrevistas exclusivas")
     parser.add_argument("--fonte", help="correr apenas esta fonte")
     parser.add_argument("--dry-run", action="store_true", help="nao escrever em disco")
     parser.add_argument("--paginas", type=int, default=0, help="paginas de pesquisa por termo (historico)")

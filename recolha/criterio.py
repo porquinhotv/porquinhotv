@@ -5,9 +5,10 @@ proposito, para poder ser lido por inteiro por quem quiser contestar um
 numero. As regras de configuracao que este ficheiro aplica estao em
 config/porquinho.yml e config/fontes.yml.
 
-Um item conta como emissao quando, por esta ordem:
+Um item conta como transmissao quando, por esta ordem:
 
-1. a data de emissao (declarada, ou de publicacao na falta dela) nao e
+1. a data em que a entrevista passou (declarada, ou a de publicacao na
+   falta dela) nao e
    anterior ao inicio do tema;
 2. o sujeito e identificado (no registo curado, por construcao; nas
    outras fontes, por nome no titulo, na sinopse ou nas etiquetas);
@@ -29,7 +30,7 @@ video integral. Nao ha duracao minima, nem nunca houve.
 O passo 5 existe porque o contrario ja aconteceu: com o formato a
 `entrevista` por omissao, bastava nao haver termo de exclusao para uma
 peca noticiosa de 55 segundos com o nome do sujeito ser publicada como
-entrevista exclusiva. Sete das 42 emissoes publicadas a 8 de setembro de
+entrevista exclusiva. Sete das 42 linhas publicadas a 8 de setembro de
 2026 eram isso. A regra e agora a inversa: sem prova de formato nao ha
 formato, e o que nao se sabe nao se publica.
 
@@ -45,7 +46,7 @@ desaparece em silencio. Os motivos, para quem le a quarentena:
                                 dizem. Nao e uma rejeicao do formato, e a
                                 ausencia dele
     canal_desconhecido          canal que nao esta em config/porquinho.yml
-    fragmento_ou_repetido       outro item do mesmo bloco ja provou a emissao
+    fragmento_ou_repetido       outro item do mesmo bloco ja provou a transmissao
     ja_registado                o registo curado ja tem esta prova
 """
 
@@ -55,9 +56,9 @@ from .datas import resolver_data
 from .modelos import (
     FORMATO_ELEGIVEL,
     Config,
-    Emissao,
     Fonte,
     ItemBruto,
+    Transmissao,
     contem_palavra,
     hoje_iso,
     id_estavel,
@@ -72,9 +73,9 @@ def programa_do_titulo(titulo: str, config: Config) -> str:
     ja e o nome do sujeito, caso em que nao ha programa a deduzir.
 
     Isto importa alem da apresentacao: o bloco que junta fragmentos da
-    mesma emissao e (canal, programa, dia). Com o programa sempre vazio,
-    duas emissoes diferentes do mesmo canal no mesmo dia colidiam num so
-    bloco e uma delas era descartada como repetida.
+    mesma transmissao e (canal, programa, dia). Com o programa sempre
+    vazio, duas entrevistas diferentes do mesmo canal no mesmo dia
+    colidiam num so bloco e uma delas era descartada como repetida.
 
     Os separadores estao em config/porquinho.yml. Nenhum nome de programa
     vive no codigo.
@@ -144,7 +145,7 @@ def rejeitar(quarentena: list | None, item: ItemBruto, fonte: Fonte, motivo: str
 
 def avaliar(
     item: ItemBruto, fonte: Fonte, config: Config, quarentena: list | None = None
-) -> Emissao | None:
+) -> Transmissao | None:
     tema = config.tema
     # O sujeito procura-se no titulo, na sinopse e nas etiquetas: um
     # canal identifica o convidado nas tags de uma peca cujo titulo nao o
@@ -153,7 +154,7 @@ def avaliar(
 
     data, origem = resolver_data(texto, item.publicado_em, item.data_declarada)
     if not data:
-        # Sem data nao ha emissao: nao se sabe em que dia foi. Motivo
+        # Sem data nao ha transmissao: nao se sabe em que dia foi. Motivo
         # proprio, e nao `anterior_ao_inicio`: uma data que nao existe nao
         # e uma data anterior, e rotula-la assim faria a quarentena
         # afirmar uma coisa falsa sobre 59 das 64 rejeicoes da primeira
@@ -189,10 +190,14 @@ def avaliar(
         return None
 
     bloco = id_estavel(canal, programa, data)
-    return Emissao(
+    return Transmissao(
         id=f"{fonte.id}:{id_estavel(fonte.id, item.id_nativo)}",
         bloco=bloco,
-        entrevista=item.mesma_entrevista or bloco,
+        # Por omissao cada transmissao e uma entrevista. So a tabela
+        # `mesma_entrevista` de config/curadoria.yml junta duas, e isso
+        # acontece a publicacao, em recolha/entrevistas.py: aqui nao se
+        # deduz agrupamento nenhum a partir do item.
+        entrevista=bloco,
         data=data,
         data_origem=origem,
         publicado_em=item.publicado_em,
@@ -207,8 +212,8 @@ def avaliar(
     )
 
 
-def resolver_blocos(emissoes: list[Emissao], quarentena: list | None = None) -> list[Emissao]:
-    """Um bloco (canal, programa, data) fica com uma so emissao.
+def resolver_blocos(transmissoes: list[Transmissao], quarentena: list | None = None) -> list[Transmissao]:
+    """Um bloco (canal, programa, data) fica com uma so transmissao.
 
     Os canais publicam a mesma entrevista como video integral mais varios
     recortes, e a imprensa noticia a mesma entrevista que o canal publica.
@@ -219,30 +224,30 @@ def resolver_blocos(emissoes: list[Emissao], quarentena: list | None = None) -> 
     recorte); sem duracao no modelo, a ordem das fontes e o unico criterio,
     e e um criterio que qualquer pessoa le no ficheiro de configuracao.
 
-    Ha mais do que uma emissao por dia no mesmo canal com frequencia: uma
-    entrevista de manha num programa de entretenimento e outra a noite num
-    noticiario sao duas emissoes, e contam as duas, porque o programa
+    Ha mais do que uma entrevista por dia no mesmo canal com frequencia:
+    uma de manha num programa de entretenimento e outra a noite num
+    noticiario sao duas entrevistas, e contam as duas, porque o programa
     entra na chave e e diferente nas duas.
 
-    O caso que esta chave nao resolve e o de duas emissoes do mesmo dia e
-    canal cujo programa nao foi possivel apurar em nenhuma das duas: ficam
-    com a mesma chave e uma delas e tratada como recorte da outra. O erro
-    e sempre por defeito, nunca por excesso, e a quarentena diz que foi
-    isso que aconteceu para que se veja em vez de se adivinhar.
+    O caso que esta chave nao resolve e o de duas entrevistas do mesmo dia
+    e canal cujo programa nao foi possivel apurar em nenhuma das duas:
+    ficam com a mesma chave e uma delas e tratada como recorte da outra. O
+    erro e sempre por defeito, nunca por excesso, e a quarentena diz que
+    foi isso que aconteceu para que se veja em vez de se adivinhar.
 
-    **Uma emissao sem programa apurado nao abre bloco proprio** quando o
+    **Uma transmissao sem programa apurado nao abre bloco proprio** quando o
     mesmo canal e o mesmo dia ja tem uma com programa apurado. Ver
     _absorver_sem_programa: o contrario inflacionava a contagem.
     """
-    por_bloco: dict[str, Emissao] = {}
+    por_bloco: dict[str, Transmissao] = {}
     ordem: list[str] = []
-    for emissao in emissoes:
-        atual = por_bloco.get(emissao.bloco)
+    for transmissao in transmissoes:
+        atual = por_bloco.get(transmissao.bloco)
         if atual is None:
-            por_bloco[emissao.bloco] = emissao
-            ordem.append(emissao.bloco)
+            por_bloco[transmissao.bloco] = transmissao
+            ordem.append(transmissao.bloco)
             continue
-        vencedora, perdedora = atual, emissao
+        vencedora, perdedora = atual, transmissao
         if quarentena is not None:
             quarentena.append(
                 {
@@ -262,9 +267,9 @@ def resolver_blocos(emissoes: list[Emissao], quarentena: list | None = None) -> 
     return _absorver_sem_programa([por_bloco[b] for b in ordem], quarentena)
 
 
-def _absorver_sem_programa(emissoes: list[Emissao], quarentena: list | None) -> list[Emissao]:
-    """Junta ao bloco com programa apurado as emissoes do mesmo canal e dia
-    que ficaram sem programa.
+def _absorver_sem_programa(transmissoes: list[Transmissao], quarentena: list | None) -> list[Transmissao]:
+    """Junta ao bloco com programa apurado as transmissoes do mesmo canal e
+    dia que ficaram sem programa.
 
     Reproduz um erro real, medido no dataset publicado a 2026-09-10: o
     mesmo episodio aparecia duas vezes no mesmo dia e canal, uma vez
@@ -281,26 +286,26 @@ def _absorver_sem_programa(emissoes: list[Emissao], quarentena: list | None) -> 
 
     Absorve-se a que nao tem programa, e nao o contrario, porque "nao
     apurado" nao e uma afirmacao: nao se sabe qual foi o programa, logo
-    nao se pode afirmar que foi outro. Duas emissoes com programas
+    nao se pode afirmar que foi outro. Duas transmissoes com programas
     apurados e diferentes no mesmo dia continuam a contar as duas, que e o
     caso real da manha num programa de entretenimento e da noite num
     noticiario. Erro por defeito, como manda a regra da casa.
     """
-    com_programa = {(e.canal, e.data) for e in emissoes if e.programa.strip()}
+    com_programa = {(t.canal, t.data) for t in transmissoes if t.programa.strip()}
     ficam = []
-    for emissao in emissoes:
-        if emissao.programa.strip() or (emissao.canal, emissao.data) not in com_programa:
-            ficam.append(emissao)
+    for transmissao in transmissoes:
+        if transmissao.programa.strip() or (transmissao.canal, transmissao.data) not in com_programa:
+            ficam.append(transmissao)
             continue
         if quarentena is not None:
             quarentena.append(
                 {
-                    "fonte": emissao.fonte,
-                    "id_nativo": emissao.id,
-                    "publicado_em": emissao.publicado_em,
-                    "titulo": emissao.titulo,
-                    "url": emissao.prova_url,
-                    "motivo": "fragmento_ou_repetido (sem programa apurado, o canal ja tem emissao neste dia)",
+                    "fonte": transmissao.fonte,
+                    "id_nativo": transmissao.id,
+                    "publicado_em": transmissao.publicado_em,
+                    "titulo": transmissao.titulo,
+                    "url": transmissao.prova_url,
+                    "motivo": "fragmento_ou_repetido (sem programa apurado, o canal ja tem entrevista neste dia)",
                     "excerto": "",
                 }
             )

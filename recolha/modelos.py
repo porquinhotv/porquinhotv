@@ -7,7 +7,7 @@ Ficheiros de configuracao:
 
     config/porquinho.yml    tema, sujeito, canais, criterio de inclusao
     config/fontes.yml       de onde vem a informacao e como e classificada
-    config/entrevistas.yml  registo curado, uma linha por emissao, com prova
+    config/entrevistas.yml  registo curado, uma linha por transmissao, com prova
 """
 
 from __future__ import annotations
@@ -59,7 +59,7 @@ class Tema:
     desde_rotulo: str = "desde sempre"
     # Ambito visivel do site (decisao do autor, 2026-09-11): o site mostra
     # e conta a partir daqui. O que fica antes nao se apaga, continua em
-    # emissoes.json e fora de todos os agregados. Vazio significa "tudo
+    # entrevistas.json e fora de todos os agregados. Vazio significa "tudo
     # desde `desde`", e e assim que uma configuracao sem o campo continua
     # a valer como dantes.
     visivel_desde: str = ""
@@ -199,7 +199,6 @@ class ItemBruto:
     canal: str = ""
     programa: str = ""
     data_declarada: str = ""
-    mesma_entrevista: str = ""
     prova_url: str = ""
     origem: str = ""
     # Etiquetas, tags e seccao declaradas pela pagina. Um canal marca a
@@ -208,17 +207,24 @@ class ItemBruto:
 
 
 @dataclass
-class Emissao:
-    """Uma entrevista exclusiva emitida num canal, num dia.
+class Transmissao:
+    """O facto de uma entrevista exclusiva ter passado num canal, num dia.
 
-    A unidade e a emissao, nao a entrevista: a mesma entrevista emitida em
-    dois canais sao duas emissoes, e a Metodologia diz isso por palavras.
-    `entrevista` agrupa emissoes da mesma entrevista para que o site possa
-    tambem contar entrevistas distintas.
+    **Nao e a unidade contada.** A unidade do projeto e a entrevista
+    exclusiva, e uma entrevista que passe em dois canais conta uma vez
+    (decisao do autor, 2026-09-11). Uma transmissao e a prova de que
+    passou naquele canal: e o que permite ao site dizer em que canal foi,
+    e escrever a nota quando foram dois.
 
-    Uma emissao e um facto de existencia: houve, ou vai haver, uma
+    `entrevista` e a chave que junta as transmissoes da mesma entrevista.
+    Por omissao e o proprio bloco, ou seja, cada transmissao e uma
+    entrevista; so a tabela `mesma_entrevista` de config/curadoria.yml
+    junta duas, e so quando alguem leu as paginas e escreveu o motivo.
+    Ver recolha/entrevistas.py.
+
+    Uma transmissao e um facto de existencia: houve, ou vai haver, uma
     entrevista neste canal, neste dia, e a prova e um endereco publico. O
-    que se conta e a emissao, nunca o tempo que ocupou.
+    que se conta e a entrevista, nunca o tempo que ocupou.
     """
 
     id: str
@@ -327,6 +333,17 @@ def carregar_config(
         fontes=fontes,
         prova_de_formato=prova_de_formato,
     )
+
+
+def url_normalizado(url: str) -> str:
+    """Forma de comparacao de um endereco de prova.
+
+    Vive aqui, e nao em quem a usa, porque desde 2026-09-11 ha dois
+    consumidores: o veto escrito a mao e a tabela que junta as
+    transmissoes da mesma entrevista. Duas normalizacoes diferentes da
+    mesma coisa seriam duas chaves, e duas chaves sao duas contagens.
+    """
+    return url.strip().rstrip("/").replace("http://", "https://").replace("www.", "")
 
 
 def id_estavel(*partes: str) -> str:

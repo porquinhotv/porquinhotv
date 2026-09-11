@@ -63,7 +63,7 @@ def ler_feed(xml: str) -> tuple[list[ItemBruto], str | None]:
         guid = _texto(item, "guid") or _texto(item, "link")
         publicado = data_rfc822(_texto(item, "pubDate"))
         if not guid or not publicado:
-            # Sem data nao ha emissao. Fica de fora aqui, antes do
+            # Sem data nao ha entrevista. Fica de fora aqui, antes do
             # criterio, porque nem sequer e um candidato.
             continue
         itens.append(

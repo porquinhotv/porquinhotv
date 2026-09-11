@@ -6,7 +6,8 @@
 - o rodape completo em todas as paginas, e o sujeito escrito por extenso;
 - o site nao pede nada a terceiros;
 - nenhum nome de canal ou pessoa no codigo Python;
-- sem metadados de editor nos SVG.
+- sem metadados de editor nos SVG;
+- a palavra "emissao" nao sobrevive em nada que o publico leia.
 """
 
 import re
@@ -80,6 +81,47 @@ class TestArtefactosGerados(unittest.TestCase):
             with self.subTest(ficheiro=caminho.name):
                 for marca in ("tempo_s", "sem_duracao", "duracao_s", "duracaoLegivel", "parciais", "comparacoes", "unidade_s"):
                     self.assertFalse(marca in texto, f"{caminho.name} ainda usa {marca!r}")
+
+    def test_nada_do_que_o_publico_le_conta_emissoes(self):
+        """A unidade passou a ser a entrevista exclusiva a 2026-09-11, e o
+        conceito de emissao saiu do projeto. Uma suposicao que cai tem de
+        cair em todas as suas copias: uma pagina que ainda dissesse
+        "emissoes" apresentava ao leitor duas unidades para a mesma coisa,
+        que e exactamente o que esta mudanca foi feita para acabar.
+
+        Fora deste teste ficam o METODOLOGIA.md e a sua copia em HTML, que
+        tem de poder dizer por palavras o que mudou e quando: um documento
+        que explica uma correcao precisa de nomear o que corrigiu."""
+        alvos = sorted((RAIZ / "docs").glob("*.js")) + sorted((RAIZ / "docs").glob("*.css"))
+        alvos += [RAIZ / "docs" / "textos.json"]
+        alvos += [c for c in sorted((RAIZ / "docs").glob("*.html")) if c.name != "metodologia.html"]
+        alvos += sorted((RAIZ / "docs" / "dados").glob("*.json"))
+        alvos += sorted((RAIZ / "config").glob("*.yml"))
+        for caminho in alvos:
+            if not caminho.exists():
+                continue
+            texto = caminho.read_text(encoding="utf-8").lower()
+            with self.subTest(ficheiro=caminho.name):
+                for marca in ("emissão", "emissões", "emissao", "emissoes", "entrevistas_distintas"):
+                    self.assertNotIn(marca, texto, f"{caminho.name} ainda fala de {marca!r}")
+
+    def test_o_site_nao_le_a_lista_de_dados_antiga(self):
+        """`docs/dados/emissoes.json` deixou de existir a 2026-09-11. Uma
+        pagina que ainda o pedisse falhava com um 404 silencioso e
+        mostrava o painel de erro em vez dos dados."""
+        for caminho in sorted((RAIZ / "docs").glob("*.html")) + sorted((RAIZ / "docs").glob("*.js")):
+            with self.subTest(ficheiro=caminho.name):
+                self.assertNotIn("emissoes.json", caminho.read_text(encoding="utf-8"), caminho.name)
+
+    def test_o_repor_apaga_o_ficheiro_de_dados_que_existe(self):
+        """O `repor` do workflow de historico apaga `docs/dados` antes de
+        reconstruir. O ficheiro publicado mudou de nome a 2026-09-11: a
+        apagar o antigo, a caixa `repor` deixava de ter efeito nenhum e
+        nao dava erro, e a corrida seguinte somava duas geracoes de
+        regras sobre o dataset velho."""
+        workflow = (RAIZ / ".github" / "workflows" / "historico.yml").read_text(encoding="utf-8")
+        self.assertIn("rm -f docs/dados/entrevistas.json", workflow)
+        self.assertNotIn("emissoes.json", workflow)
 
     def test_nenhum_documento_versionado_promete_tempo(self):
         """Uma suposicao que cai tem de cair em todas as suas copias. As

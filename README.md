@@ -2,15 +2,15 @@
 
 Quantas entrevistas exclusivas deu André Ventura na televisão portuguesa. Um site estático, uma contagem pública, uma fonte por linha.
 
-O site publica, por período (semana, mês, ano, desde sempre): entrevistas exclusivas e emissões (uma por canal e dia). Não conta tempo: desde 2026-09-10 conta só a existência de cada entrevista. Mostra a repartição pelos nove canais generalistas e de informação, a evolução por semana, mês e ano, um calendário dia a dia e a lista completa de fontes. A mascote reage ao número de dias desde a última entrevista.
+O site publica, por período (semana, mês, ano, desde sempre), um número só: entrevistas exclusivas. Uma entrevista que passou em mais do que um canal conta uma vez, fica atribuída a um deles, e o site escreve ao lado que passou também no outro. Não conta tempo: desde 2026-09-10 conta só a existência de cada entrevista. Mostra a repartição pelos nove canais generalistas e de informação, a evolução por semana, mês e ano, um calendário dia a dia e a lista completa de fontes. A mascote reage ao número de dias desde a última entrevista.
 
 ## Como funciona
 
-- `config/entrevistas.yml` é o registo do canal: uma linha por emissão, com data, canal, programa e URL de prova. É a fonte principal.
-- `config/clipping.yml` são as emissões provadas por peças de imprensa: a peça nomeia o canal, diz entrevista e fixa o dia, relatando a entrevista ou anunciando-a. Provam que a emissão existiu e quando, que é tudo o que se conta, e valem o mesmo que a página do canal. Entram identificadas como tal e nunca deslocam um registo do canal.
+- `config/entrevistas.yml` é o registo do canal: uma linha por transmissão, com data, canal, programa e URL de prova. É a fonte principal. Uma transmissão é o facto de a entrevista ter passado naquele canal; a unidade que o site conta é a entrevista.
+- `config/clipping.yml` são as entrevistas provadas por peças de imprensa: a peça nomeia o canal, diz entrevista e fixa o dia, relatando a entrevista ou anunciando-a. Provam que a entrevista existiu e quando, que é tudo o que se conta, e valem o mesmo que a página do canal. Entram identificadas como tal e nunca deslocam um registo do canal.
 - `config/fontes.yml` declara as fontes automáticas. A principal é a pesquisa do próprio site de cada canal: pede a pesquisa do canal por cada forma do nome, recolhe os endereços de artigo desse domínio e lê de cada página o que ela publica em schema.org e OpenGraph. Não há seletores de HTML de nenhum site, e por isso a leitura sobrevive a uma remodelação em vez de passar a devolver zero em silêncio.
-- Uma emissão vinda de fonte automática não entra na primeira vez que é vista: só entra depois de o mesmo bloco aparecer em rondas distintas. O registo de avistamentos está em `docs/dados/candidatos.json`, e ao lado de cada linha ficam as rondas e o número de fontes distintas que a viram. Ver a Metodologia para o que isto protege e o que não protege.
-- `recolha/` aplica o critério em `config/porquinho.yml`, escreve `docs/dados/emissoes.json` (append-only), `docs/dados/quarentena.json` (tudo o que ficou de fora, com motivo) e `docs/dados/resumo.json` (os agregados).
+- Uma transmissão vinda de fonte automática não entra na primeira vez que é vista: só entra depois de o mesmo bloco aparecer em rondas distintas. O registo de avistamentos está em `docs/dados/candidatos.json`, e ao lado de cada linha ficam as rondas e o número de fontes distintas que a viram. Ver a Metodologia para o que isto protege e o que não protege.
+- `recolha/` aplica o critério em `config/porquinho.yml`, dobra as transmissões em entrevistas (`recolha/entrevistas.py`) e escreve `docs/dados/entrevistas.json` (uma entrada por entrevista, com as transmissões dentro; append-only ao nível da transmissão), `docs/dados/quarentena.json` (tudo o que ficou de fora, com motivo) e `docs/dados/resumo.json` (os agregados).
 - `docs/` é o site. Zero dependências externas: sem CDN, sem fontes remotas, sem analytics. A fonte tipográfica é servida localmente, licença OFL ao lado.
 - Uma GitHub Action corre a recolha todos os dias e publica as alterações.
 
@@ -32,9 +32,11 @@ Antes de ativar uma fonte nova, `python -m ferramentas.descobrir <url>` mostra o
 
 `python -m ferramentas.levantamento` (ou o workflow `levantamento`, a pedido) sonda as páginas dos nove canais declaradas em `config/levantamento.yml`, resolve os canais de YouTube e conta no arquivo.pt o que existe por domínio e por ano. Escreve `levantamento/`, que não faz parte do site. É o passo antes de qualquer adaptador novo.
 
-## Contribuir com uma emissão
+## Contribuir com uma entrevista
 
-Para acrescentar ou retirar uma emissão à mão, usar `config/curadoria.yml`: a lista `entrevistas` precisa apenas de `data`, `canal` e `prova` (mais `origem: imprensa` se a prova for uma notícia), e a lista `remover` leva a `prova` e o `motivo`. Uma linha removida passa a aparecer na quarentena com o motivo, em vez de desaparecer.
+Para acrescentar ou retirar uma entrevista à mão, usar `config/curadoria.yml`: a lista `entrevistas` precisa apenas de `data`, `canal` e `prova` (mais `origem: imprensa` se a prova for uma notícia), e a lista `remover` leva a `prova` e o `motivo`. Uma linha removida passa a aparecer na quarentena com o motivo, em vez de desaparecer.
+
+Quando a mesma entrevista passou em dois canais, as duas linhas ficam como estão e junta-se uma entrada à lista `mesma_entrevista` do mesmo ficheiro, com a `chave` do grupo, o `canal` a que a entrevista fica atribuída, o `motivo` e as `provas`. O canal escreve-se sempre: não há regra que o deduza, e deduzi-lo do domínio já custou oito linhas erradas em oito.
 
 Para uma linha do registo principal, acrescentar a `config/entrevistas.yml` com os campos obrigatórios (`data`, `canal`, `prova`). Não há campo de duração: uma linha que traga `duracao_s` ou `parcial` é recusada pelo coletor. Se a prova for uma peça de imprensa e não o canal, a linha vai para `config/clipping.yml`. Sem URL de prova a linha é rejeitada pela suite de testes.
 

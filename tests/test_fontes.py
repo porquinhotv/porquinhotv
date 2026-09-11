@@ -33,7 +33,7 @@ class TestPodcast(unittest.TestCase):
         aceites = [e for e in (criterio.avaliar(i, f, config, q) for i in itens) if e]
         aceites = criterio.resolver_blocos(aceites, q)
         self.assertEqual([e.id_nativo for e in itens].count("ep-100"), 1)
-        # Duas emissoes: a de ep-100 (declarada a 2025-09-04) e a do item
+        # Duas entrevistas: a de ep-100 (declarada a 2025-09-04) e a do item
         # que so nao entrava por nao ter duracao, publicado a 2025-09-10.
         self.assertEqual(sorted(e.data for e in aceites), ["2025-09-04", "2025-09-10"])
         motivos = sorted(e["motivo"].split(" (")[0] for e in q)
@@ -76,7 +76,6 @@ class TestRegistoCurado(unittest.TestCase):
         itens = manual.ler_registo(FIXTURES / "entrevistas_exemplo.yml")
         self.assertEqual(len(itens), 4)
         self.assertEqual(itens[0].data_declarada, "2025-09-04")
-        self.assertEqual(itens[0].mesma_entrevista, itens[1].mesma_entrevista)
 
     def test_le_o_clipping(self):
         itens = manual.ler_registo(FIXTURES / "clipping_exemplo.yml")
@@ -89,6 +88,17 @@ class TestRegistoCurado(unittest.TestCase):
     def test_prova_tem_de_ser_url(self):
         with self.assertRaises(ValueError):
             manual.validar_linha({"data": "2025-01-01", "canal": "sic", "programa": "x", "prova": "vi na televisao"}, 1)
+
+    def test_a_chave_de_agrupamento_na_linha_e_recusada(self):
+        """`mesma_entrevista` saiu da linha a 2026-09-11 e passou para a
+        tabela de config/curadoria.yml, porque tinha de funcionar tambem
+        entre fontes diferentes. Ler a linha e deitar o campo fora em
+        silencio deixava duas entrevistas a contar onde ha uma, que e o
+        erro que este projeto considera o pior de todos."""
+        linha = {"data": "2025-01-01", "canal": "sic", "prova": "https://exemplo.pt/a", "mesma_entrevista": "k"}
+        with self.assertRaises(ValueError) as erro:
+            manual.validar_linha(linha, 1)
+        self.assertIn("curadoria.yml", str(erro.exception))
 
     def test_um_campo_retirado_e_recusado_e_nao_ignorado(self):
         """`duracao_s` e `parcial` sairam a 2026-09-10. Ler a linha e deitar

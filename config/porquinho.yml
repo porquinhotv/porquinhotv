@@ -5,7 +5,7 @@
 # Nenhum modulo Python conhece nomes de canais, programas ou pessoas.
 #
 # Critério de inclusao (a Metodologia diz o mesmo por palavras):
-#   conta como emissao uma entrevista exclusiva, ou seja, um segmento em
+#   conta uma entrevista exclusiva, ou seja, um segmento em
 #   que o sujeito e o unico entrevistado, com pelo menos um entrevistador
 #   do canal em formato de pergunta e resposta, emitido num dos canais
 #   abaixo. Programas de entretenimento com entrevista a solo contam.
@@ -17,9 +17,11 @@
 #   duracao (retirada a 2026-09-10) nem duracao minima: o que separa
 #   entrevista de declaracao e o formato, nao o relogio.
 #
-# Unidade: a emissao. A mesma entrevista emitida em dois canais sao duas
-# emissoes (mostra presenca por canal). O campo `mesma_entrevista` no
-# registo curado agrupa-as, e o site tambem mostra entrevistas distintas.
+# Unidade: a entrevista exclusiva (decisao do autor, 2026-09-11). A mesma
+# entrevista transmitida em dois canais conta UMA vez, fica atribuida a um
+# deles, e o site escreve ao lado que passou tambem no outro. Quem as
+# junta e a tabela `mesma_entrevista` de config/curadoria.yml, que diz
+# tambem o canal a que cada uma fica atribuida.
 
 versao: 1
 
@@ -33,12 +35,13 @@ tema:
   desde_rotulo: desde a fundação do partido
   # Ambito visivel do site (decisao do autor, 2026-09-11): mostra-se e
   # conta-se a partir daqui. A recolha continua a aceitar tudo desde
-  # `desde` e nada se apaga: as emissoes anteriores ficam em emissoes.json,
-  # fora dos agregados e da pagina de Fontes, prontas a voltar a contar se
+  # `desde` e nada se apaga: as entrevistas anteriores ficam em
+  # entrevistas.json, fora dos agregados e da pagina de Fontes, prontas a
+  # voltar a contar se
   # o ambito um dia recuar. Razao, medida: de 2019 a 2023 a cobertura das
   # vias de recolha e residual e desigual entre canais (o indice de
   # noticias triou 0, 3, 1, 13 e 1 candidatos nesses anos), e publicar uma
-  # ou duas emissoes por ano seria apresentar ausencia de cobertura como
+  # ou duas entrevistas por ano seria apresentar ausencia de cobertura como
   # medicao.
   visivel_desde: '2024-01-01'
   visivel_rotulo: desde o início de 2024
@@ -82,8 +85,8 @@ canais:
 # Quando a fonte nao declara o programa, ele e deduzido do titulo: a
 # parte antes do primeiro destes separadores, desde que nao seja o nome
 # do sujeito. Os canais escrevem "Programa - Convidado - ep. N".
-# O programa entra na chave que junta fragmentos da mesma emissao
-# (canal, programa, dia), por isso deixa-lo vazio fazia duas emissoes
+# O programa entra na chave que junta fragmentos da mesma transmissao
+# (canal, programa, dia), por isso deixa-lo vazio fazia duas entrevistas
 # diferentes do mesmo canal no mesmo dia colidirem numa so.
 separadores_programa: [' - ', ' | ', ': ']
 

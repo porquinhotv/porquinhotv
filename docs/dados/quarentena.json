@@ -76,7 +76,7 @@
    "excerto": "",
    "fonte": "busca-rtp1",
    "id_nativo": "busca-rtp1:1f20456acaa4",
-   "motivo": "fragmento_ou_repetido (sem programa apurado, o canal ja tem emissao neste dia)",
+   "motivo": "fragmento_ou_repetido (sem programa apurado, o canal ja tem entrevista neste dia)",
    "publicado_em": "2022-10-19",
    "titulo": "Grande Entrevista",
    "url": "https://www.rtp.pt/play/p10324/e648120/grande-entrevista"
@@ -121,7 +121,7 @@
    "excerto": "",
    "fonte": "busca-rtp1",
    "id_nativo": "busca-rtp1:6ab6f2c2c7f9",
-   "motivo": "fragmento_ou_repetido (sem programa apurado, o canal ja tem emissao neste dia)",
+   "motivo": "fragmento_ou_repetido (sem programa apurado, o canal ja tem entrevista neste dia)",
    "publicado_em": "2025-11-04",
    "titulo": "Grande Entrevista",
    "url": "https://www.rtp.pt/play/p10324/e888399/grande-entrevista"
@@ -139,7 +139,7 @@
    "excerto": "",
    "fonte": "busca-rtp1",
    "id_nativo": "busca-rtp1:72e937281cc7",
-   "motivo": "fragmento_ou_repetido (sem programa apurado, o canal ja tem emissao neste dia)",
+   "motivo": "fragmento_ou_repetido (sem programa apurado, o canal ja tem entrevista neste dia)",
    "publicado_em": "2026-01-21",
    "titulo": "Grande Entrevista",
    "url": "https://www.rtp.pt/play/p10324/e903969/grande-entrevista"
@@ -235,7 +235,7 @@
    "url": "https://tvi.iol.pt/novelas/linda/joao/coracao-de-mae-linda-e-joao-esquecem-os-problemas-e-entregam-se-a-paixao-pela-primeira-vez-as-imagens"
   },
   {
-   "excerto": "Cristina Ferreira comentou a prestação e foi direta com Boris Carvalho durante a emissão do programa e, perante o concorrente do Big Brother Verão, explicou agora a razão para ter adotado uma postura mais rigorosa.",
+   "excerto": "Cristina Ferreira comentou a prestação e foi direta com Boris Carvalho durante a entrevista do programa e, perante o concorrente do Big Brother Verão, explicou agora a razão para ter adotado uma postura mais rigorosa.",
    "fonte": "busca-tvi",
    "id_nativo": "https://tvi.iol.pt/doisas10/big-brother/boris/cristina-ferreira-fala-sobre-a-mulher-de-boris-e-faz-confissao-ficou-um-bocadinho-magoada-comigo",
    "motivo": "sem_sujeito",
@@ -391,7 +391,7 @@
    "excerto": "",
    "fonte": "clipping-imprensa",
    "id_nativo": "fedd2e08b064",
-   "motivo": "vetada_a_mao (é a mesma entrevista da emissão de 2026-09-01 na CNN Portugal, já provada pela página do canal; a data desta peça é a da publicação, não a da emissão)",
+   "motivo": "vetada_a_mao (é a mesma entrevista da entrevista de 2026-09-01 na CNN Portugal, já provada pela página do canal; a data desta peça é a da publicação, não a da entrevista)",
    "publicado_em": "2026-09-02",
    "titulo": "Ventura 'agarra-se' a vice-presidente da Câmara do Funchal",
    "url": "https://www.jm-madeira.pt/v%C3%ADdeo/regi-o/30004362/ventura-agarra-se-a-vice-presidente-da-camara-do-funchal.html"
@@ -751,7 +751,7 @@
    "excerto": "",
    "fonte": "motor-rtp3",
    "id_nativo": "motor-rtp3:5182b4e15f9d",
-   "motivo": "fragmento_ou_repetido (sem programa apurado, o canal ja tem emissao neste dia)",
+   "motivo": "fragmento_ou_repetido (sem programa apurado, o canal ja tem entrevista neste dia)",
    "publicado_em": "2026-01-21",
    "titulo": "Presidenciais. André Ventura na Grande Entrevista da RTP",
    "url": "https://www.rtp.pt/noticias/politica/presidenciais-andre-ventura-na-grande-entrevista-da-rtp_e1711973"
@@ -760,7 +760,7 @@
    "excerto": "",
    "fonte": "registo-curado",
    "id_nativo": "2218ebb9a169",
-   "motivo": "vetada_a_mao (a página declara \"em entrevista à CNN Portugal\" e nomeia só esse canal; é um vídeo da CNN servido no leitor do grupo, não uma emissão da TVI, e a emissão de 2024-10-10 na CNN Portugal já está contada)",
+   "motivo": "vetada_a_mao (a página declara \"em entrevista à CNN Portugal\" e nomeia só esse canal; é um vídeo da CNN servido no leitor do grupo, não uma entrevista da TVI, e a entrevista de 2024-10-10 na CNN Portugal já está contada)",
    "publicado_em": "2024-10-10",
    "titulo": "André Ventura: a entrevista na íntegra",
    "url": "https://tviplayer.iol.pt/programa/noticias-cnn/6193fe4b0cf2c7ea0f090b1e/video/6708406b0cf23ab6553606d3"
@@ -769,7 +769,7 @@
    "excerto": "",
    "fonte": "registo-curado",
    "id_nativo": "2348506ebb89",
-   "motivo": "vetada_a_mao (a página não nomeia a TVI em lado nenhum e identifica o programa como CNN em Foco; é um vídeo da CNN servido no leitor do grupo, e a emissão de 2025-11-01 na CNN Portugal já está contada)",
+   "motivo": "vetada_a_mao (a página não nomeia a TVI em lado nenhum e identifica o programa como CNN em Foco; é um vídeo da CNN servido no leitor do grupo, e a entrevista de 2025-11-01 na CNN Portugal já está contada)",
    "publicado_em": "2025-11-01",
    "titulo": "A entrevista a André Ventura na íntegra",
    "url": "https://tviplayer.iol.pt/programa/cnn-em-foco/66576e34d34e049892216643/video/690690050cf2c7eb24443f42"
@@ -778,7 +778,7 @@
    "excerto": "",
    "fonte": "registo-curado",
    "id_nativo": "2a152c32e1f6",
-   "motivo": "vetada_a_mao (a página declara \"em entrevista no Prime Time da CNN Portugal\" e nomeia só esse canal; é um vídeo da CNN servido no domínio da TVI, e a emissão de 2026-05-12 na CNN Portugal já está contada)",
+   "motivo": "vetada_a_mao (a página declara \"em entrevista no Prime Time da CNN Portugal\" e nomeia só esse canal; é um vídeo da CNN servido no domínio da TVI, e a entrevista de 2026-05-12 na CNN Portugal já está contada)",
    "publicado_em": "2026-05-12",
    "titulo": "A entrevista a André Ventura na íntegra",
    "url": "https://tvi.iol.pt/noticias/videos/a-entrevista-a-andre-ventura-na-integra/6a03acd40cf27f6588a6a772"
@@ -787,7 +787,7 @@
    "excerto": "",
    "fonte": "registo-curado",
    "id_nativo": "7e6d4e27c153",
-   "motivo": "vetada_a_mao (a página declara \"em entrevista exclusiva à CNN Portugal\" e identifica o programa como CNN Prime Time; é um vídeo da CNN servido no leitor do grupo, e a emissão de 2026-07-16 na CNN Portugal já está contada)",
+   "motivo": "vetada_a_mao (a página declara \"em entrevista exclusiva à CNN Portugal\" e identifica o programa como CNN Prime Time; é um vídeo da CNN servido no leitor do grupo, e a entrevista de 2026-07-16 na CNN Portugal já está contada)",
    "publicado_em": "2026-07-16",
    "titulo": "A entrevista a André Ventura na íntegra",
    "url": "https://tviplayer.iol.pt/programa/cnn-prime-time/6193932f0cf2cc58e7d362d6/video/6a5956770cf2f6a1a1e7102a"
@@ -796,7 +796,7 @@
    "excerto": "",
    "fonte": "registo-curado",
    "id_nativo": "3ec96c14144d",
-   "motivo": "vetada_a_mao (a página declara \"em entrevista à CNN Portugal\" e nomeia só esse canal; é um vídeo da CNN servido no domínio da TVI, e a emissão de 2026-07-29 na CNN Portugal já está contada)",
+   "motivo": "vetada_a_mao (a página declara \"em entrevista à CNN Portugal\" e nomeia só esse canal; é um vídeo da CNN servido no domínio da TVI, e a entrevista de 2026-07-29 na CNN Portugal já está contada)",
    "publicado_em": "2026-07-29",
    "titulo": "A entrevista a André Ventura na íntegra",
    "url": "https://tvi.iol.pt/noticias/videos/a-entrevista-a-andre-ventura-na-integra/6a6a74e00cf2b42132dbc313"

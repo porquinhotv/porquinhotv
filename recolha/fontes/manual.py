@@ -14,24 +14,31 @@ Os dois ficheiros usam o mesmo formato e o mesmo plugin. O que muda e a
                        entrevista aconteceu naquele dia, naquele canal
 
 O clipping e o ultimo recurso, e por isso corre depois: quando o canal e
-a imprensa cobrem a mesma emissao, fica a linha do canal.
+a imprensa cobrem a mesma entrevista, fica a linha do canal.
 
 Formato de cada linha:
 
-    - data: 2026-09-04          # data de emissao, obrigatoria
+    - data: 2026-09-04          # dia em que passou, obrigatoria
       canal: id-do-canal        # id de config/porquinho.yml, obrigatorio
       prova: https://...        # onde se ve ou le, obrigatorio
       programa: Jornal da Noite # opcional desde 2026-09-10; ver abaixo
       origem: imprensa          # opcional; "canal" por omissao da fonte
       titulo: ...               # opcional
       publicado_em: 2026-09-05  # opcional; por omissao igual a data
-      mesma_entrevista: chave   # opcional; agrupa simulcast e repeticoes
+
+O `mesma_entrevista` saiu da linha a 2026-09-11, quando a unidade do
+projeto passou a ser a entrevista: agrupar duas transmissoes e agora uma
+entrada da tabela `mesma_entrevista` de config/curadoria.yml, com o canal
+a que a entrevista fica atribuida e o motivo escrito. Uma linha que ainda
+o traga e recusada, e nao ignorada, porque um campo que ficasse no
+ficheiro a fingir que agrupa deixaria duas entrevistas a contar onde ha
+uma. Ver recolha/entrevistas.py.
 
 O `programa` passou a ser opcional a 2026-09-10, quando se acrescentou a
-curadoria a mao: para acrescentar uma emissao basta saber o dia, o canal
-e a prova, e obrigar a escrever o nome do programa punha uma pessoa a
-adivinha-lo ou a inventa-lo. Sem ele, a emissao nao abre bloco proprio
-num dia em que o canal ja tem outra emissao com programa apurado, o que e
+curadoria a mao: para acrescentar uma transmissao basta saber o dia, o
+canal e a prova, e obrigar a escrever o nome do programa punha uma pessoa
+a adivinha-lo ou a inventa-lo. Sem ele, a transmissao nao abre bloco
+proprio num dia em que o canal ja tem outra com programa apurado, o que e
 o comportamento certo: nao se sabe se foi a mesma, logo nao se afirma que
 foram duas. Ver recolha/criterio.py, _absorver_sem_programa.
 
@@ -53,6 +60,12 @@ from .base import PluginDeFonte, registar
 OBRIGATORIOS = ("data", "canal", "prova")
 # Retirados a 2026-09-10 com a duracao. Ver recolha/criterio.py.
 CAMPOS_RETIRADOS = ("duracao_s", "parcial")
+# Retirado a 2026-09-11 com o conceito de emissao: o agrupamento passou
+# para a tabela `mesma_entrevista` de config/curadoria.yml, para ter uma
+# so grafia e para funcionar tambem entre fontes diferentes.
+CAMPO_MUDOU_DE_SITIO = {
+    "mesma_entrevista": "passou a 2026-09-11 para a tabela 'mesma_entrevista' de config/curadoria.yml",
+}
 
 
 def validar_linha(linha: dict, posicao: int) -> None:
@@ -67,6 +80,9 @@ def validar_linha(linha: dict, posicao: int) -> None:
             # Um campo que o modelo deixou de ter nao pode ficar no ficheiro
             # a fingir que conta: quem o le acreditava que o site o usava.
             raise ValueError(f"linha {posicao}: '{campo}' deixou de existir a 2026-09-10; apagar a linha")
+    for campo, para_onde in CAMPO_MUDOU_DE_SITIO.items():
+        if campo in linha:
+            raise ValueError(f"linha {posicao}: '{campo}' {para_onde}")
 
 
 def ler_registo(caminho: Path) -> list[ItemBruto]:
@@ -89,7 +105,6 @@ def ler_registo(caminho: Path) -> list[ItemBruto]:
                 canal=str(linha["canal"]),
                 programa=str(linha.get("programa") or ""),
                 data_declarada=data,
-                mesma_entrevista=str(linha.get("mesma_entrevista") or ""),
                 prova_url=prova,
                 origem=str(linha.get("origem") or ""),
             )
@@ -131,8 +146,8 @@ class FonteRegistoAutomatico(FonteManual):
     clipping, e o que compensa a falta da leitura humana e o rigor do
     criterio, nao a confianca na fonte.
 
-    O que se perde e sabido: as emissoes que o canal titula com a citacao
-    em vez da palavra ficam de fora, em `formato_nao_apurado`.
+    O que se perde e sabido: as entrevistas que o canal titula com a
+    citacao em vez da palavra ficam de fora, em `formato_nao_apurado`.
     """
 
     tipo = "registo_automatico"

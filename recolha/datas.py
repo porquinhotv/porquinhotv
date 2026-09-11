@@ -1,9 +1,9 @@
-"""Data de emissao.
+"""Dia em que a entrevista passou.
 
 A data em que um video ou episodio e publicado nao e a data em que a
 entrevista foi para o ar. Diverge por horas ou dias, e a divergencia
 espalha uma rubrica de dia fixo pela semana toda. Quando o texto declara
-a data de emissao, e essa que vale; quando nao declara, fica a de
+o dia em que passou, e esse que vale; quando nao declara, fica o de
 publicacao, marcada como tal.
 
 Prudencia: a data declarada so e aceite se cair entre o dia da publicacao
@@ -45,7 +45,7 @@ def _plausivel(candidata: date, publicacao: date) -> bool:
 
 
 def data_declarada(texto: str, publicado_iso: str) -> str | None:
-    """Data de emissao declarada no texto, em ISO, ou None."""
+    """Dia declarado no texto, em ISO, ou None."""
     if not publicado_iso:
         return None
     try:
@@ -82,7 +82,7 @@ def data_declarada(texto: str, publicado_iso: str) -> str | None:
 def resolver_data(texto: str, publicado_iso: str, declarada_pela_fonte: str = "") -> tuple[str, str]:
     """(data a usar, origem). Origem: "declarada" ou "publicacao".
 
-    Uma fonte que ja conhece a data de emissao (o registo curado) passa-a
+    Uma fonte que ja conhece o dia em que passou (o registo curado) passa-o
     em `declarada_pela_fonte` e essa vale sem mais verificacao: a prova e
     o URL que acompanha a linha.
     """

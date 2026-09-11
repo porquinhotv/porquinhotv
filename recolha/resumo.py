@@ -4,16 +4,20 @@ O site nao calcula nada que nao esteja aqui, exceto somas de periodo a
 partir das repartições diarias. Tudo o que e uma conta nova vive neste
 ficheiro, com teste, e nunca no JavaScript.
 
-Unidades, para nao haver confusao:
+Ha uma unidade so, e e o ponto deste ficheiro: a **entrevista
+exclusiva**. Cada balde traz um numero, `entrevistas`. Uma entrevista que
+passe em dois canais conta uma vez, e conta no canal a que esta
+atribuida.
 
-- emissoes: entrevistas emitidas, uma por canal e dia. A mesma entrevista
-  em dois canais sao duas emissoes.
-- entrevistas_distintas: emissoes agrupadas pela chave `entrevista`.
+Ate 2026-09-11 cada balde trazia dois numeros, `emissoes` e
+`entrevistas_distintas`, porque a unidade era a emissao e o site
+escrevia os dois ao lado um do outro. O autor retirou o conceito de
+emissao do projeto: dois numeros para a mesma coisa obrigavam quem lia o
+site a perceber a diferenca antes de perceber o numero. `esquema` subiu
+para 3 para que um site antigo nao leia um resumo novo e some campos que
+ja nao existem.
 
-Nao ha tempo. Ate 2026-09-10 cada balde somava `tempo_s` e contava
-`sem_duracao`; o autor retirou a duracao do projeto e o site passou a
-contar so existencias. `esquema` subiu para 2 para que um site antigo
-nao leia um resumo novo como se tivesse os campos de tempo.
+Nao ha tempo, desde 2026-09-10, e nao ha duracao em campo nenhum.
 """
 
 from __future__ import annotations
@@ -33,28 +37,32 @@ def semana_iso(iso: str) -> str:
     return f"{ano}-W{semana:02d}"
 
 
-ESQUEMA = 2
+ESQUEMA = 3
 
 
 def _balde() -> dict:
-    return {"emissoes": 0, "entrevistas": set()}
+    return {"entrevistas": 0}
 
 
 def _fechar(balde: dict) -> dict:
-    return {
-        "emissoes": balde["emissoes"],
-        "entrevistas_distintas": len(balde["entrevistas"]),
-    }
+    return {"entrevistas": balde["entrevistas"]}
 
 
-def _somar(balde: dict, linha: dict) -> None:
-    balde["emissoes"] += 1
-    balde["entrevistas"].add(linha["entrevista"])
+def _somar(balde: dict, entrevista: dict) -> None:
+    """Uma entrevista, um incremento.
+
+    As entradas que chegam aqui ja vem dobradas por
+    recolha/entrevistas.py: uma entrevista que passou em dois canais e uma
+    entrada so. Nao ha nada a deduplicar neste ficheiro, e por isso o
+    site pode somar periodos a partir das reparticoes diarias com uma
+    soma simples.
+    """
+    balde["entrevistas"] += 1
 
 
 def recordes(datas: list[str]) -> dict:
-    """Ultima data, maior intervalo sem emissoes e maior sequencia de dias
-    seguidos com emissao. Datas distintas, ordenadas."""
+    """Ultima data, maior intervalo sem entrevistas e maior sequencia de
+    dias seguidos com entrevista. Datas distintas, ordenadas."""
     if not datas:
         return {"ultima_data": None, "maior_jejum": None, "maior_maratona": None}
     dias = [date.fromisoformat(d) for d in datas]
@@ -78,10 +86,10 @@ def recordes(datas: list[str]) -> dict:
     }
 
 
-def construir(linhas: list[dict], config: Config) -> dict:
+def construir(entrevistas: list[dict], config: Config) -> dict:
     # Ambito visivel (decisao do autor, 2026-09-11): o site mostra e conta
     # a partir de tema.visivel_desde. As linhas anteriores nao se apagam,
-    # continuam em emissoes.json; aqui ficam fora de todos os agregados,
+    # continuam em entrevistas.json; aqui ficam fora de todos os agregados,
     # para que nenhum numero do site as some, e saem contadas em
     # `ambito.fora_do_ambito`, porque nada se descarta em silencio. A
     # razao esta na Metodologia: antes do corte a cobertura das vias de
@@ -90,11 +98,11 @@ def construir(linhas: list[dict], config: Config) -> dict:
     corte = config.tema.visivel_desde or config.tema.desde
     fora = _balde()
     visiveis = []
-    for linha in linhas:
-        if linha["data"] < corte:
-            _somar(fora, linha)
+    for entrevista in entrevistas:
+        if entrevista["data"] < corte:
+            _somar(fora, entrevista)
         else:
-            visiveis.append(linha)
+            visiveis.append(entrevista)
 
     total = _balde()
     por_dia: dict = defaultdict(_balde)
@@ -105,18 +113,22 @@ def construir(linhas: list[dict], config: Config) -> dict:
     canal_por_dia: dict = defaultdict(lambda: defaultdict(lambda: {**_balde(), "declaradas": 0}))
     por_origem: dict = defaultdict(_balde)
 
-    for linha in visiveis:
-        data = linha["data"]
-        _somar(total, linha)
-        _somar(por_dia[data], linha)
-        _somar(por_semana[semana_iso(data)], linha)
-        _somar(por_mes[data[:7]], linha)
-        _somar(por_ano[data[:4]], linha)
-        _somar(por_canal[linha["canal"]], linha)
-        _somar(por_origem[linha.get("origem") or "canal"], linha)
-        celula = canal_por_dia[data][linha["canal"]]
-        _somar(celula, linha)
-        if linha.get("data_origem") == "declarada":
+    for entrevista in visiveis:
+        data = entrevista["data"]
+        _somar(total, entrevista)
+        _somar(por_dia[data], entrevista)
+        _somar(por_semana[semana_iso(data)], entrevista)
+        _somar(por_mes[data[:7]], entrevista)
+        _somar(por_ano[data[:4]], entrevista)
+        # Uma entrevista conta no canal a que esta atribuida, e so nesse.
+        # Somar tambem nos outros canais em que passou daria uma
+        # reparticao cuja soma e maior do que o total, que e exactamente o
+        # numero que o site deixou de publicar.
+        _somar(por_canal[entrevista["canal"]], entrevista)
+        _somar(por_origem[entrevista.get("origem") or "canal"], entrevista)
+        celula = canal_por_dia[data][entrevista["canal"]]
+        _somar(celula, entrevista)
+        if entrevista.get("data_origem") == "declarada":
             celula["declaradas"] += 1
 
     datas = sorted(por_dia)
@@ -145,13 +157,12 @@ def construir(linhas: list[dict], config: Config) -> dict:
         "primeiro_registo": datas[0] if datas else None,
         "ultimo_registo": datas[-1] if datas else None,
         "totais": _fechar(total),
-        # `chaves` sao as chaves de entrevista do dia, para o site poder
-        # contar entrevistas distintas em qualquer periodo sem duplicar
-        # simulcasts nem repeticoes. E a unica lista por dia; e curta.
-        "por_dia": [
-            {"data": d, **_fechar(por_dia[d]), "chaves": sorted(por_dia[d]["entrevistas"])}
-            for d in datas
-        ],
+        # Ate 2026-09-11 cada dia trazia tambem a lista das chaves de
+        # entrevista, para o site poder contar distintas num periodo sem
+        # duplicar simulcasts. Com a entrevista como unidade, uma entrada
+        # e uma entrevista e a soma de um periodo e uma soma: a lista
+        # deixou de ter para que servir.
+        "por_dia": [{"data": d, **_fechar(por_dia[d])} for d in datas],
         "por_semana": [{"semana": s, **_fechar(por_semana[s])} for s in sorted(por_semana)],
         "por_mes": [{"mes": m, **_fechar(por_mes[m])} for m in sorted(por_mes)],
         "por_ano": [{"ano": a, **_fechar(por_ano[a])} for a in sorted(por_ano)],
@@ -176,7 +187,16 @@ def construir(linhas: list[dict], config: Config) -> dict:
         # qualidade da propria cobertura.
         "por_origem": {origem: _fechar(balde) for origem, balde in sorted(por_origem.items())},
         "recordes": recordes(datas),
-        "fontes": sorted({linha["fonte"] for linha in visiveis}),
+        # Todas as fontes que provaram alguma transmissao, e nao so as das
+        # entrevistas: uma fonte que so aparece na segunda transmissao de
+        # um simulcast provou alguma coisa e nao desaparece da lista.
+        "fontes": sorted(
+            {
+                t["fonte"]
+                for e in visiveis
+                for t in (e.get("transmissoes") or [{"fonte": e["fonte"]}])
+            }
+        ),
     }
 
 

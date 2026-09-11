@@ -9,7 +9,7 @@
 #                 que desde 2026-09-09 e gerado pela ferramenta a partir
 #                 das quatro condicoes, com uma pessoa a poder vetar
 #                 linhas. Corre depois do registo do canal: quando os dois
-#                 cobrem a mesma emissao, fica a do canal.
+#                 cobrem a mesma entrevista, fica a do canal.
 #   registo_automatico
 #                 o mesmo ficheiro e o mesmo formato do `manual`, mas sem
 #                 a isencao: o criterio trata-o como fonte automatica, com
@@ -31,9 +31,9 @@
 # motivos, ler dez titulos aceites a mao contra o criterio. Depois ativar.
 
 fontes:
-  # Curadoria a mao: o autor acrescenta uma emissao com o dia, o canal e a
-  # prova, e nada mais. Corre a frente de tudo porque e a decisao mais
-  # informada que existe no projeto, e quando cobre a mesma emissao que
+  # Curadoria a mao: o autor acrescenta uma transmissao com o dia, o canal
+  # e a prova, e nada mais. Corre a frente de tudo porque e a decisao mais
+  # informada que existe no projeto, e quando cobre a mesma entrevista que
   # outra fonte e a dela que fica. A isencao de prova de formato e de
   # rondas e a mesma do registo curado e tem a mesma justificacao: uma
   # pessoa abriu a pagina. A `origem` aqui e so a que vale por omissao; a
@@ -73,11 +73,11 @@ fontes:
     origem: canal
     confianca: media
 
-  # Clipping de imprensa escrita. Prova de que a emissao existiu e de
+  # Clipping de imprensa escrita. Prova de que a entrevista existiu e de
   # quando: uma peca que diga que no dia X houve entrevista ao sujeito no
   # canal Y. Vale o mesmo que a pagina do canal (decisao do autor,
   # 2026-09-10); corre depois so para que, quando as duas provam a mesma
-  # emissao, fique a do canal e a emissao conte uma vez.
+  # entrevista, fique a do canal e a entrevista conte uma vez.
   - id: clipping-imprensa
     tipo: manual
     ativa: true

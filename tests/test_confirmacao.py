@@ -10,10 +10,10 @@ import unittest
 from tests.apoio import RAIZ  # noqa: F401  (garante o sys.path)
 
 from recolha import confirmacao
-from recolha.modelos import Emissao
+from recolha.modelos import Transmissao
 
 
-def emissao(bloco="b1", fonte="busca-rtp1", **campos):
+def transmissao(bloco="b1", fonte="busca-rtp1", **campos):
     base = dict(
         id=f"{fonte}:{bloco}", bloco=bloco, entrevista=bloco, data="2021-03-15",
         data_origem="declarada", publicado_em="2021-03-15", canal="rtp1",
@@ -22,43 +22,43 @@ def emissao(bloco="b1", fonte="busca-rtp1", **campos):
         titulo="Entrevista",
     )
     base.update(campos)
-    return Emissao(**base)
+    return Transmissao(**base)
 
 
 class TestRondas(unittest.TestCase):
     def test_uma_ronda_nao_chega(self):
-        c = confirmacao.registar({}, [emissao()], "2026-09-08")
+        c = confirmacao.registar({}, [transmissao()], "2026-09-08")
         quarentena = []
-        passam = confirmacao.filtrar([emissao()], c, 2, quarentena)
+        passam = confirmacao.filtrar([transmissao()], c, 2, quarentena)
         self.assertEqual(passam, [])
         self.assertEqual(len(quarentena), 1)
         self.assertIn("aguarda_confirmacao (1 de 2 rondas)", quarentena[0]["motivo"])
 
     def test_duas_rondas_distintas_confirmam(self):
-        c = confirmacao.registar({}, [emissao()], "2026-09-08")
-        c = confirmacao.registar(c, [emissao()], "2026-09-09")
-        passam = confirmacao.filtrar([emissao()], c, 2, [])
+        c = confirmacao.registar({}, [transmissao()], "2026-09-08")
+        c = confirmacao.registar(c, [transmissao()], "2026-09-09")
+        passam = confirmacao.filtrar([transmissao()], c, 2, [])
         self.assertEqual(len(passam), 1)
 
     def test_duas_leituras_no_mesmo_dia_sao_uma_ronda(self):
         """Correr duas vezes no mesmo dia nao confirma nada: seria contar
         duas vezes a mesma leitura, que e o erro de que as rondas protegem."""
-        c = confirmacao.registar({}, [emissao()], "2026-09-08")
-        c = confirmacao.registar(c, [emissao()], "2026-09-08")
-        self.assertEqual(confirmacao.filtrar([emissao()], c, 2, []), [])
+        c = confirmacao.registar({}, [transmissao()], "2026-09-08")
+        c = confirmacao.registar(c, [transmissao()], "2026-09-08")
+        self.assertEqual(confirmacao.filtrar([transmissao()], c, 2, []), [])
 
     def test_fontes_distintas_ficam_registadas(self):
-        c = confirmacao.registar({}, [emissao(fonte="busca-rtp1")], "2026-09-08")
-        c = confirmacao.registar(c, [emissao(fonte="busca-sic")], "2026-09-09")
+        c = confirmacao.registar({}, [transmissao(fonte="busca-rtp1")], "2026-09-08")
+        c = confirmacao.registar(c, [transmissao(fonte="busca-sic")], "2026-09-09")
         self.assertEqual(len(c["b1"]["fontes"]), 2)
-        anotadas = confirmacao.anotar([emissao()], c)
+        anotadas = confirmacao.anotar([transmissao()], c)
         self.assertEqual(anotadas[0].rondas, 2)
         self.assertEqual(anotadas[0].fontes_distintas, 2)
 
     def test_avistamentos_nunca_se_perdem(self):
         """Append-only: a trilha permite reconstruir porque uma linha entrou."""
-        c = confirmacao.registar({}, [emissao()], "2026-09-08")
-        c = confirmacao.registar(c, [emissao()], "2026-09-09")
+        c = confirmacao.registar({}, [transmissao()], "2026-09-08")
+        c = confirmacao.registar(c, [transmissao()], "2026-09-09")
         self.assertEqual(c["b1"]["rondas"], ["2026-09-08", "2026-09-09"])
         self.assertEqual(c["b1"]["primeira_ronda"], "2026-09-08")
 
@@ -92,13 +92,13 @@ class TestSegundaRondaNoMesmoDia(unittest.TestCase):
     identificador proprio, para publicar no dia em vez de no seguinte."""
 
     def test_identificadores_distintos_confirmam_no_mesmo_dia(self):
-        c = confirmacao.registar({}, [emissao()], "2026-09-08-r1")
-        self.assertEqual(confirmacao.filtrar([emissao()], c, 2, []), [])
-        c = confirmacao.registar(c, [emissao()], "2026-09-08-r2")
-        self.assertEqual(len(confirmacao.filtrar([emissao()], c, 2, [])), 1)
+        c = confirmacao.registar({}, [transmissao()], "2026-09-08-r1")
+        self.assertEqual(confirmacao.filtrar([transmissao()], c, 2, []), [])
+        c = confirmacao.registar(c, [transmissao()], "2026-09-08-r2")
+        self.assertEqual(len(confirmacao.filtrar([transmissao()], c, 2, [])), 1)
 
     def test_o_mesmo_identificador_repetido_continua_a_nao_confirmar(self):
         """A protecao vem de duas leituras, nao de duas escritas."""
-        c = confirmacao.registar({}, [emissao()], "2026-09-08-r1")
-        c = confirmacao.registar(c, [emissao()], "2026-09-08-r1")
-        self.assertEqual(confirmacao.filtrar([emissao()], c, 2, []), [])
+        c = confirmacao.registar({}, [transmissao()], "2026-09-08-r1")
+        c = confirmacao.registar(c, [transmissao()], "2026-09-08-r1")
+        self.assertEqual(confirmacao.filtrar([transmissao()], c, 2, []), [])

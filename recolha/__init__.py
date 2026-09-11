@@ -1,1 +1,1 @@
-"""Recolha e agregacao das emissoes contabilizadas pelo Porquinho TV."""
+"""Recolha e agregacao das entrevistas exclusivas contabilizadas pelo Porquinho TV."""

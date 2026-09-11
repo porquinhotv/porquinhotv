@@ -7,7 +7,7 @@ Os itens passam pelo criterio como qualquer fonte automatica: precisam de
 prova positiva de formato no titulo e de serem vistos em rondas
 distintas. Ate 2026-09-10 ficavam sempre na quarentena por nao trazerem
 duracao; sem duracao no projeto, um video que o canal titula como
-entrevista e prova da emissao.
+entrevista e prova de que ela passou.
 """
 
 from __future__ import annotations

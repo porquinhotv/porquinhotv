@@ -277,7 +277,7 @@ def relatorio(resultado: dict) -> str:
         "",
         "Cada linha e um canal. \"Paginas\" conta as que responderam sobre as sondadas.",
         "\"Servidor\" diz se algum termo ja vem no HTML sem JavaScript (titulo, metadados, JSON-LD ou corpo).",
-        "\"Videos\" e o numero de blocos JSON-LD de video, que e onde um canal declara a pagina de uma emissao.",
+        "\"Videos\" e o numero de blocos JSON-LD de video, que e onde um canal declara a pagina de uma entrevista.",
         "",
         "| Canal | Paginas | Servidor | Metadados | Videos | Feeds | YouTube |",
         "|---|---|---|---|---|---|---|",

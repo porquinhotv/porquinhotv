@@ -51,7 +51,7 @@ parametros:
 #    nada a manter.
 consultas:
   # Consultas gerais. Apanham o que a imprensa e os canais titulam com a
-  # palavra, que e a maioria das emissoes recentes.
+  # palavra, que e a maioria das entrevistas recentes.
   - 'André Ventura entrevista'
   - '"André Ventura" "entrevista exclusiva"'
   - '"entrevista a André Ventura"'
@@ -84,7 +84,7 @@ consultas:
   - '"André Ventura" entrevista "Correio da Manhã"'
   # Consultas por programa e por entrevistador. Um canal titula o
   # episodio pelo nome do programa e deixa o convidado so na sinopse, que
-  # o indice nao traz; sem estas, essas emissoes nunca aparecem. Medido:
+  # o indice nao traz; sem estas, essas entrevistas nunca aparecem. Medido:
   # convertem mal sozinhas, mas a do noticiario da noite prova duas
   # linhas publicadas que mais nenhuma consulta prova.
   - '"Grande Entrevista" "André Ventura"'
@@ -120,7 +120,7 @@ pausa_s: 6
 
 # Colheita dirigida pela lista de referencia (config/referencia.yml).
 # Por cada linha da lista pede-se uma janela curta, de `folga_antes` dias
-# antes a `folga_depois` dias depois da emissao, mais o dia de folga que
+# antes a `folga_depois` dias depois da entrevista, mais o dia de folga que
 # `url_da_consulta` ja poe de cada lado. Uma peca anuncia a entrevista na
 # vespera e relata-a no dia seguinte ou dois depois; tres dias depois
 # cobre o relato de segunda-feira de uma entrevista de sexta.
@@ -185,7 +185,7 @@ mapas:
     indice: https://poligrafo.sapo.pt/sitemap_index.xml
     # So as verificacoes. O mapa de artigos (`post-sitemap`) foi medido a
     # 2026-09-09 e deu zero em 21: sao debates, discursos e pecas sobre
-    # redes sociais, nenhuma prova uma emissao.
+    # redes sociais, nenhuma prova uma entrevista.
     prefixos: [fact_check-sitemap]
 
 # Separadores que separam o nome do programa do resto do titulo. Os
@@ -212,7 +212,7 @@ canais_por_texto:
 # declarar, uma prova legitima era recusada como imprensa.
 #
 # Atencao ao `rtp.pt`: serve os tres canais da RTP e a pagina do Play
-# declara "RTP Notícias", que e a RTP3. Quando a emissao tambem passou na
+# declara "RTP Notícias", que e a RTP3. Quando a entrevista tambem passou na
 # RTP1, o canal escreve-se a mao na coluna `canal` da triagem; o dominio
 # so decide quando ninguem decidiu.
 canais_por_dominio:
@@ -255,7 +255,7 @@ imprensa:
   # por decisao do autor: uma entrevista anunciada a um canal raramente se
   # cancela ou adia. A marca decide para que lado se le um dia da semana:
   # "nao perca esta segunda-feira" e a que vem, "esteve esta segunda-feira"
-  # e a que passou. Uma pessoa pode sempre corrigir em `data_emissao`.
+  # e a que passou. Uma pessoa pode sempre corrigir em `data_entrevista`.
   anuncio: [vai estar, vai dar, dará, dá hoje, não perca, hora marcada, na próxima, será às, sera as, será transmitida]
   # Como a peca fixa o dia, lido contra a data de publicacao. A ordem de
   # leitura e esta: ontem, amanha, dia da semana, hoje.
@@ -272,7 +272,7 @@ imprensa:
   janela_do_ano: 60
   ontem: [ontem, na noite de ontem, ontem à noite]
   amanha: [amanhã, amanhã à noite]
-  # "em direto" e "agora" sairam a 2026-09-09: dizem como a emissao passou,
+  # "em direto" e "agora" sairam a 2026-09-09: dizem como a entrevista passou,
   # nao quando a peca foi escrita. Uma peca sobre uma entrevista abandonada
   # "em direto" entrou com a data da peca, que era o dia seguinte.
   hoje: [hoje, esta noite, esta tarde, esta manhã]

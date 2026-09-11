@@ -372,7 +372,7 @@ class TestEmitir(unittest.TestCase):
         self.assertEqual(saida[0]["prova"], "https://canal.exemplo/a")
 
     def test_prova_de_imprensa_nao_entra(self):
-        """Uma peca de um jornal sobre a entrevista nao e a emissao. A
+        """Uma peca de um jornal sobre a entrevista nao e a entrevista. A
         regra de que a prova e sempre o endereco do canal existe para
         isto, e ha um teste no projeto que falha se for violada."""
         linhas = [{"decisao": "sim", "prova_url": "https://jornal.exemplo/peca", "data": "2026-06-24"}]
@@ -382,9 +382,9 @@ class TestEmitir(unittest.TestCase):
         self.assertEqual(len(avisos), 1)
         self.assertIn("fora dos nove canais", avisos[0])
 
-    def test_mesma_emissao_vista_por_duas_fontes_e_uma_linha(self):
+    def test_mesma_entrevista_vista_por_duas_fontes_e_uma_linha(self):
         """Tres linhas da triagem para o mesmo canal e dia sao a mesma
-        emissao. Sem agrupar, o site contaria tres. Fica a primeira: sem
+        entrevista. Sem agrupar, o site contaria tres. Fica a primeira: sem
         duracao nao ha prova melhor do que outra, e a ordem da triagem e a
         mesma em todas as corridas."""
         linhas = [
@@ -398,7 +398,7 @@ class TestEmitir(unittest.TestCase):
         self.assertEqual(saida[0]["prova"], "https://canal.exemplo/curto")
 
     def test_simulcast_fica_agrupado_e_conta_duas_vezes(self):
-        """Dois canais no mesmo dia sao duas emissoes, agrupadas por
+        """Dois canais no mesmo dia sao duas entrevistas, agrupadas por
         `mesma_entrevista`. E a decisao editorial 3."""
         linhas = [
             {"decisao": "sim", "prova_url": "https://canal.exemplo/a", "data": "2026-06-03"},
@@ -410,7 +410,7 @@ class TestEmitir(unittest.TestCase):
         self.assertEqual({l["mesma_entrevista"] for l in saida}, {"2026-06-03"})
         self.assertEqual({l["canal"] for l in saida}, self.CANAIS)
 
-    def test_emissao_sozinha_no_dia_nao_leva_chave_de_grupo(self):
+    def test_entrevista_sozinha_no_dia_nao_leva_chave_de_grupo(self):
         linhas = [{"decisao": "sim", "prova_url": "https://canal.exemplo/a", "data": "2026-06-24"}]
         with tempfile.TemporaryDirectory() as tmp:
             saida, _ = gnews.emitir(self.CONFIG_E, self._pasta(tmp, linhas), self.CANAIS)
@@ -437,11 +437,11 @@ class TestEmitir(unittest.TestCase):
         self.assertEqual(saida[0]["data"], "2024-03-20")
         self.assertEqual(avisos, [])
 
-    def test_data_de_emissao_escrita_a_mao_ganha_a_da_pagina(self):
+    def test_data_de_entrevista_escrita_a_mao_ganha_a_da_pagina(self):
         """A pagina do canal declara a data de publicacao. Um artigo do
         canal publicado na terca sobre a entrevista de segunda deslocava a
-        emissao um dia, e ninguem tinha onde corrigir."""
-        linhas = [{"decisao": "sim", "prova_url": "https://canal.exemplo/a", "data": "2026-06-24", "data_na_pagina": "2026-06-24", "data_emissao": "23/06/2026"}]
+        entrevista um dia, e ninguem tinha onde corrigir."""
+        linhas = [{"decisao": "sim", "prova_url": "https://canal.exemplo/a", "data": "2026-06-24", "data_na_pagina": "2026-06-24", "data_entrevista": "23/06/2026"}]
         with tempfile.TemporaryDirectory() as tmp:
             saida, _ = gnews.emitir(self.CONFIG_E, self._pasta(tmp, linhas), self.CANAIS)
         self.assertEqual(saida[0]["data"], "2026-06-23")
@@ -520,7 +520,7 @@ class TestPaginasDeCanal(unittest.TestCase):
     `sim` escrito a mao, padrao que o projeto abandonou a 2026-09-09."""
 
     # Configuracao editorial de exemplo, com as mesmas classes reais: o
-    # passo de emissao le os termos daqui, como o criterio do coletor.
+    # passo de entrevista le os termos daqui, como o criterio do coletor.
     EDITORIAL = SimpleNamespace(
         canais={"canal-noticias": None, "outro-canal": None},
         sujeito=Sujeito(id="p", nome="Pessoa Exemplo", detetar=("Pessoa Exemplo",)),
@@ -605,7 +605,7 @@ class TestPaginasDeCanal(unittest.TestCase):
         self.assertIn("1 paginas: por ler: a pagina nao respondeu", avisos)
 
     def test_o_registo_verificado_a_mao_ganha(self):
-        """Quando uma pessoa ja leu a pagina daquela emissao, a linha dela
+        """Quando uma pessoa ja leu a pagina daquela entrevista, a linha dela
         e melhor prova e esta nao se repete."""
         entrevistas, avisos = self._emitir([self._linha()], ja={("canal-noticias", "2026-06-23")})
         self.assertEqual(entrevistas, [])
@@ -618,10 +618,10 @@ class TestPaginasDeCanal(unittest.TestCase):
         self.assertEqual(entrevistas, [])
         self.assertEqual([a for a in avisos if "jornal" in a], [])
 
-    def test_duas_linhas_do_mesmo_dia_e_canal_sao_uma_emissao(self):
+    def test_duas_linhas_do_mesmo_dia_e_canal_sao_uma_entrevista(self):
         """Os canais publicam o video integral e os recortes em paginas
         diferentes. Fica a primeira, como no `emitir`: sem duracao nao ha
-        forma de dizer qual e o integral, e as duas provam a emissao."""
+        forma de dizer qual e o integral, e as duas provam a entrevista."""
         entrevistas, _ = self._emitir([
             self._linha(prova_url="https://canal.exemplo/recorte"),
             self._linha(prova_url="https://canal.exemplo/integral"),
@@ -655,7 +655,7 @@ class TestMapasDeSitio(unittest.TestCase):
     def test_do_indice_so_se_usam_os_mapas_das_pecas(self):
         """O indice real declara 37 mapas, de artigos a notificacoes push.
         O de artigos foi medido a 2026-09-09 e deu zero em 21: sao debates
-        e pecas sobre redes sociais, nenhuma prova uma emissao."""
+        e pecas sobre redes sociais, nenhuma prova uma entrevista."""
         alvos = gnews.mapas_a_usar(ler("mapa_indice_exemplo.xml"), ["fact_check-sitemap"])
         self.assertEqual(alvos, ["https://jornal.exemplo/fact_check-sitemap.xml",
                                  "https://jornal.exemplo/fact_check-sitemap2.xml"])
@@ -729,7 +729,7 @@ class TestMapasDeSitio(unittest.TestCase):
 class TestProvaDeImprensa(unittest.TestCase):
     """O clipping deixou de ser ultimo recurso a 2026-09-08 e os anuncios
     contam desde 2026-09-09. O que estes testes travam: a data da peca a
-    passar por data da emissao, um anuncio lido para tras e um relato
+    passar por data da entrevista, um anuncio lido para tras e um relato
     lido para a frente, o canal do grupo trocado quando o lead nomeia
     dois, e a mesma entrevista a contar duas vezes por ter duas pecas."""
 
@@ -791,9 +791,9 @@ class TestProvaDeImprensa(unittest.TestCase):
         self.assertIn("numa entrevista exclusiva", r["descricao_na_pagina"])
         self.assertEqual(r["data_na_pagina"], "2026-06-23")
 
-    def test_peca_que_relata_entra_no_dia_da_emissao_e_nao_no_da_peca(self):
+    def test_peca_que_relata_entra_no_dia_da_entrevista_e_nao_no_da_peca(self):
         """A peca saiu na terca sobre a entrevista de segunda. Escrever a
-        data da peca deslocava a emissao um dia; foi um dos erros vistos no
+        data da peca deslocava a entrevista um dia; foi um dos erros vistos no
         registo a 2026-09-08."""
         saida, avisos = self._emitir([self._linha()])
         self.assertEqual(avisos, [])
@@ -824,7 +824,7 @@ class TestProvaDeImprensa(unittest.TestCase):
         self.assertIn("nao fixa o dia", avisos[0])
 
     def test_data_escrita_a_mao_ganha_a_leitura(self):
-        linha = self._linha(descricao_na_pagina="Em entrevista ao Canal Notícias, Pessoa Exemplo disse que nao teme eleicoes.", data_emissao="20/06/2026")
+        linha = self._linha(descricao_na_pagina="Em entrevista ao Canal Notícias, Pessoa Exemplo disse que nao teme eleicoes.", data_entrevista="20/06/2026")
         saida, avisos = self._emitir([linha])
         self.assertEqual(avisos, [])
         self.assertEqual(saida[0]["data"], "2026-06-20")
@@ -845,7 +845,7 @@ class TestProvaDeImprensa(unittest.TestCase):
 
     def test_amanha_avanca_um_dia(self):
         """Uma peca de segunda que diz "amanha" fala da entrevista de
-        terca. Ler a data da peca punha a emissao um dia antes de existir."""
+        terca. Ler a data da peca punha a entrevista um dia antes de existir."""
         linha = self._linha(descricao_na_pagina="Pessoa Exemplo dá amanhã uma entrevista ao Canal Notícias.")
         saida, _ = self._emitir([linha])
         self.assertEqual(saida[0]["data"], "2026-06-24")
@@ -853,14 +853,14 @@ class TestProvaDeImprensa(unittest.TestCase):
 
     def test_dia_da_semana_num_anuncio_le_se_para_a_frente(self):
         """"Nao perca, esta segunda-feira" numa peca de terca e a segunda
-        seguinte, nao a vespera. Lida para tras, a emissao ficava uma
+        seguinte, nao a vespera. Lida para tras, a entrevista ficava uma
         semana antes de acontecer."""
         linha = self._linha(descricao_na_pagina="Não perca: Pessoa Exemplo em entrevista ao Canal Notícias esta segunda-feira.")
         saida, avisos = self._emitir([linha])
         self.assertEqual(avisos, [])
         self.assertEqual(saida[0]["data"], "2026-06-29")
 
-    def test_relato_ganha_a_anuncio_sobre_a_mesma_emissao(self):
+    def test_relato_ganha_a_anuncio_sobre_a_mesma_entrevista(self):
         """Duas pecas para a mesma (canal, data), uma de vespera a anunciar
         e outra do dia seguinte a relatar, ambas a um dia de distancia.
         Fica o relato: prova que aconteceu, o anuncio so que ia acontecer."""
@@ -982,7 +982,7 @@ class TestProvaDeImprensa(unittest.TestCase):
         responde 403. Sem lead, a avaliacao lia so o titulo do indice e
         recusava-a com um motivo que nao era o dela. Com um titulo do
         genero de "primeira entrevista hoje na CMTV" teria feito pior:
-        publicava uma emissao a partir de uma pagina que ninguem abriu."""
+        publicava uma entrevista a partir de uma pagina que ninguem abriu."""
         linha = self._linha(
             sujeito_na_pagina="",
             titulo_na_pagina="",
@@ -996,7 +996,7 @@ class TestProvaDeImprensa(unittest.TestCase):
         self.assertEqual(motivo, gnews.MOTIVO_POR_LER)
         self.assertEqual(self._emitir([linha])[0], [])
 
-    def test_a_sugestao_e_a_emissao_leem_a_mesma_linha_da_mesma_maneira(self):
+    def test_a_sugestao_e_a_entrevista_leem_a_mesma_linha_da_mesma_maneira(self):
         """A docstring do `avaliar_peca` prometia uma so leitura das
         regras. Era falso para as 112 linhas por ler: o `sugerir` parava e
         dizia "por ler", o `emitir_imprensa` avaliava e dizia outra coisa.
@@ -1008,7 +1008,7 @@ class TestProvaDeImprensa(unittest.TestCase):
     def test_ano_solto_e_longe_da_palavra_nao_trava_a_leitura(self):
         """Peca real de 2026-06-17: "Na entrevista a <canal>, ontem a noite
         (16 de junho), (...) subvencoes revogadas em 2005". A primeira
-        versao da regra do ano cortou esta emissao, que estava certa e era
+        versao da regra do ano cortou esta entrevista, que estava certa e era
         de um canal com poucas linhas, por causa de um ano a 366
         caracteres da palavra a falar de outra coisa."""
         config = gnews.carregar()
@@ -1017,7 +1017,7 @@ class TestProvaDeImprensa(unittest.TestCase):
                  "penalizações até à eliminação das subvenções vitalícias para ex-políticos que as obtiveram "
                  "antes da revogação de tal privilégio em 2005.")
         self.assertFalse(gnews.entrevista_datada_por_extenso(config, texto))
-        self.assertEqual(gnews.data_de_emissao(config, texto, "2026-06-17"), ("2026-06-16", "ontem"))
+        self.assertEqual(gnews.data_de_entrevista(config, texto, "2026-06-17"), ("2026-06-16", "ontem"))
 
     def test_mes_com_ano_data_a_entrevista_esteja_onde_estiver(self):
         """Peca real de 2026: "Em novembro de 2020, o jornalista (...) foi
@@ -1045,16 +1045,16 @@ class TestProvaDeImprensa(unittest.TestCase):
         self.assertEqual(saida[0]["data"], "2026-06-23")
 
     def test_em_direto_nao_diz_em_que_dia_a_peca_foi_escrita(self):
-        """"Abandonou a entrevista em direto" descreve como a emissao
+        """"Abandonou a entrevista em direto" descreve como a entrevista
         passou, nao quando a peca foi escrita. Como marcador de "hoje",
-        punha a emissao no dia da peca, que era o dia seguinte."""
+        punha a entrevista no dia da peca, que era o dia seguinte."""
         config = gnews.carregar()
         texto = "Pessoa Exemplo abandonou a entrevista em direto. Os comentadores participavam na entrevista que o canal fez ao candidato."
-        self.assertEqual(gnews.data_de_emissao(config, texto, "2025-11-02"), ("", ""))
+        self.assertEqual(gnews.data_de_entrevista(config, texto, "2025-11-02"), ("", ""))
 
-    def test_a_sugestao_e_o_que_a_emissao_faria(self):
+    def test_a_sugestao_e_o_que_a_entrevista_faria(self):
         """A pessoa decide a partir da coluna `sugestao`. Se a sugestao
-        dissesse sim e a emissao recusasse, a triagem estaria a mentir."""
+        dissesse sim e a entrevista recusasse, a triagem estaria a mentir."""
         linha = {**self._linha(), "sujeito_na_pagina": "sim"}
         self.assertEqual(gnews.sugerir(self.CONFIG_I, linha, self.CANAIS), "sim: canal-noticias a 2026-06-22 (segunda-feira)")
         sem_canal = {**linha, "descricao_na_pagina": "Pessoa Exemplo esteve esta segunda-feira em entrevista na televisão."}
@@ -1067,7 +1067,7 @@ class TestProvaDeImprensa(unittest.TestCase):
     def test_anuncio_entra_se_uma_pessoa_escrever_a_data(self):
         linha = self._linha(
             descricao_na_pagina="Pessoa Exemplo dá hoje a primeira entrevista. Será às 19 horas no Grande Programa do Canal Notícias.",
-            data_emissao="2026-06-23",
+            data_entrevista="2026-06-23",
         )
         saida, avisos = self._emitir([linha])
         self.assertEqual(avisos, [])
@@ -1128,7 +1128,7 @@ class TestProvaDeImprensa(unittest.TestCase):
         self.assertEqual(saida, [])
         self.assertIn("debate", avisos[0])
 
-    def test_emissao_ja_no_registo_do_canal_nao_se_repete(self):
+    def test_entrevista_ja_no_registo_do_canal_nao_se_repete(self):
         saida, avisos = self._emitir([self._linha()], ja_no_canal={("canal-noticias", "2026-06-22")})
         self.assertEqual(saida, [])
         self.assertIn("ja no registo do canal", avisos[0])
@@ -1140,7 +1140,7 @@ class TestProvaDeImprensa(unittest.TestCase):
         saida, avisos = self._emitir([linha])
         self.assertEqual((saida, avisos), ([], []))
 
-    def test_duas_pecas_sobre_a_mesma_emissao_e_uma_linha(self):
+    def test_duas_pecas_sobre_a_mesma_entrevista_e_uma_linha(self):
         perto = self._linha(data_na_pagina="2026-06-22", prova_url="https://jornal.exemplo/a")
         longe = self._linha(data_na_pagina="2026-06-23", prova_url="https://outro.exemplo/b", descricao_na_pagina="Pessoa Exemplo esteve ontem no Canal Notícias em entrevista.")
         saida, _ = self._emitir([longe, perto])
@@ -1158,8 +1158,8 @@ class TestProvaDeImprensa(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             caminho = Path(tmp) / "entrevistas.yml"
             caminho.write_text("---\n# c\n\nentrevistas:\n- data: '2026-06-22'\n  canal: canal-noticias\n  programa: P\n  prova: https://canalnoticias.exemplo/v\n", encoding="utf-8")
-            self.assertEqual(gnews.emissoes_do_registo(caminho), {("canal-noticias", "2026-06-22")})
-            self.assertEqual(gnews.emissoes_do_registo(Path(tmp) / "nada.yml"), set())
+            self.assertEqual(gnews.entrevistas_do_registo(caminho), {("canal-noticias", "2026-06-22")})
+            self.assertEqual(gnews.entrevistas_do_registo(Path(tmp) / "nada.yml"), set())
 
     def test_configuracao_real_tem_as_regras_de_imprensa(self):
         config = gnews.carregar()
@@ -1351,10 +1351,10 @@ class TestConsultasDaConfiguracaoReal(unittest.TestCase):
 
 class TestReferencia(unittest.TestCase):
     """A lista de referencia dirige a colheita e mede a cobertura. O que
-    importa travar: uma janela que nao inclua o dia da emissao, uma
+    importa travar: uma janela que nao inclua o dia da entrevista, uma
     consulta de canal a correr para o canal errado, um pedido repetido, e
     uma cobertura que diga "sem nada" com uma pista a um dia de distancia
-    ou que diga "no site" com uma emissao a dois."""
+    ou que diga "no site" com uma entrevista a dois."""
 
     CONFIG = {
         **CONFIG,
@@ -1435,11 +1435,11 @@ class TestReferencia(unittest.TestCase):
 
     def test_cobertura_distingue_site_registo_pista_e_nada(self):
         """Quatro linhas, quatro estados, e a tolerancia de um dia nos dois
-        sentidos: a pista a um dia conta, a emissao a dois nao."""
+        sentidos: a pista a um dia conta, a entrevista a dois nao."""
         self._triagem([
             {"sugestao": "sim: canal-noticias a 2025-01-25 (relato)", "prova_url": "https://jornal.exemplo/p", "sujeito_na_pagina": "sim"},
             {"sugestao": "prova do canal: entra por --emitir", "prova_url": "https://canal.exemplo/v/1", "data_na_pagina": "2025-05-29", "sujeito_na_pagina": "sim", "titulo_na_pagina": "x"},
-            {"sugestao": "nao: a peca nao diz entrevista", "prova_url": "https://jornal.exemplo/q", "canal": "canal-noticias", "data_emissao": "2025-07-03", "sujeito_na_pagina": "sim"},
+            {"sugestao": "nao: a peca nao diz entrevista", "prova_url": "https://jornal.exemplo/q", "canal": "canal-noticias", "data_entrevista": "2025-07-03", "sujeito_na_pagina": "sim"},
         ])
         referencia = [
             {"data": "2025-01-24", "canal": "canal-noticias", "nota": ""},
@@ -1448,10 +1448,10 @@ class TestReferencia(unittest.TestCase):
             {"data": "2025-05-27", "canal": "canal-generalista", "nota": ""},
             {"data": "2025-07-03", "canal": "canal-noticias", "nota": ""},
         ]
-        emissoes = {("canal-generalista", "2025-03-19"), ("canal-noticias", "2025-04-13")}
+        entrevistas = {("canal-generalista", "2025-03-19"), ("canal-noticias", "2025-04-13")}
         registos = {("canal-noticias", "2025-04-11")}
         with contextlib.redirect_stdout(io.StringIO()) as saida:
-            resumo = gnews.cobertura(self.CONFIG, self.pasta, referencia, emissoes, registos, tolerancia=1)
+            resumo = gnews.cobertura(self.CONFIG, self.pasta, referencia, entrevistas, registos, tolerancia=1)
         self.assertEqual(resumo, {"referencia": 5, "no_site": 1, "no_registo": 1, "com_pista": 1, "sem_nada": 2})
         texto = saida.getvalue()
         self.assertIn("2025-01-24  canal-noticias pistas: 1 avaliada", texto)
@@ -1503,6 +1503,54 @@ class TestReferenciaReal(unittest.TestCase):
                 self.assertIn(canal, set(self.editorial.canais))
                 for consulta in consultas:
                     self.assertTrue(sujeito.aparece_em(consulta))
+
+
+class TestMigracaoDaColunaDaData(unittest.TestCase):
+    """A coluna `data_emissao` passou a `data_entrevista` a 2026-09-11.
+
+    O `triagem.csv` vive no computador do autor e tem datas escritas a
+    mao: sao a unica coisa ali que nao se consegue voltar a obter. Como o
+    `--triar` funde pelo URL e a gravacao so escreve as colunas da lista
+    atual, um renome seco lia o valor antigo para uma chave que ja nao
+    existe e deitava-o fora na gravacao seguinte, sem erro nenhum.
+    """
+
+    def _escrever(self, pasta, cabecalho, linha):
+        caminho = Path(pasta) / "triagem.csv"
+        caminho.write_text(cabecalho + "\n" + linha + "\n", encoding="utf-8-sig", newline="")
+        return caminho
+
+    def test_le_a_coluna_antiga_e_devolve_a_nova(self):
+        with tempfile.TemporaryDirectory() as pasta:
+            caminho = self._escrever(pasta, "url_google,data_emissao", "https://g/1,2025-03-18")
+            linhas = gnews.ler_triagem(caminho)
+            self.assertEqual(linhas[0]["data_entrevista"], "2025-03-18")
+            self.assertNotIn("data_emissao", linhas[0])
+
+    def test_a_coluna_nova_ganha_quando_a_linha_traz_as_duas(self):
+        with tempfile.TemporaryDirectory() as pasta:
+            caminho = self._escrever(pasta, "url_google,data_emissao,data_entrevista", "https://g/1,2025-03-18,2025-03-19")
+            self.assertEqual(gnews.ler_triagem(caminho)[0]["data_entrevista"], "2025-03-19")
+
+    def test_uma_triagem_nova_passa_intacta(self):
+        with tempfile.TemporaryDirectory() as pasta:
+            caminho = self._escrever(pasta, "url_google,data_entrevista", "https://g/1,2025-03-18")
+            self.assertEqual(gnews.ler_triagem(caminho)[0]["data_entrevista"], "2025-03-18")
+
+    def test_a_data_escrita_a_mao_sobrevive_a_uma_nova_triagem(self):
+        """O caso real: uma triagem antiga no disco, o `--triar` a
+        reconstruir a lista a partir da colheita, e a data escrita a mao a
+        ter de aparecer no ficheiro gravado."""
+        with tempfile.TemporaryDirectory() as pasta:
+            caminho = self._escrever(pasta, "url_google,data_emissao", "https://g/1,2025-03-18")
+            fundidas = gnews.fundir_triagem(
+                [{"url_google": "https://g/1", "grupo": "sujeito"}], gnews.ler_triagem(caminho)
+            )
+            gnews.gravar_triagem(Path(pasta), fundidas)
+            gravado = caminho.read_text(encoding="utf-8-sig")
+            self.assertIn("2025-03-18", gravado)
+            self.assertIn("data_entrevista", gravado)
+            self.assertNotIn("data_emissao", gravado)
 
 
 if __name__ == "__main__":

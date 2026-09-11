@@ -1,13 +1,13 @@
-# Curadoria a mao. Duas listas, e as duas sao decisoes de uma pessoa que
-# abriu a pagina. E o unico sitio do projeto onde uma pessoa acrescenta ou
-# retira uma emissao diretamente.
+# Curadoria a mao. Tres listas, e as tres sao decisoes de uma pessoa que
+# abriu a pagina. E o unico sitio do projeto onde uma pessoa acrescenta,
+# retira ou agrupa uma entrevista diretamente.
 #
 # ------------------------------------------------------------------
-# entrevistas: acrescentar uma emissao
+# entrevistas: acrescentar uma transmissao
 # ------------------------------------------------------------------
 # Basta o dia, o canal e a prova. Tudo o resto e opcional.
 #
-#   - data: 2021-03-15         # dia da emissao, obrigatorio
+#   - data: 2021-03-15         # dia em que passou, obrigatorio
 #     canal: cmtv              # id de config/porquinho.yml, obrigatorio
 #     prova: https://...       # pagina do canal OU noticia, obrigatorio
 #     origem: imprensa         # opcional: "imprensa" se a prova for uma
@@ -15,7 +15,10 @@
 #     programa: Grande Jornal  # opcional; sem ele fica "nao apurado"
 #     titulo: ...              # opcional
 #     publicado_em: 2021-03-16 # opcional; so se a peca for de outro dia
-#     mesma_entrevista: chave  # opcional; agrupa simulcast e repeticoes
+#
+# O campo `mesma_entrevista` deixou de se escrever na linha a 2026-09-11:
+# agrupar duas transmissoes e agora uma entrada da terceira lista, em
+# baixo. O coletor recusa uma linha que ainda o traga.
 #
 # Esta fonte corre a frente de todas as outras e salta a prova positiva
 # de formato e as rondas de confirmacao, pela mesma razao que o registo
@@ -51,9 +54,8 @@ entrevistas:
     prova: https://www.dn.pt/ventura-diz-que-montenegro-propos-acordo-sobre-oe-com-promessa-de-integrar-governo-pm-desmente
     titulo: 'Ventura diz que Montenegro propôs acordo sobre OE com promessa de integrar Governo. PM desmente'
     # A peca, publicada as 19:56 desse dia, diz "esta quinta-feira, em
-    # entrevista à CNN". O registo curado tem a mesma noite na TVI, com a
-    # prova no leitor do grupo; a chave junta as duas como uma entrevista.
-    mesma_entrevista: '2024-10-10'
+    # entrevista à CNN". A linha da TVI dessa noite foi retirada a
+    # 2026-09-11 por veto escrito: a pagina nomeia so a CNN Portugal.
   - data: 2025-03-18
     canal: rtp1
     programa: Telejornal
@@ -62,7 +64,6 @@ entrevistas:
     # A lista dizia 19 de marco. A pagina do canal, publicada a 18 as
     # 20:15, diz "o entrevistado da noite de terça-feira no Telejornal",
     # e 18 de marco de 2025 foi terca-feira. Fica a data do canal.
-    mesma_entrevista: '2025-03-18'
   - data: 2025-04-11
     canal: rtp3
     programa: '360'
@@ -86,7 +87,7 @@ entrevistas:
     #
     # O `programa` vai escrito porque o endereco o nomeia. Sem ele a linha
     # nao abriria bloco proprio e a regra 22 absorve-la-ia se a CMTV vier
-    # a ter outra emissao apurada no mesmo dia.
+    # a ter outra entrevista apurada no mesmo dia.
   - data: 2025-05-27
     canal: sic-noticias
     prova: https://sicnoticias.pt/especiais/eleicoes-legislativas/2025-05-27-video-entrevista-a-andre-ventura-a-um-dia-do-chega-poder-tornar-se-a-segunda-maior-forca-politica-2c883e67
@@ -131,8 +132,9 @@ entrevistas:
 
   # Simulcast declarado pelos proprios canais: as contas oficiais dos dois
   # publicaram o mesmo video com o titulo "em entrevista na TVI e CNN
-  # Portugal". Contam as duas emissoes pela decisao editorial 3, e a chave
-  # junta-as como uma entrevista so.
+  # Portugal". Sao duas transmissoes e uma entrevista: a tabela
+  # `mesma_entrevista`, em baixo, junta-as e diz a qual dos canais fica
+  # atribuida.
   #
   # As duas paginas partilham o identificador de video de 24 caracteres,
   # que e o sinal da seccao 0.1.2. Aqui nao e duplicacao: e simulcast a
@@ -141,19 +143,18 @@ entrevistas:
     canal: tvi
     prova: https://tvi.iol.pt/noticias/videos/a-entrevista-a-andre-ventura-na-integra/67d8a54e0cf20ac1d5f2f1cc
     titulo: 'A entrevista a André Ventura na íntegra'
-    mesma_entrevista: '2025-03-17'
   - data: 2025-03-17
     canal: cnn-portugal
     prova: https://cnnportugal.iol.pt/videos/a-entrevista-a-andre-ventura-na-integra/67d8a54e0cf20ac1d5f2f1cc
     titulo: 'A entrevista a André Ventura na íntegra'
-    mesma_entrevista: '2025-03-17'
 
-  # CORRIGIDO a 2026-09-11: esta linha estava aqui como emissao so da CNN,
+  # CORRIGIDO a 2026-09-11: esta linha estava aqui como entrevista so da CNN,
   # com o comentario a afirmar que nenhum dos dois canais declarou
   # simulcast. Era falso, e ninguem tinha aberto a pagina para o verificar.
   # A pagina declara, no texto que serve aos motores de busca, "Em
   # entrevista a TVI/CNN Portugal". E simulcast declarado por quem emitiu,
-  # que e o criterio, e conta nos dois canais pela decisao editorial 3.
+  # que e o criterio. Desde 2026-09-11 conta uma vez: sao duas
+  # transmissoes e uma entrevista, agrupadas pela tabela em baixo.
   #
   # O identificador de video partilhado levanta a suspeita de duplicacao e
   # NAO a resolve: o que a resolve e esta frase. O grupo escreve os dois
@@ -162,13 +163,11 @@ entrevistas:
     canal: cnn-portugal
     prova: https://tviplayer.iol.pt/programa/jornal-da-cnn/619392fe0cf2cc58e7d362cc/video/67858b380cf23e044af76538
     titulo: 'Entrevista a André Ventura na íntegra'
-    mesma_entrevista: '2025-01-13'
   - data: 2025-01-13
     canal: tvi
     programa: Jornal da CNN
     prova: https://tviplayer.iol.pt/programa/jornal-da-cnn/619392fe0cf2cc58e7d362cc/video/67858b380cf23e044af76538
     titulo: 'Entrevista a André Ventura na íntegra'
-    mesma_entrevista: '2025-01-13'
 
   # Duas da CMTV. A segunda nao estava na lista de referencia: apareceu
   # porque a pagina que se foi verificar declarava outra data.
@@ -186,7 +185,7 @@ entrevistas:
   # Tres da SIC, nenhuma na lista de referencia, todas em sic.pt. Sao
   # presencas a solo em programas de tarde e de manha, que contam pelas
   # decisoes editoriais 2 e 14. Antes destas o site tinha uma unica
-  # emissao da SIC em todo o historico.
+  # entrevista da SIC em todo o historico.
   - data: 2025-04-22
     canal: sic
     prova: https://sic.pt/programas/julia/videos/2025-04-22-video-andre-ventura-tem-a-fe-como-pilar-mas-uma-paixao-falou-mais-alto-foi-doloroso-a669d0ce
@@ -220,7 +219,7 @@ entrevistas:
   # se exigem a uma peca de imprensa.
   #
   # O custo esta assumido e tem de ficar escrito: um anuncio do proprio
-  # nao e um registo de quem emitiu. Se uma emissao anunciada cair ou for
+  # nao e um registo de quem emitiu. Se uma entrevista anunciada cair ou for
   # adiada, o canal corrige e o convidado raramente o faz. Destas tres,
   # nenhuma foi desmentida, e as datas foram lidas nas paginas pelo autor.
   - data: 2026-09-10
@@ -229,9 +228,9 @@ entrevistas:
     titulo: 'É hoje! A partir das 22H, acompanha no NOW'
     publicado_em: 2026-09-10
     # Anuncio publicado no proprio dia, cerca das 21h de Lisboa, para uma
-    # emissao a partir das 22h. Nenhuma fonte do projeto viu esta emissao,
+    # entrevista a partir das 22h. Nenhuma fonte do projeto viu esta entrevista,
     # e a razao esta medida na KB 0.4: a NOW nao tem cobertura automatica
-    # nenhuma a funcionar. Passa a ser a emissao mais recente do site.
+    # nenhuma a funcionar. Passa a ser a entrevista mais recente do site.
   - data: 2025-08-05
     canal: now
     prova: https://www.instagram.com/p/DM-_nmPJJcI/
@@ -268,7 +267,7 @@ entrevistas:
   # e relata o que la foi dito.
   #
   # Guardas corridas antes de acrescentar, pela regra de 0.1.3: nao ha
-  # nenhuma linha do grupo Media Capital neste dia, nem emissao do mesmo
+  # nenhuma linha do grupo Media Capital neste dia, nem entrevista do mesmo
   # canal a um ou dois dias de distancia. Nao ha identificador de video a
   # comparar porque a prova e uma peca de jornal.
   - data: 2024-03-11
@@ -279,32 +278,183 @@ entrevistas:
 
 remover:
   - prova: https://www.jm-madeira.pt/v%C3%ADdeo/regi-o/30004362/ventura-agarra-se-a-vice-presidente-da-camara-do-funchal.html
-    motivo: é a mesma entrevista da emissão de 2026-09-01 na CNN Portugal, já provada pela página do canal; a data desta peça é a da publicação, não a da emissão
+    motivo: é a mesma entrevista da entrevista de 2026-09-01 na CNN Portugal, já provada pela página do canal; a data desta peça é a da publicação, não a da entrevista
 
   # As duas linhas seguintes sao o mesmo caso e foram decididas lendo a
   # pagina, a 2026-09-11. O identificador de video partilhado entre os dois
   # dominios do grupo levanta a suspeita; o que a resolve e o que a pagina
   # declara. Nestas duas a pagina nomeia um canal so, ou nomeia o programa
-  # de informacao da CNN e mais nenhum canal. A emissao da CNN de cada dia
+  # de informacao da CNN e mais nenhum canal. A entrevista da CNN de cada dia
   # fica, provada a parte.
   - prova: https://tviplayer.iol.pt/programa/noticias-cnn/6193fe4b0cf2c7ea0f090b1e/video/6708406b0cf23ab6553606d3
-    motivo: a página declara "em entrevista à CNN Portugal" e nomeia só esse canal; é um vídeo da CNN servido no leitor do grupo, não uma emissão da TVI, e a emissão de 2024-10-10 na CNN Portugal já está contada
+    motivo: a página declara "em entrevista à CNN Portugal" e nomeia só esse canal; é um vídeo da CNN servido no leitor do grupo, não uma entrevista da TVI, e a entrevista de 2024-10-10 na CNN Portugal já está contada
   - prova: https://tviplayer.iol.pt/programa/cnn-em-foco/66576e34d34e049892216643/video/690690050cf2c7eb24443f42
-    motivo: a página não nomeia a TVI em lado nenhum e identifica o programa como CNN em Foco; é um vídeo da CNN servido no leitor do grupo, e a emissão de 2025-11-01 na CNN Portugal já está contada
+    motivo: a página não nomeia a TVI em lado nenhum e identifica o programa como CNN em Foco; é um vídeo da CNN servido no leitor do grupo, e a entrevista de 2025-11-01 na CNN Portugal já está contada
 
   # As tres linhas seguintes fecham a inflacao da TVI. Foram decididas a
   # 2026-09-11 a noite abrindo cada pagina, uma a uma, pela mesma regra:
   # o identificador de video partilhado entre os dois dominios do grupo
   # levanta a suspeita e nao a resolve, e o que a resolve e o canal que a
   # propria pagina nomeia. Nenhuma das tres traz a formula dos dois canais
-  # ("a TVI/CNN Portugal") que a emissao de 2025-03-17 traz e que e o que
+  # ("a TVI/CNN Portugal") que a entrevista de 2025-03-17 traz e que e o que
   # distingue um simulcast verdadeiro de um video republicado.
   #
-  # A emissao da CNN Portugal de cada um destes dias fica, provada a parte
+  # A entrevista da CNN Portugal de cada um destes dias fica, provada a parte
   # pela pagina do proprio dominio da CNN.
   - prova: https://tvi.iol.pt/noticias/videos/a-entrevista-a-andre-ventura-na-integra/6a03acd40cf27f6588a6a772
-    motivo: a página declara "em entrevista no Prime Time da CNN Portugal" e nomeia só esse canal; é um vídeo da CNN servido no domínio da TVI, e a emissão de 2026-05-12 na CNN Portugal já está contada
+    motivo: a página declara "em entrevista no Prime Time da CNN Portugal" e nomeia só esse canal; é um vídeo da CNN servido no domínio da TVI, e a entrevista de 2026-05-12 na CNN Portugal já está contada
   - prova: https://tviplayer.iol.pt/programa/cnn-prime-time/6193932f0cf2cc58e7d362d6/video/6a5956770cf2f6a1a1e7102a
-    motivo: a página declara "em entrevista exclusiva à CNN Portugal" e identifica o programa como CNN Prime Time; é um vídeo da CNN servido no leitor do grupo, e a emissão de 2026-07-16 na CNN Portugal já está contada
+    motivo: a página declara "em entrevista exclusiva à CNN Portugal" e identifica o programa como CNN Prime Time; é um vídeo da CNN servido no leitor do grupo, e a entrevista de 2026-07-16 na CNN Portugal já está contada
   - prova: https://tvi.iol.pt/noticias/videos/a-entrevista-a-andre-ventura-na-integra/6a6a74e00cf2b42132dbc313
-    motivo: a página declara "em entrevista à CNN Portugal" e nomeia só esse canal; é um vídeo da CNN servido no domínio da TVI, e a emissão de 2026-07-29 na CNN Portugal já está contada
+    motivo: a página declara "em entrevista à CNN Portugal" e nomeia só esse canal; é um vídeo da CNN servido no domínio da TVI, e a entrevista de 2026-07-29 na CNN Portugal já está contada
+
+# ------------------------------------------------------------------
+# mesma_entrevista: duas transmissoes, uma entrevista
+# ------------------------------------------------------------------
+# Desde 2026-09-11 a unidade do site e a entrevista exclusiva, e nao a
+# entrevista. Quando a mesma entrevista passa em dois canais, conta uma vez,
+# fica atribuida a um deles, e o site escreve ao lado que passou tambem no
+# outro.
+#
+#   - chave: 2025-03-17              # nome do grupo, unico, livre
+#     canal: cnn-portugal            # a que canal a entrevista fica atribuida
+#     motivo: ...                    # porque e a mesma, e quem o leu
+#     provas:                        # os enderecos das transmissoes
+#       - https://...
+#       - https://...
+#
+# Tres regras, e cada uma foi paga:
+#
+# 1. **O `canal` escreve-se sempre. Nao ha regra que o adivinhe.** O canal
+#    nao se le do dominio (8 linhas erradas em 8, ver a KB 6.1) e o
+#    identificador de video partilhado levanta a suspeita mas nao a
+#    resolve. Atribuir uma entrevista a um canal e uma afirmacao de quem
+#    leu a pagina.
+#
+# 2. **O `motivo` escreve-se sempre, e diz se alguem leu.** Um
+#    agrupamento sem motivo e indistinguivel de um descuido daqui a seis
+#    meses, e e ele que distingue um simulcast provado de um agrupamento
+#    herdado por confirmar.
+#
+# 3. **Agrupar e uma afirmacao positiva.** Sem entrada aqui, cada
+#    transmissao e uma entrevista. Nunca se deduz um grupo de dois
+#    enderecos parecidos nem de uma data igual.
+#
+# Quando as duas transmissoes partilham a mesma pagina (o mesmo video
+# servido nos dois dominios do grupo), basta escrever o endereco uma vez.
+# A corrida avisa na consola se um grupo escrito aqui nao chegou a juntar
+# duas transmissoes: e como se apanha um endereco mal copiado.
+
+mesma_entrevista:
+  # Simulcast declarado pela propria pagina, que escreve "Em entrevista a
+  # TVI/CNN Portugal". O programa e o Jornal da CNN, e e por isso que a
+  # entrevista fica atribuida a CNN Portugal: o canal le-se do que a
+  # pagina afirma, nunca do dominio onde o video esta alojado. As duas
+  # transmissoes partilham a mesma pagina, servida no leitor do grupo.
+  - chave: '2025-01-13'
+    canal: cnn-portugal
+    motivo: a página declara "Em entrevista à TVI/CNN Portugal" e identifica o programa como Jornal da CNN; lida a 2026-09-11
+    provas:
+      - https://tviplayer.iol.pt/programa/jornal-da-cnn/619392fe0cf2cc58e7d362cc/video/67858b380cf23e044af76538
+
+  # Simulcast declarado pelos proprios canais: as contas oficiais dos dois
+  # publicaram o mesmo video com o titulo "em entrevista na TVI e CNN
+  # Portugal". O mesmo identificador de video nos dois dominios, que
+  # noutros dias e sinal de duplicacao, aqui nao decide nada: o que decide
+  # e o que os canais escreveram.
+  #
+  # ATRIBUICAO POR CONFIRMAR. Nenhuma das duas paginas diz de quem e o
+  # video, e as duas estao no dominio proprio do respetivo canal, por isso
+  # nao ha assimetria que resolva o empate. Fica na CNN Portugal por ser
+  # onde estao os outros casos lidos do grupo, e isso e uma leitura e nao
+  # uma verificacao. Para fechar: abrir as duas paginas e comparar o
+  # `canonical`, que e o ponto 8 da lista da KB.
+  - chave: '2025-03-17'
+    canal: cnn-portugal
+    motivo: as contas oficiais dos dois canais publicaram o vídeo como "em entrevista na TVI e CNN Portugal"; a atribuição à CNN Portugal é leitura e não verificação, e está por confirmar
+    provas:
+      - https://tvi.iol.pt/noticias/videos/a-entrevista-a-andre-ventura-na-integra/67d8a54e0cf20ac1d5f2f1cc
+      - https://cnnportugal.iol.pt/videos/a-entrevista-a-andre-ventura-na-integra/67d8a54e0cf20ac1d5f2f1cc
+
+  # AGRUPAMENTO HERDADO E POR CONFIRMAR, e e o unico desta tabela que
+  # ninguem leu. Estava agrupado no registo desde antes de 2026-09-11, e
+  # so contava para o numero secundario de entrevistas distintas, que era
+  # um numero sem palavras ao lado. Agora decide a contagem principal e
+  # faz o site escrever que a entrevista passou nos dois canais, por isso
+  # passou a merecer leitura.
+  #
+  # O que levanta a duvida: as duas provas nomeiam programas diferentes,
+  # um da grelha de entretenimento da tarde e outra a cobertura de
+  # legislativas. Mantem-se agrupado ate alguem abrir as duas paginas,
+  # porque desagrupar sem ler seria trocar um erro por defeito por um erro
+  # por excesso, e a regra da casa diz qual dos dois e o pior.
+  - chave: '2025-04-09'
+    canal: now
+    motivo: agrupamento herdado do registo, por confirmar; as duas provas nomeiam programas diferentes e ninguém abriu as páginas
+    provas:
+      - https://www.nowcanal.pt/ultimas/detalhe/legislativas-2025-assista-a-entrevista-de-andre-ventura
+      - https://tvi.iol.pt/videos/goucha-entrevista-exclusiva-com-andre-ventura/67f684a50cf216cd3ad34a05
+
+  # Os identificadores de video sao diferentes nos dois dominios, por isso
+  # nao e o mesmo ficheiro republicado: sao duas paginas da mesma
+  # entrevista. Fica atribuida a CNN Portugal porque a prova dela esta no
+  # dominio proprio da CNN e a da TVI esta no leitor partilhado do grupo,
+  # que serve programas dos dois canais.
+  - chave: '2025-05-21'
+    canal: cnn-portugal
+    motivo: a prova da CNN está no domínio próprio do canal e a da TVI no leitor partilhado do grupo, que serve programas dos dois
+    provas:
+      - https://cnnportugal.iol.pt/videos/a-primeira-entrevista-a-andre-ventura-apos-as-eleicoes-na-integra/682e49960cf28cf88768061e
+      - https://tviplayer.iol.pt/programa/entrevista-exclusiva/67d46981d34ef72ee4437601/video/682e3ea00cf216cd3ad36a04
+
+  # Identificadores de video diferentes, publicados com minutos de
+  # intervalo: duas paginas, uma entrevista. E o caso que a KB usa para
+  # dizer que dois enderecos parecidos nao sao o mesmo video.
+  - chave: '2025-10-16'
+    canal: cnn-portugal
+    motivo: duas páginas da mesma entrevista, com identificadores de vídeo diferentes; atribuída à CNN Portugal, cujo domínio próprio serve a prova
+    provas:
+      - https://cnnportugal.iol.pt/videos/entrevista-exclusiva-com-andre-ventura/68f164740cf285ab53a6139f
+      - https://tvi.iol.pt/noticias/videos/a-entrevista-exclusiva-a-andre-ventura-na-integra/68f163ca0cf29d28d828d75d
+
+  # Os cinco pares do servico publico. A mesma entrevista do programa
+  # semanal de entrevistas passa nos dois canais, e ate 2026-09-11 contava
+  # duas vezes: era o ponto 11 da lista de trabalho em aberto da KB.
+  #
+  # Fica atribuida ao canal de informacao, que e onde o programa vive. O
+  # canal generalista emite a mesma entrevista, e a nota do site di-lo.
+  #
+  # Estes cinco sao tambem a razao de esta tabela existir em vez de um
+  # campo em cada linha do registo: em cada par, uma das transmissoes vem
+  # de uma fonte automatica e a outra do registo curado, e um campo
+  # escrito no registo nunca chegaria a linha automatica.
+  - chave: '2024-03-20'
+    canal: rtp3
+    motivo: o mesmo programa semanal de entrevistas nos dois canais do serviço público; o programa é do canal de informação
+    provas:
+      - https://www.rtp.pt/play/p10324/e756469/grande-entrevista
+      - https://www.rtp.pt/play/p12659/e756333/grande-entrevista
+  - chave: '2025-06-04'
+    canal: rtp3
+    motivo: o mesmo programa semanal de entrevistas nos dois canais do serviço público; o programa é do canal de informação
+    provas:
+      - https://www.rtp.pt/play/p10324/e855476/grande-entrevista
+      - https://www.rtp.pt/play/p14350/e855325/grande-entrevista
+  - chave: '2025-11-04'
+    canal: rtp3
+    motivo: o mesmo programa semanal de entrevistas nos dois canais do serviço público; o programa é do canal de informação
+    provas:
+      - https://www.rtp.pt/play/p15797/e887091/grande-entrevista-candidatos-a-presidencia-da-republica
+      - https://www.rtp.pt/noticias/politica/grande-entrevista-andre-ventura-quer-ser-o-presidente-dos-portugueses-comuns_n1696020
+  - chave: '2026-01-21'
+    canal: rtp3
+    motivo: o mesmo programa semanal de entrevistas nos dois canais do serviço público; as duas provas são do mesmo episódio
+    provas:
+      - https://www.rtp.pt/play/p16214/e903851/grande-entrevista
+      - https://www.rtp.pt/play/p16214/e903851/grande-entrevista/1397371
+  - chave: '2026-06-24'
+    canal: rtp3
+    motivo: o mesmo programa semanal de entrevistas nos dois canais do serviço público; o programa é do canal de informação
+    provas:
+      - https://www.rtp.pt/play/p10324/e938640/grande-entrevista
+      - https://www.rtp.pt/play/p16214/e938491/grande-entrevista

@@ -4,13 +4,11 @@ entrevistas:
     programa: Jornal da Noite
     prova: https://exemplo.pt/sic/jn-2025-09-04
     titulo: Entrevista no Jornal da Noite
-    mesma_entrevista: jn-2025-09-04
   - data: 2025-09-04
     canal: sic-noticias
     programa: Jornal da Noite
     prova: https://exemplo.pt/sicn/jn-2025-09-04
     titulo: Simulcast do Jornal da Noite
-    mesma_entrevista: jn-2025-09-04
   - data: 2025-09-10
     canal: rtp3
     programa: Grande Conversa

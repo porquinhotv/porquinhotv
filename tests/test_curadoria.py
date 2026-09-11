@@ -1,4 +1,4 @@
-"""A curadoria a mao: acrescentar uma emissao e vetar uma prova.
+"""A curadoria a mao: acrescentar uma transmissao e vetar uma prova.
 
 Existe desde 2026-09-10, a pedido do autor: dar a ligacao da prova e a
 data, e nada mais. Estes testes travam os dois erros que uma via destas
@@ -66,9 +66,9 @@ class TestAcrescentarAMao(unittest.TestCase):
         justificacao: uma pessoa abriu a pagina. A primeira linha nao tem
         titulo nenhum e entra na mesma."""
         f = fonte(self.config, "registo-curado")
-        emissao = criterio.avaliar(self.itens[0], f, self.config, [])
-        self.assertIsNotNone(emissao)
-        self.assertEqual(emissao.data, "2021-03-15")
+        transmissao = criterio.avaliar(self.itens[0], f, self.config, [])
+        self.assertIsNotNone(transmissao)
+        self.assertEqual(transmissao.data, "2021-03-15")
 
 
 class TestVetoDoQueJaEstaPublicado(unittest.TestCase):

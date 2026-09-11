@@ -5,8 +5,9 @@
    Regra da casa: o site nao inventa contas. As unicas contas feitas aqui
    sao somas de periodo a partir das reparticoes diarias do resumo.json e
    diferencas de datas. Agregacoes novas vivem em recolha/resumo.py, com
-   teste. Nao ha tempo em lado nenhum: desde 2026-09-10 o site conta
-   emissoes e entrevistas, nunca minutos. */
+   teste. Nao ha tempo em lado nenhum: desde 2026-09-10 o site nao conta
+   minutos, e desde 2026-09-11 conta uma coisa so, entrevistas
+   exclusivas. */
 
 (function (raiz, fabrica) {
   if (typeof module === "object" && module.exports) { module.exports = fabrica(); }
@@ -66,30 +67,32 @@
     return { de: paraIso(de), ate: paraIso(hoje) };
   }
 
-  /* Soma de um periodo a partir de por_dia. Entrevistas distintas contam
-     pelas chaves de cada dia, por isso um simulcast conta uma vez. */
+  /* Soma de um periodo a partir de por_dia.
+
+     Ate 2026-09-11 cada dia trazia tambem a lista das chaves de
+     entrevista, e esta funcao unia-as em conjunto para nao contar duas
+     vezes um simulcast. Com a entrevista como unidade, cada entrada do
+     resumo ja e uma entrevista e a soma e uma soma. */
   function somar(porDia, de, ate) {
-    var total = { emissoes: 0, entrevistas: 0 };
-    var chaves = {};
+    var total = { entrevistas: 0 };
     (porDia || []).forEach(function (dia) {
       if (dia.data < de || dia.data > ate) { return; }
-      total.emissoes += dia.emissoes;
-      (dia.chaves || []).forEach(function (k) { chaves[k] = true; });
+      total.entrevistas += dia.entrevistas;
     });
-    total.entrevistas = Object.keys(chaves).length;
     return total;
   }
 
   /* Soma por canal num periodo, a partir de canal_por_dia. Devolve um mapa
-     canal -> {emissoes}. */
+     canal -> {entrevistas}. Uma entrevista conta no canal a que esta
+     atribuida, por isso a soma destes numeros e o total. */
   function somarCanais(canalPorDia, de, ate) {
     var mapa = {};
     (canalPorDia || []).forEach(function (dia) {
       if (dia.data < de || dia.data > ate) { return; }
       Object.keys(dia.canais).forEach(function (id) {
         var c = dia.canais[id];
-        var m = mapa[id] || { emissoes: 0 };
-        m.emissoes += c.emissoes;
+        var m = mapa[id] || { entrevistas: 0 };
+        m.entrevistas += c.entrevistas;
         mapa[id] = m;
       });
     });

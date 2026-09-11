@@ -22,7 +22,7 @@ class TestCorteDeData(unittest.TestCase):
         r = criterio.avaliar(item(publicado_em="2019-05-16"), self.fonte, self.config, [])
         self.assertIsNotNone(r)
 
-    def test_o_corte_usa_a_data_de_emissao_e_nao_a_de_publicacao(self):
+    def test_o_corte_usa_o_dia_da_entrevista_e_nao_o_de_publicacao(self):
         q = []
         r = criterio.avaliar(
             item(publicado_em="2019-05-20", descricao="Entrevista emitida a 10 de maio."),
@@ -88,14 +88,14 @@ class TestCanal(unittest.TestCase):
     def test_fonte_automatica_sem_duracao_entra(self):
         """Ate 2026-09-10 um item de fonte automatica sem duracao ia para a
         quarentena como `por_confirmar`. A duracao saiu do projeto: um
-        video que o canal titula como entrevista e prova da emissao e
+        video que o canal titula como entrevista e prova da transmissao e
         entra pelo criterio normal (rondas a parte)."""
         q = []
         r = criterio.avaliar(item(), fonte(self.config, "yt-exemplo"), self.config, q)
         self.assertIsNotNone(r)
         self.assertEqual(q, [])
 
-    def test_a_emissao_nao_transporta_duracao_nem_parcial(self):
+    def test_a_transmissao_nao_transporta_duracao_nem_parcial(self):
         """O ficheiro publicado nao pode ter um campo de tempo a fingir que
         conta: quem o le acreditava que o site o usava."""
         r = criterio.avaliar(item(), self.fonte, self.config, [])
@@ -167,7 +167,7 @@ class TestIdentidadeEBlocos(unittest.TestCase):
         self.assertEqual(q[0]["id_nativo"], b.id)
 
     def test_sem_programa_apurado_nao_abre_bloco_no_dia_que_ja_tem_um(self):
-        """Erro real medido no dataset de 2026-09-10: a mesma emissao entrou
+        """Erro real medido no dataset de 2026-09-10: a mesma transmissao entrou
         duas vezes no mesmo canal e dia, uma com o programa deduzido do
         titulo e outra sem, porque o titulo dela nao tem separador. Tres
         ocorrencias em doze linhas de uma so fonte."""
@@ -184,8 +184,8 @@ class TestIdentidadeEBlocos(unittest.TestCase):
         self.assertEqual(q[0]["id_nativo"], sem.id)
 
     def test_sem_programa_apurado_conta_quando_e_a_unica_do_dia(self):
-        """A absorcao nao pode comer a emissao: sem outra no mesmo canal e
-        dia, uma emissao sem programa apurado e uma emissao e conta."""
+        """A absorcao nao pode comer a transmissao: sem outra no mesmo canal e
+        dia, uma transmissao sem programa apurado e uma transmissao e conta."""
         sem = criterio.avaliar(item(id_nativo="b", titulo="Entrevista Exemplo", descricao="com André Ventura"), fonte(self.config, "yt-exemplo"), self.config, [])
         q = []
         self.assertEqual([e.id for e in criterio.resolver_blocos([sem], q)], [sem.id])
@@ -193,7 +193,7 @@ class TestIdentidadeEBlocos(unittest.TestCase):
 
     def test_dois_programas_apurados_diferentes_no_mesmo_dia_contam_os_dois(self):
         """A manha num programa de entretenimento e a noite num noticiario
-        sao duas emissoes. A absorcao so apanha o que nao esta apurado."""
+        sao duas entrevistas. A absorcao so apanha o que nao esta apurado."""
         f = fonte(self.config, "yt-exemplo")
         a = criterio.avaliar(item(id_nativo="a", titulo="Entrevista Um - André Ventura"), f, self.config, [])
         b = criterio.avaliar(item(id_nativo="b", titulo="Entrevista Dois - André Ventura"), f, self.config, [])
@@ -202,7 +202,7 @@ class TestIdentidadeEBlocos(unittest.TestCase):
     def test_a_ordem_das_fontes_decide_o_bloco(self):
         """O registo curado corre antes do clipping em config/fontes.yml, e
         e por isso, e so por isso, que a prova do canal fica quando as duas
-        provam a mesma emissao. Trocar a ordem troca o vencedor."""
+        provam a mesma transmissao. Trocar a ordem troca o vencedor."""
         curado = fonte(self.config, "registo-curado")
         clipping = fonte(self.config, "clipping-imprensa")
         a = criterio.avaliar(item(id_nativo="a", canal="sic", programa="JN", data_declarada="2025-09-04"), curado, self.config, [])
@@ -216,12 +216,17 @@ class TestIdentidadeEBlocos(unittest.TestCase):
         b = criterio.avaliar(item(id_nativo="b", canal="sic-noticias", programa="JN", data_declarada="2025-09-04"), f, self.config, [])
         self.assertEqual(len(criterio.resolver_blocos([a, b], [])), 2)
 
-    def test_mesma_entrevista_agrupa(self):
+    def test_cada_transmissao_e_uma_entrevista_por_omissao(self):
+        """O criterio nao agrupa nada. Ate 2026-09-11 lia uma chave escrita
+        na linha do registo; agora o agrupamento e uma afirmacao positiva
+        da tabela de config/curadoria.yml, aplicada a publicacao. Um
+        criterio que voltasse a deduzir grupos juntaria transmissoes sem
+        que ninguem tivesse lido as paginas."""
         f = fonte(self.config, "registo-curado")
-        a = criterio.avaliar(item(id_nativo="a", canal="sic", programa="JN", data_declarada="2025-09-04", mesma_entrevista="k"), f, self.config, [])
-        b = criterio.avaliar(item(id_nativo="b", canal="sic-noticias", programa="JN", data_declarada="2025-09-04", mesma_entrevista="k"), f, self.config, [])
-        self.assertEqual(a.entrevista, b.entrevista)
-        self.assertNotEqual(a.bloco, b.bloco)
+        a = criterio.avaliar(item(id_nativo="a", canal="sic", programa="JN", data_declarada="2025-09-04"), f, self.config, [])
+        b = criterio.avaliar(item(id_nativo="b", canal="sic-noticias", programa="JN", data_declarada="2025-09-04"), f, self.config, [])
+        self.assertEqual(a.entrevista, a.bloco)
+        self.assertNotEqual(a.entrevista, b.entrevista)
 
 
 class TestRecusasContadas(unittest.TestCase):
@@ -284,7 +289,7 @@ class TestEpisodioDeProgramaDeEntrevista(unittest.TestCase):
     O caso real de 2026-09-10, ponta a ponta: a pagina do episodio nao
     diz o nome do sujeito no titulo (o titulo e o nome do programa), diz
     o dia so nas etiquetas, e nomeia o convidado na sinopse. As tres
-    coisas juntas fizeram com que 194 paginas nao dessem uma emissao.
+    coisas juntas fizeram com que 194 paginas nao dessem uma transmissao.
     """
 
     def setUp(self):
@@ -313,9 +318,9 @@ class TestEpisodioDeProgramaDeEntrevista(unittest.TestCase):
 
         fonte_com_programa = replace(self.fonte, programa="Programa de Entrevista")
         quarentena = []
-        emissao = criterio.avaliar(self._item(programa="Programa de Entrevista"), fonte_com_programa, self.config, quarentena)
-        self.assertIsNotNone(emissao, f"recusado: {quarentena}")
-        self.assertEqual(emissao.data, "2026-06-24")
+        transmissao = criterio.avaliar(self._item(programa="Programa de Entrevista"), fonte_com_programa, self.config, quarentena)
+        self.assertIsNotNone(transmissao, f"recusado: {quarentena}")
+        self.assertEqual(transmissao.data, "2026-06-24")
 
     def test_sem_o_sujeito_na_sinopse_nao_conta(self):
         """Os outros convidados do mesmo programa saem, e e o que deve ser."""
@@ -363,9 +368,9 @@ class TestLicoesDaPrimeiraCorridaDeHistorico(unittest.TestCase):
     def test_titulo_sem_separador_nao_inventa_programa(self):
         self.assertEqual(criterio.programa_do_titulo("Grande Entrevista", self.config), "")
 
-    def test_duas_emissoes_do_mesmo_dia_e_canal_nao_colidem(self):
+    def test_duas_entrevistas_do_mesmo_dia_e_canal_nao_colidem(self):
         """Com o programa sempre vazio, o bloco (canal, programa, dia) era
-        o mesmo para programas diferentes e uma das emissoes era
+        o mesmo para programas diferentes e uma das entrevistas era
         descartada como repetida."""
         a = criterio.avaliar(item(titulo="Programa A - Alguem", canal="rtp1", url="https://exemplo.pt/1", prova_url="https://exemplo.pt/1"), self.fonte, self.config)
         b = criterio.avaliar(item(titulo="Programa B - Alguem", canal="rtp1", url="https://exemplo.pt/2", prova_url="https://exemplo.pt/2"), self.fonte, self.config)
@@ -375,7 +380,7 @@ class TestLicoesDaPrimeiraCorridaDeHistorico(unittest.TestCase):
 
 class TestSujeitoNasEtiquetas(unittest.TestCase):
     """O canal identifica o convidado nas tags de pecas cujo titulo nao o
-    nomeia. Procurar so no titulo perdia essas emissoes."""
+    nomeia. Procurar so no titulo perdia essas entrevistas."""
 
     def setUp(self):
         self.config = config_teste()
@@ -396,15 +401,15 @@ class TestSujeitoNasEtiquetas(unittest.TestCase):
         self.assertEqual(q[0]["motivo"], "sem_sujeito")
 
 
-class TestVariasEmissoesNoMesmoDia(unittest.TestCase):
+class TestVariasEntrevistasNoMesmoDia(unittest.TestCase):
     """Uma entrevista de manha num programa de entretenimento e outra a
-    noite num noticiario, no mesmo canal, sao duas emissoes."""
+    noite num noticiario, no mesmo canal, sao duas entrevistas."""
 
     def setUp(self):
         self.config = config_teste()
         self.fonte = fonte(self.config, "registo-curado")
 
-    def _emissao(self, titulo, n):
+    def _transmissao(self, titulo, n):
         return criterio.avaliar(
             item(titulo=titulo, canal="rtp1",
                  url=f"https://exemplo.pt/{n}", prova_url=f"https://exemplo.pt/{n}"),
@@ -412,15 +417,15 @@ class TestVariasEmissoesNoMesmoDia(unittest.TestCase):
         )
 
     def test_manha_e_noite_contam_as_duas(self):
-        manha = self._emissao("Programa da Manha - Alguem", 1)
-        noite = self._emissao("Jornal da Noite - Alguem", 2)
+        manha = self._transmissao("Programa da Manha - Alguem", 1)
+        noite = self._transmissao("Jornal da Noite - Alguem", 2)
         self.assertNotEqual(manha.bloco, noite.bloco)
         self.assertEqual(len(criterio.resolver_blocos([manha, noite], [])), 2)
 
     def test_recorte_do_mesmo_programa_nao_conta_duas_vezes(self):
         """O que a chave existe para juntar: o video integral e o recorte."""
-        integral = self._emissao("Jornal da Noite - Alguem", 1)
-        recorte = self._emissao("Jornal da Noite - Alguem", 2)
+        integral = self._transmissao("Jornal da Noite - Alguem", 1)
+        recorte = self._transmissao("Jornal da Noite - Alguem", 2)
         q = []
         ficam = criterio.resolver_blocos([integral, recorte], q)
         self.assertEqual(len(ficam), 1)
@@ -429,8 +434,8 @@ class TestVariasEmissoesNoMesmoDia(unittest.TestCase):
 
     def test_programa_nao_apurado_fica_dito_na_quarentena(self):
         """O erro e por defeito, nunca por excesso, mas tem de se ver."""
-        a = self._emissao("Alguem em entrevista", 1)
-        b = self._emissao("Alguem outra vez", 2)
+        a = self._transmissao("Alguem em entrevista", 1)
+        b = self._transmissao("Alguem outra vez", 2)
         self.assertEqual(a.programa, "")
         q = []
         self.assertEqual(len(criterio.resolver_blocos([a, b], q)), 1)

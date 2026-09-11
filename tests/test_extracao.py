@@ -56,7 +56,7 @@ class TestExtrair(unittest.TestCase):
 
     def test_etiquetas_e_tags(self):
         """Um canal marca a peca com o nome do convidado sem o escrever no
-        titulo. Sem ler as etiquetas, a emissao era rejeitada por
+        titulo. Sem ler as etiquetas, a transmissao era rejeitada por
         `sem_sujeito` quando a propria pagina a identificava."""
         r = extracao.extrair(ler("artigo_sem_duracao.html"), "https://exemplo.pt/b")
         self.assertIn("Pessoa", r["etiquetas"])
@@ -134,7 +134,7 @@ class TestDataEscritaPorExtenso(unittest.TestCase):
         """Uma lista de etiquetas tem anos que nao datam nada.
 
         Sem exigir dia, mes e ano, "Eleicoes 2024" ou "Euro 2024" numa
-        lista de palavras-chave passariam por data de emissao, e o erro
+        lista de palavras-chave passariam por dia da entrevista, e o erro
         seria de um ano inteiro.
         """
         for valor in ("Euro 2024, Desporto", "Eleições 2024", "2026", "Ano 2021"):

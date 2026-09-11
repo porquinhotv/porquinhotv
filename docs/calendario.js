@@ -15,9 +15,9 @@
     (resumo.canal_por_dia || []).forEach(function (dia) {
       var lista = Object.keys(dia.canais).map(function (id) {
         var c = dia.canais[id];
-        return { id: id, emissoes: c.emissoes, declarada: (c.declaradas || 0) >= c.emissoes };
+        return { id: id, entrevistas: c.entrevistas, declarada: (c.declaradas || 0) >= c.entrevistas };
       });
-      lista.sort(function (a, b) { return b.emissoes - a.emissoes || a.id.localeCompare(b.id); });
+      lista.sort(function (a, b) { return b.entrevistas - a.entrevistas || a.id.localeCompare(b.id); });
       idx[dia.data] = lista;
     });
     return idx;
@@ -31,7 +31,7 @@
 
   function rotuloDia(iso, dia, nomeDe) {
     var partes = dia.map(function (c) {
-      var vezes = c.emissoes === 1 ? "1 emissão" : c.emissoes + " emissões";
+      var vezes = c.entrevistas === 1 ? "1 entrevista" : c.entrevistas + " entrevistas";
       return nomeDe[c.id] + ", " + vezes + (c.declarada ? "" : ", data de publicação");
     });
     var d = PTV.dataComDiaSemana(iso);
@@ -80,14 +80,14 @@
     Object.keys(idx).forEach(function (iso) {
       if (iso.slice(0, 4) !== ano) { return; }
       idx[iso].forEach(function (c) {
-        var t = tot[c.id] || { emissoes: 0 };
-        t.emissoes += c.emissoes; tot[c.id] = t;
+        var t = tot[c.id] || { entrevistas: 0 };
+        t.entrevistas += c.entrevistas; tot[c.id] = t;
       });
     });
     var ul = el("ul", { class: "canais" });
-    Object.keys(tot).sort(function (a, b) { return tot[b].emissoes - tot[a].emissoes || a.localeCompare(b); }).forEach(function (id) {
+    Object.keys(tot).sort(function (a, b) { return tot[b].entrevistas - tot[a].entrevistas || a.localeCompare(b); }).forEach(function (id) {
       var ponto = el("span", { class: "ponto" }); ponto.style.background = cor(id);
-      var vezes = tot[id].emissoes === 1 ? "1 emissão" : tot[id].emissoes + " emissões";
+      var vezes = tot[id].entrevistas === 1 ? "1 entrevista" : tot[id].entrevistas + " entrevistas";
       ul.appendChild(el("li", {}, [ponto, el("span", { class: "nome", text: nomeDe[id] || id }), el("span", { class: "pista", style: "visibility:hidden" }), el("span", { class: "valor", text: vezes })]));
     });
     return ul;
@@ -99,7 +99,7 @@
     var idx = indexar(estado.resumo), nomeDe = nomes(estado.resumo);
     var anos = Object.keys(idx).map(function (d) { return d.slice(0, 4); }).filter(function (a, i, arr) { return arr.indexOf(a) === i; }).sort();
     if (!anos.length) {
-      alvo.appendChild(el("div", { class: "cartao vazio" }, [el("h2", { text: "Ainda sem dados" }), el("p", { text: "Ainda não há emissões registadas." })]));
+      alvo.appendChild(el("div", { class: "cartao vazio" }, [el("h2", { text: "Ainda sem dados" }), el("p", { text: "Ainda não há entrevistas registadas." })]));
       return;
     }
     if (anos.indexOf(estado.ano) === -1) { estado.ano = anos[anos.length - 1]; }

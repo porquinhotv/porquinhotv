@@ -12,7 +12,7 @@
 
 Le config/gnews.yml, pede o RSS de cada consulta em janelas mensais desde
 o inicio do tema (ou, com `--dirigidas`, so os dias a volta de cada
-emissao de config/referencia.yml), e escreve na pasta de saida:
+entrevista de config/referencia.yml), e escreve na pasta de saida:
 
     bruto/<janela>__<n>.xml   cada resposta tal como veio, para auditoria
     estado.json               o que ja foi pedido, para retomar sem repetir
@@ -25,7 +25,7 @@ Isto e um detetor e nao uma fonte: aponta o dia e o canal de uma
 entrevista provavel. A prova de cada linha e uma pagina que uma pessoa
 abriu, a partir do que a coluna `url_final` aponta: a do canal, que vai
 para config/entrevistas.yml com `--emitir`, ou uma peca de imprensa que
-relate a emissao, que vai para config/clipping.yml com `--emitir
+relate a entrevista, que vai para config/clipping.yml com `--emitir
 --imprensa`. Nada do que sai da colheita entra no repositorio; a pasta
 de saida tem de ficar fora dele, e o programa recusa-se a escrever la
 dentro.
@@ -268,7 +268,7 @@ FICHEIRO_REFERENCIA = RAIZ / "config" / "referencia.yml"
 
 
 def carregar_referencia(caminho: Path | None = None) -> list[dict]:
-    """As emissoes que o autor sabe que existiram, por (data, canal).
+    """As entrevistas que o autor sabe que existiram, por (data, canal).
 
     Nao e uma fonte: nenhuma linha daqui entra no site. Serve para dirigir
     a colheita e para medir a cobertura. O YAML le a data como objeto ou
@@ -303,7 +303,7 @@ def pedidos_de_referencia(config: dict, referencia: list[dict]) -> list[tuple[st
     """Um pedido por (consulta, janela) para cada linha da referencia.
 
     A janela vai de `folga_antes` dias antes a `folga_depois` dias depois
-    da emissao: uma peca anuncia a entrevista na vespera e relata-a no dia
+    da entrevista: uma peca anuncia a entrevista na vespera e relata-a no dia
     seguinte ou dois depois. As consultas sao as gerais mais as do canal
     da linha, todas da configuracao. Duas linhas no mesmo dia e no mesmo
     canal dao os mesmos pedidos uma vez so.
@@ -338,7 +338,7 @@ def _sugestao_sim(sugestao: str) -> tuple[str, str] | None:
 
 def pistas_da_triagem(config: dict, linhas: list[dict]) -> list[tuple[str, str, str, dict]]:
     """(canal, data, estado, linha) por linha da triagem que aponte para
-    uma emissao. Tres origens, por esta ordem de confianca:
+    uma entrevista. Tres origens, por esta ordem de confianca:
 
       avaliada   a sugestao diz sim, com canal e data lidos da peca;
       canal      a prova esta num dominio de canal: e prova, mas o canal e
@@ -354,7 +354,7 @@ def pistas_da_triagem(config: dict, linhas: list[dict]) -> list[tuple[str, str, 
             pistas.append((avaliada[0], avaliada[1], "avaliada", linha))
             continue
         canal = canal_da_prova(config, linha.get("prova_url") or "") or (linha.get("canal") or "").strip()
-        data = (linha.get("data_emissao") or linha.get("data_na_pagina") or linha.get("data") or "").strip()[:10]
+        data = (linha.get("data_entrevista") or linha.get("data_na_pagina") or linha.get("data") or "").strip()[:10]
         if not canal or not data:
             continue
         try:
@@ -370,23 +370,22 @@ def pistas_da_triagem(config: dict, linhas: list[dict]) -> list[tuple[str, str, 
     return pistas
 
 
-def cobertura(config: dict, pasta: Path, referencia: list[dict], emissoes: set[tuple[str, str]],
+def cobertura(config: dict, pasta: Path, referencia: list[dict], entrevistas: set[tuple[str, str]],
               registos: set[tuple[str, str]], tolerancia: int = 1) -> dict:
-    """Linha a linha da referencia: o site tem a emissao, o registo em
+    """Linha a linha da referencia: o site tem a entrevista, o registo em
     ficheiro tem-na por publicar, a triagem tem uma pista, ou nao ha nada.
 
     E o relatorio a correr depois de qualquer colheita dirigida e antes de
-    dar uma emissao por perdida: diz onde esta o trabalho, e diz quantas
+    dar uma entrevista por perdida: diz onde esta o trabalho, e diz quantas
     linhas da referencia o site ainda nao cobre. A tolerancia de um dia
-    existe porque a data de uma peca nao e a data da emissao e porque a
+    existe porque a data de uma peca nao e a data da entrevista e porque a
     propria referencia pode estar um dia ao lado: a 2026-09-10 uma linha
     dizia 19 e a pagina do canal dizia 18.
     """
     caminho = pasta / "triagem.csv"
     linhas: list[dict] = []
     if caminho.exists():
-        with caminho.open(encoding="utf-8-sig", newline="") as f:
-            linhas = list(csv.DictReader(f))
+        linhas = ler_triagem(caminho)
     pistas = pistas_da_triagem(config, linhas)
 
     def perto(pares, canal, data):
@@ -396,7 +395,7 @@ def cobertura(config: dict, pasta: Path, referencia: list[dict], emissoes: set[t
     sem_nada = []
     for linha in referencia:
         canal, data = linha["canal"], linha["data"]
-        site = perto(emissoes, canal, data)
+        site = perto(entrevistas, canal, data)
         registo = [] if site else perto(registos, canal, data)
         proprias = [p for p in pistas if p[0] == canal and _dias_entre(p[1], data) <= tolerancia]
         if site:
@@ -421,14 +420,28 @@ def cobertura(config: dict, pasta: Path, referencia: list[dict], emissoes: set[t
     return resumo
 
 
-def emissoes_publicadas(caminho: Path | None = None) -> set[tuple[str, str]]:
-    """Os pares (canal, data) do dataset publicado."""
-    caminho = caminho or (RAIZ / "docs" / "dados" / "emissoes.json")
+def entrevistas_publicadas(caminho: Path | None = None) -> set[tuple[str, str]]:
+    """{(canal, data)} do que o site ja publica.
+
+    Conta **todos** os canais de cada entrevista, e nao so aquele a que
+    ela esta atribuida: desde 2026-09-11 uma entrevista que passou em dois
+    canais e uma entrada so, e a lista de referencia nomeia o canal em que
+    o autor a viu, que tanto pode ser um como o outro. Contar so o canal
+    atribuido punha o relatorio de cobertura a dizer que falta uma linha
+    que esta la.
+    """
+    caminho = caminho or (RAIZ / "docs" / "dados" / "entrevistas.json")
     if not caminho.exists():
         return set()
     dados = json.loads(caminho.read_text(encoding="utf-8"))
-    lista = dados.get("emissoes") if isinstance(dados, dict) else dados
-    return {(str(e.get("canal") or ""), str(e.get("data") or "")) for e in (lista or [])}
+    lista = dados.get("entrevistas") if isinstance(dados, dict) else dados
+    publicadas = set()
+    for entrevista in lista or []:
+        data = str(entrevista.get("data") or "")[:10]
+        for canal in entrevista.get("canais") or [entrevista.get("canal")]:
+            if canal and data:
+                publicadas.add((str(canal), data))
+    return publicadas
 
 
 # --- colheita ----------------------------------------------------------------
@@ -441,7 +454,7 @@ def colher(config: dict, pasta: Path, desde: date, ate: date, obter=obter_texto,
 
 
 def colher_dirigidas(config: dict, pasta: Path, referencia: list[dict], obter=obter_texto, dormir=time.sleep) -> dict:
-    """Colheita so dos dias a volta de cada emissao da lista de referencia.
+    """Colheita so dos dias a volta de cada entrevista da lista de referencia.
 
     A colheita mensal pede o indice inteiro e traz uma amostra ordenada por
     relevancia, que nao e o conjunto todo: a 2026-09-08, 14 de 16
@@ -672,22 +685,45 @@ def resolver(config: dict, pasta: Path, so_triados: bool = True, limite: int | N
 # tenha e lido na mesma (o leitor vai por nome de coluna) e a proxima
 # gravacao deixa-as cair.
 COLUNAS_TRIAGEM = [
-    "decisao", "prova_url", "programa", "canal", "data_emissao", "nota", "sugestao",
+    "decisao", "prova_url", "programa", "canal", "data_entrevista", "nota", "sugestao",
     "sujeito_na_pagina", "programa_na_pagina", "data_na_pagina", "titulo_na_pagina", "descricao_na_pagina",
     "grupo", "data", "titulo", "fonte", "formato_no_titulo", "url_google",
 ]
+
+
+def ler_triagem(caminho: Path) -> list[dict]:
+    """As linhas do `triagem.csv`, com a coluna antiga da data migrada.
+
+    A coluna `data_emissao` passou a chamar-se `data_entrevista` a
+    2026-09-11, quando o conceito de emissao saiu do projeto. O ficheiro
+    vive no computador do autor e tem datas escritas a mao, que sao a
+    unica coisa ali que nao se consegue voltar a obter: como o `--triar`
+    funde pelo URL e o `gravar_triagem` so escreve as colunas da lista
+    atual, um renome seco lia o valor antigo, guardava-o numa chave que
+    ja nao existe e deitava-o fora na gravacao seguinte, sem erro nenhum.
+
+    Le-se a antiga, escreve-se a nova, e a antiga desaparece do ficheiro
+    na primeira gravacao. Uma linha que ja traga as duas mantem a nova.
+    """
+    with caminho.open(encoding="utf-8-sig", newline="") as f:
+        linhas = list(csv.DictReader(f))
+    for linha in linhas:
+        antiga = linha.pop("data_emissao", "")
+        if antiga and not linha.get("data_entrevista"):
+            linha["data_entrevista"] = antiga
+    return linhas
 
 
 def agrupar(config: dict, linhas: list[dict], sujeito) -> list[dict]:
     """Reduz a colheita ao que uma pessoa tem de olhar, em dois grupos.
 
     `sujeito`  o titulo nomeia o sujeito e indica entrevista. E o grupo
-               denso: quase tudo aqui e uma emissao ou uma peca sobre uma.
+               denso: quase tudo aqui e uma entrevista ou uma peca sobre uma.
     `programa` o titulo indica entrevista e a fonte e um canal, mas o
                sujeito nao aparece. Existe porque um canal titula os seus
                episodios com o nome do programa e a data, e o convidado
                fica so na sinopse, que o indice nao traz. Sem este grupo
-               perdiam-se todas as emissoes desse canal.
+               perdiam-se todas as entrevistas desse canal.
     `imprensa` o titulo nomeia o sujeito, a fonte nao e um canal, e a
                linha veio de uma consulta com a palavra "entrevista". E o
                grupo das pecas de jornal, que titulam com a citacao e
@@ -885,8 +921,7 @@ def colher_mapas(config: dict, pasta: Path, sujeito=None, limite: int | None = N
     caminho = pasta / "triagem.csv"
     anteriores: list[dict] = []
     if caminho.exists():
-        with caminho.open(encoding="utf-8-sig", newline="") as f:
-            anteriores = list(csv.DictReader(f))
+        anteriores = ler_triagem(caminho)
     conhecidos = {l.get("url_google") for l in anteriores if l.get("url_google")}
     conhecidos |= {l.get("prova_url") for l in anteriores if l.get("prova_url")}
 
@@ -936,8 +971,7 @@ def triar(config: dict, pasta: Path) -> dict:
     retidas = agrupar(config, linhas, carregar_config().sujeito)
     caminho = pasta / "triagem.csv"
     if caminho.exists():
-        with caminho.open(encoding="utf-8-sig", newline="") as f:
-            retidas = fundir_triagem(retidas, list(csv.DictReader(f)))
+        retidas = fundir_triagem(retidas, ler_triagem(caminho))
     gravar_triagem(pasta, retidas)
     contagem = {}
     for linha in retidas:
@@ -999,8 +1033,7 @@ def rendimento(config: dict, pasta: Path, sujeito=None, provas: set[str] | None 
     triadas: dict[str, dict] = {}
     caminho = pasta / "triagem.csv"
     if caminho.exists():
-        with caminho.open(encoding="utf-8-sig", newline="") as f:
-            triadas = {l["url_google"]: l for l in csv.DictReader(f) if l.get("url_google")}
+        triadas = {l["url_google"]: l for l in ler_triagem(caminho) if l.get("url_google")}
 
     campos = ("trazidas", "so_ela", "triadas", "so_ela_triadas", "publicadas", "so_ela_publicadas")
     contas: dict[str, dict] = {}
@@ -1158,15 +1191,14 @@ def sugerir_todas(config: dict, pasta: Path, canais_validos: set[str] | None = N
     corrida, e as 150 linhas ja verificadas numa sessao anterior e as 124
     que nao responderam ficaram com a coluna vazia, precisamente as que
     mais precisam de um motivo escrito. A segunda e o ciclo de trabalho:
-    depois de preencher `canal` ou `data_emissao` a mao no Excel, correr
+    depois de preencher `canal` ou `data_entrevista` a mao no Excel, correr
     isto diz logo se a linha passa a entrar, sem esperar por outra volta
     de rede.
     """
     caminho = pasta / "triagem.csv"
     if not caminho.exists():
         raise SystemExit("nao ha triagem.csv: correr primeiro com --triar")
-    with caminho.open(encoding="utf-8-sig", newline="") as f:
-        linhas = list(csv.DictReader(f))
+    linhas = ler_triagem(caminho)
     if canais_validos is None:
         canais_validos = set(carregar_config().canais)
     resumo = {"linhas": len(linhas), "sim": 0, "nao": 0, "por_ler": 0, "do_canal": 0, "ja_decididas": 0}
@@ -1205,8 +1237,7 @@ def verificar(config: dict, pasta: Path, sujeito=None, canais_validos: set[str] 
     caminho = pasta / "triagem.csv"
     if not caminho.exists():
         raise SystemExit("nao ha triagem.csv: correr primeiro com --triar")
-    with caminho.open(encoding="utf-8-sig", newline="") as f:
-        linhas = list(csv.DictReader(f))
+    linhas = ler_triagem(caminho)
     finais = {l["url_google"]: l.get("url_final", "") for l in ler_csv(pasta).values()}
     if sujeito is None or canais_validos is None:
         editorial = carregar_config()
@@ -1264,7 +1295,7 @@ def verificar(config: dict, pasta: Path, sujeito=None, canais_validos: set[str] 
 
 
 # Motivo unico para uma peca cuja pagina nunca foi lida. E uma constante
-# porque e escrito em dois sitios, a sugestao e a emissao, e foram esses
+# porque e escrito em dois sitios, a sugestao e a entrevista, e foram esses
 # dois sitios a discordar: ver `pagina_por_ler`.
 MOTIVO_POR_LER = "por ler: a pagina nao respondeu; abrir no browser"
 
@@ -1299,7 +1330,7 @@ def pagina_por_ler(linha: dict) -> bool:
     motivo que nao era o dela.
 
     Pior do que o motivo errado: um titulo de indice que dissesse o canal,
-    a palavra e o dia bastava para publicar uma emissao a partir de uma
+    a palavra e o dia bastava para publicar uma entrevista a partir de uma
     pagina que ninguem abriu. "Nao sei" nao e "nao", mas tambem nao e
     "sim".
     """
@@ -1345,9 +1376,9 @@ def emitir(config: dict, pasta: Path, canais_validos: set[str]) -> tuple[list[di
     """Converte as decisoes da triagem em linhas do registo curado.
 
     Agrupa por (canal, data): varias linhas da triagem sao a mesma
-    emissao vista por fontes diferentes, e uma emissao entra uma vez. O
+    entrevista vista por fontes diferentes, e uma entrevista entra uma vez. O
     simulcast fica agrupado por `mesma_entrevista`, que e a data: canais
-    diferentes no mesmo dia sao duas emissoes com a mesma chave, que e
+    diferentes no mesmo dia sao duas entrevistas com a mesma chave, que e
     exatamente a decisao editorial 3.
 
     Recusa e nao adivinha:
@@ -1360,8 +1391,7 @@ def emitir(config: dict, pasta: Path, canais_validos: set[str]) -> tuple[list[di
     Nao escreve duracao: o campo saiu do projeto a 2026-09-10.
     """
     caminho = pasta / "triagem.csv"
-    with caminho.open(encoding="utf-8-sig", newline="") as f:
-        linhas = list(csv.DictReader(f))
+    linhas = ler_triagem(caminho)
 
     avisos: list[str] = []
     blocos: dict[tuple[str, str], dict] = {}
@@ -1374,11 +1404,11 @@ def emitir(config: dict, pasta: Path, canais_validos: set[str]) -> tuple[list[di
         # data: 2024-03-20 volta como 20/03/2024. Cortar dez caracteres
         # escreveria essa forma no registo e o coletor rejeitava-a. Le-se
         # com a mesma funcao que le as datas dos sites.
-        # `data_emissao`, escrita a mao, ganha a tudo: a data que a pagina
+        # `data_entrevista`, escrita a mao, ganha a tudo: a data que a pagina
         # declara e a da publicacao, e um canal que publica na terca o
-        # artigo sobre a entrevista de segunda deslocava a emissao um dia.
+        # artigo sobre a entrevista de segunda deslocava a entrevista um dia.
         data = (
-            extracao.data_para_iso(linha.get("data_emissao") or "")
+            extracao.data_para_iso(linha.get("data_entrevista") or "")
             or extracao.data_para_iso(linha.get("data_na_pagina") or "")
             or extracao.data_para_iso(linha.get("data") or "")
         )
@@ -1460,7 +1490,7 @@ def emitir_paginas_de_canal(config: dict, pasta: Path, editorial,
     de formato e as rondas. Aqui so se recusa o que nem sequer e
     candidato: sem data legivel, sem prova, ou prova que nao e de um canal.
 
-    Uma emissao que o registo verificado a mao ja tenha nao se repete: a
+    Uma entrevista que o registo verificado a mao ja tenha nao se repete: a
     leitura humana ganha, e o coletor poria esta na quarentena de qualquer
     maneira.
 
@@ -1480,8 +1510,7 @@ def emitir_paginas_de_canal(config: dict, pasta: Path, editorial,
     programa de entrevistas, mas a entrevista nao e a ele.
     """
     caminho = pasta / "triagem.csv"
-    with caminho.open(encoding="utf-8-sig", newline="") as f:
-        linhas = list(csv.DictReader(f))
+    linhas = ler_triagem(caminho)
     ja_no_registo = ja_no_registo or set()
     canais_validos = set(editorial.canais)
 
@@ -1507,7 +1536,7 @@ def emitir_paginas_de_canal(config: dict, pasta: Path, editorial,
             motivos["a pagina nao nomeia o sujeito"] = motivos.get("a pagina nao nomeia o sujeito", 0) + 1
             continue
         data = (
-            extracao.data_para_iso(linha.get("data_emissao") or "")
+            extracao.data_para_iso(linha.get("data_entrevista") or "")
             or extracao.data_para_iso(linha.get("data_na_pagina") or "")
             or extracao.data_para_iso(linha.get("data") or "")
         )
@@ -1603,7 +1632,7 @@ def entrevista_datada_por_extenso(config: dict, texto: str) -> bool:
       esteja na frase;
     - um ano sozinho, mas so a menos de `janela_do_ano` caracteres da
       palavra. A primeira versao desta regra aceitava um ano sozinho em
-      qualquer sitio da frase, e cortou uma emissao certa por causa de um
+      qualquer sitio da frase, e cortou uma entrevista certa por causa de um
       "revogado em 2005" que estava a 366 caracteres, a falar de outra
       coisa. Era erro por excesso numa regra escrita para evitar erro por
       excesso.
@@ -1625,8 +1654,8 @@ def entrevista_datada_por_extenso(config: dict, texto: str) -> bool:
     return False
 
 
-def data_de_emissao(config: dict, texto: str, publicado: str) -> tuple[str, str]:
-    """O dia da emissao que a peca fixa, a partir do dia em que foi publicada.
+def data_de_entrevista(config: dict, texto: str, publicado: str) -> tuple[str, str]:
+    """O dia da entrevista que a peca fixa, a partir do dia em que foi publicada.
 
     Devolve (data, como). "Ontem" recua um dia, "amanha" avanca um, "hoje"
     e os seus equivalentes sao o proprio dia. Um dia da semana precisa de
@@ -1637,7 +1666,7 @@ def data_de_emissao(config: dict, texto: str, publicado: str) -> tuple[str, str]
     a que vem, e a data fica vazia: adivinhar o lado era errar uma semana.
 
     Sem nenhum destes, a data fica vazia e a linha espera por uma pessoa:
-    a data de publicacao de uma peca nao e a data da emissao, e escreve-la
+    a data de publicacao de uma peca nao e a data da entrevista, e escreve-la
     seria inventar um dia.
 
     Os anuncios contam desde 2026-09-09, por decisao do autor: uma
@@ -1647,7 +1676,7 @@ def data_de_emissao(config: dict, texto: str, publicado: str) -> tuple[str, str]
 
     Limite conhecido: a publicacao le-se em UTC e uma peca escrita depois
     da meia-noite sobre "esta noite" cai no dia seguinte. E por isso que a
-    coluna `data_emissao`, escrita a mao, ganha sempre a esta leitura.
+    coluna `data_entrevista`, escrita a mao, ganha sempre a esta leitura.
     """
     regras = config.get("imprensa") or {}
     dia = extracao.data_para_iso(publicado or "")
@@ -1679,12 +1708,12 @@ def data_de_emissao(config: dict, texto: str, publicado: str) -> tuple[str, str]
 def avaliar_peca(config: dict, linha: dict, canais_validos: set[str]) -> tuple[dict | None, str]:
     """Aplica a uma peca de imprensa as quatro condicoes para contar.
 
-    Devolve (linha do clipping, "") quando a peca prova a emissao, ou
+    Devolve (linha do clipping, "") quando a peca prova a entrevista, ou
     (None, motivo) quando nao prova, com o motivo escrito para a pessoa
     saber o que falta. E a mesma funcao que o `--verificar` usa para
     escrever a coluna `sugestao` e que o `--emitir --imprensa` usa para
     decidir: uma so leitura das regras, para que a sugestao que a pessoa
-    ve na triagem seja o que a emissao vai fazer.
+    ve na triagem seja o que a entrevista vai fazer.
 
       0. ter sido lida. Uma peca cuja pagina nao respondeu nao se avalia
          pelo titulo que o indice lhe deu: ver `pagina_por_ler`;
@@ -1695,8 +1724,8 @@ def avaliar_peca(config: dict, linha: dict, canais_validos: set[str]) -> tuple[d
          declaracoes no titulo. A classificacao pelo titulo e a regra do
          projeto; o lead entra aqui porque os jornais titulam com a
          citacao e deixam "numa entrevista exclusiva" para a primeira frase;
-      3. fixar o dia da emissao (ver `data_de_emissao`), ou ter o dia
-         escrito a mao em `data_emissao`;
+      3. fixar o dia da entrevista (ver `data_de_entrevista`), ou ter o dia
+         escrito a mao em `data_entrevista`;
       4. relatar ou anunciar. Ate 2026-09-09 so o relato contava; o
          anuncio passou a contar por decisao do autor, com a data lida
          para a frente. A peca que nem relata nem anuncia e que so fixa o
@@ -1726,14 +1755,14 @@ def avaliar_peca(config: dict, linha: dict, canais_validos: set[str]) -> tuple[d
         return None, f"o titulo diz {formato_titulo}, nao e entrevista a solo"
 
     publicado = extracao.data_para_iso(linha.get("data_na_pagina") or "") or extracao.data_para_iso(linha.get("data") or "")
-    data_a_mao = extracao.data_para_iso(linha.get("data_emissao") or "")
+    data_a_mao = extracao.data_para_iso(linha.get("data_entrevista") or "")
     if data_a_mao:
         data, como = data_a_mao, "a mao"
     else:
-        data, como = data_de_emissao(config, texto, publicado)
+        data, como = data_de_entrevista(config, texto, publicado)
         if not data:
-            motivo = como or "a peca nao fixa o dia da emissao"
-            return None, f"{motivo}; escrever data_emissao"
+            motivo = como or "a peca nao fixa o dia da entrevista"
+            return None, f"{motivo}; escrever data_entrevista"
 
     novo = {
         "data": data,
@@ -1754,7 +1783,7 @@ def duplicados_provaveis(blocos: dict[tuple[str, str], dict]) -> list[str]:
 
     Varios jornais escrevem sobre a mesma entrevista e nem todos fixam o
     dia da mesma maneira: um diz "ontem", outro "esta noite" numa peca
-    publicada depois da meia-noite, e a mesma emissao fica com duas datas.
+    publicada depois da meia-noite, e a mesma entrevista fica com duas datas.
     Fundir as duas seria adivinhar qual esta certa; deixar as duas seria
     contar uma entrevista como duas. Fica o aviso, e a pessoa decide com
     as duas pecas abertas.
@@ -1773,8 +1802,8 @@ def duplicados_provaveis(blocos: dict[tuple[str, str], dict]) -> list[str]:
 
 def _distancia_ao_dia(linha: dict) -> tuple[int, int]:
     publicado = date.fromisoformat(linha.get("publicado_em") or linha["data"])
-    emissao = date.fromisoformat(linha["data"])
-    return abs((publicado - emissao).days), 1 if publicado < emissao else 0
+    entrevista = date.fromisoformat(linha["data"])
+    return abs((publicado - entrevista).days), 1 if publicado < entrevista else 0
 
 
 def emitir_imprensa(config: dict, pasta: Path, canais_validos: set[str], ja_no_canal: set[tuple[str, str]] | None = None) -> tuple[list[dict], list[str]]:
@@ -1785,14 +1814,13 @@ def emitir_imprensa(config: dict, pasta: Path, canais_validos: set[str], ja_no_c
     ignoradas em silencio, nao e um erro. As condicoes para entrar estao
     em `avaliar_peca`, que e tambem o que escreve a coluna `sugestao`.
 
-    Uma emissao que ja esteja no registo do canal nao se repete aqui: a
+    Uma entrevista que ja esteja no registo do canal nao se repete aqui: a
     prova do canal e melhor, e o coletor poria esta na quarentena. Entre
-    varias pecas sobre a mesma emissao fica uma, e as que ficam a um dia
+    varias pecas sobre a mesma entrevista fica uma, e as que ficam a um dia
     de distancia no mesmo canal saem como aviso, nao como duas linhas.
     """
     caminho = pasta / "triagem.csv"
-    with caminho.open(encoding="utf-8-sig", newline="") as f:
-        linhas = list(csv.DictReader(f))
+    linhas = ler_triagem(caminho)
     ja_no_canal = ja_no_canal or set()
 
     avisos: list[str] = []
@@ -1823,7 +1851,7 @@ def emitir_imprensa(config: dict, pasta: Path, canais_validos: set[str], ja_no_c
             continue
         chave = (novo["canal"], novo["data"])
         antigo = blocos.get(chave)
-        # Duas pecas sobre a mesma emissao: fica a publicada mais perto do
+        # Duas pecas sobre a mesma entrevista: fica a publicada mais perto do
         # dia, que e a que menos depende de memoria. A distancia igual
         # ganha a que relata, porque prova que aconteceu, sobre a que so
         # anunciava.
@@ -1843,7 +1871,7 @@ def emitir_imprensa(config: dict, pasta: Path, canais_validos: set[str], ja_no_c
     return ordenadas, avisos
 
 
-def emissoes_do_registo(caminho: Path) -> set[tuple[str, str]]:
+def entrevistas_do_registo(caminho: Path) -> set[tuple[str, str]]:
     """Os pares (canal, data) que o registo do canal ja tem."""
     if not caminho.exists():
         return set()
@@ -1870,7 +1898,7 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--mapa", action="store_true", help="acrescentar a triagem as pecas cujo endereco nomeia o sujeito, pelos mapas de sitio")
     parser.add_argument("--limite", type=int, help="com --resolver ou --mapa: parar ao fim de N, para medir antes de gastar")
     parser.add_argument("--tudo", action="store_true", help="com --resolver: resolver a colheita inteira, nao so os triados")
-    parser.add_argument("--dirigidas", action="store_true", help="colher so os dias a volta de cada emissao de config/referencia.yml")
+    parser.add_argument("--dirigidas", action="store_true", help="colher so os dias a volta de cada entrevista de config/referencia.yml")
     parser.add_argument("--cobertura", action="store_true", help="linha a linha de config/referencia.yml: no site, no registo, com pista, ou sem nada; sem rede")
     args = parser.parse_args(argv)
 
@@ -1879,7 +1907,7 @@ def main(argv: list[str]) -> int:
     if args.emitir and args.canal:
         editorial = carregar_config()
         entrevistas, avisos = emitir_paginas_de_canal(
-            config, pasta, editorial, emissoes_do_registo(FICHEIRO_ENTREVISTAS)
+            config, pasta, editorial, entrevistas_do_registo(FICHEIRO_ENTREVISTAS)
         )
         for aviso in avisos:
             print(f"  {aviso}", flush=True)
@@ -1887,18 +1915,18 @@ def main(argv: list[str]) -> int:
         resumo = {"paginas_de_canal": len(entrevistas)}
     elif args.emitir and args.imprensa:
         editorial = carregar_config()
-        entrevistas, avisos = emitir_imprensa(config, pasta, set(editorial.canais), emissoes_do_registo(FICHEIRO_ENTREVISTAS))
+        entrevistas, avisos = emitir_imprensa(config, pasta, set(editorial.canais), entrevistas_do_registo(FICHEIRO_ENTREVISTAS))
         for aviso in avisos:
             print(f"  fora: {aviso}", flush=True)
         escrever_registo(entrevistas, FICHEIRO_CLIPPING)
-        resumo = {"emissoes_imprensa": len(entrevistas), "fora": len(avisos)}
+        resumo = {"entrevistas_imprensa": len(entrevistas), "fora": len(avisos)}
     elif args.emitir:
         editorial = carregar_config()
         entrevistas, avisos = emitir(config, pasta, set(editorial.canais))
         for aviso in avisos:
             print(f"  fora: {aviso}", flush=True)
         escrever_registo(entrevistas, FICHEIRO_ENTREVISTAS)
-        resumo = {"emissoes": len(entrevistas), "fora": len(avisos)}
+        resumo = {"entrevistas": len(entrevistas), "fora": len(avisos)}
     elif args.verificar:
         print(f"a verificar candidatos de {pasta}", flush=True)
         resumo = verificar(config, pasta)
@@ -1915,15 +1943,15 @@ def main(argv: list[str]) -> int:
         referencia = carregar_referencia()
         if not referencia:
             raise SystemExit("config/referencia.yml esta vazio: nao ha dias para pedir")
-        print(f"a colher os dias a volta de {len(referencia)} emissoes de referencia para {pasta}", flush=True)
+        print(f"a colher os dias a volta de {len(referencia)} entrevistas de referencia para {pasta}", flush=True)
         resumo = colher_dirigidas(config, pasta, referencia)
     elif args.cobertura:
         referencia = carregar_referencia()
         registos = set()
         for caminho in (FICHEIRO_ENTREVISTAS, FICHEIRO_CLIPPING, RAIZ / "config" / "curadoria.yml"):
-            registos |= emissoes_do_registo(caminho)
+            registos |= entrevistas_do_registo(caminho)
         print(f"cobertura da referencia ({len(referencia)} linhas) contra o site, o registo e a triagem de {pasta}", flush=True)
-        resumo = cobertura(config, pasta, referencia, emissoes_publicadas(), registos, tolerancia_de_referencia())
+        resumo = cobertura(config, pasta, referencia, entrevistas_publicadas(), registos, tolerancia_de_referencia())
     elif args.triar:
         print(f"a triar {pasta}", flush=True)
         resumo = triar(config, pasta)

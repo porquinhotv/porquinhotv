@@ -1,9 +1,9 @@
 ---
-# Lista de referencia: emissoes que o autor sabe que existiram, por dia e
+# Lista de referencia: entrevistas que o autor sabe que existiram, por dia e
 # canal. Escrita a 2026-09-10, a partir de uma lista dele de janeiro de
 # 2024 a agosto de 2025, em que tem muita confianca.
 #
-# NAO E UMA FONTE. Nenhuma linha daqui entra no site: uma emissao so
+# NAO E UMA FONTE. Nenhuma linha daqui entra no site: uma entrevista so
 # conta com uma prova publica que qualquer pessoa abre. A lista serve
 # para duas coisas, as duas na ferramenta local:
 #
@@ -15,12 +15,12 @@
 #       colheita mensal, que a 2026-09-08 nao trouxe 14 de 16 entrevistas
 #       conhecidas.
 #   python -m ferramentas.gnews --saida ... --cobertura
-#       diz, linha a linha, se o site tem a emissao, se um registo em
+#       diz, linha a linha, se o site tem a entrevista, se um registo em
 #       ficheiro a tem por publicar, se a triagem tem uma pista, ou se nao
 #       ha nada. E a reconciliacao desta lista contra o que se publica.
 #
 # A tolerancia de um dia existe porque a data de uma peca nao e a data
-# da emissao, e porque a propria lista pode estar um dia ao lado: a linha
+# da entrevista, e porque a propria lista pode estar um dia ao lado: a linha
 # "RTP 19 marco 2025" e a entrevista do Telejornal de terca-feira, 18,
 # pela pagina do canal.
 #

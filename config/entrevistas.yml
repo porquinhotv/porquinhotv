@@ -1,20 +1,30 @@
 ---
-# Registo curado de emissoes. A fonte principal do Porquinho TV.
+# Registo curado de transmissoes. A fonte principal do Porquinho TV.
 #
-# Cada linha e uma entrevista exclusiva emitida num canal, verificada por
-# uma pessoa, com o URL onde qualquer outra pessoa a pode ver. Sem prova
-# nao entra. Nao ha duracao: desde 2026-09-10 o site conta a existencia
+# Cada linha e o facto de uma entrevista exclusiva ter passado num canal,
+# verificado por uma pessoa, com o URL onde qualquer outra pessoa a pode
+# ver. Sem prova nao entra.
+#
+# A unidade que o site conta e a entrevista, nao a linha: quando a mesma
+# entrevista passa em dois canais ha duas linhas aqui e uma entrevista no
+# site. Quem as junta e a tabela `mesma_entrevista` de
+# config/curadoria.yml, que diz tambem a que canal a entrevista fica
+# atribuida. Nao ha duracao: desde 2026-09-10 o site conta a existencia
 # de cada entrevista e nunca o tempo, e o coletor recusa uma linha que
 # ainda traga `duracao_s` ou `parcial`.
 #
 # Campos:
-#   data             data de emissao (AAAA-MM-DD)            obrigatorio
+#   data             dia em que passou (AAAA-MM-DD)          obrigatorio
 #   canal            id de config/porquinho.yml              obrigatorio
 #   programa         nome do programa ou noticiario           obrigatorio
 #   prova            URL do video ou da pagina do canal        obrigatorio
 #   titulo           como o canal lhe chamou                   opcional
 #   publicado_em     data de publicacao, se diferente          opcional
-#   mesma_entrevista chave livre; agrupa simulcast/repeticoes  opcional
+#
+# O campo `mesma_entrevista` saiu daqui a 2026-09-11 e passou para a
+# tabela com o mesmo nome em config/curadoria.yml. O coletor recusa uma
+# linha que ainda o traga: um campo que ficasse aqui a fingir que agrupa
+# deixava duas entrevistas a contar onde ha uma.
 #
 # Exemplo (apagar quando houver linhas reais):
 #
@@ -23,7 +33,6 @@
 #     programa: Jornal da Noite
 #     prova: https://sicnoticias.pt/.../entrevista-a-...
 #     titulo: Entrevista a André Ventura
-#     mesma_entrevista: 2026-09-04-jornal-da-noite
 
 entrevistas:
 - data: '2024-03-20'
@@ -41,31 +50,26 @@ entrevistas:
   programa: André Ventura
   prova: https://tviplayer.iol.pt/programa/noticias-cnn/6193fe4b0cf2c7ea0f090b1e/video/6708406b0cf23ab6553606d3
   titulo: 'André Ventura: a entrevista na íntegra'
-  mesma_entrevista: '2024-10-10'
 - data: '2025-04-09'
   canal: now
   programa: Legislativas 2025
   prova: https://www.nowcanal.pt/ultimas/detalhe/legislativas-2025-assista-a-entrevista-de-andre-ventura
   titulo: 'Legislativas 2025: Assista à entrevista de André Ventura'
-  mesma_entrevista: '2025-04-09'
 - data: '2025-04-09'
   canal: tvi
   programa: Goucha
   prova: https://tvi.iol.pt/videos/goucha-entrevista-exclusiva-com-andre-ventura/67f684a50cf216cd3ad34a05
   titulo: Goucha - Entrevista exclusiva com André Ventura
-  mesma_entrevista: '2025-04-09'
 - data: '2025-05-21'
   canal: cnn-portugal
   programa: não apurado
   prova: https://cnnportugal.iol.pt/videos/a-primeira-entrevista-a-andre-ventura-apos-as-eleicoes-na-integra/682e49960cf28cf88768061e
   titulo: A primeira entrevista a André Ventura após as eleições (na íntegra)
-  mesma_entrevista: '2025-05-21'
 - data: '2025-05-21'
   canal: tvi
   programa: Entrevista exclusiva
   prova: https://tviplayer.iol.pt/programa/entrevista-exclusiva/67d46981d34ef72ee4437601/video/682e3ea00cf216cd3ad36a04
   titulo: 'Entrevista exclusiva: com André Ventura'
-  mesma_entrevista: '2025-05-21'
 - data: '2025-06-04'
   canal: rtp3
   programa: Grande Entrevista
@@ -81,13 +85,11 @@ entrevistas:
   programa: não apurado
   prova: https://cnnportugal.iol.pt/videos/entrevista-exclusiva-com-andre-ventura/68f164740cf285ab53a6139f
   titulo: Entrevista exclusiva com André Ventura
-  mesma_entrevista: '2025-10-16'
 - data: '2025-10-16'
   canal: tvi
   programa: não apurado
   prova: https://tvi.iol.pt/noticias/videos/a-entrevista-exclusiva-a-andre-ventura-na-integra/68f163ca0cf29d28d828d75d
   titulo: A entrevista exclusiva a André Ventura na íntegra
-  mesma_entrevista: '2025-10-16'
 - data: '2025-10-24'
   canal: sic-noticias
   programa: não apurado
@@ -98,13 +100,11 @@ entrevistas:
   programa: não apurado
   prova: https://cnnportugal.iol.pt/videos/a-entrevista-a-andre-ventura-na-integra/690690050cf2c7eb24443f42
   titulo: A entrevista a André Ventura na íntegra
-  mesma_entrevista: '2025-11-01'
 - data: '2025-11-01'
   canal: tvi
   programa: não apurado
   prova: https://tviplayer.iol.pt/programa/cnn-em-foco/66576e34d34e049892216643/video/690690050cf2c7eb24443f42
   titulo: A entrevista a André Ventura na íntegra
-  mesma_entrevista: '2025-11-01'
 - data: '2025-11-04'
   canal: rtp3
   programa: não apurado
@@ -155,13 +155,11 @@ entrevistas:
   programa: não apurado
   prova: https://cnnportugal.iol.pt/videos/a-entrevista-a-andre-ventura-na-integra/6a03acd40cf27f6588a6a772
   titulo: A entrevista a André Ventura na íntegra
-  mesma_entrevista: '2026-05-12'
 - data: '2026-05-12'
   canal: tvi
   programa: não apurado
   prova: https://tvi.iol.pt/noticias/videos/a-entrevista-a-andre-ventura-na-integra/6a03acd40cf27f6588a6a772
   titulo: A entrevista a André Ventura na íntegra
-  mesma_entrevista: '2026-05-12'
 - data: '2026-06-02'
   canal: tvi
   programa: não apurado
@@ -187,25 +185,21 @@ entrevistas:
   programa: não apurado
   prova: https://cnnportugal.iol.pt/videos/a-entrevista-a-andre-ventura-na-integra/6a5956770cf2f6a1a1e7102a
   titulo: A entrevista a André Ventura na íntegra
-  mesma_entrevista: '2026-07-16'
 - data: '2026-07-16'
   canal: tvi
   programa: não apurado
   prova: https://tviplayer.iol.pt/programa/cnn-prime-time/6193932f0cf2cc58e7d362d6/video/6a5956770cf2f6a1a1e7102a
   titulo: A entrevista a André Ventura na íntegra
-  mesma_entrevista: '2026-07-16'
 - data: '2026-07-29'
   canal: cnn-portugal
   programa: não apurado
   prova: https://cnnportugal.iol.pt/videos/a-entrevista-a-andre-ventura-na-integra/6a6a74e00cf2b42132dbc313
   titulo: A entrevista a André Ventura na íntegra
-  mesma_entrevista: '2026-07-29'
 - data: '2026-07-29'
   canal: tvi
   programa: não apurado
   prova: https://tvi.iol.pt/noticias/videos/a-entrevista-a-andre-ventura-na-integra/6a6a74e00cf2b42132dbc313
   titulo: A entrevista a André Ventura na íntegra
-  mesma_entrevista: '2026-07-29'
 - data: '2026-09-01'
   canal: cnn-portugal
   programa: Luís Neves e as "explicações absolutamente atrozes" do ministro
