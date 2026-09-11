@@ -256,6 +256,27 @@ entrevistas:
     prova: https://www.nowcanal.pt/ultimas/detalhe/entrevista-completa-de-andre-ventura-no-now-com-santana-lopes
     titulo: 'Entrevista completa de André Ventura no NOW, com Santana Lopes'
 
+  # Entrou a 2026-09-11 pela colheita de pistas de imprensa dirigida as 24
+  # linhas de 2024 da lista de referencia, que e o periodo onde o site
+  # estava mais curto. Das 24, esta e a unica que a colheita provou; as
+  # restantes 18 ficam para o ciclo da seccao 0.5 da KB.
+  #
+  # A peca da Renascenca, publicada a 11 de marco de 2024 as 22:28, diz
+  # "Em entrevista a TVI" e situa-a "no dia seguinte as eleicoes
+  # legislativas", que foram a 10 de marco. Cumpre as quatro condicoes da
+  # prova de imprensa: nomeia um canal e um so, diz entrevista, fixa o dia
+  # e relata o que la foi dito.
+  #
+  # Guardas corridas antes de acrescentar, pela regra de 0.1.3: nao ha
+  # nenhuma linha do grupo Media Capital neste dia, nem emissao do mesmo
+  # canal a um ou dois dias de distancia. Nao ha identificador de video a
+  # comparar porque a prova e uma peca de jornal.
+  - data: 2024-03-11
+    canal: tvi
+    origem: imprensa
+    prova: https://rr.pt/noticia/politica/2024/03/11/ventura-exige-negociacao-com-ad-para-aprovar-orcamento-do-estado/370455/
+    titulo: 'Ventura exige negociação com AD para aprovar Orçamento do Estado'
+
 remover:
   - prova: https://www.jm-madeira.pt/v%C3%ADdeo/regi-o/30004362/ventura-agarra-se-a-vice-presidente-da-camara-do-funchal.html
     motivo: é a mesma entrevista da emissão de 2026-09-01 na CNN Portugal, já provada pela página do canal; a data desta peça é a da publicação, não a da emissão
