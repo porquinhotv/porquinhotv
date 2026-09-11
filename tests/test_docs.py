@@ -3,6 +3,7 @@
 - a Metodologia HTML corresponde ao Markdown;
 - os textos satiricos no site correspondem ao YAML;
 - sem travessoes nos textos versionados;
+- o rodape completo em todas as paginas, e o sujeito escrito por extenso;
 - o site nao pede nada a terceiros;
 - nenhum nome de canal ou pessoa no codigo Python;
 - sem metadados de editor nos SVG.
@@ -91,6 +92,30 @@ class TestConvencoes(unittest.TestCase):
                 for n, linha in enumerate(caminho.read_text(encoding="utf-8").splitlines(), 1):
                     for t in TRAVESSOES:
                         self.assertNotIn(t, linha, f"{caminho.name}:{n}")
+
+    def test_o_rodape_completo_esta_em_todas_as_paginas(self):
+        """O Calendario e as Fontes tinham um rodape reduzido a dois links,
+        sem contacto e sem a explicacao do que o site conta. Quem chega a
+        uma dessas paginas por um motor de busca nao tinha, dali, forma de
+        reportar uma linha errada. O rodape e o mesmo nas tres."""
+        for nome in ("index.html", "calendario.html", "fontes.html"):
+            caminho = RAIZ / "docs" / nome
+            texto = caminho.read_text(encoding="utf-8")
+            with self.subTest(ficheiro=nome):
+                self.assertIn("mailto:", texto, f"{nome} nao tem contacto no rodape")
+                self.assertIn('href="metodologia.html"', texto, f"{nome} nao liga a Metodologia")
+                self.assertIn('id="gerado"', texto, f"{nome} nao diz a data da ultima recolha")
+
+    def test_as_frases_do_site_nao_tratam_o_sujeito_por_pronome(self):
+        """Decisao do autor a 2026-09-11: as frases falam sempre do
+        porquinho e nunca dizem "ele". Um pronome solto deixa de ser satira
+        sobre a mascote e passa a apontar a uma pessoa, que e exatamente o
+        que este site nao faz. A legenda dos canais dizia "onde e que ele
+        apareceu mais vezes"."""
+        texto = (RAIZ / "docs" / "textos.json").read_text(encoding="utf-8")
+        for n, linha in enumerate(texto.splitlines(), 1):
+            with self.subTest(linha=n):
+                self.assertIsNone(re.search(r"\b[Ee]le\b", linha), f"textos.json:{n}")
 
     def test_o_site_nao_pede_nada_a_terceiros(self):
         for caminho in sorted((RAIZ / "docs").glob("*.html")) + sorted((RAIZ / "docs").glob("*.js")) + sorted((RAIZ / "docs").glob("*.css")):

@@ -31,6 +31,7 @@
   Promise.all([PTVDOM.carregar("dados/emissoes.json"), PTVDOM.carregar("dados/resumo.json")])
     .then(function (r) {
       var resumo = r[1];
+      PTVDOM.marcarGerado(resumo);
       /* Ambito visivel: o dataset guarda tudo desde 2019, o site mostra e
          conta a partir do corte que o resumo declara. Um resumo gerado
          antes de 2026-09-11 ainda nao traz `ambito`; nesse caso mostra-se

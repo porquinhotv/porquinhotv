@@ -9,6 +9,10 @@
 # dito numa entrevista, e nunca a comentar a pessoa: a satira e sobre a
 # frequencia das visitas, que e o que este site mede.
 #
+# O sujeito escreve-se sempre "o porquinho", nunca "ele": decisao do
+# autor a 2026-09-11. Um pronome solto no site deixa de ser satira sobre
+# a mascote e passa a apontar a uma pessoa, que e o que o projeto nao faz.
+#
 # `ate_dias` e o limite superior inclusivo de cada humor; o ultimo tem
 # `ate_dias: null` e apanha o resto.
 
@@ -84,7 +88,7 @@ metricas:
       frases:
         - Ainda dá tempo para arrumar o chiqueiro entre uma e outra.
         - Ritmo de quem tem mais que fazer.
-        - O porquinho conta pelos dedos. Tem quatro.
+        - O porquinho conta isto com uma pata e ainda lhe sobram dedos.
     - ate: 9
       frases:
         - Isto já não é aparecer na televisão, é passar por casa.
@@ -98,6 +102,6 @@ metricas:
         - Se fosse um programa, já ia na terceira temporada.
   lider: '{canal}: {n}% das emissões. Já não é um canal, é uma segunda casa.'
   legendas:
-    canais: Onde é que ele apareceu mais vezes. A mesma entrevista em dois canais conta nos dois, porque a omnipresença também se conta duas vezes.
-    evolucao: Cada barra é um período. Quanto mais alta, mais convites houve. Passe o rato ou use o teclado para ler os valores.
+    canais: Onde é que o porquinho apareceu mais vezes. A mesma entrevista em dois canais conta nos dois, porque a omnipresença do porquinho também se conta duas vezes.
+    evolucao: Cada barra é um período e mede a lama acumulada. Quanto mais alta, mais convites o porquinho arrastou para o chiqueiro. Passe o rato ou use o teclado para ler os valores.
     recordes: O melhor e o pior do chiqueiro, em todo o histórico.

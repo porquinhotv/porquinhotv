@@ -129,6 +129,6 @@
   }
 
   PTVDOM.carregar("dados/resumo.json")
-    .then(function (r) { estado.resumo = r; desenhar(); })
+    .then(function (r) { estado.resumo = r; PTVDOM.marcarGerado(r); desenhar(); })
     .catch(function (e) { document.getElementById("conteudo").innerHTML = ""; PTVDOM.mostrarErro("Não foi possível carregar dados/resumo.json. " + e.message); });
 })();

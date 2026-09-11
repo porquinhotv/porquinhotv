@@ -333,7 +333,7 @@
     .then(function (r) {
       estado.resumo = r[0];
       estado.textos = r[1];
-      document.getElementById("gerado").textContent = "Última recolha: " + String(estado.resumo.gerado_em).replace("T", " ").replace("+00:00", " UTC");
+      PTVDOM.marcarGerado(estado.resumo);
       desenharPorquinho();
       desenharPainel();
     })

@@ -34,6 +34,15 @@ var PTVDOM = (function () {
     return v ? "var(" + nome + ")" : "var(--canal-outro)";
   }
 
+  /* "Ultima recolha" no rodape. Vive aqui, e nao na pagina principal,
+     porque o rodape passou a ser o mesmo nas tres paginas a 2026-09-11:
+     escrito num sitio so, nao ha forma de se desencontrar entre elas. */
+  function marcarGerado(resumo) {
+    var no = document.getElementById("gerado");
+    if (!no || !resumo || !resumo.gerado_em) { return; }
+    no.textContent = "Última recolha: " + String(resumo.gerado_em).replace("T", " ").replace("+00:00", " UTC");
+  }
+
   function mostrarErro(mensagem) {
     var painel = document.getElementById("painel");
     if (!painel) { return; }
@@ -44,5 +53,5 @@ var PTVDOM = (function () {
     ]));
   }
 
-  return { el: el, escapar: escapar, carregar: carregar, corDoCanal: corDoCanal, mostrarErro: mostrarErro };
+  return { el: el, escapar: escapar, carregar: carregar, corDoCanal: corDoCanal, marcarGerado: marcarGerado, mostrarErro: mostrarErro };
 })();
