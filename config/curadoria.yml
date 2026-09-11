@@ -270,3 +270,20 @@ remover:
     motivo: a página declara "em entrevista à CNN Portugal" e nomeia só esse canal; é um vídeo da CNN servido no leitor do grupo, não uma emissão da TVI, e a emissão de 2024-10-10 na CNN Portugal já está contada
   - prova: https://tviplayer.iol.pt/programa/cnn-em-foco/66576e34d34e049892216643/video/690690050cf2c7eb24443f42
     motivo: a página não nomeia a TVI em lado nenhum e identifica o programa como CNN em Foco; é um vídeo da CNN servido no leitor do grupo, e a emissão de 2025-11-01 na CNN Portugal já está contada
+
+  # As tres linhas seguintes fecham a inflacao da TVI. Foram decididas a
+  # 2026-09-11 a noite abrindo cada pagina, uma a uma, pela mesma regra:
+  # o identificador de video partilhado entre os dois dominios do grupo
+  # levanta a suspeita e nao a resolve, e o que a resolve e o canal que a
+  # propria pagina nomeia. Nenhuma das tres traz a formula dos dois canais
+  # ("a TVI/CNN Portugal") que a emissao de 2025-03-17 traz e que e o que
+  # distingue um simulcast verdadeiro de um video republicado.
+  #
+  # A emissao da CNN Portugal de cada um destes dias fica, provada a parte
+  # pela pagina do proprio dominio da CNN.
+  - prova: https://tvi.iol.pt/noticias/videos/a-entrevista-a-andre-ventura-na-integra/6a03acd40cf27f6588a6a772
+    motivo: a página declara "em entrevista no Prime Time da CNN Portugal" e nomeia só esse canal; é um vídeo da CNN servido no domínio da TVI, e a emissão de 2026-05-12 na CNN Portugal já está contada
+  - prova: https://tviplayer.iol.pt/programa/cnn-prime-time/6193932f0cf2cc58e7d362d6/video/6a5956770cf2f6a1a1e7102a
+    motivo: a página declara "em entrevista exclusiva à CNN Portugal" e identifica o programa como CNN Prime Time; é um vídeo da CNN servido no leitor do grupo, e a emissão de 2026-07-16 na CNN Portugal já está contada
+  - prova: https://tvi.iol.pt/noticias/videos/a-entrevista-a-andre-ventura-na-integra/6a6a74e00cf2b42132dbc313
+    motivo: a página declara "em entrevista à CNN Portugal" e nomeia só esse canal; é um vídeo da CNN servido no domínio da TVI, e a emissão de 2026-07-29 na CNN Portugal já está contada
