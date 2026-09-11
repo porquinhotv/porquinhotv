@@ -34,6 +34,15 @@ class TestArtefactosGerados(unittest.TestCase):
         self.assertEqual(gerar_textos.ALVO.read_text(encoding="utf-8"), gerar_textos.construir(),
                          "correr: python -m ferramentas.gerar_textos")
 
+    def test_a_metodologia_tem_o_contacto_clicavel(self):
+        """O conversor so trata o Markdown que o documento usa, por isso uma
+        ligacao nova sai como texto com parenteses a vista. A seccao de
+        correcoes precisa de um endereco que uma pessoa carregue, e no
+        telemovel escrever um email a mao e o mesmo que nao haver contacto."""
+        gerado = gerar_metodologia.construir()
+        self.assertIn('<a href="mailto:', gerado)
+        self.assertNotIn("](mailto:", gerado)
+
     def test_validacao_dos_textos_apanha_erros(self):
         mau = {"humores": [{"id": "a", "ate_dias": 3, "frases": ["{x}"]}, {"id": "b", "ate_dias": None, "frases": []}]}
         with self.assertRaises(ValueError):

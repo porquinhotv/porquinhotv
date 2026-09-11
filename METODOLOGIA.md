@@ -1,24 +1,22 @@
 # Metodologia
 
-O Porquinho TV conta as entrevistas exclusivas dadas por André Ventura na televisão portuguesa. Esta página diz o que conta, o que não conta e onde o método falha.
+O Porquinho TV conta as entrevistas exclusivas dadas por André Ventura na televisão portuguesa.
 
 ## O que conta
 
 Uma **entrevista exclusiva** é um segmento em que André Ventura é o único entrevistado, responde a perguntas de um jornalista do canal, e a emissão passou num dos nove canais medidos: RTP1, RTP2, SIC, TVI, SIC Notícias, RTP3, CNN Portugal, NOW e CMTV.
 
-O registo aceita emissões desde 16 de maio de 2019, dia em que o Diário da República publicou o registo do partido. Nada anterior a essa data entra, mesmo que exista. O site, porém, mostra e conta apenas de 2024 em diante, e a secção seguinte diz porquê.
+O site conta de 2024 em diante. Para trás disso há pouca coisa publicada online, e muito desigual de canal para canal, o que dava uma contagem em que não se podia confiar.
 
 Programas de entretenimento contam, desde que a entrevista seja a solo. Noticiários com entrevista em estúdio contam.
 
 **Sem prova pública, não há linha.** Cada emissão tem uma ligação que qualquer pessoa abre: a página do canal, uma notícia que relate ou anuncie a entrevista, ou uma publicação de uma conta oficial do canal ou do próprio entrevistado. A prova tem de nomear o canal e fixar o dia. Estão todas na página de Fontes.
 
-## O âmbito do site: de 2024 em diante
+## De 2024 em diante
 
-O site mostra e conta as emissões de 1 de janeiro de 2024 em diante. As emissões apuradas antes dessa data não foram apagadas: continuam no conjunto de dados publicado, que qualquer pessoa pode descarregar, mas ficam fora dos totais, dos gráficos, do calendário e da tabela de Fontes, que diz quantas são.
+As emissões mais antigas que se apuraram não foram deitadas fora: estão nos dados que qualquer pessoa descarrega, só não entram nas contas nem nos gráficos.
 
-A razão é de honestidade de medição. Para os anos de 2019 a 2023, o que há para ler online, os arquivos dos canais e os índices de notícias, tem cobertura residual e muito desigual entre canais. O que se conseguia apurar desses anos era uma ou duas emissões por ano, e publicar esses números como o retrato desses anos seria apresentar a ausência de cobertura como se fosse medição. De 2024 em diante a cobertura sustenta uma contagem, e é sobre ela que o site responde.
-
-Se a cobertura dos anos anteriores vier um dia a atingir o mesmo nível, o âmbito alarga-se para trás sem se recolher nada de novo: as emissões já apuradas estão guardadas e voltam a contar no dia em que a medição as sustentar.
+Contar 2019 a 2023 com o pouco que há online seria medir os arquivos dos canais e não as entrevistas. No dia em que houver com que contar, esses anos entram sem ser preciso procurar nada de novo.
 
 ## O que não conta
 
@@ -45,22 +43,13 @@ Nem todos os canais se deixam ler por uma máquina. Quando a pesquisa automátic
 
 A data que conta é a data de emissão. Quando a fonte só declara a data de publicação, fica essa, e o calendário marca esses dias de forma diferente.
 
-## As frases
+Isto é sempre uma conta por baixo. Uma entrevista que nem o canal nem a imprensa publicaram online não deixa rasto, e o porquinho não a fareja. Na dúvida, o site fica curto: inflacionar uma contagem é o pior que aqui pode acontecer.
 
-As frases do porquinho são uma camada por cima dos números e não mudam nenhum. Falam de canais, de dias e de moscas, nunca do que foi dito nas entrevistas. O número vem dos dados; a graça é por conta da casa.
+## Correções e sugestões
 
-## Limitações, ditas antes de alguém as encontrar
+Uma linha errada, uma entrevista que falta, uma prova que não abre: [porquinhotvmail@proton.me](mailto:porquinhotvmail@proton.me?subject=Porquinho%20TV). Basta mandar a ligação da prova e o dia.
 
-- **Os números são um limite inferior.** Uma entrevista que nenhum canal e nenhum jornal publicaram online não deixa rasto, e não está aqui.
-- **Os canais não são todos igualmente legíveis.** Uns publicam tudo e deixam ler, outros recusam pedidos automáticos. Comparar canais é comparar também os arquivos de cada um.
-- **Comparar anos compara também os arquivos.** A cobertura de 2020 não é a de 2026, e a diferença não é só de antena.
-- **A fronteira entre entrevista e declaração longa é uma leitura.** Cada linha traz a prova para que essa leitura possa ser contestada.
-
-Quando há dúvida, o site fica curto e diz que ficou. Inflacionar uma contagem é o pior erro que este site pode cometer.
-
-## Correções
-
-Erros corrigem-se. Uma emissão publicada por engano é retirada com o motivo escrito e passa a aparecer na lista do que ficou de fora, em vez de desaparecer sem rasto. Nenhum registo perde a data em que entrou pela primeira vez, e o histórico das alterações é público.
+Erros corrigem-se à vista: uma emissão publicada por engano é retirada com o motivo escrito e passa a aparecer na lista do que ficou de fora, em vez de desaparecer sem se dar por ela.
 
 ## Verificar
 

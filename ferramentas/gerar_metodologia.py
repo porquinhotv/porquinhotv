@@ -4,7 +4,8 @@
     python -m ferramentas.gerar_metodologia --check    so verifica
 
 Converte apenas o subconjunto de Markdown usado nesse documento: titulos,
-paragrafos, listas, tabelas, blocos de codigo, negrito e codigo inline.
+paragrafos, listas, tabelas, blocos de codigo, negrito, codigo inline e
+ligacoes `mailto:`.
 Nao e um conversor geral e nao deve passar a ser.
 
 O que este gerador NAO garante: que o Markdown diz a verdade sobre o
@@ -55,6 +56,10 @@ def em_linha(texto: str) -> str:
             continue
         escapado = html.escape(parte)
         escapado = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", escapado)
+        # Unica ligacao suportada: [texto](mailto:...), para o contacto da
+        # seccao de correcoes. Nao se abre a sintaxe a http: o site nao
+        # pede nada a terceiros, e isto continua a nao ser um conversor geral.
+        escapado = re.sub(r"\[([^\]]+)\]\(mailto:([^)\s]+)\)", r'<a href="mailto:\2">\1</a>', escapado)
         saida.append(escapado)
     return "".join(saida)
 
