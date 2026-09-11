@@ -262,15 +262,6 @@
    "url": "https://tvi.iol.pt/bigbrother/sara-alves/nuno/mais-que-amigos-sara-e-nuno-mostram-se-mais-proximos-que-nunca-e-ate-houve-direito-a-beijinho"
   },
   {
-   "excerto": "Joana Albuquerque voltou ao Big Brother, desta vez para integrar o leque de concorrentes do Big Brother All Stars, mas antes de entrar na casa já tinha dado que falar por outro motivo.",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/doisas10/big-brother-all-stars/reality-show/que-luxo-antes-de-entrar-no-big-brother-all-stars-esta-concorrente-comprou-dois-carros-em-apenas-seis-meses",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-10",
-   "titulo": "Que luxo. Antes de entrar no Big Brother All Stars, esta concorrente comprou dois carros em apenas seis meses",
-   "url": "https://tvi.iol.pt/doisas10/big-brother-all-stars/reality-show/que-luxo-antes-de-entrar-no-big-brother-all-stars-esta-concorrente-comprou-dois-carros-em-apenas-seis-meses"
-  },
-  {
    "excerto": "Foi uma das crianças mais famosas do mundo e ficou conhecida por um título que correu o mundo.",
    "fonte": "busca-tvi",
    "id_nativo": "https://tvi.iol.pt/vmais/thylane-blondeau/ben-attal/recorda-se-da-menina-mais-bonita-do-mundo-aos-25-anos-casou-se-e-as-imagens-parecem-saidas-de-um-filme-da-disney",
@@ -289,6 +280,15 @@
    "url": "https://tvi.iol.pt/doisas10/novelas/musica/sem-esconder-a-diferenca-de-idades-atriz-portuguesa-mostra-se-apaixonada-ele-e-mesmo-muito-mais-novo"
   },
   {
+   "excerto": "Mundo da beleza de luto. Miss Austrália 2024 morre aos 22 anos após graves problemas de saúde",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/novelas/lucia-sisic/morte/tinha-apenas-22-anos-e-venceu-um-dos-concursos-de-beleza-mais-populares-do-mundo-a-sua-morte-esta-a-chocar",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-10",
+   "titulo": "Tinha apenas 22 anos e venceu um dos concursos de beleza mais populares do Mundo. A sua morte está a chocar",
+   "url": "https://tvi.iol.pt/novelas/lucia-sisic/morte/tinha-apenas-22-anos-e-venceu-um-dos-concursos-de-beleza-mais-populares-do-mundo-a-sua-morte-esta-a-chocar"
+  },
+  {
    "excerto": "No episódio de hoje de «Coração de Mãe», a mais recente novela da TVI, os dramas familiares, as revelações dolorosas e os mistérios que envolvem Linda (Joana Solnado), João (Diogo Morgado) e as suas famílias atingem novos patamares de intensidade.",
    "fonte": "busca-tvi",
    "id_nativo": "https://tvi.iol.pt/novelas/coracao-de-mae/tvi/um-casamento-em-queda-um-desaparecimento-e-uma-morte-a-vista-tudo-sobre-o-quarto-episodio-de-coracao-de-mae",
@@ -296,6 +296,87 @@
    "publicado_em": "2026-09-10",
    "titulo": "Um casamento em queda, um desaparecimento e uma morte à vista: Tudo sobre o quarto episódio de «Coração de Mãe»",
    "url": "https://tvi.iol.pt/novelas/coracao-de-mae/tvi/um-casamento-em-queda-um-desaparecimento-e-uma-morte-a-vista-tudo-sobre-o-quarto-episodio-de-coracao-de-mae"
+  },
+  {
+   "excerto": "É uma das estrelas de «Coração de Mãe», mas a vida de Joana Solnado também tem uma história marcante",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/novelas/joana-solnado/vida/a-vida-inacreditavel-de-joana-solnado-a-morte-clinica-a-mudanca-drastica-de-vida-e-a-importancia-da-mistica",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-11",
+   "titulo": "A vida inacreditável de Joana Solnado: a morte clínica, a mudança drástica de vida e a importância da mística",
+   "url": "https://tvi.iol.pt/novelas/joana-solnado/vida/a-vida-inacreditavel-de-joana-solnado-a-morte-clinica-a-mudanca-drastica-de-vida-e-a-importancia-da-mistica"
+  },
+  {
+   "excerto": "Catarina Miranda tem usado até o nome de Cristina Ferreira para provocar Francisco Monteiro no «Big Brother All Stars». De regresso das férias, Cristina ouviu tudo e já disse o que pensa da estratégia da concorrente.",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/bigbrother/catarina-miranda/francisco-monteiro/catarina-miranda-utiliza-o-nome-de-cristina-ferreira-para-provocar-zaza-agora-a-apresentadora-reage",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-11",
+   "titulo": "Catarina Miranda utiliza nome de Cristina Ferreira para provocar Zaza. Agora, a apresentadora reage",
+   "url": "https://tvi.iol.pt/bigbrother/catarina-miranda/francisco-monteiro/catarina-miranda-utiliza-o-nome-de-cristina-ferreira-para-provocar-zaza-agora-a-apresentadora-reage"
+  },
+  {
+   "excerto": "O Benfica goleou o Moreirense por 0-4, na noite de 9 de setembro, num jogo da 3ª jornada da Liga Betclic transmitido em sinal aberto pela TVI. Durante a transmissão, os comentadores e o relator foram promovendo «Coração de Mãe», a nova novela da estação, e os internautas rapidame",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/novelas/coracao-de-mae/tvi/de-novela-a-fenomeno-desportivo-coracao-de-mae-invade-o-mundo-do-futebol",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-11",
+   "titulo": "De novela a fenómeno desportivo: «Coração de Mãe» invade o mundo do futebol",
+   "url": "https://tvi.iol.pt/novelas/coracao-de-mae/tvi/de-novela-a-fenomeno-desportivo-coracao-de-mae-invade-o-mundo-do-futebol"
+  },
+  {
+   "excerto": "Vanessa, sexta classificada do Big Brother Verão, esteve no Dois às 10 depois de Boris Carvalho e falou abertamente sobre a relação que os dois construíram dentro da casa.",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/doisas10/big-brother-verao/vanessa/fora-do-big-brother-verao-vanessa-ve-imagens-e-comenta-relacao-com-boris-infelizmente-nao-posso-voltar-atras",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-11",
+   "titulo": "Fora do Big Brother Verão, Vanessa vê imagens e comenta relação com Boris: «Infelizmente, não posso voltar atrás»",
+   "url": "https://tvi.iol.pt/doisas10/big-brother-verao/vanessa/fora-do-big-brother-verao-vanessa-ve-imagens-e-comenta-relacao-com-boris-infelizmente-nao-posso-voltar-atras"
+  },
+  {
+   "excerto": "Liliana Oliveira concretizou um desejo que guardava há muito tempo. A ex-concorrente revelou, através de uma fotografia ainda na clínica, que foi submetida a uma mamoplastia de aumento.",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/bigbrother/liliana-oliveira/cirurgia/liliana-oliveira-foi-submetida-a-cirurgia-estetica-e-mostra-se-na-clinica-realizei-um-dos-meus-sonhos",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-11",
+   "titulo": "Liliana Oliveira foi submetida a cirurgia estética e mostra-se na clínica: «Realizei um dos meus sonhos»",
+   "url": "https://tvi.iol.pt/bigbrother/liliana-oliveira/cirurgia/liliana-oliveira-foi-submetida-a-cirurgia-estetica-e-mostra-se-na-clinica-realizei-um-dos-meus-sonhos"
+  },
+  {
+   "excerto": "A ex-concorrente do Secret Story mostrou-se radiante.",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/doisas10/secret-story/liliana-oliveira/liliana-oliveira-realiza-um-dos-maiores-sonhos-guardamos-em-silencio-durante-muito-tempo",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-11",
+   "titulo": "Liliana Oliveira realiza um dos maiores sonhos: «Guardamos em silêncio durante muito tempo»",
+   "url": "https://tvi.iol.pt/doisas10/secret-story/liliana-oliveira/liliana-oliveira-realiza-um-dos-maiores-sonhos-guardamos-em-silencio-durante-muito-tempo"
+  },
+  {
+   "excerto": "15 anos depois, surge nova fotografia e o estado atual de Renato Seabra é chocante.",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/vmais/renato-seabra/carlos-castro/ninguem-via-renato-seabra-ha-mais-de-15-anos-imagem-inedita-esta-a-impressionar-fiquei-em-choque-quando-vi",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-11",
+   "titulo": "Ninguém via Renato Seabra há mais de 15 anos. Imagem inédita está a impressionar: \"Fiquei em choque quando vi\"",
+   "url": "https://tvi.iol.pt/vmais/renato-seabra/carlos-castro/ninguem-via-renato-seabra-ha-mais-de-15-anos-imagem-inedita-esta-a-impressionar-fiquei-em-choque-quando-vi"
+  },
+  {
+   "excerto": "Vem aí em «Coração de Mãe»: Guga é esfaqueado e fica entre a vida e a morte. Linda entra em desespero. Veja as imagens, em primeira mão",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/novelas/guga/vem-ai/seja-o-primeiro-a-saber-o-que-vai-acontecer-em-coracao-de-mae-guga-e-esfaqueado-na-prisao-e-linda-entra-em-desespero",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-11",
+   "titulo": "Seja o primeiro a saber o que vai acontecer em «Coração de Mãe»: Guga é esfaqueado na prisão e Linda entra em desespero",
+   "url": "https://tvi.iol.pt/novelas/guga/vem-ai/seja-o-primeiro-a-saber-o-que-vai-acontecer-em-coracao-de-mae-guga-e-esfaqueado-na-prisao-e-linda-entra-em-desespero"
+  },
+  {
+   "excerto": "Cristina Ferreira continua a partilhar alguns dos momentos que marcaram a celebração dos seus 49 anos.",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/doisas10/cristina-ferreira/aniversario/nao-publicadas-cristina-ferreira-mostra-imagens-ineditas-e-ha-um-pormenor-que-salta-a-vista",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-11",
+   "titulo": "«Não publicadas»: Cristina Ferreira mostra imagens inéditas e há um pormenor que salta à vista",
+   "url": "https://tvi.iol.pt/doisas10/cristina-ferreira/aniversario/nao-publicadas-cristina-ferreira-mostra-imagens-ineditas-e-ha-um-pormenor-que-salta-a-vista"
   },
   {
    "excerto": "",
@@ -523,24 +604,6 @@
    "url": "https://www.rtp.pt/play/p10324/e952946/grande-entrevista"
   },
   {
-   "excerto": "Em entrevista à CMTV, líder do Chega disse que um voto em Seguro, Gouveia e Melo ou Marques Mendes seria 'mais do mesmo'.",
-   "fonte": "motor-cmtv",
-   "id_nativo": "https://www.cmjornal.pt/cmtv/videos/detalhe/andre-ventura-sobre-as-presidenciais-e-a-unica-eleicao-que-vencendo-ninguem-pode-bloquear",
-   "motivo": "formato_nao_apurado",
-   "publicado_em": "2025-11-20",
-   "titulo": "Andr&#233; Ventura sobre as presidenciais: &quot;&#201; a &#250;nica elei&#231;&#227;o que, vencendo, ningu&#233;m pode bloquear&quot;",
-   "url": "https://www.cmjornal.pt/cmtv/videos/detalhe/andre-ventura-sobre-as-presidenciais-e-a-unica-eleicao-que-vencendo-ninguem-pode-bloquear"
-  },
-  {
-   "excerto": "Em entrevista exclusiva à CMTV, o líder do Chega critica a forma com o Ministro da Administração Interna tem reagido às polémicas que o envolvem.",
-   "fonte": "motor-cmtv",
-   "id_nativo": "https://www.cmjornal.pt/cmtv/videos/detalhe/pergunto-me-quem-e-o-primeiro-ministro-andre-ventura-fala-sobre-luis-neves-um-dia-antes-da-mocao-de-censura",
-   "motivo": "formato_nao_apurado",
-   "publicado_em": "2026-09-07",
-   "titulo": "&quot;Pergunto-me quem &#233; o primeiro-ministro&quot;: Andr&#233; Ventura fala sobre Lu&#237;s Neves um dia antes da mo&#231;&#227;o de censura",
-   "url": "https://www.cmjornal.pt/cmtv/videos/detalhe/pergunto-me-quem-e-o-primeiro-ministro-andre-ventura-fala-sobre-luis-neves-um-dia-antes-da-mocao-de-censura"
-  },
-  {
    "excerto": "Aqui encontra todas as notícias sobre Andre ventura",
    "fonte": "motor-cnn-portugal",
    "id_nativo": "https://cnnportugal.iol.pt/noticias/Andre-ventura",
@@ -566,6 +629,15 @@
    "publicado_em": "",
    "titulo": "Entrevista André Ventura | CNN Portugal",
    "url": "https://cnnportugal.iol.pt/noticias/Entrevista-Andr%C3%A9-Ventura"
+  },
+  {
+   "excerto": "Comprar Casa ou Apartamento em São Miguel, Açores | Now Imobiliária, em Ponta Delgada e Vila Franca do Campo PDL Ponta Delgada : 296 630 380 (Chamada para rede fixa nacional) VFC Vila Franca do Campo : 296 092 960 (Chamada para rede fixa nacional) Home Imóveis Empresa Serviços Co",
+   "fonte": "motor-now",
+   "id_nativo": "https://www.now.pt/pt/politica-de-privacidade",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2020-08-04",
+   "titulo": "Comprar Casa ou Apartamento em São Miguel, Açores | Now Imobiliária, em Ponta Delgada e Vila Franca do Campo",
+   "url": "https://www.now.pt/pt/politica-de-privacidade"
   },
   {
    "excerto": "O candidato presidencial do Chega defendeu uma legislação semelhante à que tem vindo a ser promovida em França pelo presidente Emmanuel Macron, no sentido de proibir que sejam gravadas e divulgadas imagens de intervenções policiais contra minorias étnicas.",
@@ -622,6 +694,15 @@
    "url": "https://www.rtp.pt/noticias/politica/andre-ventura-quer-chegar-aos-15-nas-proximas-legislativas_v1367276"
   },
   {
+   "excerto": "No debate transmitido esta segunda-feira na RTP, a líder do PAN, Inês Sousa Real, acusou o Chega de querer chegar ao poder \"a todo o custo\" e ser governo, o que \"porá em causa os direitos sociais\". André Ventura, líder do Chega, respondeu que é \"o PAN que se cola ao poder como um",
+   "fonte": "motor-rtp3",
+   "id_nativo": "https://www.rtp.pt/noticias/politica/debate-na-rtp3-chega-e-pan-trocam-acusacoes-sobre-apego-ao-poder_n1548758",
+   "motivo": "formato_nao_elegivel (debate)",
+   "publicado_em": "2024-02-05",
+   "titulo": "Debate na RTP3. Chega e PAN trocam acusações sobre apego ao poder",
+   "url": "https://www.rtp.pt/noticias/politica/debate-na-rtp3-chega-e-pan-trocam-acusacoes-sobre-apego-ao-poder_n1548758"
+  },
+  {
    "excerto": "O presidente do Chega foi o entrevistado da noite de terça-feira no Telejornal - a segunda de uma série de entrevistas da RTP aos líderes dos partidos com assento parlamentar a dois meses das eleições legislativas antecipadas de 18 de maio.",
    "fonte": "motor-rtp3",
    "id_nativo": "https://www.rtp.pt/noticias/politica/andre-ventura-e-o-entrevistado-desta-noite-no-telejornal_n1641739",
@@ -656,8 +737,98 @@
    "publicado_em": "2026-01-21",
    "titulo": "Presidenciais. André Ventura na Grande Entrevista da RTP",
    "url": "https://www.rtp.pt/noticias/politica/presidenciais-andre-ventura-na-grande-entrevista-da-rtp_e1711973"
+  },
+  {
+   "excerto": "",
+   "fonte": "registo-curado",
+   "id_nativo": "2218ebb9a169",
+   "motivo": "vetada_a_mao (a página declara \"em entrevista à CNN Portugal\" e nomeia só esse canal; é um vídeo da CNN servido no leitor do grupo, não uma emissão da TVI, e a emissão de 2024-10-10 na CNN Portugal já está contada)",
+   "publicado_em": "2024-10-10",
+   "titulo": "André Ventura: a entrevista na íntegra",
+   "url": "https://tviplayer.iol.pt/programa/noticias-cnn/6193fe4b0cf2c7ea0f090b1e/video/6708406b0cf23ab6553606d3"
+  },
+  {
+   "excerto": "",
+   "fonte": "registo-curado",
+   "id_nativo": "registo-curado:dd6319de831f",
+   "motivo": "vetada_a_mao (a página declara \"em entrevista à CNN Portugal\" e nomeia só esse canal; é um vídeo da CNN servido no leitor do grupo, não uma emissão da TVI, e a emissão de 2024-10-10 na CNN Portugal já está contada)",
+   "publicado_em": "2024-10-10",
+   "titulo": "André Ventura: a entrevista na íntegra",
+   "url": "https://tviplayer.iol.pt/programa/noticias-cnn/6193fe4b0cf2c7ea0f090b1e/video/6708406b0cf23ab6553606d3"
+  },
+  {
+   "excerto": "",
+   "fonte": "registo-curado",
+   "id_nativo": "2348506ebb89",
+   "motivo": "vetada_a_mao (a página não nomeia a TVI em lado nenhum e identifica o programa como CNN em Foco; é um vídeo da CNN servido no leitor do grupo, e a emissão de 2025-11-01 na CNN Portugal já está contada)",
+   "publicado_em": "2025-11-01",
+   "titulo": "A entrevista a André Ventura na íntegra",
+   "url": "https://tviplayer.iol.pt/programa/cnn-em-foco/66576e34d34e049892216643/video/690690050cf2c7eb24443f42"
+  },
+  {
+   "excerto": "",
+   "fonte": "registo-curado",
+   "id_nativo": "registo-curado:f79da8fc8356",
+   "motivo": "vetada_a_mao (a página não nomeia a TVI em lado nenhum e identifica o programa como CNN em Foco; é um vídeo da CNN servido no leitor do grupo, e a emissão de 2025-11-01 na CNN Portugal já está contada)",
+   "publicado_em": "2025-11-01",
+   "titulo": "A entrevista a André Ventura na íntegra",
+   "url": "https://tviplayer.iol.pt/programa/cnn-em-foco/66576e34d34e049892216643/video/690690050cf2c7eb24443f42"
+  },
+  {
+   "excerto": "",
+   "fonte": "registo-curado",
+   "id_nativo": "2a152c32e1f6",
+   "motivo": "vetada_a_mao (a página declara \"em entrevista no Prime Time da CNN Portugal\" e nomeia só esse canal; é um vídeo da CNN servido no domínio da TVI, e a emissão de 2026-05-12 na CNN Portugal já está contada)",
+   "publicado_em": "2026-05-12",
+   "titulo": "A entrevista a André Ventura na íntegra",
+   "url": "https://tvi.iol.pt/noticias/videos/a-entrevista-a-andre-ventura-na-integra/6a03acd40cf27f6588a6a772"
+  },
+  {
+   "excerto": "",
+   "fonte": "registo-curado",
+   "id_nativo": "registo-curado:3a2dd934b3b1",
+   "motivo": "vetada_a_mao (a página declara \"em entrevista no Prime Time da CNN Portugal\" e nomeia só esse canal; é um vídeo da CNN servido no domínio da TVI, e a emissão de 2026-05-12 na CNN Portugal já está contada)",
+   "publicado_em": "2026-05-12",
+   "titulo": "A entrevista a André Ventura na íntegra",
+   "url": "https://tvi.iol.pt/noticias/videos/a-entrevista-a-andre-ventura-na-integra/6a03acd40cf27f6588a6a772"
+  },
+  {
+   "excerto": "",
+   "fonte": "registo-curado",
+   "id_nativo": "7e6d4e27c153",
+   "motivo": "vetada_a_mao (a página declara \"em entrevista exclusiva à CNN Portugal\" e identifica o programa como CNN Prime Time; é um vídeo da CNN servido no leitor do grupo, e a emissão de 2026-07-16 na CNN Portugal já está contada)",
+   "publicado_em": "2026-07-16",
+   "titulo": "A entrevista a André Ventura na íntegra",
+   "url": "https://tviplayer.iol.pt/programa/cnn-prime-time/6193932f0cf2cc58e7d362d6/video/6a5956770cf2f6a1a1e7102a"
+  },
+  {
+   "excerto": "",
+   "fonte": "registo-curado",
+   "id_nativo": "registo-curado:569a8a5075b6",
+   "motivo": "vetada_a_mao (a página declara \"em entrevista exclusiva à CNN Portugal\" e identifica o programa como CNN Prime Time; é um vídeo da CNN servido no leitor do grupo, e a emissão de 2026-07-16 na CNN Portugal já está contada)",
+   "publicado_em": "2026-07-16",
+   "titulo": "A entrevista a André Ventura na íntegra",
+   "url": "https://tviplayer.iol.pt/programa/cnn-prime-time/6193932f0cf2cc58e7d362d6/video/6a5956770cf2f6a1a1e7102a"
+  },
+  {
+   "excerto": "",
+   "fonte": "registo-curado",
+   "id_nativo": "3ec96c14144d",
+   "motivo": "vetada_a_mao (a página declara \"em entrevista à CNN Portugal\" e nomeia só esse canal; é um vídeo da CNN servido no domínio da TVI, e a emissão de 2026-07-29 na CNN Portugal já está contada)",
+   "publicado_em": "2026-07-29",
+   "titulo": "A entrevista a André Ventura na íntegra",
+   "url": "https://tvi.iol.pt/noticias/videos/a-entrevista-a-andre-ventura-na-integra/6a6a74e00cf2b42132dbc313"
+  },
+  {
+   "excerto": "",
+   "fonte": "registo-curado",
+   "id_nativo": "registo-curado:9b1dbc00c597",
+   "motivo": "vetada_a_mao (a página declara \"em entrevista à CNN Portugal\" e nomeia só esse canal; é um vídeo da CNN servido no domínio da TVI, e a emissão de 2026-07-29 na CNN Portugal já está contada)",
+   "publicado_em": "2026-07-29",
+   "titulo": "A entrevista a André Ventura na íntegra",
+   "url": "https://tvi.iol.pt/noticias/videos/a-entrevista-a-andre-ventura-na-integra/6a6a74e00cf2b42132dbc313"
   }
  ],
  "esquema": 1,
- "total": 73
+ "total": 92
 }

@@ -131,11 +131,6 @@
      "declaradas": 1,
      "emissoes": 1,
      "entrevistas_distintas": 1
-    },
-    "tvi": {
-     "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
     }
    },
    "data": "2024-10-10"
@@ -143,6 +138,11 @@
   {
    "canais": {
     "cnn-portugal": {
+     "declaradas": 1,
+     "emissoes": 1,
+     "entrevistas_distintas": 1
+    },
+    "tvi": {
      "declaradas": 1,
      "emissoes": 1,
      "entrevistas_distintas": 1
@@ -441,11 +441,6 @@
      "declaradas": 1,
      "emissoes": 1,
      "entrevistas_distintas": 1
-    },
-    "tvi": {
-     "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
     }
    },
    "data": "2025-11-01"
@@ -494,6 +489,16 @@
     }
    },
    "data": "2025-12-17"
+  },
+  {
+   "canais": {
+    "now": {
+     "declaradas": 1,
+     "emissoes": 1,
+     "entrevistas_distintas": 1
+    }
+   },
+   "data": "2026-01-14"
   },
   {
    "canais": {
@@ -563,11 +568,6 @@
   {
    "canais": {
     "cnn-portugal": {
-     "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
-    },
-    "tvi": {
      "declaradas": 1,
      "emissoes": 1,
      "entrevistas_distintas": 1
@@ -656,11 +656,6 @@
      "declaradas": 1,
      "emissoes": 1,
      "entrevistas_distintas": 1
-    },
-    "tvi": {
-     "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
     }
    },
    "data": "2026-07-16"
@@ -668,11 +663,6 @@
   {
    "canais": {
     "cnn-portugal": {
-     "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
-    },
-    "tvi": {
      "declaradas": 1,
      "emissoes": 1,
      "entrevistas_distintas": 1
@@ -709,7 +699,7 @@
   "motor-rtp3",
   "registo-curado"
  ],
- "gerado_em": "2026-09-11T10:24:47+00:00",
+ "gerado_em": "2026-09-11T13:35:34+00:00",
  "por_ano": [
   {
    "ano": "2020",
@@ -733,7 +723,7 @@
   },
   {
    "ano": "2024",
-   "emissoes": 9,
+   "emissoes": 8,
    "entrevistas_distintas": 8
   },
   {
@@ -743,8 +733,8 @@
   },
   {
    "ano": "2026",
-   "emissoes": 23,
-   "entrevistas_distintas": 20
+   "emissoes": 21,
+   "entrevistas_distintas": 21
   }
  ],
  "por_canal": [
@@ -768,8 +758,8 @@
   },
   {
    "canal": "tvi",
-   "emissoes": 12,
-   "entrevistas_distintas": 12,
+   "emissoes": 8,
+   "entrevistas_distintas": 8,
    "nome": "TVI"
   },
   {
@@ -792,8 +782,8 @@
   },
   {
    "canal": "now",
-   "emissoes": 8,
-   "entrevistas_distintas": 8,
+   "emissoes": 9,
+   "entrevistas_distintas": 9,
    "nome": "NOW"
   },
   {
@@ -906,15 +896,15 @@
     "2024-10-10"
    ],
    "data": "2024-10-10",
-   "emissoes": 2,
+   "emissoes": 1,
    "entrevistas_distintas": 1
   },
   {
    "chaves": [
-    "02af58a97662"
+    "2025-01-13"
    ],
    "data": "2025-01-13",
-   "emissoes": 1,
+   "emissoes": 2,
    "entrevistas_distintas": 1
   },
   {
@@ -1131,7 +1121,7 @@
     "2025-11-01"
    ],
    "data": "2025-11-01",
-   "emissoes": 2,
+   "emissoes": 1,
    "entrevistas_distintas": 1
   },
   {
@@ -1164,6 +1154,14 @@
     "e1c4ae8c4c99"
    ],
    "data": "2025-12-17",
+   "emissoes": 1,
+   "entrevistas_distintas": 1
+  },
+  {
+   "chaves": [
+    "10cc33d09c34"
+   ],
+   "data": "2026-01-14",
    "emissoes": 1,
    "entrevistas_distintas": 1
   },
@@ -1221,7 +1219,7 @@
     "2026-05-12"
    ],
    "data": "2026-05-12",
-   "emissoes": 2,
+   "emissoes": 1,
    "entrevistas_distintas": 1
   },
   {
@@ -1286,7 +1284,7 @@
     "2026-07-16"
    ],
    "data": "2026-07-16",
-   "emissoes": 2,
+   "emissoes": 1,
    "entrevistas_distintas": 1
   },
   {
@@ -1294,7 +1292,7 @@
     "2026-07-29"
    ],
    "data": "2026-07-29",
-   "emissoes": 2,
+   "emissoes": 1,
    "entrevistas_distintas": 1
   },
   {
@@ -1366,12 +1364,12 @@
    "mes": "2024-07"
   },
   {
-   "emissoes": 2,
+   "emissoes": 1,
    "entrevistas_distintas": 1,
    "mes": "2024-10"
   },
   {
-   "emissoes": 2,
+   "emissoes": 3,
    "entrevistas_distintas": 2,
    "mes": "2025-01"
   },
@@ -1411,7 +1409,7 @@
    "mes": "2025-10"
   },
   {
-   "emissoes": 6,
+   "emissoes": 5,
    "entrevistas_distintas": 5,
    "mes": "2025-11"
   },
@@ -1421,8 +1419,8 @@
    "mes": "2025-12"
   },
   {
-   "emissoes": 4,
-   "entrevistas_distintas": 4,
+   "emissoes": 5,
+   "entrevistas_distintas": 5,
    "mes": "2026-01"
   },
   {
@@ -1436,7 +1434,7 @@
    "mes": "2026-03"
   },
   {
-   "emissoes": 3,
+   "emissoes": 2,
    "entrevistas_distintas": 2,
    "mes": "2026-05"
   },
@@ -1446,7 +1444,7 @@
    "mes": "2026-06"
   },
   {
-   "emissoes": 4,
+   "emissoes": 2,
    "entrevistas_distintas": 2,
    "mes": "2026-07"
   },
@@ -1458,7 +1456,7 @@
  ],
  "por_origem": {
   "canal": {
-   "emissoes": 64,
+   "emissoes": 61,
    "entrevistas_distintas": 56
   },
   "imprensa": {
@@ -1523,12 +1521,12 @@
    "semana": "2024-W28"
   },
   {
-   "emissoes": 2,
+   "emissoes": 1,
    "entrevistas_distintas": 1,
    "semana": "2024-W41"
   },
   {
-   "emissoes": 1,
+   "emissoes": 2,
    "entrevistas_distintas": 1,
    "semana": "2025-W03"
   },
@@ -1628,7 +1626,7 @@
    "semana": "2025-W43"
   },
   {
-   "emissoes": 2,
+   "emissoes": 1,
    "entrevistas_distintas": 1,
    "semana": "2025-W44"
   },
@@ -1646,6 +1644,11 @@
    "emissoes": 1,
    "entrevistas_distintas": 1,
    "semana": "2025-W51"
+  },
+  {
+   "emissoes": 1,
+   "entrevistas_distintas": 1,
+   "semana": "2026-W03"
   },
   {
    "emissoes": 3,
@@ -1673,7 +1676,7 @@
    "semana": "2026-W11"
   },
   {
-   "emissoes": 3,
+   "emissoes": 2,
    "entrevistas_distintas": 2,
    "semana": "2026-W20"
   },
@@ -1698,12 +1701,12 @@
    "semana": "2026-W26"
   },
   {
-   "emissoes": 2,
+   "emissoes": 1,
    "entrevistas_distintas": 1,
    "semana": "2026-W29"
   },
   {
-   "emissoes": 2,
+   "emissoes": 1,
    "entrevistas_distintas": 1,
    "semana": "2026-W31"
   },
@@ -1744,8 +1747,8 @@
   "pergunta": "Quantas entrevistas exclusivas deu André Ventura na televisão portuguesa?"
  },
  "totais": {
-  "emissoes": 77,
-  "entrevistas_distintas": 68
+  "emissoes": 74,
+  "entrevistas_distintas": 69
  },
  "ultimo_registo": "2026-09-10"
 }
