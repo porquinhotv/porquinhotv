@@ -69,6 +69,38 @@ entrevistas:
     prova: https://www.rtp.pt/noticias/pais/entrevista-rtp-ventura-quer-apoiar-jovens-com-corte-de-desperdicios-na-saude_v1647537
     titulo: 'Entrevista RTP. Ventura quer apoiar jovens com corte de "desperdícios" na Saúde'
 
+  # Duas linhas acrescentadas a 2026-09-11, as duas com a data declarada
+  # no proprio endereco da prova e as duas abertas e lidas pelo autor.
+  # Vieram da colheita de pistas de imprensa feita nesse dia, e nao do
+  # coletor: os dois canais nao tem cobertura automatica a funcionar.
+  - data: 2025-05-22
+    canal: cmtv
+    programa: Grande Jornal
+    prova: https://www.cmjornal.pt/politica/detalhe/20250522-202945-andre-ventura-em-entrevista-no-grande-jornal
+    titulo: 'O primeiro-ministro ainda deve explicações que são importantes ao país'
+    # O caminho da pagina traz a data e a hora de publicacao (22 de maio
+    # de 2025, 20:29) e diz por palavras "em entrevista no Grande Jornal".
+    # O canal le-se do texto e do nome do programa, nunca do dominio:
+    # cmjornal.pt serve o jornal e o canal do mesmo grupo, e ja escreveu
+    # sobre entrevistas de canais concorrentes.
+    #
+    # O `programa` vai escrito porque o endereco o nomeia. Sem ele a linha
+    # nao abriria bloco proprio e a regra 22 absorve-la-ia se a CMTV vier
+    # a ter outra emissao apurada no mesmo dia.
+  - data: 2025-05-27
+    canal: sic-noticias
+    prova: https://sicnoticias.pt/especiais/eleicoes-legislativas/2025-05-27-video-entrevista-a-andre-ventura-a-um-dia-do-chega-poder-tornar-se-a-segunda-maior-forca-politica-2c883e67
+    titulo: 'Entrevista a André Ventura a um dia do Chega poder tornar-se a segunda maior força política'
+    # Uma das quatro ligacoes da SIC que o coletor encontra e nunca
+    # consegue abrir: os dominios da SIC respondem 403 ao runner de
+    # datacenter (ver a KB, seccao 6.5). O endereco estava nos logs das
+    # corridas; a pagina abre num browser a partir de um IP residencial.
+    # A data esta no caminho e a palavra do formato tambem.
+    #
+    # A lista de referencia diz "SIC" e o dominio e o do canal de
+    # informacao do grupo. Fica `sic-noticias`, que e o que o endereco
+    # declara, e nao o que a lista supoe.
+
 remover:
   - prova: https://www.jm-madeira.pt/v%C3%ADdeo/regi-o/30004362/ventura-agarra-se-a-vice-presidente-da-camara-do-funchal.html
     motivo: é a mesma entrevista da emissão de 2026-09-01 na CNN Portugal, já provada pela página do canal; a data desta peça é a da publicação, não a da emissão
