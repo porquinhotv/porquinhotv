@@ -1,65 +1,15 @@
 {
+ "ambito": {
+  "fora_do_ambito": {
+   "emissoes": 6,
+   "entrevistas_distintas": 6
+  },
+  "recolha_desde": "2019-05-16",
+  "rotulo": "desde o início de 2024",
+  "tab": "Desde 2024",
+  "visivel_desde": "2024-01-01"
+ },
  "canal_por_dia": [
-  {
-   "canais": {
-    "tvi": {
-     "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
-    }
-   },
-   "data": "2020-11-16"
-  },
-  {
-   "canais": {
-    "rtp1": {
-     "declaradas": 0,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
-    }
-   },
-   "data": "2020-12-15"
-  },
-  {
-   "canais": {
-    "rtp1": {
-     "declaradas": 0,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
-    }
-   },
-   "data": "2021-12-01"
-  },
-  {
-   "canais": {
-    "rtp1": {
-     "declaradas": 0,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
-    }
-   },
-   "data": "2022-10-19"
-  },
-  {
-   "canais": {
-    "sic-noticias": {
-     "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
-    }
-   },
-   "data": "2023-08-22"
-  },
-  {
-   "canais": {
-    "cnn-portugal": {
-     "declaradas": 1,
-     "emissoes": 1,
-     "entrevistas_distintas": 1
-    }
-   },
-   "data": "2023-12-04"
-  },
   {
    "canais": {
     "sic": {
@@ -79,6 +29,16 @@
     }
    },
    "data": "2024-03-04"
+  },
+  {
+   "canais": {
+    "tvi": {
+     "declaradas": 1,
+     "emissoes": 1,
+     "entrevistas_distintas": 1
+    }
+   },
+   "data": "2024-03-11"
   },
   {
    "canais": {
@@ -699,32 +659,12 @@
   "motor-rtp3",
   "registo-curado"
  ],
- "gerado_em": "2026-09-11T13:35:34+00:00",
+ "gerado_em": "2026-09-11T15:23:40+00:00",
  "por_ano": [
   {
-   "ano": "2020",
-   "emissoes": 2,
-   "entrevistas_distintas": 2
-  },
-  {
-   "ano": "2021",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
-  },
-  {
-   "ano": "2022",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
-  },
-  {
-   "ano": "2023",
-   "emissoes": 2,
-   "entrevistas_distintas": 2
-  },
-  {
    "ano": "2024",
-   "emissoes": 8,
-   "entrevistas_distintas": 8
+   "emissoes": 9,
+   "entrevistas_distintas": 9
   },
   {
    "ano": "2025",
@@ -740,8 +680,8 @@
  "por_canal": [
   {
    "canal": "rtp1",
-   "emissoes": 10,
-   "entrevistas_distintas": 10,
+   "emissoes": 7,
+   "entrevistas_distintas": 7,
    "nome": "RTP1"
   },
   {
@@ -764,8 +704,8 @@
   },
   {
    "canal": "sic-noticias",
-   "emissoes": 9,
-   "entrevistas_distintas": 9,
+   "emissoes": 8,
+   "entrevistas_distintas": 8,
    "nome": "SIC Notícias"
   },
   {
@@ -776,8 +716,8 @@
   },
   {
    "canal": "cnn-portugal",
-   "emissoes": 18,
-   "entrevistas_distintas": 18,
+   "emissoes": 17,
+   "entrevistas_distintas": 17,
    "nome": "CNN Portugal"
   },
   {
@@ -796,54 +736,6 @@
  "por_dia": [
   {
    "chaves": [
-    "3097aabe9fe9"
-   ],
-   "data": "2020-11-16",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
-  },
-  {
-   "chaves": [
-    "cde286b5da5a"
-   ],
-   "data": "2020-12-15",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
-  },
-  {
-   "chaves": [
-    "ac915feb9314"
-   ],
-   "data": "2021-12-01",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
-  },
-  {
-   "chaves": [
-    "d73b643e43ca"
-   ],
-   "data": "2022-10-19",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
-  },
-  {
-   "chaves": [
-    "c3e5181991c7"
-   ],
-   "data": "2023-08-22",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
-  },
-  {
-   "chaves": [
-    "2e0fea1a9273"
-   ],
-   "data": "2023-12-04",
-   "emissoes": 1,
-   "entrevistas_distintas": 1
-  },
-  {
-   "chaves": [
     "8eb2355b3705"
    ],
    "data": "2024-02-21",
@@ -855,6 +747,14 @@
     "140ec62fb372"
    ],
    "data": "2024-03-04",
+   "emissoes": 1,
+   "entrevistas_distintas": 1
+  },
+  {
+   "chaves": [
+    "cf00725f9209"
+   ],
+   "data": "2024-03-11",
    "emissoes": 1,
    "entrevistas_distintas": 1
   },
@@ -1316,41 +1216,11 @@
   {
    "emissoes": 1,
    "entrevistas_distintas": 1,
-   "mes": "2020-11"
-  },
-  {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
-   "mes": "2020-12"
-  },
-  {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
-   "mes": "2021-12"
-  },
-  {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
-   "mes": "2022-10"
-  },
-  {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
-   "mes": "2023-08"
-  },
-  {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
-   "mes": "2023-12"
-  },
-  {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
    "mes": "2024-02"
   },
   {
-   "emissoes": 4,
-   "entrevistas_distintas": 4,
+   "emissoes": 5,
+   "entrevistas_distintas": 5,
    "mes": "2024-03"
   },
   {
@@ -1456,45 +1326,15 @@
  ],
  "por_origem": {
   "canal": {
-   "emissoes": 61,
-   "entrevistas_distintas": 56
+   "emissoes": 58,
+   "entrevistas_distintas": 53
   },
   "imprensa": {
-   "emissoes": 13,
-   "entrevistas_distintas": 13
+   "emissoes": 11,
+   "entrevistas_distintas": 11
   }
  },
  "por_semana": [
-  {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
-   "semana": "2020-W47"
-  },
-  {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
-   "semana": "2020-W51"
-  },
-  {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
-   "semana": "2021-W48"
-  },
-  {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
-   "semana": "2022-W42"
-  },
-  {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
-   "semana": "2023-W34"
-  },
-  {
-   "emissoes": 1,
-   "entrevistas_distintas": 1,
-   "semana": "2023-W49"
-  },
   {
    "emissoes": 1,
    "entrevistas_distintas": 1,
@@ -1504,6 +1344,11 @@
    "emissoes": 1,
    "entrevistas_distintas": 1,
    "semana": "2024-W10"
+  },
+  {
+   "emissoes": 1,
+   "entrevistas_distintas": 1,
+   "semana": "2024-W11"
   },
   {
    "emissoes": 3,
@@ -1721,12 +1566,12 @@
    "semana": "2026-W37"
   }
  ],
- "primeiro_registo": "2020-11-16",
+ "primeiro_registo": "2024-02-21",
  "recordes": {
   "maior_jejum": {
-   "ate": "2021-12-01",
-   "de": "2020-12-15",
-   "dias": 350
+   "ate": "2025-01-13",
+   "de": "2024-10-10",
+   "dias": 94
   },
   "maior_maratona": {
    "ate": "2025-03-19",
@@ -1747,8 +1592,8 @@
   "pergunta": "Quantas entrevistas exclusivas deu André Ventura na televisão portuguesa?"
  },
  "totais": {
-  "emissoes": 74,
-  "entrevistas_distintas": 69
+  "emissoes": 69,
+  "entrevistas_distintas": 64
  },
  "ultimo_registo": "2026-09-10"
 }

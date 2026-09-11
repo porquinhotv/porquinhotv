@@ -145,6 +145,24 @@
    "titulo": "Eleições Legislativas 2024 - Entrevistas Líderes Partidários - André Ventura - ep. 6"
   },
   {
+   "bloco": "cf00725f9209",
+   "canal": "tvi",
+   "confianca": "alta",
+   "data": "2024-03-11",
+   "data_origem": "declarada",
+   "entrevista": "cf00725f9209",
+   "fonte": "curadoria",
+   "fontes_distintas": 0,
+   "id": "curadoria:d7ec3a3dd559",
+   "origem": "imprensa",
+   "primeira_vez": "2026-09-11",
+   "programa": "",
+   "prova_url": "https://rr.pt/noticia/politica/2024/03/11/ventura-exige-negociacao-com-ad-para-aprovar-orcamento-do-estado/370455/",
+   "publicado_em": "2024-03-11",
+   "rondas": 0,
+   "titulo": "Ventura exige negociação com AD para aprovar Orçamento do Estado"
+  },
+  {
    "bloco": "5adc27508bd5",
    "canal": "rtp1",
    "confianca": "media",
@@ -1334,5 +1352,5 @@
   }
  ],
  "esquema": 1,
- "total": 74
+ "total": 75
 }
