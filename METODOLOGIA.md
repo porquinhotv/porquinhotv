@@ -12,12 +12,6 @@ Programas de entretenimento contam, desde que a entrevista seja a solo. Noticiá
 
 **Sem prova pública, não há linha.** Cada emissão tem uma ligação que qualquer pessoa abre: a página do canal, uma notícia que relate ou anuncie a entrevista, ou uma publicação de uma conta oficial do canal ou do próprio entrevistado. A prova tem de nomear o canal e fixar o dia. Estão todas na página de Fontes.
 
-## De 2024 em diante
-
-As emissões mais antigas que se apuraram não foram deitadas fora: estão nos dados que qualquer pessoa descarrega, só não entram nas contas nem nos gráficos.
-
-Contar 2019 a 2023 com o pouco que há online seria medir os arquivos dos canais e não as entrevistas. No dia em que houver com que contar, esses anos entram sem ser preciso procurar nada de novo.
-
 ## O que não conta
 
 - **Debates e painéis**: mais do que um convidado às mesmas perguntas.
