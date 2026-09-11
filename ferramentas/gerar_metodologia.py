@@ -35,10 +35,18 @@ CABECA = """<!doctype html>
 </head>
 <body class="pagina-texto">
 <header class="topo">
-  <a class="voltar" href="index.html">Porquinho TV</a>
-  <h1>Metodologia</h1>
+  <a class="marca" href="index.html" aria-label="Porquinho TV, início">
+    <img src="favicon.svg" alt="" width="44" height="44">
+    <h1>Porquinho TV</h1>
+  </a>
+  <nav class="menu" aria-label="Páginas">
+    <a href="index.html">Hoje</a>
+    <a href="calendario.html">Calendário</a>
+    <a href="fontes.html">Fontes</a>
+  </nav>
 </header>
 <main class="texto">
+<h2>Metodologia</h2>
 """
 
 CAUDA = """</main>

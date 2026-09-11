@@ -102,6 +102,19 @@ class TestConvencoes(unittest.TestCase):
                     for t in TRAVESSOES:
                         self.assertNotIn(t, linha, f"{caminho.name}:{n}")
 
+    def test_todas_as_paginas_tem_a_marca_e_o_menu(self):
+        """A Metodologia era a unica pagina sem a marca nem o menu: tinha um
+        link "voltar" e mais nada. Quem chegava la por uma pesquisa nao via
+        de que site se tratava nem tinha como ir as outras paginas. O topo
+        da Metodologia e gerado por ferramentas/gerar_metodologia.py, por
+        isso este teste le o ficheiro publicado como os outros."""
+        for caminho in sorted((RAIZ / "docs").glob("*.html")):
+            texto = caminho.read_text(encoding="utf-8")
+            with self.subTest(ficheiro=caminho.name):
+                self.assertIn('class="marca"', texto, f"{caminho.name} nao tem a marca")
+                for pagina in ("index.html", "calendario.html", "fontes.html"):
+                    self.assertIn(f'<a href="{pagina}"', texto, f"{caminho.name} nao liga a {pagina}")
+
     def test_o_rodape_completo_esta_em_todas_as_paginas(self):
         """O Calendario e as Fontes tinham um rodape reduzido a dois links,
         sem contacto e sem a explicacao do que o site conta. Quem chega a
