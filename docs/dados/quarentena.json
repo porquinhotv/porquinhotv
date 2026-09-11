@@ -622,15 +622,6 @@
    "url": "https://www.rtp.pt/noticias/politica/andre-ventura-quer-chegar-aos-15-nas-proximas-legislativas_v1367276"
   },
   {
-   "excerto": "No debate transmitido esta segunda-feira na RTP, a líder do PAN, Inês Sousa Real, acusou o Chega de querer chegar ao poder \"a todo o custo\" e ser governo, o que \"porá em causa os direitos sociais\". André Ventura, líder do Chega, respondeu que é \"o PAN que se cola ao poder como um",
-   "fonte": "motor-rtp3",
-   "id_nativo": "https://www.rtp.pt/noticias/politica/debate-na-rtp3-chega-e-pan-trocam-acusacoes-sobre-apego-ao-poder_n1548758",
-   "motivo": "formato_nao_elegivel (debate)",
-   "publicado_em": "2024-02-05",
-   "titulo": "Debate na RTP3. Chega e PAN trocam acusações sobre apego ao poder",
-   "url": "https://www.rtp.pt/noticias/politica/debate-na-rtp3-chega-e-pan-trocam-acusacoes-sobre-apego-ao-poder_n1548758"
-  },
-  {
    "excerto": "O presidente do Chega foi o entrevistado da noite de terça-feira no Telejornal - a segunda de uma série de entrevistas da RTP aos líderes dos partidos com assento parlamentar a dois meses das eleições legislativas antecipadas de 18 de maio.",
    "fonte": "motor-rtp3",
    "id_nativo": "https://www.rtp.pt/noticias/politica/andre-ventura-e-o-entrevistado-desta-noite-no-telejornal_n1641739",
@@ -668,5 +659,5 @@
   }
  ],
  "esquema": 1,
- "total": 74
+ "total": 73
 }
