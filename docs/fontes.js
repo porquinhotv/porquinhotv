@@ -39,7 +39,6 @@
       var ambito = resumo.ambito || { visivel_desde: (resumo.tema && resumo.tema.desde) || "" };
       var todas = r[0].emissoes || [];
       var emissoes = todas.filter(function (e) { return e.data >= ambito.visivel_desde; });
-      var foraDoAmbito = todas.length - emissoes.length;
       var nomeDe = {};
       resumo.por_canal.forEach(function (c) { nomeDe[c.canal] = c.nome; });
       var alvo = document.getElementById("conteudo");
@@ -47,14 +46,6 @@
       if (!emissoes.length) {
         alvo.appendChild(el("div", { class: "cartao vazio" }, [el("h2", { text: "Ainda sem dados" }), el("p", { text: "Ainda não há emissões registadas." })]));
         return;
-      }
-      if (foraDoAmbito) {
-        var anoCorte = String(ambito.visivel_desde).slice(0, 4);
-        alvo.appendChild(el("p", { class: "legenda-secao", text: foraDoAmbito + " " + (foraDoAmbito === 1 ? "emissão anterior" : "emissões anteriores") + " a " + anoCorte + " " + (foraDoAmbito === 1 ? "está registada" : "estão registadas") + " no conjunto de dados publicado, mas fora do âmbito do site. A Metodologia diz porquê." }));
-      }
-      var daImprensa = emissoes.filter(function (e) { return e.origem === "imprensa"; }).length;
-      if (daImprensa) {
-        alvo.appendChild(el("p", { class: "legenda-secao", text: daImprensa + " " + (daImprensa === 1 ? "emissão está provada" : "emissões estão provadas") + " por peças de imprensa que relatam ou anunciam a entrevista, e não pela página do canal. Uma prova vale o mesmo que a outra: a peça diz que a entrevista existiu e em que dia, e é isso que se conta." }));
       }
       var porAno = {};
       emissoes.forEach(function (e) { (porAno[e.data.slice(0, 4)] = porAno[e.data.slice(0, 4)] || []).push(e); });

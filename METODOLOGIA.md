@@ -6,7 +6,7 @@ O Porquinho TV conta as entrevistas exclusivas dadas por André Ventura na telev
 
 Uma **entrevista exclusiva** é um segmento em que André Ventura é o único entrevistado, responde a perguntas de um jornalista do canal, e a emissão passou num dos nove canais medidos: RTP1, RTP2, SIC, TVI, SIC Notícias, RTP3, CNN Portugal, NOW e CMTV.
 
-O site conta de 2024 em diante. Para trás disso há pouca coisa publicada online, e muito desigual de canal para canal, o que dava uma contagem em que não se podia confiar.
+O site conta de 2024 em diante. De anos anteriores há registos, mas poucos e desiguais de canal para canal, e enquanto forem poucos não se publicam. Uma contagem feita com o que há desses anos diria mais sobre o que ficou online do que sobre as entrevistas.
 
 Programas de entretenimento contam, desde que a entrevista seja a solo. Noticiários com entrevista em estúdio contam.
 
