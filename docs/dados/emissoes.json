@@ -397,6 +397,42 @@
    "titulo": "Entrevista exclusiva: com André Ventura"
   },
   {
+   "bloco": "854ab4d77a6e",
+   "canal": "cmtv",
+   "confianca": "alta",
+   "data": "2025-05-22",
+   "data_origem": "declarada",
+   "entrevista": "854ab4d77a6e",
+   "fonte": "curadoria",
+   "fontes_distintas": 0,
+   "id": "curadoria:4711ad407bda",
+   "origem": "canal",
+   "primeira_vez": "2026-09-11",
+   "programa": "Grande Jornal",
+   "prova_url": "https://www.cmjornal.pt/politica/detalhe/20250522-202945-andre-ventura-em-entrevista-no-grande-jornal",
+   "publicado_em": "2025-05-22",
+   "rondas": 0,
+   "titulo": "O primeiro-ministro ainda deve explicações que são importantes ao país"
+  },
+  {
+   "bloco": "1b0187abc55f",
+   "canal": "sic-noticias",
+   "confianca": "alta",
+   "data": "2025-05-27",
+   "data_origem": "declarada",
+   "entrevista": "1b0187abc55f",
+   "fonte": "curadoria",
+   "fontes_distintas": 0,
+   "id": "curadoria:90cc54455bb5",
+   "origem": "canal",
+   "primeira_vez": "2026-09-11",
+   "programa": "",
+   "prova_url": "https://sicnoticias.pt/especiais/eleicoes-legislativas/2025-05-27-video-entrevista-a-andre-ventura-a-um-dia-do-chega-poder-tornar-se-a-segunda-maior-forca-politica-2c883e67",
+   "publicado_em": "2025-05-27",
+   "rondas": 0,
+   "titulo": "Entrevista a André Ventura a um dia do Chega poder tornar-se a segunda maior força política"
+  },
+  {
    "bloco": "8ffaa57304af",
    "canal": "rtp1",
    "confianca": "media",
@@ -1082,5 +1118,5 @@
   }
  ],
  "esquema": 1,
- "total": 60
+ "total": 62
 }

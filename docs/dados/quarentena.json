@@ -271,6 +271,15 @@
    "url": "https://tvi.iol.pt/doisas10/big-brother-all-stars/reality-show/que-luxo-antes-de-entrar-no-big-brother-all-stars-esta-concorrente-comprou-dois-carros-em-apenas-seis-meses"
   },
   {
+   "excerto": "Foi uma das crianças mais famosas do mundo e ficou conhecida por um título que correu o mundo.",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/vmais/thylane-blondeau/ben-attal/recorda-se-da-menina-mais-bonita-do-mundo-aos-25-anos-casou-se-e-as-imagens-parecem-saidas-de-um-filme-da-disney",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-10",
+   "titulo": "Recorda-se da “menina mais bonita do mundo”? Aos 25 anos, casou-se e as imagens parecem saídas de um filme da Disney",
+   "url": "https://tvi.iol.pt/vmais/thylane-blondeau/ben-attal/recorda-se-da-menina-mais-bonita-do-mundo-aos-25-anos-casou-se-e-as-imagens-parecem-saidas-de-um-filme-da-disney"
+  },
+  {
    "excerto": "Há histórias de amor que começam num jantar, numa festa ou num encontro inesperado. A de Marta Fernandes começou de uma forma bem diferente: diante de um ecrã de televisão. A atriz e cantora portuguesa, de 46 anos, já revelou que ficou impressionada quando viu o atual companheiro",
    "fonte": "busca-tvi",
    "id_nativo": "https://tvi.iol.pt/doisas10/novelas/musica/sem-esconder-a-diferenca-de-idades-atriz-portuguesa-mostra-se-apaixonada-ele-e-mesmo-muito-mais-novo",
@@ -659,5 +668,5 @@
   }
  ],
  "esquema": 1,
- "total": 73
+ "total": 74
 }

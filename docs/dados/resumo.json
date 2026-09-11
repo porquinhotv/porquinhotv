@@ -202,6 +202,26 @@
   },
   {
    "canais": {
+    "cmtv": {
+     "declaradas": 1,
+     "emissoes": 1,
+     "entrevistas_distintas": 1
+    }
+   },
+   "data": "2025-05-22"
+  },
+  {
+   "canais": {
+    "sic-noticias": {
+     "declaradas": 1,
+     "emissoes": 1,
+     "entrevistas_distintas": 1
+    }
+   },
+   "data": "2025-05-27"
+  },
+  {
+   "canais": {
     "rtp1": {
      "declaradas": 0,
      "emissoes": 1,
@@ -544,7 +564,7 @@
   "motor-rtp3",
   "registo-curado"
  ],
- "gerado_em": "2026-09-11T05:33:42+00:00",
+ "gerado_em": "2026-09-11T08:23:37+00:00",
  "por_ano": [
   {
    "ano": "2020",
@@ -573,8 +593,8 @@
   },
   {
    "ano": "2025",
-   "emissoes": 25,
-   "entrevistas_distintas": 21
+   "emissoes": 27,
+   "entrevistas_distintas": 23
   },
   {
    "ano": "2026",
@@ -609,8 +629,8 @@
   },
   {
    "canal": "sic-noticias",
-   "emissoes": 5,
-   "entrevistas_distintas": 5,
+   "emissoes": 6,
+   "entrevistas_distintas": 6,
    "nome": "SIC Notícias"
   },
   {
@@ -633,8 +653,8 @@
   },
   {
    "canal": "cmtv",
-   "emissoes": 5,
-   "entrevistas_distintas": 5,
+   "emissoes": 6,
+   "entrevistas_distintas": 6,
    "nome": "CMTV"
   }
  ],
@@ -782,6 +802,22 @@
    ],
    "data": "2025-05-21",
    "emissoes": 2,
+   "entrevistas_distintas": 1
+  },
+  {
+   "chaves": [
+    "854ab4d77a6e"
+   ],
+   "data": "2025-05-22",
+   "emissoes": 1,
+   "entrevistas_distintas": 1
+  },
+  {
+   "chaves": [
+    "1b0187abc55f"
+   ],
+   "data": "2025-05-27",
+   "emissoes": 1,
    "entrevistas_distintas": 1
   },
   {
@@ -1083,8 +1119,8 @@
    "mes": "2025-04"
   },
   {
-   "emissoes": 3,
-   "entrevistas_distintas": 2,
+   "emissoes": 5,
+   "entrevistas_distintas": 4,
    "mes": "2025-05"
   },
   {
@@ -1155,8 +1191,8 @@
  ],
  "por_origem": {
   "canal": {
-   "emissoes": 47,
-   "entrevistas_distintas": 40
+   "emissoes": 49,
+   "entrevistas_distintas": 42
   },
   "imprensa": {
    "emissoes": 13,
@@ -1240,9 +1276,14 @@
    "semana": "2025-W20"
   },
   {
-   "emissoes": 2,
-   "entrevistas_distintas": 1,
+   "emissoes": 3,
+   "entrevistas_distintas": 2,
    "semana": "2025-W21"
+  },
+  {
+   "emissoes": 1,
+   "entrevistas_distintas": 1,
+   "semana": "2025-W22"
   },
   {
    "emissoes": 2,
@@ -1391,8 +1432,8 @@
   "pergunta": "Quantas entrevistas exclusivas deu André Ventura na televisão portuguesa?"
  },
  "totais": {
-  "emissoes": 60,
-  "entrevistas_distintas": 52
+  "emissoes": 62,
+  "entrevistas_distintas": 54
  },
  "ultimo_registo": "2026-09-01"
 }
