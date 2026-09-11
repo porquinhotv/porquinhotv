@@ -60,7 +60,7 @@
  ],
  "metricas": {
   "legendas": {
-   "canais": "Onde é que o porquinho apareceu mais vezes. A mesma entrevista em dois canais conta nos dois, porque a omnipresença do porquinho também se conta duas vezes.",
+   "canais": "Onde é que o porquinho apareceu mais vezes. Uma entrevista que passou em dois canais conta uma vez, no canal a que está atribuída, e a página de Fontes escreve ao lado qual foi o outro.",
    "evolucao": "Cada barra é um período. Quanto mais alta, mais cheiro a estrume ficou no ar. Passe o rato ou use o teclado para ler os valores.",
    "recordes": "O melhor e o pior do chiqueiro, em todo o histórico."
   },
