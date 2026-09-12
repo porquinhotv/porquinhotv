@@ -374,6 +374,41 @@ entrevistas:
     # 2024-02-23, ao contrario: aqui a pagina nao nomeia o programa, e sem
     # o campo a deducao daria "Seis verdades e uma mentira".
 
+  # Acrescentada a 2026-09-12. Estava na lista de referencia como "SIC" e e
+  # a unica das cinco candidatas levantadas nessa sessao que o autor
+  # conseguiu provar: as outras quatro nao devolveram pagina nenhuma e
+  # ficam por provar, nao por desmentidas.
+  #
+  # A data esta declarada no caminho do endereco. O endereco NAO traz a
+  # palavra do formato, tal como nas linhas de 2024-03-21 e de 2025-03-27:
+  # foi a leitura da pagina pelo autor que confirmou que e uma entrevista e
+  # nao uma declaracao avulsa. Sem essa leitura esta linha nao entrava, e e
+  # ela que justifica a isencao desta fonte.
+  #
+  # Fica `sic-noticias` pela mesma regra da linha de 2025-05-27: a lista
+  # supoe "SIC" e o endereco e o do dominio do canal de informacao do
+  # grupo, e entre os dois dominios proprios do grupo e o dominio que
+  # decide. A lista de referencia nao se corrige por causa disto: e o
+  # registo do que o autor sabe e a regua contra a qual se mede a
+  # cobertura, nao um dataset.
+  #
+  # Sem `titulo` e sem `programa` de proposito: a pagina nao foi lida por
+  # esta ferramenta e um titulo copiado do caminho do endereco seria um
+  # campo inventado. Com um titulo com dois pontos, a deducao do nome do
+  # programa daria um nome que nao existe e abriria bloco proprio.
+  #
+  # Guardas corridas pela regra de 0.1.3, contra o dataset publicado: nao
+  # havia linha nenhuma neste dia nem a um dia de distancia (a mais proxima
+  # e de 2024-07-09, noutro canal), e nao ha outra linha do grupo SIC neste
+  # periodo. Nao ha nada a agrupar nem a absorver.
+  #
+  # Nenhuma fonte automatica podia ter trazido esta pagina: os dominios da
+  # SIC respondem 403 a maquina, medido em 40 enderecos e voltado a medir
+  # nesta a 2026-09-12.
+  - data: 2024-08-01
+    canal: sic-noticias
+    prova: https://sicnoticias.pt/pais/2024-08-01-video-andre-ventura-sobre-o-caso-das-gemeas-o-presidente-da-republica-diz-que-responde-perante-o-povo-mas-onde--no-cafe--3dc94cca
+
 remover:
   # Lida pelo autor a 2026-09-11: e um resumo de quinze minutos da
   # entrevista do noticiario da noite anterior, que ja esta contada pela
