@@ -11,8 +11,7 @@
    "ate_dias": 1,
    "frases": [
     "Entrevista fresquinha. O porquinho rebola na lama e não se aguenta.",
-    "Ainda ontem. O porquinho já viu a repetição três vezes.",
-    "Dia de festa no chiqueiro. As moscas puseram gravata."
+    "Ainda ontem. O porquinho já viu a repetição três vezes."
    ],
    "id": "euforico",
    "rotulo": "eufórico"
@@ -21,7 +20,6 @@
    "ate_dias": 3,
    "frases": [
     "{dias} dias. Ainda se ouve o eco na sala.",
-    "{dias} dias sem entrevista. O porquinho espreita a grelha com esperança.",
     "{dias} dias. O porquinho guardou o telecomando debaixo da palha, por precaução."
    ],
    "id": "contente",
@@ -65,6 +63,22 @@
    "recordes": "O melhor e o pior do chiqueiro, em todo o histórico."
   },
   "lider": "{canal}: {n}% das entrevistas. Já não é um canal, é uma segunda casa.",
+  "temporada": {
+   "episodios": 12,
+   "ordinais": {
+    "10": "décima",
+    "11": "décima primeira",
+    "12": "décima segunda",
+    "2": "segunda",
+    "3": "terceira",
+    "4": "quarta",
+    "5": "quinta",
+    "6": "sexta",
+    "7": "sétima",
+    "8": "oitava",
+    "9": "nona"
+   }
+  },
   "total": [
    {
     "ate": 0,
@@ -82,7 +96,6 @@
     "ate": 3,
     "frases": [
      "Ainda dá tempo para arrumar o chiqueiro entre uma e outra.",
-     "Ritmo de quem tem mais que fazer.",
      "O porquinho chafurda de felicidade na lama!"
     ]
    },
@@ -100,7 +113,7 @@
     "frases": [
      "Isto já não é uma grelha de programação, é uma assinatura.",
      "O porquinho desistiu de contar de cabeça.",
-     "Se fosse um programa, já ia na terceira temporada."
+     "Se fosse uma série, já ia na {temporada} temporada."
     ]
    }
   ]

@@ -5,6 +5,8 @@
 # ferramentas/gerar_textos.py. Ha um teste que falha se divergirem.
 #
 # Regra: cada frase tem no maximo um numero, que vem sempre dos dados.
+# Isso inclui os numeros derivados: ver `metricas.temporada`, calculado a
+# partir da contagem do periodo e nunca escrito a mao numa frase.
 # As frases falam do porquinho, dos dias e dos canais. Nunca do que foi
 # dito numa entrevista, e nunca a comentar a pessoa: a satira e sobre a
 # frequencia das visitas, que e o que este site mede.
@@ -30,13 +32,11 @@ humores:
     frases:
       - Entrevista fresquinha. O porquinho rebola na lama e não se aguenta.
       - Ainda ontem. O porquinho já viu a repetição três vezes.
-      - Dia de festa no chiqueiro. As moscas puseram gravata.
   - id: contente
     ate_dias: 3
     rotulo: contente
     frases:
       - '{dias} dias. Ainda se ouve o eco na sala.'
-      - '{dias} dias sem entrevista. O porquinho espreita a grelha com esperança.'
       - '{dias} dias. O porquinho guardou o telecomando debaixo da palha, por precaução.'
   - id: triste
     ate_dias: 6
@@ -75,7 +75,7 @@ humores:
 # outros femininos, e a frase tem de servir os nove.
 #
 # Placeholders permitidos, validados por ferramentas/gerar_textos.py:
-# {n} no total e no lider, {canal} no lider, nenhum nas legendas.
+# {n} e {temporada} no total, {n} e {canal} no lider, nenhum nas legendas.
 metricas:
   total:
     - ate: 0
@@ -87,7 +87,6 @@ metricas:
     - ate: 3
       frases:
         - Ainda dá tempo para arrumar o chiqueiro entre uma e outra.
-        - Ritmo de quem tem mais que fazer.
         - O porquinho chafurda de felicidade na lama!
     - ate: 9
       frases:
@@ -99,7 +98,32 @@ metricas:
       frases:
         - Isto já não é uma grelha de programação, é uma assinatura.
         - O porquinho desistiu de contar de cabeça.
-        - Se fosse um programa, já ia na terceira temporada.
+        - Se fosse uma série, já ia na {temporada} temporada.
+  # Quantos episodios tem uma temporada de uma serie, e o ordinal escrito
+  # que corresponde a cada numero de temporada. Medida: uma temporada anda
+  # entre 10 e 12 episodios; usamos 12 porque com o divisor maior o numero
+  # de temporadas sai menor, e neste site ficar curto e preferivel a
+  # inflacionar.
+  #
+  # Os ordinais sao indexados pelo numero da temporada. A primeira nao
+  # esta aqui de proposito: "ja ia na primeira temporada" nao e piada
+  # nenhuma. Acima da ultima chave tambem nao ha ordinal, e nos dois casos
+  # a frase que precisa dele cede o lugar a outra do mesmo degrau, em vez
+  # de escrever um numero que a configuracao nao tem.
+  temporada:
+    episodios: 12
+    ordinais:
+      2: segunda
+      3: terceira
+      4: quarta
+      5: quinta
+      6: sexta
+      7: sétima
+      8: oitava
+      9: nona
+      10: décima
+      11: décima primeira
+      12: décima segunda
   lider: '{canal}: {n}% das entrevistas. Já não é um canal, é uma segunda casa.'
   legendas:
     canais: Onde é que o porquinho apareceu mais vezes. Uma entrevista que passou em dois canais conta uma vez, no canal a que está atribuída, e a página de Fontes escreve ao lado qual foi o outro.

@@ -123,7 +123,7 @@
       var vazio = el("p", { class: "numero-grande", text: "Nenhuma entrevista exclusiva" });
       vazio.appendChild(el("small", { text: p.frase }));
       cartao.appendChild(vazio);
-      acrescentarFrase(cartao, PTV.fraseDeMetrica(metricas().total, 0));
+      acrescentarFrase(cartao, PTV.fraseDeMetrica(metricas().total, 0, metricas().temporada));
       painel.appendChild(cartao);
       return;
     }
@@ -136,7 +136,7 @@
     numero.appendChild(el("small", { text: p.frase }));
     cartao.appendChild(numero);
     // A escada e pelo numero de entrevistas, que e o numero grande.
-    acrescentarFrase(cartao, PTV.fraseDeMetrica(metricas().total, t.entrevistas));
+    acrescentarFrase(cartao, PTV.fraseDeMetrica(metricas().total, t.entrevistas, metricas().temporada));
     painel.appendChild(cartao);
   }
 

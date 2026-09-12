@@ -52,11 +52,51 @@ def validar_escada(degraus: list, campo: str, permitidos: set, onde: str) -> Non
             validar_texto(frase, permitidos, onde)
 
 
+def validar_temporada(metricas: dict) -> None:
+    """O numero de temporadas nao se escreve a mao: sai da contagem do
+    periodo, dividida pelos episodios configurados. Esta validacao existe
+    porque a alternativa a um ordinal em falta e o site escrever um numero
+    que ninguem mediu, e porque uma frase com {temporada} sem o bloco
+    configurado nunca chegaria a aparecer."""
+    bloco = metricas.get("temporada")
+    usa = any("{temporada}" in frase
+              for degrau in metricas.get("total") or []
+              for frase in degrau["frases"])
+    if bloco is None:
+        if usa:
+            raise ValueError("metricas.temporada: falta o bloco e ha frases que o pedem")
+        return
+    episodios = bloco.get("episodios")
+    if not isinstance(episodios, int) or episodios < 1:
+        raise ValueError("metricas.temporada: `episodios` tem de ser um inteiro positivo")
+    ordinais = bloco.get("ordinais") or {}
+    if not ordinais:
+        raise ValueError("metricas.temporada: `ordinais` nao pode ficar vazio")
+    for chave, valor in ordinais.items():
+        if not isinstance(chave, int) or chave < 1:
+            raise ValueError(f"metricas.temporada: chave {chave!r} nao e um numero de temporada")
+        if not isinstance(valor, str) or not valor.strip():
+            raise ValueError(f"metricas.temporada: o ordinal de {chave} tem de ser texto")
+
+
+def normalizar_temporada(metricas: dict) -> dict:
+    """As chaves dos ordinais sao numeros no YAML e texto no JSON. A
+    conversao fica aqui, e nao no site, para que o browser leia sempre a
+    mesma forma independentemente do que o YAML permitir."""
+    bloco = metricas.get("temporada")
+    if not bloco:
+        return metricas
+    copia = dict(metricas)
+    copia["temporada"] = dict(bloco, ordinais={str(k): v for k, v in bloco["ordinais"].items()})
+    return copia
+
+
 def validar(humor: dict) -> None:
     validar_escada(humor["humores"], "ate_dias", {"dias"}, "humores")
     metricas = humor.get("metricas") or {}
     if "total" in metricas:
-        validar_escada(metricas["total"], "ate", {"n"}, "metricas.total")
+        validar_escada(metricas["total"], "ate", {"n", "temporada"}, "metricas.total")
+    validar_temporada(metricas)
     if "lider" in metricas:
         validar_texto(metricas["lider"], {"canal", "n"}, "metricas.lider")
     for chave, texto in (metricas.get("legendas") or {}).items():
@@ -70,7 +110,7 @@ def construir() -> str:
         "cabecalho": humor["cabecalho"],
         "estado": humor["estado"],
         "humores": humor["humores"],
-        "metricas": humor.get("metricas") or {},
+        "metricas": normalizar_temporada(humor.get("metricas") or {}),
     }
     return json.dumps(conteudo, ensure_ascii=False, indent=1, sort_keys=True) + "\n"
 

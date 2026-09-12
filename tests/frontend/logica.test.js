@@ -129,14 +129,43 @@ test("os textos nao trazem comparacoes de tempo", () => {
 test("a escada das metricas cobre qualquer numero e nao deixa placeholder", () => {
   // Um degrau em falta ou um placeholder a mais escrevia "{n}" no ecra,
   // que e exactamente o que a validacao do gerador tenta impedir.
-  for (let n = 0; n <= 60; n++) {
-    const f = PTV.fraseDeMetrica(textos.metricas.total, n);
+  for (let n = 0; n <= 200; n++) {
+    const f = PTV.fraseDeMetrica(textos.metricas.total, n, textos.metricas.temporada);
     assert.notEqual(f, "", `n=${n}`);
     assert.doesNotMatch(f, /\{[a-z_]+\}/, `n=${n}: ${f}`);
   }
   // Sem camada de humor o site desenha os numeros na mesma.
   assert.equal(PTV.fraseDeMetrica([], 3), "");
   assert.equal(PTV.fraseDeMetrica(undefined, 3), "");
+});
+
+test("o ordinal da temporada sai da contagem e nao do texto da frase", () => {
+  // A frase dizia "ja ia na terceira temporada" com o ordinal escrito a
+  // mao. Com as 59 entrevistas publicadas a 2026-09-12 isso era falso, e
+  // o separador "Este ano" mostrava a mesma frase a partir das 11.
+  const t = textos.metricas.temporada;
+  assert.equal(PTV.temporadaDe(t, 59), "quinta");
+  assert.equal(PTV.temporadaDe(t, 48), "quarta");
+  assert.equal(PTV.temporadaDe(t, 49), "quinta");
+  assert.equal(PTV.temporadaDe(t, 60), "quinta");
+  assert.equal(PTV.temporadaDe(t, 61), "sexta");
+  // Abaixo da segunda temporada e acima da ultima configurada nao ha
+  // ordinal nenhum, e e isso que impede o site de inventar um numero.
+  assert.equal(PTV.temporadaDe(t, 11), "");
+  assert.equal(PTV.temporadaDe(t, 12 * 12 + 1), "");
+  assert.equal(PTV.temporadaDe(undefined, 59), "");
+});
+
+test("uma frase sem ordinal disponivel cede o lugar a outra do mesmo degrau", () => {
+  // Sem esta cedencia a frase saia com o ordinal vazio, que e a mesma
+  // classe de defeito que ela veio corrigir.
+  const m = textos.metricas;
+  assert.match(PTV.fraseDeMetrica(m.total, 59, m.temporada), /quinta temporada/);
+  for (const n of [11, 14, 12 * 12 + 2]) {
+    const f = PTV.fraseDeMetrica(m.total, n, m.temporada);
+    const ordinal = PTV.temporadaDe(m.temporada, n);
+    if (!ordinal) { assert.doesNotMatch(f, / temporada/, `n=${n}: ${f}`); }
+  }
 });
 
 test("a frase do canal lider preenche o nome e a percentagem", () => {

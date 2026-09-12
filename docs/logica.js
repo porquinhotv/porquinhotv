@@ -128,11 +128,33 @@
     return preencher(escolherFrase(humor.frases, dias), { dias: dias });
   }
 
+  /* Em que temporada de uma serie ia um numero de entrevistas, em ordinal
+     escrito. O divisor e a lista de ordinais vivem na configuracao, com a
+     medida ao lado. Devolve "" quando a configuracao nao tem ordinal para
+     esse numero, que e o que trava a frase de afirmar uma coisa falsa:
+     antes de isto existir, o ordinal estava escrito a mao na frase e so
+     era verdade numa faixa estreita de totais. */
+  function temporadaDe(temporada, n) {
+    if (!temporada || !temporada.episodios || !temporada.ordinais) { return ""; }
+    return temporada.ordinais[String(Math.ceil(n / temporada.episodios))] || "";
+  }
+
   /* Frase satirica de uma metrica. Devolve "" quando nao ha escada
-     configurada: a camada de humor pode faltar, o numero nao. */
-  function fraseDeMetrica(escada, n) {
+     configurada: a camada de humor pode faltar, o numero nao.
+
+     Uma frase que precisa de um ordinal que a configuracao nao tem cede o
+     lugar a seguinte do mesmo degrau. Preferimos mostrar outra piada a
+     escrever um numero inventado. */
+  function fraseDeMetrica(escada, n, temporada) {
     if (!escada || !escada.length) { return ""; }
-    return preencher(escolherFrase(degrauPara(escada, n).frases, n), { n: n });
+    var frases = degrauPara(escada, n).frases || [];
+    var ordinal = temporadaDe(temporada, n);
+    for (var i = 0; i < frases.length; i++) {
+      var frase = escolherFrase(frases, Math.abs(n) + i);
+      if (frase.indexOf("{temporada}") !== -1 && !ordinal) { continue; }
+      return preencher(frase, { n: n, temporada: ordinal });
+    }
+    return "";
   }
 
   function cabecalhoDias(dias, textos) {
@@ -167,6 +189,7 @@
     degrauPara: degrauPara,
     humorPara: humorPara,
     fraseDeHumor: fraseDeHumor,
+    temporadaDe: temporadaDe,
     fraseDeMetrica: fraseDeMetrica,
     cabecalhoDias: cabecalhoDias,
     preencher: preencher

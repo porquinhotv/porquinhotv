@@ -88,6 +88,56 @@ class TestArtefactosGerados(unittest.TestCase):
             gerar_textos.validar(dict(base, metricas={"legendas": {"canais": "{n} canais"}}))
         gerar_textos.validar(base)  # sem metricas continua valido
 
+    def test_validacao_do_ordinal_da_temporada_apanha_erros(self):
+        """A frase da serie dizia "ja ia na terceira temporada" com um
+        ordinal escrito a mao, e so era verdade entre as 21 e as 36
+        entrevistas; com as 59 publicadas a 2026-09-12 estava errada, e o
+        separador "Este ano" mostrava-a a partir das 11. O ordinal passou a
+        sair da contagem, e estas sao as maneiras de partir esse calculo."""
+        base = {"humores": [{"id": "a", "ate_dias": None, "frases": []}]}
+        bom = {"episodios": 12, "ordinais": {2: "segunda"}}
+        with self.assertRaises(ValueError):  # frase pede o ordinal, falta o bloco
+            gerar_textos.validar(dict(base, metricas={"total": [{"ate": None, "frases": ["{temporada}"]}]}))
+        with self.assertRaises(ValueError):  # sem episodios nao ha divisao
+            gerar_textos.validar(dict(base, metricas={"temporada": {"episodios": 0, "ordinais": {2: "segunda"}}}))
+        with self.assertRaises(ValueError):  # lista vazia nunca daria ordinal
+            gerar_textos.validar(dict(base, metricas={"temporada": {"episodios": 12, "ordinais": {}}}))
+        with self.assertRaises(ValueError):  # chave que nao e numero de temporada
+            gerar_textos.validar(dict(base, metricas={"temporada": {"episodios": 12, "ordinais": {"duas": "segunda"}}}))
+        with self.assertRaises(ValueError):  # ordinal por escrever
+            gerar_textos.validar(dict(base, metricas={"temporada": {"episodios": 12, "ordinais": {2: " "}}}))
+        gerar_textos.validar(dict(base, metricas={"temporada": bom}))
+        gerar_textos.validar(dict(base, metricas={"total": [{"ate": None, "frases": ["{temporada}"]}], "temporada": bom}))
+
+    def test_o_json_publicado_leva_os_ordinais_com_chave_de_texto(self):
+        """No YAML as chaves sao numeros e em JSON sao texto. Se a conversao
+        ficasse do lado do site, uma leitura por numero devolvia indefinido
+        e a frase da serie desaparecia em silencio."""
+        metricas = gerar_textos.normalizar_temporada({"temporada": {"episodios": 12, "ordinais": {5: "quinta"}}})
+        self.assertEqual(metricas["temporada"]["ordinais"], {"5": "quinta"})
+
+    def test_nenhuma_frase_do_humor_fica_por_mostrar(self):
+        """A frase e escolhida por `valor % numero_de_frases`, por isso um
+        degrau fechado com menos valores possiveis do que frases deixa
+        frases que nunca aparecem no site. Eram tres a 2026-09-12, uma
+        delas no degrau de dois dias, e ninguem daria por isso a ler o
+        YAML."""
+        humor = yaml.safe_load((RAIZ / "config" / "humor.yml").read_text(encoding="utf-8"))
+        escadas = [("humores", humor["humores"], "ate_dias"),
+                   ("metricas.total", humor["metricas"]["total"], "ate")]
+        for onde, degraus, campo in escadas:
+            inferior = 0
+            for degrau in degraus:
+                limite = degrau[campo]
+                if limite is None:
+                    break  # o degrau aberto tem valores que cheguem para qualquer lista
+                frases = degrau["frases"]
+                alcancados = {v % len(frases) for v in range(inferior, limite + 1)}
+                with self.subTest(escada=onde, ate=limite):
+                    self.assertEqual(len(alcancados), len(frases),
+                                     f"{onde} ate {limite}: {len(frases)} frases para {limite - inferior + 1} valores")
+                inferior = limite + 1
+
     def test_o_site_nao_le_campos_de_tempo(self):
         """A duracao saiu a 2026-09-10 e o resumo deixou de ter `tempo_s` e
         `sem_duracao`. Um JavaScript que ainda os lesse somava `undefined` e
