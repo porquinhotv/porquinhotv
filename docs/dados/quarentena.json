@@ -64,15 +64,6 @@
    "url": "https://www.rtp.pt/play/p5994/e586404/radicais-livres-2a-serie"
   },
   {
-   "excerto": "Antonio Ventura - Campanha do kiwi",
-   "fonte": "busca-rtp1",
-   "id_nativo": "https://www.rtp.pt/play/p855/e602549/jose-candeias-ha-conversa",
-   "motivo": "formato_nao_apurado",
-   "publicado_em": "2022-03-05",
-   "titulo": "José Candeias (Podcast)",
-   "url": "https://www.rtp.pt/play/p855/e602549/jose-candeias-ha-conversa"
-  },
-  {
    "excerto": "Emiliano Ventura - Emiliano Ventura",
    "fonte": "busca-rtp1",
    "id_nativo": "https://www.rtp.pt/play/p9149/e628428/afinal-ha-tempo",
@@ -172,15 +163,6 @@
    "url": "https://tvi.iol.pt/geral/16-11-2020/miguel-sousa-tavares-entrevista-os-candidatos-as-eleicoes-presidenciais-de-2021"
   },
   {
-   "excerto": "Foi uma das crianças mais famosas do mundo e ficou conhecida por um título que correu o mundo.",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/vmais/thylane-blondeau/ben-attal/recorda-se-da-menina-mais-bonita-do-mundo-aos-25-anos-casou-se-e-as-imagens-parecem-saidas-de-um-filme-da-disney",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-10",
-   "titulo": "Recorda-se da “menina mais bonita do mundo”? Aos 25 anos, casou-se e as imagens parecem saídas de um filme da Disney",
-   "url": "https://tvi.iol.pt/vmais/thylane-blondeau/ben-attal/recorda-se-da-menina-mais-bonita-do-mundo-aos-25-anos-casou-se-e-as-imagens-parecem-saidas-de-um-filme-da-disney"
-  },
-  {
    "excerto": "No episódio de hoje de «Coração de Mãe», a mais recente novela da TVI, os dramas familiares, as revelações dolorosas e os mistérios que envolvem Linda (Joana Solnado), João (Diogo Morgado) e as suas famílias atingem novos patamares de intensidade.",
    "fonte": "busca-tvi",
    "id_nativo": "https://tvi.iol.pt/novelas/coracao-de-mae/tvi/um-casamento-em-queda-um-desaparecimento-e-uma-morte-a-vista-tudo-sobre-o-quarto-episodio-de-coracao-de-mae",
@@ -197,15 +179,6 @@
    "publicado_em": "2026-09-11",
    "titulo": "A vida inacreditável de Joana Solnado: a morte clínica, a mudança drástica de vida e a importância da mística",
    "url": "https://tvi.iol.pt/novelas/joana-solnado/vida/a-vida-inacreditavel-de-joana-solnado-a-morte-clinica-a-mudanca-drastica-de-vida-e-a-importancia-da-mistica"
-  },
-  {
-   "excerto": "Aos 44 anos, vive uma nova fase.",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/vmais/candido-costa/vovo-candy/aos-44-anos-um-dos-rostos-mais-conhecidos-da-televisao-ja-e-avo-e-ha-uma-nova-fotografia-de-familia-muitas-felicidades",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-11",
-   "titulo": "Aos 44 anos, um dos rostos mais conhecidos da televisão já é avô e há uma nova fotografia de família: «Muitas felicidades»",
-   "url": "https://tvi.iol.pt/vmais/candido-costa/vovo-candy/aos-44-anos-um-dos-rostos-mais-conhecidos-da-televisao-ja-e-avo-e-ha-uma-nova-fotografia-de-familia-muitas-felicidades"
   },
   {
    "excerto": "Trágica notícia no mundo do entretenimento. Os fãs ainda não acreditam.",
@@ -233,15 +206,6 @@
    "publicado_em": "2026-09-11",
    "titulo": "De novela a fenómeno desportivo: «Coração de Mãe» invade o mundo do futebol",
    "url": "https://tvi.iol.pt/novelas/coracao-de-mae/tvi/de-novela-a-fenomeno-desportivo-coracao-de-mae-invade-o-mundo-do-futebol"
-  },
-  {
-   "excerto": "Mike McFarland ficou conhecido pelas dobragens em inglês de “Dragon Ball Z” e “One Piece”. Lutava contra um cancro",
-   "fonte": "busca-tvi",
-   "id_nativo": "https://tvi.iol.pt/novelas/mike-mcfarland/morte/deu-voz-a-algumas-das-personagens-de-animacao-mais-iconicas-morreu-aos-56-anos-vitima-de-cancro",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2026-09-11",
-   "titulo": "Deu voz a algumas das personagens de animação mais icónicas. Morreu aos 56 anos vítima de cancro",
-   "url": "https://tvi.iol.pt/novelas/mike-mcfarland/morte/deu-voz-a-algumas-das-personagens-de-animacao-mais-iconicas-morreu-aos-56-anos-vitima-de-cancro"
   },
   {
    "excerto": "Margarida Corceiro esteve em grande destaque no Festival de Cinema de Veneza. Veja as imagens",
@@ -307,6 +271,15 @@
    "url": "https://tvi.iol.pt/doisas10/cristina-ferreira/aniversario/nao-publicadas-cristina-ferreira-mostra-imagens-ineditas-e-ha-um-pormenor-que-salta-a-vista"
   },
   {
+   "excerto": "Bibá Pitta adere à tendência dos anos 80 e mostra-se com 18 anos",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/novelas/biba-pitta/anos-80/e-uma-das-caras-mais-conhecidas-de-portugal-e-tinha-18-anos-nesta-imagem-dos-anos-80-reconhece",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-11",
+   "titulo": "É uma das caras mais conhecidas de Portugal. E tinha 18 anos nesta imagem dos anos 80. Reconhece?",
+   "url": "https://tvi.iol.pt/novelas/biba-pitta/anos-80/e-uma-das-caras-mais-conhecidas-de-portugal-e-tinha-18-anos-nesta-imagem-dos-anos-80-reconhece"
+  },
+  {
    "excerto": "A TVI prepara-se para estrear, já este mês, “Roda da Sorte”, o novo concurso apresentado por Cristina Ferreira.",
    "fonte": "busca-tvi",
    "id_nativo": "https://tvi.iol.pt/cristina-ferreira/roda-da-sorte/roda-da-sorte-o-novo-concurso-de-cristina-ferreira-estreia-dia-21-de-setembro-e-ja-se-pode-inscrever",
@@ -314,6 +287,33 @@
    "publicado_em": "2026-09-11",
    "titulo": "“Roda da Sorte”: o novo concurso de Cristina Ferreira estreia dia 21 de setembro - e já se pode inscrever",
    "url": "https://tvi.iol.pt/cristina-ferreira/roda-da-sorte/roda-da-sorte-o-novo-concurso-de-cristina-ferreira-estreia-dia-21-de-setembro-e-ja-se-pode-inscrever"
+  },
+  {
+   "excerto": "Tiago Blela está a a viver uma das melhores fases da sua vida e isso deve-se em parte a uma conhecida cantora portuguesa.",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/bigbrother/tiago-blela/beatriz-felizardo/nao-foi-correspondido-por-eva-hoje-vive-fase-feliz-com-cantora-portuguesa-o-sentimento-ganha-cor",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-12",
+   "titulo": "Não foi correspondido por Eva. Hoje vive fase feliz com cantora portuguesa: «O sentimento ganha cor»",
+   "url": "https://tvi.iol.pt/bigbrother/tiago-blela/beatriz-felizardo/nao-foi-correspondido-por-eva-hoje-vive-fase-feliz-com-cantora-portuguesa-o-sentimento-ganha-cor"
+  },
+  {
+   "excerto": "Sérgio Duarte e a Vanda Duarte estão prestes a aumentar a família. Depois de já terem anunciado que vão ser pais pela terceira vez, o ex-concorrente do Big Brother 2024 protagonizou agora um momento hilariante, ao fazer um teste de gravidez quando a barriga já é mais do que evide",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/bigbrother/sergio-duarte/bebe-a-caminho/quem-o-conhece-conhece-a-sua-familia-um-teste-de-gravidez-inesperado-revelou-o-inedito-mais-um-bebe-a-caminho",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-12",
+   "titulo": "Quem o conhece, conhece a sua família. Um teste de gravidez inesperado revelou o inédito: mais um bebé a caminho",
+   "url": "https://tvi.iol.pt/bigbrother/sergio-duarte/bebe-a-caminho/quem-o-conhece-conhece-a-sua-familia-um-teste-de-gravidez-inesperado-revelou-o-inedito-mais-um-bebe-a-caminho"
+  },
+  {
+   "excerto": "Flávio Miguel parece ter decidido colocar um ponto final no silêncio e reagiu, nas redes sociais, às notícias e comentários que têm surgido em torno do seu nome. O ex-marido de Joana Diniz não escondeu a indignação e deixou uma mensagem bastante dura, antes de mostrar a atual com",
+   "fonte": "busca-tvi",
+   "id_nativo": "https://tvi.iol.pt/bigbrother/flavio-miguel/joana-diniz/sem-tabus-pela-primeira-vez-ex-marido-de-joana-diniz-quebra-o-silencio-sobre-polemica-com-jessica-maria",
+   "motivo": "sem_sujeito",
+   "publicado_em": "2026-09-12",
+   "titulo": "Sem tabus: Pela primeira vez, ex-marido de Joana Diniz quebra o silêncio sobre polémica com Jéssica Maria",
+   "url": "https://tvi.iol.pt/bigbrother/flavio-miguel/joana-diniz/sem-tabus-pela-primeira-vez-ex-marido-de-joana-diniz-quebra-o-silencio-sobre-polemica-com-jessica-maria"
   },
   {
    "excerto": "",
@@ -541,13 +541,31 @@
    "url": "https://www.rtp.pt/play/p10324/e952946/grande-entrevista"
   },
   {
-   "excerto": "Comprar Casa ou Apartamento em São Miguel, Açores | Now Imobiliária, em Ponta Delgada e Vila Franca do Campo PDL Ponta Delgada : 296 630 380 (Chamada para rede fixa nacional) VFC Vila Franca do Campo : 296 092 960 (Chamada para rede fixa nacional) Home Imóveis Empresa Serviços Co",
-   "fonte": "motor-now",
-   "id_nativo": "https://www.now.pt/pt/politica-de-privacidade",
-   "motivo": "sem_sujeito",
-   "publicado_em": "2020-08-04",
-   "titulo": "Comprar Casa ou Apartamento em São Miguel, Açores | Now Imobiliária, em Ponta Delgada e Vila Franca do Campo",
-   "url": "https://www.now.pt/pt/politica-de-privacidade"
+   "excerto": "Aqui encontra todas as notícias sobre Andre ventura",
+   "fonte": "motor-cnn-portugal",
+   "id_nativo": "https://cnnportugal.iol.pt/noticias/Andre-ventura",
+   "motivo": "sem_data",
+   "publicado_em": "",
+   "titulo": "Andre ventura | CNN Portugal",
+   "url": "https://cnnportugal.iol.pt/noticias/Andre-ventura"
+  },
+  {
+   "excerto": "Aqui encontra todas as notícias sobre André Ventura",
+   "fonte": "motor-cnn-portugal",
+   "id_nativo": "https://cnnportugal.iol.pt/noticias/Andr%C3%A9-Ventura",
+   "motivo": "sem_data",
+   "publicado_em": "",
+   "titulo": "André Ventura | CNN Portugal",
+   "url": "https://cnnportugal.iol.pt/noticias/Andr%C3%A9-Ventura"
+  },
+  {
+   "excerto": "Aqui encontra todas as notícias sobre Entrevista André Ventura",
+   "fonte": "motor-cnn-portugal",
+   "id_nativo": "https://cnnportugal.iol.pt/noticias/Entrevista-Andr%C3%A9-Ventura",
+   "motivo": "sem_data",
+   "publicado_em": "",
+   "titulo": "Entrevista André Ventura | CNN Portugal",
+   "url": "https://cnnportugal.iol.pt/noticias/Entrevista-Andr%C3%A9-Ventura"
   },
   {
    "excerto": "",
@@ -596,5 +614,5 @@
   }
  ],
  "esquema": 2,
- "total": 66
+ "total": 68
 }

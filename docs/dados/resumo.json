@@ -501,12 +501,30 @@
   },
   {
    "canais": {
+    "cmtv": {
+     "declaradas": 1,
+     "entrevistas": 1
+    }
+   },
+   "data": "2026-07-15"
+  },
+  {
+   "canais": {
     "cnn-portugal": {
      "declaradas": 1,
      "entrevistas": 1
     }
    },
    "data": "2026-07-16"
+  },
+  {
+   "canais": {
+    "cmtv": {
+     "declaradas": 1,
+     "entrevistas": 1
+    }
+   },
+   "data": "2026-07-27"
   },
   {
    "canais": {
@@ -528,6 +546,15 @@
   },
   {
    "canais": {
+    "cmtv": {
+     "declaradas": 1,
+     "entrevistas": 1
+    }
+   },
+   "data": "2026-09-07"
+  },
+  {
+   "canais": {
     "now": {
      "declaradas": 1,
      "entrevistas": 1
@@ -544,7 +571,7 @@
   "motor-rtp3",
   "registo-curado"
  ],
- "gerado_em": "2026-09-12T05:24:32+00:00",
+ "gerado_em": "2026-09-12T16:10:28+00:00",
  "por_ano": [
   {
    "ano": "2024",
@@ -556,7 +583,7 @@
   },
   {
    "ano": "2026",
-   "entrevistas": 19
+   "entrevistas": 22
   }
  ],
  "por_canal": [
@@ -602,7 +629,7 @@
   },
   {
    "canal": "cmtv",
-   "entrevistas": 8,
+   "entrevistas": 11,
    "nome": "CMTV"
   }
  ],
@@ -824,7 +851,15 @@
    "entrevistas": 1
   },
   {
+   "data": "2026-07-15",
+   "entrevistas": 1
+  },
+  {
    "data": "2026-07-16",
+   "entrevistas": 1
+  },
+  {
+   "data": "2026-07-27",
    "entrevistas": 1
   },
   {
@@ -833,6 +868,10 @@
   },
   {
    "data": "2026-09-01",
+   "entrevistas": 1
+  },
+  {
+   "data": "2026-09-07",
    "entrevistas": 1
   },
   {
@@ -922,20 +961,20 @@
    "mes": "2026-06"
   },
   {
-   "entrevistas": 2,
+   "entrevistas": 4,
    "mes": "2026-07"
   },
   {
-   "entrevistas": 2,
+   "entrevistas": 3,
    "mes": "2026-09"
   }
  ],
  "por_origem": {
   "canal": {
-   "entrevistas": 48
+   "entrevistas": 49
   },
   "imprensa": {
-   "entrevistas": 11
+   "entrevistas": 13
   }
  },
  "por_semana": [
@@ -1108,11 +1147,11 @@
    "semana": "2026-W26"
   },
   {
-   "entrevistas": 1,
+   "entrevistas": 2,
    "semana": "2026-W29"
   },
   {
-   "entrevistas": 1,
+   "entrevistas": 2,
    "semana": "2026-W31"
   },
   {
@@ -1120,7 +1159,7 @@
    "semana": "2026-W36"
   },
   {
-   "entrevistas": 1,
+   "entrevistas": 2,
    "semana": "2026-W37"
   }
  ],
@@ -1150,7 +1189,7 @@
   "pergunta": "Quantas entrevistas exclusivas deu André Ventura na televisão portuguesa?"
  },
  "totais": {
-  "entrevistas": 59
+  "entrevistas": 62
  },
  "ultimo_registo": "2026-09-10"
 }

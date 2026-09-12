@@ -2613,6 +2613,46 @@
   },
   {
    "canais": [
+    "cmtv"
+   ],
+   "canal": "cmtv",
+   "confianca": "alta",
+   "data": "2026-07-15",
+   "data_origem": "declarada",
+   "fonte": "curadoria",
+   "fontes_distintas": 0,
+   "id": "22aa568f1b45",
+   "origem": "imprensa",
+   "primeira_vez": "2026-09-12",
+   "principal_declarado": false,
+   "programa": "Grande Jornal",
+   "prova_url": "https://www.cmjornal.pt/politica/detalhe/andre-ventura-em-entrevista-na-cmtv",
+   "publicado_em": "2026-07-15",
+   "rondas": 0,
+   "titulo": "Ventura prudente não afasta moção de censura e admite que Governo poderá ter de apresentar moção de confiança",
+   "transmissoes": [
+    {
+     "bloco": "22aa568f1b45",
+     "canal": "cmtv",
+     "confianca": "alta",
+     "data": "2026-07-15",
+     "data_origem": "declarada",
+     "entrevista": "22aa568f1b45",
+     "fonte": "curadoria",
+     "fontes_distintas": 0,
+     "id": "curadoria:a26b13c7f4d1",
+     "origem": "imprensa",
+     "primeira_vez": "2026-09-12",
+     "programa": "Grande Jornal",
+     "prova_url": "https://www.cmjornal.pt/politica/detalhe/andre-ventura-em-entrevista-na-cmtv",
+     "publicado_em": "2026-07-15",
+     "rondas": 0,
+     "titulo": "Ventura prudente não afasta moção de censura e admite que Governo poderá ter de apresentar moção de confiança"
+    }
+   ]
+  },
+  {
+   "canais": [
     "cnn-portugal"
    ],
    "canal": "cnn-portugal",
@@ -2648,6 +2688,46 @@
      "publicado_em": "2026-07-16",
      "rondas": 0,
      "titulo": "A entrevista a André Ventura na íntegra"
+    }
+   ]
+  },
+  {
+   "canais": [
+    "cmtv"
+   ],
+   "canal": "cmtv",
+   "confianca": "alta",
+   "data": "2026-07-27",
+   "data_origem": "declarada",
+   "fonte": "curadoria",
+   "fontes_distintas": 0,
+   "id": "313476f9e394",
+   "origem": "imprensa",
+   "primeira_vez": "2026-09-12",
+   "principal_declarado": false,
+   "programa": "\"A CPI é aos mandatos de Luís Neves\"",
+   "prova_url": "https://www.cmjornal.pt/politica/detalhe/20260727-203333-andre-ventura-em-entrevista-na-cmtv",
+   "publicado_em": "2026-07-27",
+   "rondas": 0,
+   "titulo": "\"A CPI é aos mandatos de Luís Neves\": André Ventura em entrevista sobre a polémica com o MAI",
+   "transmissoes": [
+    {
+     "bloco": "313476f9e394",
+     "canal": "cmtv",
+     "confianca": "alta",
+     "data": "2026-07-27",
+     "data_origem": "declarada",
+     "entrevista": "313476f9e394",
+     "fonte": "curadoria",
+     "fontes_distintas": 0,
+     "id": "curadoria:5c3288c06041",
+     "origem": "imprensa",
+     "primeira_vez": "2026-09-12",
+     "programa": "\"A CPI é aos mandatos de Luís Neves\"",
+     "prova_url": "https://www.cmjornal.pt/politica/detalhe/20260727-203333-andre-ventura-em-entrevista-na-cmtv",
+     "publicado_em": "2026-07-27",
+     "rondas": 0,
+     "titulo": "\"A CPI é aos mandatos de Luís Neves\": André Ventura em entrevista sobre a polémica com o MAI"
     }
    ]
   },
@@ -2733,6 +2813,46 @@
   },
   {
    "canais": [
+    "cmtv"
+   ],
+   "canal": "cmtv",
+   "confianca": "alta",
+   "data": "2026-09-07",
+   "data_origem": "declarada",
+   "fonte": "curadoria",
+   "fontes_distintas": 0,
+   "id": "a5e52690b319",
+   "origem": "canal",
+   "primeira_vez": "2026-09-12",
+   "principal_declarado": false,
+   "programa": "\"Pergunto-me quem é o primeiro-ministro\"",
+   "prova_url": "https://www.cmjornal.pt/cmtv/videos/detalhe/pergunto-me-quem-e-o-primeiro-ministro-andre-ventura-fala-sobre-luis-neves-um-dia-antes-da-mocao-de-censura",
+   "publicado_em": "2026-09-07",
+   "rondas": 0,
+   "titulo": "\"Pergunto-me quem é o primeiro-ministro\": André Ventura fala sobre Luís Neves um dia antes da moção de censura",
+   "transmissoes": [
+    {
+     "bloco": "a5e52690b319",
+     "canal": "cmtv",
+     "confianca": "alta",
+     "data": "2026-09-07",
+     "data_origem": "declarada",
+     "entrevista": "a5e52690b319",
+     "fonte": "curadoria",
+     "fontes_distintas": 0,
+     "id": "curadoria:4c78a20b7859",
+     "origem": "canal",
+     "primeira_vez": "2026-09-12",
+     "programa": "\"Pergunto-me quem é o primeiro-ministro\"",
+     "prova_url": "https://www.cmjornal.pt/cmtv/videos/detalhe/pergunto-me-quem-e-o-primeiro-ministro-andre-ventura-fala-sobre-luis-neves-um-dia-antes-da-mocao-de-censura",
+     "publicado_em": "2026-09-07",
+     "rondas": 0,
+     "titulo": "\"Pergunto-me quem é o primeiro-ministro\": André Ventura fala sobre Luís Neves um dia antes da moção de censura"
+    }
+   ]
+  },
+  {
+   "canais": [
     "now"
    ],
    "canal": "now",
@@ -2773,5 +2893,5 @@
   }
  ],
  "esquema": 2,
- "total": 65
+ "total": 68
 }
