@@ -64,4 +64,4 @@ Allow: /
 User-agent: Timpibot
 Allow: /
 
-Sitemap: https://porquinhotv.github.io/porquinhotv/sitemap.xml
+Sitemap: https://porquinhotv.github.io/sitemap.xml

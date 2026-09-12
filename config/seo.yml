@@ -1,4 +1,4 @@
----
+﻿---
 # Metadados de pesquisa. Vivem aqui pela mesma razao que os nomes dos
 # canais: nenhum modulo Python conhece o sujeito, as palavras pelas quais
 # se procura este site, nem o endereco publico onde ele esta.
@@ -18,7 +18,7 @@ versao: 1
 # O endereco publico, com barra no fim. Entra no canonical de cada
 # pagina, no sitemap e no robots. Se o repositorio mudar de nome, esta e
 # a unica linha a mudar.
-base: https://porquinhotv.github.io/porquinhotv/
+base: https://porquinhotv.github.io/
 
 nome: Porquinho TV
 idioma: pt-PT
@@ -31,14 +31,14 @@ cartao: cartao.png
 # Entram no campo `keywords` dos dados estruturados e sao a regua pela
 # qual os titulos e as descricoes abaixo foram escritos.
 palavras_chave:
-  - André Ventura
+  - AndrÃ© Ventura
   - Ventura
   - Chega
   - entrevista
   - entrevistas
   - entrevista exclusiva
-  - televisão
-  - televisão portuguesa
+  - televisÃ£o
+  - televisÃ£o portuguesa
   - TV
   - RTP
   - SIC
@@ -46,7 +46,7 @@ palavras_chave:
   - CNN Portugal
   - CMTV
   - NOW
-  - política portuguesa
+  - polÃ­tica portuguesa
   - tempo de antena
   - media
 
@@ -66,27 +66,27 @@ sujeito_mesmo_que:
 # alguem carrega.
 paginas:
   index.html:
-    titulo: 'Entrevistas de André Ventura na televisão | Porquinho TV'
+    titulo: 'Entrevistas de AndrÃ© Ventura na televisÃ£o | Porquinho TV'
     descricao: >-
-      Quantas entrevistas exclusivas deu André Ventura, líder do Chega, na
-      televisão portuguesa. Contagem por canal, por mês e por ano, com prova
-      pública em cada linha.
+      Quantas entrevistas exclusivas deu AndrÃ© Ventura, lÃ­der do Chega, na
+      televisÃ£o portuguesa. Contagem por canal, por mÃªs e por ano, com prova
+      pÃºblica em cada linha.
   calendario.html:
-    titulo: 'Calendário das entrevistas de André Ventura | Porquinho TV'
+    titulo: 'CalendÃ¡rio das entrevistas de AndrÃ© Ventura | Porquinho TV'
     descricao: >-
-      Dia a dia das entrevistas exclusivas de André Ventura na televisão
+      Dia a dia das entrevistas exclusivas de AndrÃ© Ventura na televisÃ£o
       portuguesa, canal a canal, desde 2024.
   fontes.html:
-    titulo: 'Todas as entrevistas de André Ventura, com prova | Porquinho TV'
+    titulo: 'Todas as entrevistas de AndrÃ© Ventura, com prova | Porquinho TV'
     descricao: >-
-      A lista completa das entrevistas exclusivas de André Ventura na televisão
-      portuguesa, cada uma com a ligação para a página do canal ou para a
-      notícia que a prova.
+      A lista completa das entrevistas exclusivas de AndrÃ© Ventura na televisÃ£o
+      portuguesa, cada uma com a ligaÃ§Ã£o para a pÃ¡gina do canal ou para a
+      notÃ­cia que a prova.
   metodologia.html:
     titulo: 'Metodologia da contagem | Porquinho TV'
     descricao: >-
-      O que conta como entrevista exclusiva, que provas são aceites, o que fica
-      de fora e porquê.
+      O que conta como entrevista exclusiva, que provas sÃ£o aceites, o que fica
+      de fora e porquÃª.
 
 # robots.txt. Escrito por extenso e nao gerado por regras, para que o que
 # esta publicado seja exactamente o que aqui se le.
