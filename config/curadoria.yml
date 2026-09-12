@@ -276,6 +276,52 @@ entrevistas:
     prova: https://rr.pt/noticia/politica/2024/03/11/ventura-exige-negociacao-com-ad-para-aprovar-orcamento-do-estado/370455/
     titulo: 'Ventura exige negociação com AD para aprovar Orçamento do Estado'
 
+  # Tres entrevistas da CMTV que o site nao tinha, confrontadas a 2026-09-12
+  # contra o que estava publicado e lidas pagina a pagina. As tres declaram
+  # a data em `article:published_time` e dizem por palavras que a entrevista
+  # foi a CMTV.
+  #
+  # Guardas corridas antes de acrescentar, pela regra de 0.1.3: nenhuma das
+  # tres datas tinha linha no dataset, e nenhuma colide com outro canal no
+  # mesmo dia. As linhas de 2026-07-16 e 2026-07-29 sao da CNN Portugal e de
+  # dias diferentes, por isso nao ha nada a agrupar.
+  #
+  # Porque e que nenhuma entrou sozinha: o `motor-cmtv` so aceita como
+  # artigo os enderecos que casam com `padrao_artigo: '/cmtv/'`, e duas
+  # destas tres estao em `/politica/detalhe/`. Nao e o titulo que as trava,
+  # e o caminho. A terceira cumpre o padrao e tambem nao entrou, e isso
+  # continua por explicar.
+  - data: 2026-07-15
+    canal: cmtv
+    origem: imprensa
+    programa: Grande Jornal
+    prova: https://www.cmjornal.pt/politica/detalhe/andre-ventura-em-entrevista-na-cmtv
+    titulo: 'Ventura prudente não afasta moção de censura e admite que Governo poderá ter de apresentar moção de confiança'
+    # A peca, publicada as 20:56 desse dia, diz "esteve esta quarta-feira no
+    # 'Grande Jornal' da CMTV numa entrevista exclusiva", e 15 de julho de
+    # 2026 foi uma quarta-feira. O programa vem declarado no texto e nao
+    # deduzido do titulo.
+    #
+    # Este endereco nao traz a data no caminho, ao contrario dos outros dois
+    # da CMTV. Um endereco assim pode ser reaproveitado para outra peca: se
+    # um dia deixar de dizer o que esta aqui citado, a linha fica sem prova.
+  - data: 2026-07-27
+    canal: cmtv
+    origem: imprensa
+    prova: https://www.cmjornal.pt/politica/detalhe/20260727-203333-andre-ventura-em-entrevista-na-cmtv
+    titulo: '"A CPI é aos mandatos de Luís Neves": André Ventura em entrevista sobre a polémica com o MAI'
+    # Publicada as 20:33 de 27 de julho de 2026, uma segunda-feira, e diz
+    # "está esta segunda-feira na CMTV, numa entrevista". A pagina nao nomeia
+    # o programa, e um nome adivinhado abriria bloco proprio por engano.
+  - data: 2026-09-07
+    canal: cmtv
+    prova: https://www.cmjornal.pt/cmtv/videos/detalhe/pergunto-me-quem-e-o-primeiro-ministro-andre-ventura-fala-sobre-luis-neves-um-dia-antes-da-mocao-de-censura
+    titulo: '"Pergunto-me quem é o primeiro-ministro": André Ventura fala sobre Luís Neves um dia antes da moção de censura'
+    # Publicada a 7 de setembro de 2026 as 22:35 e diz "Em entrevista
+    # exclusiva à CMTV". Aqui a `origem` fica em "canal", ao contrario das
+    # duas de cima: esta e a pagina de video do proprio canal e aquelas sao
+    # pecas escritas da seccao de Politica do jornal que relatam a entrevista.
+
 remover:
   # Lida pelo autor a 2026-09-11: e um resumo de quinze minutos da
   # entrevista do noticiario da noite anterior, que ja esta contada pela
