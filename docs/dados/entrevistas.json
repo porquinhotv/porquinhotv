@@ -581,6 +581,46 @@
   },
   {
    "canais": [
+    "sic-noticias"
+   ],
+   "canal": "sic-noticias",
+   "confianca": "alta",
+   "data": "2024-08-01",
+   "data_origem": "declarada",
+   "fonte": "curadoria",
+   "fontes_distintas": 0,
+   "id": "f6c9e17444ae",
+   "origem": "canal",
+   "primeira_vez": "2026-09-12",
+   "principal_declarado": false,
+   "programa": "",
+   "prova_url": "https://sicnoticias.pt/pais/2024-08-01-video-andre-ventura-sobre-o-caso-das-gemeas-o-presidente-da-republica-diz-que-responde-perante-o-povo-mas-onde--no-cafe--3dc94cca",
+   "publicado_em": "2024-08-01",
+   "rondas": 0,
+   "titulo": "",
+   "transmissoes": [
+    {
+     "bloco": "f6c9e17444ae",
+     "canal": "sic-noticias",
+     "confianca": "alta",
+     "data": "2024-08-01",
+     "data_origem": "declarada",
+     "entrevista": "f6c9e17444ae",
+     "fonte": "curadoria",
+     "fontes_distintas": 0,
+     "id": "curadoria:f4cc8e952482",
+     "origem": "canal",
+     "primeira_vez": "2026-09-12",
+     "programa": "",
+     "prova_url": "https://sicnoticias.pt/pais/2024-08-01-video-andre-ventura-sobre-o-caso-das-gemeas-o-presidente-da-republica-diz-que-responde-perante-o-povo-mas-onde--no-cafe--3dc94cca",
+     "publicado_em": "2024-08-01",
+     "rondas": 0,
+     "titulo": ""
+    }
+   ]
+  },
+  {
+   "canais": [
     "cnn-portugal"
    ],
    "canal": "cnn-portugal",
@@ -3013,5 +3053,5 @@
   }
  ],
  "esquema": 2,
- "total": 71
+ "total": 72
 }
