@@ -322,6 +322,58 @@ entrevistas:
     # duas de cima: esta e a pagina de video do proprio canal e aquelas sao
     # pecas escritas da seccao de Politica do jornal que relatam a entrevista.
 
+  # Tres entrevistas acrescentadas a 2026-09-12, na mesma sessao que fechou
+  # as tres da CMTV. As duas da TVI vieram do separador de clipes do leitor
+  # do canal, que e a duvida numero 15 da KB: as temporadas nao nomeiam o
+  # convidado, mas os clipes nomeiam e trazem a data por extenso. Foi assim
+  # que apareceram, e a via fica registada.
+  #
+  # Guardas corridas nas tres: nenhuma das datas tinha linha no dataset, e
+  # nenhuma tem no mesmo dia outra linha do mesmo grupo de canais com que
+  # pudesse ser a mesma entrevista. 2026-01-30 e 2026-02-04 sao de canais e
+  # dias diferentes, e em agosto de 2026 o site nao tinha linha nenhuma.
+  - data: 2024-02-23
+    canal: tvi
+    programa: Dois às 10
+    prova: https://tviplayer.iol.pt/programa/dois-as-10/5fe219a40cf2cc9de7ef9590/video/65d88fc30cf2ee34566e1811
+    titulo: 'Conhecemos melhor André Ventura - Veja a conversa completa'
+    # A pagina declara `iol:data: 23-02-2024 15:54` e
+    # `programme_name: Dois às 10`, e as etiquetas dizem TVI e nao nomeiam
+    # nenhum outro canal do grupo. Conversa completa, 35 minutos.
+    #
+    # O `programa` escreve-se aqui de proposito: o titulo tem um separador
+    # e, sem ele, a deducao daria "Conhecemos melhor André Ventura" como
+    # nome do programa, que nao e o nome de programa nenhum.
+  - data: 2026-02-03
+    canal: tvi
+    programa: Dois às 10
+    prova: https://tviplayer.iol.pt/programa/dois-as-10/5fe219a40cf2cc9de7ef9590/video/6981f73a0cf202aedcd56c54
+    titulo: 'Não precisamos de um Presidente para cocktails: André Ventura promete rutura e vê Cavaco como talismã'
+    # `iol:data: 03-02-2026 15:53`, `programme_name: Dois às 10`, e o texto
+    # diz "Em entrevista no Dois às 10". Sao 45 minutos, entre as duas
+    # voltas das presidenciais, que e a janela onde o site estava mais curto.
+    #
+    # Nota para quem auditar: esta pagina traz `ctags: tvi24`, ao contrario
+    # da de 2024-02-23, que traz `tvi`. Nao se deduziu dai canal nenhum,
+    # pela regra de 0.7: o que decide e o que a pagina declara por palavras,
+    # e o que ela declara e o nome do programa, cujo sitio oficial e o da
+    # TVI.
+  - data: 2026-08-18
+    canal: sic-noticias
+    origem: imprensa
+    programa: não apurado
+    prova: https://poligrafo.sapo.pt/politica/seis-verdades-e-uma-mentira-o-fact-check-a-andre-ventura-na-sic-noticias/
+    titulo: 'Seis verdades e uma mentira: o fact-check a André Ventura na SIC Notícias'
+    publicado_em: 2026-08-19
+    # A peca, publicada a 19 de agosto de 2026 as 9:00, diz "esteve ontem à
+    # noite na SIC Notícias para mais uma entrevista". Cumpre as quatro
+    # condicoes da prova de imprensa: nomeia um canal e um so, diz
+    # entrevista, fixa o dia e relata o que la foi dito.
+    #
+    # O `programa` escreve-se como nao apurado pela mesma razao da linha de
+    # 2024-02-23, ao contrario: aqui a pagina nao nomeia o programa, e sem
+    # o campo a deducao daria "Seis verdades e uma mentira".
+
 remover:
   # Lida pelo autor a 2026-09-11: e um resumo de quinze minutos da
   # entrevista do noticiario da noite anterior, que ja esta contada pela
