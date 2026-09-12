@@ -13,6 +13,8 @@
 import re
 import unittest
 
+import yaml
+
 from tests.apoio import RAIZ
 
 from ferramentas import gerar_metodologia, gerar_textos
@@ -21,11 +23,24 @@ TRAVESSOES = ("\u2014", "\u2013")
 TEXTO_VERSIONADO = [RAIZ / "METODOLOGIA.md", RAIZ / "README.md"]
 TEXTO_VERSIONADO += sorted((RAIZ / "config").glob("*.yml"))
 TEXTO_VERSIONADO += sorted((RAIZ / "docs").glob("*.html")) + sorted((RAIZ / "docs").glob("*.js")) + sorted((RAIZ / "docs").glob("*.css"))
-# Unico esquema externo permitido: o namespace do SVG, que nao e um pedido.
+# Enderecos permitidos no que o browser vai buscar sozinho. O endereco
+# do proprio site entra aqui porque o canonical e o cartao de partilha o
+# escrevem por extenso, e um endereco proprio nao e um terceiro; vem do
+# `config/seo.yml` para que mudar de sitio nao exija mexer no teste.
+SEO = yaml.safe_load((RAIZ / "config" / "seo.yml").read_text(encoding="utf-8"))
 URL_PERMITIDO = re.compile(
     r"https?://(www\.)?w3\.org/"                # espaco de nomes do SVG, nao e um pedido
     r"|^https://cloud\.umami\.is/script\.js$"    # estatisticas de visitas, ver o teste abaixo
+    r"|^" + re.escape(SEO["base"])                # o proprio site
 )
+
+# O que se retira antes de procurar pedidos, e porque nao e um pedido:
+# uma ligacao que o utilizador carrega, e as declaracoes dos dados
+# estruturados. A pagina de Fontes existe precisamente para trazer as
+# ligacoes das provas, que sao de dezenas de dominios; se o teste as
+# lesse como pedidos, a unica forma de passar era esconde-las de quem le
+# a pagina sem JavaScript.
+NAO_SAO_PEDIDOS = re.compile(r"<a\b[^>]*>|<script type=\"application/ld\+json\">.*?</script>", re.DOTALL)
 NOMES_PROIBIDOS_NO_CODIGO = re.compile(r"\b(ventura|chega|rtp\d?|sic|tvi|cnn|cmtv|milhazes|rogeiro)\b", re.IGNORECASE)
 
 
@@ -185,15 +200,20 @@ class TestConvencoes(unittest.TestCase):
                 self.assertIsNone(re.search(r"\b[Ee]le\b", linha), f"textos.json:{n}")
 
     def test_o_site_nao_pede_nada_a_terceiros(self):
-        """A lista de permitidos tem dois enderecos e mais nenhum: o espaco
-        de nomes do SVG, que nao chega a ser um pedido, e o script de
-        estatisticas de visitas. O endereco esta fixado ate ao caminho, e
-        nao ao anfitriao, para que uma chamada nova ao mesmo dominio tenha
-        de passar por aqui. Sem isto voltam CDN, tipos de letra remotos e
-        tudo o resto que este site nao serve a partir de terceiros."""
+        """Um pedido e o que o browser vai buscar sozinho: um script, uma
+        folha de estilo, um tipo de letra, uma imagem. A lista de
+        permitidos tem tres entradas e mais nenhuma: o espaco de nomes do
+        SVG, que nao chega a ser um pedido, o script de estatisticas de
+        visitas, fixado ate ao caminho, e o endereco do proprio site.
+        Ficam de fora da varredura as ligacoes `<a>` e os dados
+        estruturados, que sao declaracoes e nao pedidos, e sem os quais a
+        pagina de Fontes nao poderia mostrar as provas sem JavaScript.
+        Sem este teste voltam CDN, tipos de letra remotos e tudo o resto
+        que este site nao serve a partir de terceiros."""
         for caminho in sorted((RAIZ / "docs").glob("*.html")) + sorted((RAIZ / "docs").glob("*.js")) + sorted((RAIZ / "docs").glob("*.css")):
             with self.subTest(ficheiro=caminho.name):
-                for url in re.findall(r"https?://[^\s\"'<>)]+", caminho.read_text(encoding="utf-8")):
+                texto = NAO_SAO_PEDIDOS.sub(" ", caminho.read_text(encoding="utf-8"))
+                for url in re.findall(r"https?://[^\s\"'<>)]+", texto):
                     self.assertRegex(url, URL_PERMITIDO, f"pedido externo em {caminho.name}: {url}")
 
     def test_as_estatisticas_de_visitas_estao_em_todas_as_paginas(self):

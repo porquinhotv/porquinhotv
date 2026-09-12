@@ -91,15 +91,24 @@ jobs:
           fi
           rm -f estado.json
 
+      # Os numeros que os motores de pesquisa e os agentes de recolha dos
+      # modelos de linguagem leem vivem dentro do HTML, porque nenhum
+      # deles executa o JavaScript que constroi as paginas. Tem de ser
+      # reescritos na mesma corrida que escreve os dados: um HTML com os
+      # numeros de ontem e pior do que nenhum, e o teste `test_seo` trava
+      # a recolha do dia seguinte se isto nao correr.
+      - name: Actualizar o que os motores leem
+        run: python -m ferramentas.gerar_seo
+
       - name: Publicar
         run: |
-          if [ -z "$(git status --porcelain docs/dados)" ]; then
+          if [ -z "$(git status --porcelain docs)" ]; then
             echo "sem alteracoes"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/dados
+          git add docs
           git commit -m "dados: recolha de $(date -u +%Y-%m-%d)"
           # O push pode chegar depois de outro commit ter avancado o main.
           # Sem retentativa, a recolha ficava perdida na maquina da CI.

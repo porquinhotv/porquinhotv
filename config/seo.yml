@@ -1,0 +1,120 @@
+---
+# Metadados de pesquisa. Vivem aqui pela mesma razao que os nomes dos
+# canais: nenhum modulo Python conhece o sujeito, as palavras pelas quais
+# se procura este site, nem o endereco publico onde ele esta.
+#
+# Depois de mexer neste ficheiro correr:
+#   python -m ferramentas.gerar_seo
+# Ha um teste que falha se o que esta publicado nao corresponder.
+#
+# Porque nao ha aqui `meta keywords`: os motores de pesquisa deixaram de
+# a ler ha mais de uma decada, e escrever no site uma coisa que ninguem
+# le e o mesmo defeito que afirmar um numero sem medicao. As palavras
+# entram onde sao lidas: no titulo, na descricao, no texto que a pagina
+# serve sem JavaScript, e no campo `keywords` dos dados estruturados.
+
+versao: 1
+
+# O endereco publico, com barra no fim. Entra no canonical de cada
+# pagina, no sitemap e no robots. Se o repositorio mudar de nome, esta e
+# a unica linha a mudar.
+base: https://porquinhotv.github.io/porquinhotv/
+
+nome: Porquinho TV
+idioma: pt-PT
+locale: pt_PT
+
+# Imagem de partilha, 1200x630, servida do proprio site. As redes e os
+# agregadores nao renderizam SVG, por isso e um PNG.
+cartao: cartao.png
+
+# Entram no campo `keywords` dos dados estruturados e sao a regua pela
+# qual os titulos e as descricoes abaixo foram escritos.
+palavras_chave:
+  - André Ventura
+  - Ventura
+  - Chega
+  - entrevista
+  - entrevistas
+  - entrevista exclusiva
+  - televisão
+  - televisão portuguesa
+  - TV
+  - RTP
+  - SIC
+  - TVI
+  - CNN Portugal
+  - CMTV
+  - NOW
+  - política portuguesa
+  - tempo de antena
+  - media
+
+# Identificadores publicos da entidade de que o conjunto de dados fala.
+# Servem para desambiguar: ha mais gente com este apelido, e um motor ou
+# um modelo que ligue esta pagina a entidade certa cita-a melhor.
+# Sao declaracoes dentro dos dados estruturados, nunca pedidos do site.
+# O teste que proibe terceiros le esta lista: um endereco que nao esteja
+# aqui nem em `base` faz a suite falhar.
+sujeito_mesmo_que:
+  - https://www.wikidata.org/wiki/Q69935603
+  - https://en.wikipedia.org/wiki/Andr%C3%A9_Ventura
+
+# Titulo e descricao por pagina. O titulo e o que aparece na lista de
+# resultados: a palavra pela qual se procura vem primeiro e a marca vem
+# no fim. A descricao nao e um sinal de ordenacao, mas e o que decide se
+# alguem carrega.
+paginas:
+  index.html:
+    titulo: 'Entrevistas de André Ventura na televisão | Porquinho TV'
+    descricao: >-
+      Quantas entrevistas exclusivas deu André Ventura, líder do Chega, na
+      televisão portuguesa. Contagem por canal, por mês e por ano, com prova
+      pública em cada linha.
+  calendario.html:
+    titulo: 'Calendário das entrevistas de André Ventura | Porquinho TV'
+    descricao: >-
+      Dia a dia das entrevistas exclusivas de André Ventura na televisão
+      portuguesa, canal a canal, desde 2024.
+  fontes.html:
+    titulo: 'Todas as entrevistas de André Ventura, com prova | Porquinho TV'
+    descricao: >-
+      A lista completa das entrevistas exclusivas de André Ventura na televisão
+      portuguesa, cada uma com a ligação para a página do canal ou para a
+      notícia que a prova.
+  metodologia.html:
+    titulo: 'Metodologia da contagem | Porquinho TV'
+    descricao: >-
+      O que conta como entrevista exclusiva, que provas são aceites, o que fica
+      de fora e porquê.
+
+# robots.txt. Escrito por extenso e nao gerado por regras, para que o que
+# esta publicado seja exactamente o que aqui se le.
+#
+# Decisao: os agentes de recolha dos modelos de linguagem sao permitidos,
+# tal como os motores de pesquisa. Um site que existe para ser citado nao
+# ganha nada em recusar quem o citaria, e todo o conteudo ja e publico.
+# Os agentes estao escritos um a um em vez de um `Allow` geral porque a
+# ausencia de robots.txt tambem permite tudo: o que uma lista explicita
+# acrescenta e a declaracao de que foi uma decisao, e nao um esquecimento.
+robots_agentes:
+  - GPTBot
+  - OAI-SearchBot
+  - ChatGPT-User
+  - ClaudeBot
+  - Claude-SearchBot
+  - Claude-User
+  - PerplexityBot
+  - Perplexity-User
+  - Google-Extended
+  - Applebot
+  - Applebot-Extended
+  - Bingbot
+  - Amazonbot
+  - Bytespider
+  - CCBot
+  - cohere-ai
+  - Meta-ExternalAgent
+  - DuckAssistBot
+  - YandexBot
+  - Timpibot

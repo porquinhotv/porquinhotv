@@ -25,8 +25,11 @@ node --test tests/frontend/*.test.js           # 13 testes a logica do site, sem
 python -m recolha.principal --dry-run          # nao escreve nada
 python -m recolha.principal                    # escreve docs/dados
 python -m recolha.principal --paginas 15       # mais fundo no tempo (historico)
+python -m ferramentas.gerar_seo                # metadados, sitemap e o conteudo servido sem JavaScript
 python -m http.server -d docs 8000
 ```
+
+O site constrói as páginas com JavaScript a partir de `docs/dados`, e os agentes de recolha dos modelos de linguagem não executam JavaScript. Por isso `ferramentas/gerar_seo.py` escreve dentro do HTML, entre marcadores, o mesmo que o JavaScript escreveria: o total, a repartição por canal e a lista completa das provas. Corre sozinho no workflow `recolha`; à mão, correr sempre depois de mexer em `config/seo.yml`, e a seguir também `python -m ferramentas.gerar_metodologia`.
 
 Antes de ativar uma fonte nova, `python -m ferramentas.descobrir <url>` mostra o que a página anuncia e o que o feed contém.
 

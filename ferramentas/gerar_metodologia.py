@@ -19,16 +19,22 @@ import re
 import sys
 from pathlib import Path
 
+from ferramentas import seo
+
 RAIZ = Path(__file__).resolve().parents[1]
 ORIGEM = RAIZ / "METODOLOGIA.md"
 ALVO = RAIZ / "docs" / "metodologia.html"
 
+# Esta pagina e escrita por inteiro de cada vez, por isso o bloco de
+# metadados de pesquisa tem de vir daqui: injectado depois, desaparecia
+# na geracao seguinte sem erro nenhum, que e exactamente o que ja
+# aconteceu com o contador de visitas.
 CABECA = """<!doctype html>
 <html lang="pt-PT">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Metodologia, Porquinho TV</title>
+{seo}
 <meta name="robots" content="index, follow">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="estilo.css">
@@ -135,7 +141,14 @@ def converter(markdown: str) -> str:
         saida.append(f"<p>{em_linha(linha)}</p>")
         i += 1
     fechar_lista()
-    return CABECA + "\n".join(saida) + "\n" + CAUDA
+    return cabeca_html() + "\n".join(saida) + "\n" + CAUDA
+
+
+def cabeca_html() -> str:
+    cfg = seo.carregar()
+    resumo, entrevistas = seo.dados()
+    bloco = seo.bloco_head(cfg, "metodologia.html", resumo, seo.visiveis(resumo, entrevistas))
+    return CABECA.replace("{seo}", bloco)
 
 
 def construir() -> str:
