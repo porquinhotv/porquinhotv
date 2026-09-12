@@ -20,6 +20,15 @@
   },
   {
    "canais": {
+    "tvi": {
+     "declaradas": 1,
+     "entrevistas": 1
+    }
+   },
+   "data": "2024-02-23"
+  },
+  {
+   "canais": {
     "rtp1": {
      "declaradas": 0,
      "entrevistas": 1
@@ -402,6 +411,15 @@
   },
   {
    "canais": {
+    "tvi": {
+     "declaradas": 1,
+     "entrevistas": 1
+    }
+   },
+   "data": "2026-02-03"
+  },
+  {
+   "canais": {
     "sic-noticias": {
      "declaradas": 1,
      "entrevistas": 1
@@ -537,6 +555,15 @@
   },
   {
    "canais": {
+    "sic-noticias": {
+     "declaradas": 1,
+     "entrevistas": 1
+    }
+   },
+   "data": "2026-08-18"
+  },
+  {
+   "canais": {
     "cnn-portugal": {
      "declaradas": 1,
      "entrevistas": 1
@@ -571,11 +598,11 @@
   "motor-rtp3",
   "registo-curado"
  ],
- "gerado_em": "2026-09-12T16:10:28+00:00",
+ "gerado_em": "2026-09-12T17:19:03+00:00",
  "por_ano": [
   {
    "ano": "2024",
-   "entrevistas": 8
+   "entrevistas": 9
   },
   {
    "ano": "2025",
@@ -583,7 +610,7 @@
   },
   {
    "ano": "2026",
-   "entrevistas": 22
+   "entrevistas": 24
   }
  ],
  "por_canal": [
@@ -604,12 +631,12 @@
   },
   {
    "canal": "tvi",
-   "entrevistas": 4,
+   "entrevistas": 6,
    "nome": "TVI"
   },
   {
    "canal": "sic-noticias",
-   "entrevistas": 8,
+   "entrevistas": 9,
    "nome": "SIC Notícias"
   },
   {
@@ -636,6 +663,10 @@
  "por_dia": [
   {
    "data": "2024-02-21",
+   "entrevistas": 1
+  },
+  {
+   "data": "2024-02-23",
    "entrevistas": 1
   },
   {
@@ -807,6 +838,10 @@
    "entrevistas": 1
   },
   {
+   "data": "2026-02-03",
+   "entrevistas": 1
+  },
+  {
    "data": "2026-02-04",
    "entrevistas": 1
   },
@@ -867,6 +902,10 @@
    "entrevistas": 1
   },
   {
+   "data": "2026-08-18",
+   "entrevistas": 1
+  },
+  {
    "data": "2026-09-01",
    "entrevistas": 1
   },
@@ -881,7 +920,7 @@
  ],
  "por_mes": [
   {
-   "entrevistas": 1,
+   "entrevistas": 2,
    "mes": "2024-02"
   },
   {
@@ -945,7 +984,7 @@
    "mes": "2026-01"
   },
   {
-   "entrevistas": 1,
+   "entrevistas": 2,
    "mes": "2026-02"
   },
   {
@@ -965,21 +1004,25 @@
    "mes": "2026-07"
   },
   {
+   "entrevistas": 1,
+   "mes": "2026-08"
+  },
+  {
    "entrevistas": 3,
    "mes": "2026-09"
   }
  ],
  "por_origem": {
   "canal": {
-   "entrevistas": 49
+   "entrevistas": 51
   },
   "imprensa": {
-   "entrevistas": 13
+   "entrevistas": 14
   }
  },
  "por_semana": [
   {
-   "entrevistas": 1,
+   "entrevistas": 2,
    "semana": "2024-W08"
   },
   {
@@ -1115,7 +1158,7 @@
    "semana": "2026-W05"
   },
   {
-   "entrevistas": 1,
+   "entrevistas": 2,
    "semana": "2026-W06"
   },
   {
@@ -1156,6 +1199,10 @@
   },
   {
    "entrevistas": 1,
+   "semana": "2026-W34"
+  },
+  {
+   "entrevistas": 1,
    "semana": "2026-W36"
   },
   {
@@ -1189,7 +1236,7 @@
   "pergunta": "Quantas entrevistas exclusivas deu André Ventura na televisão portuguesa?"
  },
  "totais": {
-  "entrevistas": 62
+  "entrevistas": 65
  },
  "ultimo_registo": "2026-09-10"
 }

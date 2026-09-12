@@ -282,6 +282,46 @@
   },
   {
    "canais": [
+    "tvi"
+   ],
+   "canal": "tvi",
+   "confianca": "alta",
+   "data": "2024-02-23",
+   "data_origem": "declarada",
+   "fonte": "curadoria",
+   "fontes_distintas": 0,
+   "id": "69ef8b9f4cd0",
+   "origem": "canal",
+   "primeira_vez": "2026-09-12",
+   "principal_declarado": false,
+   "programa": "Dois às 10",
+   "prova_url": "https://tviplayer.iol.pt/programa/dois-as-10/5fe219a40cf2cc9de7ef9590/video/65d88fc30cf2ee34566e1811",
+   "publicado_em": "2024-02-23",
+   "rondas": 0,
+   "titulo": "Conhecemos melhor André Ventura - Veja a conversa completa",
+   "transmissoes": [
+    {
+     "bloco": "69ef8b9f4cd0",
+     "canal": "tvi",
+     "confianca": "alta",
+     "data": "2024-02-23",
+     "data_origem": "declarada",
+     "entrevista": "69ef8b9f4cd0",
+     "fonte": "curadoria",
+     "fontes_distintas": 0,
+     "id": "curadoria:69af105932b8",
+     "origem": "canal",
+     "primeira_vez": "2026-09-12",
+     "programa": "Dois às 10",
+     "prova_url": "https://tviplayer.iol.pt/programa/dois-as-10/5fe219a40cf2cc9de7ef9590/video/65d88fc30cf2ee34566e1811",
+     "publicado_em": "2024-02-23",
+     "rondas": 0,
+     "titulo": "Conhecemos melhor André Ventura - Veja a conversa completa"
+    }
+   ]
+  },
+  {
+   "canais": [
     "rtp1"
    ],
    "canal": "rtp1",
@@ -1154,7 +1194,7 @@
    "programa": "",
    "prova_url": "https://www.rtp.pt/noticias/politica/entrevista-rtp-ventura-garante-que-o-chega-esta-na-corrida-para-vencer-as-eleicoes_v1654290",
    "publicado_em": "2025-05-12",
-   "rondas": 4,
+   "rondas": 5,
    "titulo": "Entrevista RTP. Ventura garante que o Chega está na corrida para vencer as eleições",
    "transmissoes": [
     {
@@ -1172,7 +1212,7 @@
      "programa": "",
      "prova_url": "https://www.rtp.pt/noticias/politica/entrevista-rtp-ventura-garante-que-o-chega-esta-na-corrida-para-vencer-as-eleicoes_v1654290",
      "publicado_em": "2025-05-12",
-     "rondas": 4,
+     "rondas": 5,
      "titulo": "Entrevista RTP. Ventura garante que o Chega está na corrida para vencer as eleições"
     }
    ]
@@ -2154,6 +2194,46 @@
   },
   {
    "canais": [
+    "tvi"
+   ],
+   "canal": "tvi",
+   "confianca": "alta",
+   "data": "2026-02-03",
+   "data_origem": "declarada",
+   "fonte": "curadoria",
+   "fontes_distintas": 0,
+   "id": "554fc774b6fd",
+   "origem": "canal",
+   "primeira_vez": "2026-09-12",
+   "principal_declarado": false,
+   "programa": "Dois às 10",
+   "prova_url": "https://tviplayer.iol.pt/programa/dois-as-10/5fe219a40cf2cc9de7ef9590/video/6981f73a0cf202aedcd56c54",
+   "publicado_em": "2026-02-03",
+   "rondas": 0,
+   "titulo": "Não precisamos de um Presidente para cocktails: André Ventura promete rutura e vê Cavaco como talismã",
+   "transmissoes": [
+    {
+     "bloco": "554fc774b6fd",
+     "canal": "tvi",
+     "confianca": "alta",
+     "data": "2026-02-03",
+     "data_origem": "declarada",
+     "entrevista": "554fc774b6fd",
+     "fonte": "curadoria",
+     "fontes_distintas": 0,
+     "id": "curadoria:6caaaa2d4f5e",
+     "origem": "canal",
+     "primeira_vez": "2026-09-12",
+     "programa": "Dois às 10",
+     "prova_url": "https://tviplayer.iol.pt/programa/dois-as-10/5fe219a40cf2cc9de7ef9590/video/6981f73a0cf202aedcd56c54",
+     "publicado_em": "2026-02-03",
+     "rondas": 0,
+     "titulo": "Não precisamos de um Presidente para cocktails: André Ventura promete rutura e vê Cavaco como talismã"
+    }
+   ]
+  },
+  {
+   "canais": [
     "sic-noticias"
    ],
    "canal": "sic-noticias",
@@ -2773,6 +2853,46 @@
   },
   {
    "canais": [
+    "sic-noticias"
+   ],
+   "canal": "sic-noticias",
+   "confianca": "alta",
+   "data": "2026-08-18",
+   "data_origem": "declarada",
+   "fonte": "curadoria",
+   "fontes_distintas": 0,
+   "id": "f44e1657c1b3",
+   "origem": "imprensa",
+   "primeira_vez": "2026-09-12",
+   "principal_declarado": false,
+   "programa": "não apurado",
+   "prova_url": "https://poligrafo.sapo.pt/politica/seis-verdades-e-uma-mentira-o-fact-check-a-andre-ventura-na-sic-noticias/",
+   "publicado_em": "2026-08-19",
+   "rondas": 0,
+   "titulo": "Seis verdades e uma mentira: o fact-check a André Ventura na SIC Notícias",
+   "transmissoes": [
+    {
+     "bloco": "f44e1657c1b3",
+     "canal": "sic-noticias",
+     "confianca": "alta",
+     "data": "2026-08-18",
+     "data_origem": "declarada",
+     "entrevista": "f44e1657c1b3",
+     "fonte": "curadoria",
+     "fontes_distintas": 0,
+     "id": "curadoria:8d018a3d9826",
+     "origem": "imprensa",
+     "primeira_vez": "2026-09-12",
+     "programa": "não apurado",
+     "prova_url": "https://poligrafo.sapo.pt/politica/seis-verdades-e-uma-mentira-o-fact-check-a-andre-ventura-na-sic-noticias/",
+     "publicado_em": "2026-08-19",
+     "rondas": 0,
+     "titulo": "Seis verdades e uma mentira: o fact-check a André Ventura na SIC Notícias"
+    }
+   ]
+  },
+  {
+   "canais": [
     "cnn-portugal"
    ],
    "canal": "cnn-portugal",
@@ -2893,5 +3013,5 @@
   }
  ],
  "esquema": 2,
- "total": 68
+ "total": 71
 }
